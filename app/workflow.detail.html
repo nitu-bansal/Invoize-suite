@@ -1,0 +1,31 @@
+
+<div class="span9">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="pull-right"><a ng-hide="workflowDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a permission="updateWorkflow.*.*" ng-hide="workflowDetailLoader" href="#/workflow/edit/{{$stateParams.workflowId}}" ng-click="editWorkflow()" style="cursor: pointer;" bs-tooltip="tooltip.edit" class="btn btn-primary btn-margin"><i class="icon-pencil icon-large"></i></a><a permission="deleteWorkflow.*.*" ng-hide="workflowDetailLoader" ng-click="confirmDeleteWorkflow()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="workflowDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+      <legend>Workflow</legend>
+      <div class="control-group">
+        <label class="control-label">Workflow Name</label>
+        <div class="controls">
+          <label>{{workflow.name}}</label>
+        </div>
+      </div>
+      <div class="alert-blank">
+        <div class="control-group"></div>
+        <h4>Workflow Definition</h4>
+        <div ng-repeat="row in workflowDefinitions" class="control-group well well-small">
+          <label class="control-label"><span class="label label-inverse">Level {{$index + 1}}</span><br/>
+            <div ng-switch="workflow.definitionCount[$index]" class="label label-warning help-inline">
+              <div ng-switch-when="*">All</div>
+              <div ng-switch-default="ng-switch-default">Any {{workflow.definitionCount[$index]}}</div>
+            </div>
+          </label>
+          <div class="controls">
+            <label>{{workflow.definition[$index] | workflowArray2text}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="control-group"><span>  <b>Created By : </b>{{workflow.createdBy}}, &nbsp</span><span ng-hide="workflow.createdOn">Created On : 2013-06-25, &nbsp</span><span ng-show="workflow.createdOn"><b>Created On : </b>{{workflow.createdOn}}, &nbsp</span><span ng-show="workflow.updatedBy"> <b>Modified By :</b>{{workflow.updatedBy}}, &nbsp </span><span ng-hide="workflow.updatedOn"> <b>Modified On : </b>2013-06-25, &nbsp</span><span ng-show="workflow.updatedOn"> <b>Modified On : </b>{{workflow.updatedOn}}</span></div>
+    </div>
+  </form>
+</div>

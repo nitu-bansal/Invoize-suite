@@ -1,0 +1,82 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+//- div(collapse='!isCollapsed')
+div
+        .container-fluid.well
+                .row-fluid
+                        .span10.offset1
+                                .row-fluid
+                                        input.span9(ui-select2="searchBar", ng-model="searchBarValue",ng-click="itemChanged($event)", ui-keypress="{enter: 'searchCharge(searchBarValue)'}")
+                                        button.btn.btn-primary.btn-margin(ng-disabled="!$routeParams.accountId",ng-click="searchCharge(searchBarValue,$stateParams.accountId,$stateParams.templateId)",type="submit")&nbsp&nbsp&nbsp&nbsp
+                                                i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp
+                                        //- {{searchBarValue}}
+                                                a.btn.btn-mini.btn-success.btn-margin(permission="createChargeDefin.*.*",ng-disabled="$state.includes('rate.template')",href="#/rate/template/{{$routeParams.accountId}}",bs-tooltip="tooltip.new" , ng-click="newChargeDefn()") 
+                                        button.pull-right.btn.btn-success.btn-margin(permission="createRate.*.*",ng-disabled="!$stateParams.templateId",ng-click="getTemplate($stateParams.accountId,$stateParams.templateId)",href="#/rate/new/{{$routeParams.accountId}}/{{$routeParams.templateId}}" ,bs-tooltip="tooltip.rateRequestNew")
+                                                i.icon-plus.icon-white
+                                                |  Request Rate
+.container-fluid
+        .row-fluid
+                .span2.bs-docs-sidebar(style="cursor: pointer;")
+                        ul.nav.nav-list.bs-docs-sidenav
+                                input(type="text",ng-change="searchAccount();toggleCollapse(false)", placeholder="Search", ng-model="search")
+                                li.nav-header
+                                        h4 Accounts
+                                                //- .badge.label-info.pull-right(bs-tooltip="tooltip.total")  8
+                                        li.active(ng-show='isCollapsed')
+                                                a(ng-click='toggleCollapse(false)',bs-tooltip="tooltip.showMore")
+                                                        i.icon-chevron-down.pull-right
+                                                        {{selectedAccount}}
+                                        div(collapse='isCollapsed')   
+                                                .span2.bs-docs-sidebar(style="cursor: pointer;")
+                                                        ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMoreAccounts()")                                    
+                                                                li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+                                                                        a(ng-click="selectAccount(l.v);toggleCollapse(true);getChargeDefs(l.id);searchFor('Account',l.v,l.id,$stateParams.templateId)")
+                                                                                i.icon-chevron-right
+                                                                                {{l.v|titlecase}}
+                                        i.icon-spinner.icon-spin.icon-4x(ng-show="accountListLoader")
+                                                        //- .control-group
+                                                        //-         .controls
+                                                        //-                  input.span11(ui-select2="accountBar", name="accountBar", ng-model="selectedAccount",ng-click="searchFor('Account',selectedAccount);isCollapsed = !isCollapsed") 
+                                                        //-         //- select(ui-select2="{allowClear: true,closeOnSelect:false}",ng-click="searchFor('Account',selectedAccount)", name="chargeType", ng-model="selectedAccount", data-placeholder="Please select...", style="width:200px")
+                                                                //-         option(value="")
+                                                                //-         option(ng-repeat="l in accountList", value='{{l}}') {{l.v}}
+                        ul.nav.nav-list.bs-docs-sidenav(ng-show='isCollapsed')                      
+                                li.nav-header
+                                        h4 Charge Definitions
+                                                i.icon-spinner.icon-spin.icon-4x(ng-show="chargeDefnListLoader")
+                                li
+                                        span2
+                                                a.btn.btn-mini.btn-success.btn-margin(permission="createChargeDefnRate.*.*",ng-disabled="$state.includes('rate.template')",href="#/rate/template/{{$routeParams.accountId}}", bs-tooltip="tooltip.new" , ng-click="newChargeDefn()") 
+                                                        i.icon-plus.icon-white
+                                        ul.nav.nav-list.bs-docs-sidenav(id="FixedCharge") 
+                                                li(ng-class="{ active: $stateParams.templateId == l.id}", ng-click="searchFor('chargeDefn',l.v,$stateParams.accountId,l.id);selectChargeDefn(l.id)", ng-repeat="l in chargeDefinitions")
+                                                        a 
+                                                                i.icon-chevron-right
+                                                                {{l.n | inflector:humanize}} 
+                        //- table.table.table-hover(ng-show='isCollapsed') 
+                        //-         tbody(ng-repeat="l in chargeDefinitions")
+                        //-                 tr(ng-class="{ 'alert alert-info': $stateParams.templateId == l.id}", ng-click="searchFor('chargeDefn',l.v,$stateParams.accountId,l.id);selectChargeDefn(l.id)")
+                        //-                         td
+                        //-                                 ul.nav.nav-list
+                        //-                                         li {{l.n | inflector:humanize}}        
+
+                .span10
+                        //- i.icon-spinner.icon-spin.icon-4x(ng-hide="accountList")
+                        div(ng-show="accountList")
+                                .container.offset1(ng-hide="$routeParams.accountId")
+                                        .row-fluid
+                                                        .span5
+                                                                h4 Total Revenue per Lane
+                                                                div(total-Revenue='chartData')
+                                                        .span5
+                                                                h4 Top Quoted
+                                                                div(top-Quoted='chartData')
+                                        hr
+                                        .row-fluid
+                                                        .span5
+                                                                h4 Accounts
+                                                                div(accounts='chartData')
+                                                        .span5
+                                                                h4 Lane Expiry Status
+                                                                div(lane-Expiry='chartData')
+                                div(ui-view="list")

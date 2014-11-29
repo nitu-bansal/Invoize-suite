@@ -1,0 +1,26 @@
+
+include common_top_row
+section
+        .container-fluid 
+                .row-fluid
+                        .span3.bs-docs-sidebar(style="cursor: pointer;")
+                                ul.nav.nav-list.bs-docs-sidenav.affix
+                                        li.nav-header
+                                                span
+                                                        a.btn.btn-success.btn-margin(permission="createMetadataType.*.*", href="#/metadata/new" ,ng-click="initializeMetadataType()")
+                                                                i.icon-plus.icon-white
+                                                                | &nbsp;Metadata Type
+                                                br
+                                        li.nav-header
+                                                input.search-query(type="search", placeholder="Search", ng-model="searchMetadataType")
+                                        li.nav-header
+                                                h4(rel="tooltip") Metadata Type
+                                                        .badge.label-info.pull-right(bs-tooltip="tooltip.total") {{totalMetadataType}}
+                                                i.icon-spinner.icon-spin.icon-4x(ng-show="metadataTypeListLoader")
+                                                ul.nav.nav-list.bs-docs-sidenav(id="Fixed")
+                                                        li(ng-class="{ active: $stateParams.metadataType == l.id}", ng-repeat="l in metadataTypeList | filter:searchMetadataType")
+                                                                a(ng-click="selectMetadataType(l.v)", data-toggle="tab", href="#/metadata/{{l.id}}")
+                                                                        i.icon-chevron-right
+                                                                        {{l.v|titlecase}}
+                        .span9                                
+                                div(ui-view="list") 

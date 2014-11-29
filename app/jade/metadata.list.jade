@@ -1,0 +1,32 @@
+.row-fluid
+        .span3
+                a.btn.btn-primary.btn-margin(permission="createMetadata.*.*",bs-tooltip="tooltip.new", style="cursor: pointer;", href="#/metadata/{{$stateParams.metadataType}}/new",ng-click="getMetadataFields($stateParams.metadataType)") 
+                        i.icon-plus.icon-white
+                | &nbsp; &nbsp;
+                a.btn.btn-primary.btn-margin(permission="uploadMetadata.*.*",bs-tooltip="tooltip.upload", style="cursor: pointer;", href="#/metadata/{{$stateParams.metadataType}}/fileUpload")
+                        i.icon-upload-alt.icon-white
+                | &nbsp; &nbsp;
+                a.btn.btn-primary.btn-margin(bs-tooltip="tooltip.download", style="cursor: pointer;", ng-click="downloadMetadata()")
+                        i.icon-download-alt.icon-white
+                | &nbsp; &nbsp;
+                .bs-docs-sidebar(style="cursor: pointer;")
+                        ul.nav.nav-list.bs-docs-sidenav
+                                input.search-query(type="search", placeholder="Search", ng-model="searchMetadata")
+                                li.nav-header
+                                        h4(rel="tooltip") {{$stateParams.metadataType}}  
+                                        i.icon-spinner.icon-spin.icon-4x(ng-show="metadataListLoader")           
+                                //- table.table.table-hover
+                                //-         tbody(ng-repeat="row in metadataList  | filter:searchMetadata")
+                                //-                 tr(ng-class="{  'alert alert-info': $state.includes('metadata.list.detail') && $stateParams.metadataId == row.id}" , ng-click="selectMetadata(row.id)") 
+                                //-                         td
+                                //-                                 ul.nav.nav-list
+                                //-                                         li {{row.v}}
+                                ul.nav.nav-list.bs-docs-sidenav(id="Fixed")
+                                        li(ng-repeat="row in metadataList  | filter:searchMetadata", ng-class="{  active : $state.includes('metadata.list.detail') && $stateParams.metadataId == row.id}" , ng-click="selectMetadata(row.id)") 
+                                                a 
+                                                        i.icon-chevron-right
+                                                        {{row.v}}
+
+        .span9
+                div(ui-view="detail")
+         

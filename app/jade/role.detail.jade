@@ -1,0 +1,49 @@
+.offset1.span8
+        form.form-horizontal
+                fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="roleDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="updateRole.*.*", ng-hide="roleDetailLoader", bs-tooltip="tooltip.edit", href="#/role/edit/{{$stateParams.roleId}}", ng-click="editRole()")
+                                                i.icon-pencil.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="deleteRole.*.*", ng-hide="roleDetailLoader", ng-click="confirmDeleteRole()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="roleDetailLoader")
+                                legend Role
+                        .control-group
+                                label.control-label Role Name
+                                .controls
+                                        label : {{role.name}}
+                        .control-group
+                                label.control-label Description
+                                .controls
+                                        label : {{role.description}}
+                        .control-group
+                                label.control-label Permission
+                                .controls
+                                        label : {{role.definition | array2text}}
+                        .control-group
+                                label.control-label Created By
+                                .controls
+                                        label : {{role.createdBy}}
+                        .control-group(ng-hide="!role.createdBy")
+                                label.control-label Created On
+                                .controls
+                                        label(ng-show="!role.createdBy") : {{role.createdOn}}
+                                        label(ng-hide="!role.createdBy") : 2013-06-25
+
+                        .control-group(ng-show="role.updatedBy")
+                                label.control-label Modified By
+                                .controls
+                                        label : {{role.updatedBy}}
+                        .control-group(ng-show="role.updatedOn")
+                                label.control-label Modified On
+                                .controls
+                                        label : {{role.updatedOn}}
+                        //- .form-actions
+                        //-         a.btn.btn-primary(href="#/role/edit/{{$stateParams.roleId}}", ng-click="editRole()")
+                        //-                 i.icon-pencil.icon-white  
+                        //-                 |   Edit
+                        //-         button.btn.btn-inverse(type="submit") Cancel
+                        //- {{role}}

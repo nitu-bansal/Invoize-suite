@@ -1,0 +1,27 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="roleCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        button.btn.btn-primary(permission="createRole.*.*", ng-hide="roleCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="create(role)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="roleCreateLoader")
+                                legend Role
+                        .control-group
+                                label.control-label Name
+                                .controls
+                                        input(type="text",  id="rolname", name="roleName", duplicate="role", ng-model="role.name", placeholder="Role Name", required)
+                                        label.help-inline.required(ng-show="form.roleName.$error.required") *
+                                        label.help-inline.required(ng-show="form.roleName.$error.duplicate") Role exists.
+                        .control-group
+                                label.control-label Description
+                                .controls
+                                        textarea(rows=3, name="roleDescription", ng-model="role.description", placeholder="Role Description", required)
+                                        
+                        .control-group
+                                label.control-label Permissions
+                                .controls
+                                        input.span9.roleBarselect(ui-select2="roleBar", name="roleBar", ng-model="role.definition",ng-change="showDialog(role.definition)", select-validate,required)
+                                        .help-inline.required(ng-show="form.roleBar.$error.selectvalidate || form.roleBar.$error.required") *

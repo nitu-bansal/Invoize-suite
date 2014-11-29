@@ -1,0 +1,41 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="organizationUpdateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button ng-hide="organizationUpdateLoader" ng-disabled="form.$invalid" ng-click="updateOrganization(org)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><a ng-hide="organizationUpdateLoader" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteOrganization()" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="organizationUpdateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>Organization Details :</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Organization</label>
+        <div class="controls">
+          <input type="text" name="organization" ng-model="org.organization" placeholder="Organization" required="required"/>
+          <label ng-show="form.organization.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Account Owner</label>
+        <div class="controls">
+          <input type="text" name="accountOwner" ng-model="org.accountOwner" placeholder="Account Owner" required="required"/>
+          <label ng-show="form.accountOwner.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Billing Owner</label>
+        <div class="controls">
+          <input type="text" name="billingOwner" ng-model="org.billingOwner" placeholder="Billing Owner" required="required"/>
+          <label ng-show="form.billingOwner.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Is Active</label>
+        <div class="controls">
+          <input type="text" name="isActive" ng-model="org.isActive" placeholder="Is Active" required="required"/>
+          <label ng-show="form.isActive.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

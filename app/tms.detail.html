@@ -1,0 +1,80 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset ng-hide="tariffDetailLoader">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="tariffDetailLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><i ng-show="tariffDetailLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>Tariff Details</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Effective Date</label>
+        <div class="controls">
+          <label>: {{tariff.effectiveDate | date:'mediumDate'}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Expiry Date</label>
+        <div class="controls">
+          <label>: {{tariff.expiryDate | date:'mediumDate'}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Received Date</label>
+        <div class="controls">
+          <label>: {{tariff.receivedDate | date:'mediumDate'}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Received From</label>
+        <div class="controls">
+          <label>: {{tariff.receivedFrom}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Comments</label>
+        <div class="controls">
+          <label>: {{tariff.comment}}</label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <div class="fluid-row">
+        <legend>Attached Documents</legend>
+      </div>
+      <div class="control-group">
+        <div data-ng-repeat="file in tariff.docId">
+          <div class="alert-blank">
+            <div>
+              <div class="pull-right">&nbsp<span class="label label-warning">{{file.t}}</span></div>&nbsp<i class="icon-large icon-paper-clip">&nbsp</i><a permission="downloadTariff.*.*" href="http://invoize.info/api/tms/download/file?id={{file.id}}" download="{{file.name}}" style="cursor: pointer;" bs-tooltip="tooltip.download" class="link"><strong>{{file.v}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{file.v}}<br/><small class="muted"> You do not have download permissions</small></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset permission="historyTariff.*.*">
+      <div class="fluid-row">
+        <legend>History<i ng-show="tariffHistoryLoader" class="icon-spinner icon-spin icon icon-large"></i></legend>
+      </div>
+      <div ng-hide="tariffHistoryAvailable || tariffHistoryLoader" class="div">
+        <h5>History not available for this tariff</h5>
+      </div>
+      <div ng-show="tariffHistoryAvailable" class="div">
+        <div class="control-group">
+          <div ng-repeat="row in documentRequestHistory" class="alert-blank">
+            <div ng-click="isCollapsed = !isCollapsed" class="fluid-row"><i class="icon-user"></i><span ng-show="row.action=='A'" class="small label label-success pull-right">Approved</span><span ng-show="row.action=='R'" class="small label label-important pull-right">Rejected</span><span ng-show="row.action=='C'" class="small label label-info pull-right">Created</span><strong style="cursor: pointer;" bs-tooltip="tooltip.expand" class="text-info">&nbsp {{row.email}}</strong><br/><small class="muted">    Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} ,</small><small class="muted">    Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} ,</small><small class="muted">    Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}</small>
+              <div collapse="isCollapsed"><strong class="text-black">Attached Documents</strong>
+                <div data-ng-repeat="file in row.oldSnapshot.docId">
+                  <div>
+                    <div class="pull-right">&nbsp<span class="small label label-info">{{file.t}}</span></div><i class="icon-large icon-paper-clip">&nbsp</i><a permission="downloadTariff.*.*" href="http://invoize.info/api/tms/download/file?id={{file.id}}" download="{{file.name}}" style="cursor: pointer;" bs-tooltip="tooltip.download" data-placement="right" class="link"><strong>{{file.v}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{file.v}}<br/><small class="muted"> You do not have download permissions</small></strong>
+                  </div>
+                </div><strong class="text-black"> Comments</strong><br/><small>{{row.oldSnapshot.comment}}</small>
+              </div>
+            </div>
+            <div id="{{$index}}" class="fluid-row"></div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

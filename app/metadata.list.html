@@ -1,0 +1,19 @@
+
+<div class="row-fluid">
+  <div class="span3"><a permission="createMetadata.*.*" bs-tooltip="tooltip.new" style="cursor: pointer;" href="#/metadata/{{$stateParams.metadataType}}/new" ng-click="getMetadataFields($stateParams.metadataType)" class="btn btn-primary btn-margin"> <i class="icon-plus icon-white"></i></a>&nbsp; &nbsp;<a permission="uploadMetadata.*.*" bs-tooltip="tooltip.upload" style="cursor: pointer;" href="#/metadata/{{$stateParams.metadataType}}/fileUpload" class="btn btn-primary btn-margin"><i class="icon-upload-alt icon-white"></i></a>&nbsp; &nbsp;<a bs-tooltip="tooltip.download" style="cursor: pointer;" ng-click="downloadMetadata()" class="btn btn-primary btn-margin"><i class="icon-download-alt icon-white"></i></a>&nbsp; &nbsp;
+    <div style="cursor: pointer;" class="bs-docs-sidebar">
+      <ul class="nav nav-list bs-docs-sidenav">
+        <input type="search" placeholder="Search" ng-model="searchMetadata" class="search-query"/>
+        <li class="nav-header">
+          <h4 rel="tooltip">{{$stateParams.metadataType}}  </h4><i ng-show="metadataListLoader" class="icon-spinner icon-spin icon-4x">          </i>
+        </li>
+        <ul id="Fixed" class="nav nav-list bs-docs-sidenav">
+          <li ng-repeat="row in metadataList  | filter:searchMetadata" ng-class="{  active : $state.includes('metadata.list.detail') &amp;&amp; $stateParams.metadataId == row.id}" ng-click="selectMetadata(row.id)"> <a> <i class="icon-chevron-right"></i>{{row.v}}</a></li>
+        </ul>
+      </ul>
+    </div>
+  </div>
+  <div class="span9">
+    <div ui-view="detail"></div>
+  </div>
+</div>

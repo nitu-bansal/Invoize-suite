@@ -1,0 +1,30 @@
+.row-fluid
+        .span3(id="FixedRate",style="position:fixed;")
+                h4 Tariffs Requests
+                .row-fluid(ng-hide="oldTmsRequest.length")
+                    h4
+                        | Couldn't find any requests
+                        i.icon-frown
+                table.table.table-hover
+                        tbody(ng-repeat="r in oldTmsRequest  | filter:searchs")
+                                tr
+                                        td
+                                                ul.nav.nav-list(bs-tooltip="tooltip.expand",ng-class="{'alert alert-info': ($state.includes('request.tmsList.detail') ) && $stateParams.requestId == r.id}")
+                                                        label(style="cursor: pointer;",ng-click='isCurrentTmsStackHolderCollapsed = !isCurrentTmsStackHolderCollapsed')
+                                                                strong.text-info  Current Stakeholders : {{r.workflowUsers.length}}
+                                                        div(collapse='isCurrentTmsStackHolderCollapsed')
+                                                                .alert-blank(ng-repeat="u in r.workflowUsers")
+                                                                        i.icon-user
+                                                                        small &nbsp; {{u.email}}
+                                                ul.nav.nav-list(href="#/tms/list/{{$stateParams.accountId}}/detail/{{r.id}}",ng-class="{'alert alert-info': ($state.includes('request.tmsList.detail') ) && $stateParams.requestId == r.id}", ng-click="selectTmsRequest(r.id)")
+                                                        label
+                                                                strong(popover-placement="right",popover="{{quickViewAttachments[$index]}}",popover-trigger="mouseenter")  {{r.docId.length}} Attachments  ({{r.accountName}})
+                                                                span.small.label.label-success.pull-right(ng-show="r.action=='A'") Approved
+                                                                span.small.label.label-important.pull-right(ng-show="r.action=='R'") Rejected
+                                                        li(style="cursor: pointer;")
+                                                                i.icon-large.icon-calendar &nbsp Effective Date - {{r.effectiveDate  | date:'mediumDate'}}
+                                                        li(style="cursor: pointer;")
+                                                                i.icon-large.icon-calendar &nbsp Expiry Date - {{r.expiryDate  | date:'mediumDate'}}
+
+        .span9.offset4
+                div(ui-view="detail")

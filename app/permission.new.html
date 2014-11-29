@@ -1,0 +1,43 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>
+      <legend>Permission </legend>
+      <div class="control-group">
+        <label class="control-label">Action</label>
+        <div class="controls">
+          <input type="text" name="permissionAction" duplicate="permission" ng-model="permissions.action" placeholder="Action" required="required"/>
+          <label ng-show="form.permissionAction.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.permissionAction.$error.duplicate" class="help-inline required">Permission exists.</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Action Code</label>
+        <div class="controls">
+          <input type="text" name="permissionActionCode" ng-model="permissions.actionCode" placeholder="Action Code" required="required"/>
+          <label ng-show="form.permissionActionCode.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <label ng-repeat="row in relatedToList" class="checkbox">
+            <input type="checkbox" ng-model="permissions.relatedTo[row]"/>{{row}}
+          </label>
+        </div>
+      </div>
+      <div class="control-group input-append">
+        <input type="text" ng-model="datepicker.date" data-date-format="dd/mm/yyyy" bs-datepicker="bs-datepicker"/>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+          <textarea rows="3" name="permissionDescription" ng-model="permissions.description" placeholder="Description" required="required"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button ng-disabled="form.$invalid" type="submit" ng-click="create(permissions)" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-inverse">Cancel</button>
+      </div>
+    </fieldset>
+  </form>
+</div>

@@ -1,0 +1,41 @@
+
+<div class="offset1 span8">
+  <form class="form-horizontal">
+    <fieldset>                       
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="organizationDetailLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a ng-hide="organizationDetailLoader" bs-tooltip="tooltip.edit" href="#/organization/edit/{{$stateParams.organizationId}}" ng-click="editOrganization()" class="btn btn-primary btn-margin"><i class="icon-pencil icon-large"></i></a><a ng-hide="organizationDetailLoader" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteOrganization()" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="organizationDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+        <legend>Organization Details :</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Organization</label>
+        <div class="controls">
+          <label>{{org.organization}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Account Owner</label>
+        <div class="controls">
+          <label>{{org.accountOwner}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Billing Owner</label>
+        <div class="controls">
+          <label>{{org.billingOwner}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Registered On</label>
+        <div class="controls">
+          <label>{{org.registeredOn}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Is Active</label>
+        <div class="controls">
+          <label>{{org.is_active}}</label>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

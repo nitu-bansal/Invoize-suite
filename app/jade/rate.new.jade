@@ -1,0 +1,65 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset                      
+                         .fluid-row                                          
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(onClick="window.history.back()",bs-tooltip="tooltip.back", style="cursor: pointer;") 
+                                                i.icon-mail-reply.icon-largeasd
+                                        button.btn.btn-primary.btn-margin(ng-disabled="form.$invalid",bs-tooltip="tooltip.sendRequest", style="cursor: pointer;",ng-click="create(selection,weightBracketFields,selectedChargeType,selectedRateQualifier,$stateParams.accountId,$stateParams.templateId,comment)") 
+                                                i.icon-ok.icon-large                                             
+                                legend New Rate Request
+                                        | &nbsp; &nbsp; 
+                                        i.icon-spinner.icon-spin.icon-large(ng-show="userUpdateLoader")                                
+                .control-group(ng-repeat="row in defaultFields" ,ng-switch="row.n")
+                        label.control-label {{row.n | toHumanReadable}}
+                        .controls
+                                input(type="text", name="{{row.n}}", ng-model="selection[row.n]", placeholder="{{row.n | toHumanReadable}}",value='{{selection[row.n]}}', required")
+                                label.help-inline.required(ng-show="form.{{row.n}}.$error.required") *
+                                label.help-inline
+                                        a.close(ng-click="removeFromList($index)") &times;                                
+                .control-group                        
+                        label.control-label Charge Type
+                        .controls
+                                select(ui-select2="{allowClear: true,closeOnSelect:false}", name="chargeType", ng-model="selectedChargeType", data-placeholder="Please select...", style="width:200px", required)
+                                        option(value="")
+                                        option(ng-repeat="row in chargeType", value='{{row.id}}') {{row.val}}
+                                label.help-inline.required(ng-show="form.chargeType.$error.required") *                 
+                .control-group                        
+                        label.control-label Rate Qualifier
+                        .controls
+                                select(ui-select2="{allowClear: true}", name="rateQualifier", ng-model="selectedRateQualifier", data-placeholder="Please select...", style="width:200px", required)
+                                        option(value="")
+                                        option(ng-repeat="row in rateQualifier", value='{{row.id}}') {{row.val}}
+                                label.help-inline.required(ng-show="form.rateQualifier.$error.required") *
+                
+                //- .control-group                        
+                //-         label.control-label Rate
+                //-         .controls
+                //-                 input(type="text", name="rate", ng-model="newRequest.rate", placeholder="Rate", required)
+                //-                 label.help-inline.required(ng-show="form.rate.$error.required") *
+                .control-group                        
+                        label.control-label Weight Brackets
+                        .controls
+                                .row-fluid(ng-repeat="row in weightBracketFields")
+                                        ng-form(name="weightBracketForm")
+                                                input.span1(type="text", ui-event="{ blur : 'weightBracketCallback(\"s\",$index)'}", name="s", ng-model="weightBracketFields[$index]['s']", placeholder="{{row.sph}}", required)
+                                                //- label.help-inline.required(ng-show="weightBracketForm.s.$error.required") *
+                                                | &nbsp-&nbsp
+                                                input.span1(type="text", ui-event="{ blur : 'weightBracketCallback(\"e\",$index)'}", name="e", ng-model="weightBracketFields[$index]['e']", placeholder="{{row.eph}}", required)
+                                                //- label.help-inline.required(ng-show="weightBracketForm.e.$error.required") *
+                                                | &nbsp&nbsp&nbsp&nbsp  
+                                                input.span2.offset1(type="text", name="v", ng-model="weightBracketFields[$index]['v']", placeholder="Value", required)
+                                                label.help-inline.required(ng-show="weightBracketForm.v.$error.required") *
+                                                label.help-inline
+                                                        a.close(ng-hide="$index == 0 || $index + 1 <  weightBracketFields.length ", ng-click="removeFromWeightBracketFields($index)") &times;
+                .control-group
+                        label.control-label Comments
+                        .controls
+                                textarea(rows=3, name="rateComments", ng-model="comment", placeholder="Comments",required)
+                                label.help-inline.required(ng-show="form.rateComments.$error.required") *
+                .control-group
+                        label.control-label More Fields
+                        .controls
+                                select(ui-select2="{'closeOnSelect':false}",multiple="true", ng-change="appendToList(currentSelectedField)", name="workflowMode", ng-model="currentSelectedField", data-placeholder="Please select...", style="width:200px")
+                                       
+                                        option(ng-repeat="field in otherFieldsList", value="{{field}}") {{field.n}}                                 

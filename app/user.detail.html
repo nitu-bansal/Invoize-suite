@@ -1,0 +1,148 @@
+
+<div class="offset1 span8">
+  <form class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="userDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a permission="updateUser.*.*" ng-hide="userDetailLoader" bs-tooltip="tooltip.edit" href="#/user/edit/{{$stateParams.userId}}" ng-click="editUser($stateParams.userId)" class="btn btn-primary btn-margin"><i class="icon-pencil icon-large"></i></a><a permission="deleteUser.*.*" ng-hide="userDetailLoader" ng-click="confirmDeleteUser()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="userDetailLoader" class="icon-spinner icon-spin icon-large"></i></div>
+      </div>
+      <tabs>
+        <pane heading="Profile">
+          <div class="control-group">
+            <label class="control-label">User Name</label>
+            <div class="controls">
+              <label>: {{user.userName}}                                                        </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Email</label>
+            <div class="controls">
+              <label>: {{user.email}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">First Names</label>
+            <div class="controls">
+              <label>: {{user.firstName | titlecase}} </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Last Name</label>
+            <div class="controls">
+              <label>: {{user.lastName | titlecase}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Department</label>
+            <div class="controls">
+              <label ng-show="user.department">: {{user.department | titlecase}}</label>
+              <label ng-hide="user.department">: Rating                                                                                                         </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Type</label>
+            <div class="controls">
+              <label ng-show="user.type">: {{user.type | titlecase}}</label>
+              <label ng-hide="user.type">: Internal </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <h4>Location                                        </h4>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Contact 1</label>
+            <div class="controls">
+              <label ng-show="user.contact1">: {{user.contact1 | titlecase}}</label>
+              <label ng-hide="user.contact1">: Not Available                                                                                                           </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Contact 2</label>
+            <div class="controls">
+              <label ng-show="user.contact2">: {{user.contact2 | titlecase}}</label>
+              <label ng-hide="user.contact2">: Not Available                                                           </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Company</label>
+            <div class="controls">
+              <label ng-show="user.company">: {{user.company | titlecase}}</label>
+              <label ng-hide="user.company">:  Ceva                                             </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Address 1</label>
+            <div class="controls">
+              <label ng-show="user.address1">: {{user.address1 | titlecase}}</label>
+              <label ng-hide="user.address1">:  Not Available         </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Address 2</label>
+            <div class="controls">
+              <label ng-show="user.address2">: {{user.address2 | titlecase}}</label>
+              <label ng-hide="user.address2">:  Not Available </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Country</label>
+            <div class="controls">
+              <label ng-show="user.country">: {{user.country | titlecase}}</label>
+              <label ng-hide="user.country">:  U.S.A                                                                                                              </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Station</label>
+            <div class="controls">
+              <label ng-show="user.station">: {{user.station | titlecase}}</label>
+              <label ng-hide="user.station">:  DFW </label>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Roles">
+          <div class="control-group">
+            <label class="control-label">Roles</label>
+            <div class="controls">
+              <label>: {{user.role | array2text}} </label>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Permissions" style="overflow:hidden">
+          <div class="control-group">
+            <div class="row-fluid">
+              <div class="span4">
+                <h5>Permission</h5>
+              </div>
+              <div class="span4"> 
+                <h5>For</h5>
+              </div>
+              <div class="span4"> 
+                <h5>On</h5>
+              </div>
+            </div>
+            <ng-form name="permissionForm" ng-repeat="row in user.permission">
+              <div class="row-fluid">
+                <div class="span4">
+                  <label>{{user.permission[$index]['permission'] | array2text}}</label>
+                </div>
+                <div class="span4"> 
+                  <label>{{user.permission[$index]['for']}}</label>
+                </div>
+                <div class="span4"> 
+                  <label>{{user.permission[$index]['on']| array2text}}<a ng-hide="user.permission.length == 1" ng-click="removePermissions($index)" class="close">&times;</a></label>
+                </div>
+              </div><br/>
+            </ng-form>
+          </div>
+        </pane>
+        <pane heading="Groups">
+          <div class="control-group">
+            <label class="control-label">Groups</label>
+            <div class="controls">
+              <label>: {{user.group | array2text}}                                               </label>
+            </div>
+          </div>
+        </pane>
+      </tabs>
+    </div>
+  </form>
+</div>

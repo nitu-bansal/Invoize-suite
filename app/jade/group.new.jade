@@ -1,0 +1,41 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="groupCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        button.btn.btn-primary(permission="createGroup.*.*", ng-hide="groupCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="create(group)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="groupCreateLoader")
+                legend Group
+                .control-group
+                        label.control-label Name
+                        .controls
+                                input(type="text", name="groupName", duplicate="group", ng-model="group.name", placeholder="Group Name", required)
+                                label.help-inline.required(ng-show="form.groupName.$error.required") *
+                                label.help-inline.required(ng-show="form.groupName.$error.duplicate") Group exists.
+                .control-group
+                        label.control-label Type
+                        .controls                                
+                                select(ui-select2, name="groupType", ng-change="groupTypeChanged()", ng-model="group.type", data-placeholder="Please select...", style="width:200px", required)
+                                        option(value="")
+                                        option(ng-repeat="groupType in groupTypeList", value="{{groupType.n}}") {{groupType.v}}
+                                label.help-inline.required(ng-show="form.groupType.$error.required") *
+                .control-group(ng-show="group.type=='account'")
+                        label.control-label Workflow
+                        .controls
+                                input(ui-select2="groupWorkflow", name="groupWorkflow", ng-model="group.workflow", style="width:200px", required)
+                                label.help-inline.required(ng-show="form.groupWorkflow.$error.required") *
+                .control-group
+                        label.control-label Description
+                        .controls
+                                textarea(rows=3, name="groupDescription", ng-model="group.description", placeholder="Group Description", required)
+                            
+                .control-group                                    
+                        label.control-label Definition
+                        .controls
+                                input.span9(ui-select2="groupBar", ng-click="checkWorkflow($event)", name="groupBar", ng-model="group.definition",  select-validate, required)
+                                label.help-inline.required(ng-show="form.groupBar.$error.selectvalidate || form.groupBar.$error.required")  &nbsp;*                        
+
+                        //- {{group}}

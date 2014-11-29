@@ -1,0 +1,42 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+section
+        .container-fluid
+                .row-fluid
+                        .span3.bs-docs-sidebar(style="cursor: pointer;")
+                                ul.nav.nav-list.bs-docs-sidenav.sidebar-nav.sidebar-nav-fixed
+                                        li.nav-header
+                                                h4 Accounts
+                                                input.search-query.input-medium(ng-change="searchAccount()",type="search", placeholder="Search", ng-model="search")
+                                                .span1.pull-right
+                                                        i.icon-spinner.icon-spin.icon.icon-large(ng-show="accountListLoader")
+
+
+                                        ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMore()")
+
+                                                li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+                                                        a(data-toggle="tab",ng-click="listTariffs(l.id)", data-toggle="tab", href="#/tms/list/{{l.id}}")
+                                                                i.icon-chevron-right
+                                                                {{l.v|titlecase}}
+                                        ul
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="loadingMore")
+                        .span9
+                                .row-fluid
+                                        .container-fluid(ng-hide="$routeParams.accountId")
+                                                .row-fluid
+                                                        .span5
+                                                                h4 Tariff Expiring in Coming Months
+                                                                div(tariff-Expired='chartData')
+
+
+                                                hr
+                                                .row-fluid
+                                                        .span5
+                                                                h4 Tariff Expired Since
+                                                                div(tariff-Expiry='chartData')
+
+
+                                div(ui-view="list")
+
+
+

@@ -1,0 +1,27 @@
+.row-fluid.span10.offset1       
+        div(id="FixedRate", when-scrolled="loadMore($stateParams.accountId,$stateParams.templateId)")
+                .row-fluid.alert-blank(ng-repeat="charge in list")
+                        .navbar.navbar-inverse
+                                .navbar-inner                                       
+                                        span(ng-hide="field.id == '_id'", ng-repeat="field in charge")
+                                                span(ng-show="field.id=='value' || field.id=='basis'")                                                      
+                                                                .brand.linkGreen {{field.v}}  
+                    
+                        .row-fluid.well.well-small  
+                                span(ng-hide="field.id == '_id'", ng-repeat="f in charge")                                                                      
+                                        span(ng-show="f.id=='OriginAirportCode' || f.id=='DestinationAirportCode' || f.id=='ServiceLevel' || f.id=='chargeType'", style="cursor: pointer;", ng-click="searchFor(f.id,f.v,$stateParams.accountId,$stateParams.templateId)")
+                                                label.span3.checkbox(style="cursor: pointer;")                             
+                                                        span.link(bs-tooltip="tooltip.clickToFilter")
+                                                                a {{f.id|inflector:humanize}}: 
+                                                        | {{f.v}}
+
+
+
+        .row-fluid
+                 .offset5
+                         i.icon-spinner.icon-spin.icon-2x(ng-show="loadingRates")
+.container                            
+    .row-fluid.span10.offset1(ng-show="ratesAvailable")        
+            h2                
+                | Couldn't find rates for this search 
+                i.icon-frown

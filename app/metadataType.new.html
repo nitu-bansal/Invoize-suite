@@ -1,0 +1,57 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal css-form">
+    <div class="fieldset">
+      <legend>Metadata Type</legend>
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="metadataTypeCreateLoader" ng-click="backToListMetadataType()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button permission="createMetadataType.*.*" ng-hide="metadataTypeCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="createMetadataType(metadataType)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="metadataTypeCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+      </div>
+      <tabs>
+        <pane heading="Profile" style="overflow:hidden">
+          <div class="control-group">
+            <label class="control-label">Type</label>
+            <div class="controls">
+              <input type="text" name="metadataTypeName" duplicate="metadataType" ng-model="metadataType.Name" placeholder="Type" required="required"/>
+              <label ng-show="form.metadataTypeName.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.metadataTypeName.$error.duplicate" class="help-inline required">MetadataType exists.</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Description</label>
+            <div class="controls">
+              <textarea rows="3" name="metadataTypeDescription" ng-model="metadataType.description" placeholder="Description">                                                       </textarea>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Fields" style="overflow:hidden">
+          <div class="control-group">
+            <div class="span4">Detail Structure</div>
+            <div class="span4">Data Type</div>
+            <div class="span4">Mandatory</div>
+          </div>
+          <ng-form name="fieldsForm" ng-repeat="field in metadataType.fields">
+            <div class="row-fluid">
+              <div class="span4">
+                <input type="text" name="detailStructureBar" ng-model="metadataType.fields[$index]['detailStructure']" placeholder="Field name" required="required"/>
+                <label ng-show="form.detailStructureBar.$error.required" class="help-inline required">*</label>
+              </div>
+              <div class="span4">
+                <select ui-select2="ui-select2" name="dataTypeBar" ng-click="dataTypeChanged($index)" ng-model="metadataType.fields[$index]['dataType']" data-placeholder="Please select..." style="width:200px" required="required">
+                  <option value=""></option>
+                  <option ng-repeat="dataType in dataTypeList" value="{{dataType.v}}">{{dataType.n}}</option>
+                </select>
+                <label ng-show="form.dataTypeBar.$error.required" class="help-inline required">*                                                                </label>
+              </div>
+              <div class="span3">
+                <input type="checkbox" name="isMandatory" ng-model="metadataType.fields[$index]['isMandatory']"/>
+              </div>
+              <div class="span1"><a ng-hide="metadataType.fields.length == 1" ng-click="removeFields($index)" class="close">&times;                                                                </a></div>
+            </div><br/>
+          </ng-form>
+        </pane>
+      </tabs>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,179 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="userCreateLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button permission="createUser.*.*" ng-hide="userCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="create(user)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="userCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+      </div>
+      <tabs>
+        <pane heading="Profile">
+          <div class="control-group">
+            <label class="control-label">User Name</label>
+            <div class="controls">
+              <input type="text" name="userName" duplicate="userName" ng-model="user.userName" placeholder="User Name" required="required"/>
+              <label ng-show="form.userName.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.userName.$error.duplicate" class="help-inline required">Username exists.</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Password</label>
+            <div class="controls">
+              <input name="password" type="password" required="required" ng-model="user.password" ng-minlength="6" placeholder="Password"/>
+              <label ng-show="form.password.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.password.$error.minlength" class="help-inline required">The minimum length is 6.</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Confirm Password</label>
+            <div class="controls">
+              <input name="confirmPassword" type="password" required="required" ng-model="confirmPassword" ng-minlength="6" ui-validate="'$value==user.password'" ui-validate-watch="'password'" placeholder="Confirm Password"/>
+              <label ng-show="form.confirmPassword.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.confirmPassword.$error.minlength" class="help-inline required">The minimum length is 6.</label>
+              <label ng-show="form.confirmPassword.$error.validator" class="help-inline required">Password's do not match.</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Email</label>
+            <div class="controls">
+              <input type="email" name="email" duplicate="email" ng-model="user.email" placeholder="Email" required="required"/>
+              <label ng-show="form.email.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.email.$error.email" class="help-inline required">Invalid email...!</label>
+              <label ng-show="form.email.$error.duplicate" class="help-inline required">Email exists.</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">First Names</label>
+            <div class="controls">
+              <input type="text" name="firstName" ng-model="user.firstName" placeholder="First Name" required="required"/>
+              <label ng-show="form.firstName.$error.required" class="help-inline required">*</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Last Name</label>
+            <div class="controls">
+              <input type="text" name="lastName" ng-model="user.lastName" placeholder="Last Name" required="required"/>
+              <label ng-show="form.lastName.$error.required" class="help-inline required">*</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Department</label>
+            <div class="controls">
+              <select ui-select2="ui-select2" name="department" ng-model="user.department" data-placeholder="Please select..." style="width:200px">
+                <option value=""></option>
+                <option value="billing"> Billing</option>
+                <option value="rating"> Rating   </option>
+                <option value="pricing"> Pricing </option>
+                <option value="delivery"> Delivery </option>
+                <option value="management"> Management                                                 </option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Type</label>
+            <div class="controls">                                                    
+              <select ui-select2="ui-select2" name="type" ng-model="user.type" data-placeholder="Please select..." style="width:200px">
+                <option value=""></option>
+                <option value="internal"> Internal</option>
+                <option value="external"> External   </option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <h4>Location                                        </h4>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Contact 1</label>
+            <div class="controls">
+              <input type="text" name="contact1" ng-model="user.contact1" placeholder="Contact 1"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Contact 2</label>
+            <div class="controls">
+              <input type="text" name="contact2" ng-model="user.contact2" placeholder="Contact 2"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Company</label>
+            <div class="controls">
+              <input type="text" name="company" ng-model="user.company" placeholder="Company"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Address 1</label>
+            <div class="controls">
+              <input type="text" name="address1" ng-model="user.address1" placeholder="Address 1"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Address 2</label>
+            <div class="controls">
+              <input type="text" name="address2" ng-model="user.address2" placeholder="Address 2"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Country</label>
+            <div class="controls">
+              <input type="text" name="country" ng-model="user.country" placeholder="Country"/>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Station</label>
+            <div class="controls">
+              <input type="text" name="station" ng-model="user.station" placeholder="Station"/>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Roles" style="overflow:hidden">       
+          <div class="control-group">
+            <label class="control-label">Roles</label>
+            <div class="controls">
+              <input ui-select2="roleBar" name="roleBar" ng-model="user.role" ng-change="showDialog(user.role)" select-validate="select-validate" required="required" class="span9"/>
+              <div ng-show="form.roleBar.$error.selectvalidate || form.roleBar.$error.required" class="help-inline required">*</div>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Permissions" style="overflow:hidden">
+          <div class="control-group"><a ng-click="addPermissions()" class="btn btn-success"><i class="icon-plus icon-white"> </i> Permissions</a></div>
+          <div class="control-group">
+            <div class="row-fluid">
+              <div class="span4">Permission</div>
+              <div class="span4">For</div>
+              <div class="span4">On</div>
+            </div>
+            <ng-form name="permissionForm" ng-repeat="row in user.permission">
+              <div class="row-fluid">
+                <div class="span4">
+                  <input ui-select2="permissionBar" name="permissionBar" ng-model="user.permission[$index]['permission']" select-validate="select-validate" required="required" class="span9"/>
+                  <div ng-show="permissionForm.permissionBar.$error.selectvalidate || permissionForm.permissionBar.$error.required" class="help-inline required">*</div>
+                </div>
+                <div class="span4"> 
+                  <select ui-select2="ui-select2" name="forBar" ng-change="permissionforChanged($index)" ng-model="user.permission[$index]['for']" data-placeholder="Please select..." style="width:200px" select-validate="select-validate" required="required">
+                    <option value=""></option>
+                    <option ng-repeat="for in permissionforList" value="{{for.n}}">{{for.v}}</option>
+                  </select>
+                  <div ng-show="permissionForm.forBar.$error.selectvalidate || permissionForm.forBar.$error.required" class="help-inline required">*</div>
+                </div>
+                <div class="span4"> 
+                  <input ui-select2="onBar" name="onBar" ui-event="{ open : 'setfor($index)'}" ng-model="user.permission[$index]['on']" select-validate="select-validate" required="required" class="span9"/>
+                  <div ng-show="permissionForm.onBar.$error.selectvalidate || permissionForm.onBar.$error.required" class="help-inline required">*</div>
+                  <div class="help-inline"><a ng-hide="user.permission.length == 1" ng-click="removePermissions($index)" class="close">&times;</a></div>
+                </div>
+              </div><br/>
+            </ng-form>
+          </div>
+        </pane>
+        <pane heading="Groups">
+          <div class="control-group">
+            <label class="control-label">Groups</label>
+            <div class="controls">
+              <input ui-select2="groupBar" name="groupBar" ng-model="user.group" class="span9"/>
+            </div>
+          </div>
+        </pane>
+      </tabs>
+    </div>
+  </form>
+</div>

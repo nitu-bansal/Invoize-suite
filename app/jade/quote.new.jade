@@ -1,0 +1,84 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(onClick="window.history.back()",bs-tooltip="tooltip.back", style="cursor: pointer;") 
+                                                i.icon-mail-reply.icon-largeasd
+                                        button.btn.btn-primary.btn-margin(ng-disabled="form.$invalid",bs-tooltip="tooltip.sendRequest", style="cursor: pointer;",ng-click="create(selection,weightBracketFields,currentRateQualifier,$stateParams.accountId,$stateParams.quoteTemplateId,workflow,quoteEmail)") 
+                                                i.icon-ok.icon-large  
+                        tabs
+                                pane(heading="Profile")
+                                        .control-group(ng-repeat="row in defaultFields.selectionCriteria" ,ng-switch="row.n")
+                                                label.control-label {{row.n | toHumanReadable}}
+                                                .controls
+                                                        input(type="text", name="{{row.n}}", ng-model="selection[row.n]", placeholder="{{row.n | toHumanReadable}}",value='{{selection[row.n]}}', required")
+                                                        label.help-inline.required(ng-show="form.{{row.n}}.$error.required") *                                                        
+                                        .well(ng-repeat="rows in  weightBracketFields")
+                                                ng-form(name="chargeTypeForm")
+                                                        .control-group  
+                                                                b
+                                                                        label.control-label {{defaultFields.chargeType[$index]}}                                   
+                                                        .control-group                        
+                                                                label.control-label Rate Qualifier
+                                                                .controls                                                 
+                                                                        select(ui-select2, name="rateQualifier", ng-model="currentRateQualifier[$index]", data-placeholder="Please select...", style="width:200px", required)
+                                                                                option(value="")
+                                                                                option(ng-repeat="row in rateQualifier", value="{{row.id}}") {{row.val}}
+                                                                        label.help-inline.required(ng-show="form.rateQualifier.$error.required") *                           
+                                                        .control-group                        
+                                                                label.control-label Weight Brackets
+                                                                .controls
+                                                                        .row-fluid(ng-repeat="row in rows")
+                                                                                ng-form(name="weightBracketForm")
+                                                                                        input.span1(type="text", ui-event="{ blur : 'weightBracketCallback(\"s\",$parent.$index,$index)'}", name="s", ng-model="weightBracketFields[$parent.$index][$index]['s']", placeholder="{{row.sph}}", required)                                                
+                                                                                        | &nbsp-&nbsp
+                                                                                        input.span1(type="text", ui-event="{ blur : 'weightBracketCallback(\"e\",$parent.$index,$index)'}", name="e", ng-model="weightBracketFields[$parent.$index][$index]['e']", placeholder="{{row.eph}}", required)                                                
+                                                                                        | &nbsp&nbsp&nbsp&nbsp  
+                                                                                        input.span2.offset1(type="text", name="v", ng-model="weightBracketFields[$parent.$index][$index]['v']", placeholder="Value", required)
+                                                                                        label.help-inline.required(ng-show="weightBracketForm.v.$error.required") *
+                                                                                        label.help-inline
+                                                                                                a.close(ng-hide="$index == 0", ng-click="removeFromWeightBracketFields($parent.$index,$index)") &times;                                        
+
+
+                                pane(heading="Workflow",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label Workflow Definition
+                                        ng-form(name="WorkflowDefinitionsForm", ng-repeat="row in workflowDefinitions")
+                                                .control-group
+                                                        label.control-label
+                                                                span.label.label-inverse Level {{$index + 1}}
+                                                                br
+                                                                span(ng-show="workflow.definition[$index].length > 1",id="workflowLevel{{$index}}")
+                                                                    .label.label-warning.help-inline(style='cursor: pointer;', onclick='toggle(this,{{$index}})',count="*") All
+                                                                    .label.label-warning.help-inline(ng-repeat="r in workflow.definition[$index] | limitTo:workflow.definition[$index].length-1" , style='cursor: pointer;display: none;', onclick='toggle(this,{{$parent.$index}})',count="{{$index+1}}") Any {{$index + 1}}
+                                                        
+                                                        input.span9(ui-select2="userGroupBar", name="workflowDefinition", ng-click="workflowDefinitionsCallback($index)", ng-model="workflow.definition[$index]",id="workflowId{{$index+1}}",  select-validate, required)
+                                                        .help-inline
+                                                                a.close(ng-hide="workflowDefinitions.length == 1", ng-click="removeFromWorkflowDefinitions($index)") &times;
+                                                        label.help-inline.required(ng-show="WorkflowDefinitionsForm.workflowDefinition.$error.selectvalidate || WorkflowDefinitionsForm.workflowDefinition.$error.required") *
+                                pane(heading="Email",style="overflow:hidden")                                        
+                                        .control-group                                    
+                                                label.control-label To
+                                                .controls
+                                                        input.span9(ui-select2="userBar", name="toUserBar", ng-model="quoteEmail.to",  select-validate, required)
+                                                        label.help-inline.required(ng-show="form.toUserBar.$error.selectvalidate || form.toUserBar.$error.required")  &nbsp;*                        
+                                        .control-group                                    
+                                                label.control-label Cc
+                                                .controls
+                                                        input.span9(ui-select2="userBar", name="ccUserBar", ng-model="quoteEmail.cc",  select-validate, required)
+                                                        label.help-inline.required(ng-show="form.ccUserBar.$error.selectvalidate || form.ccUserBar.$error.required")  &nbsp;*                                        
+                                        .control-group
+                                                label.control-label Subject
+                                                .controls
+                                                        input(type="text", name="Subject", ng-model="quoteEmail.subject", placeholder="Subject", required)
+                                                        label.help-inline.required(ng-show="form.Subject.$error.required") *
+                                        .control-group
+                                                label.control-label Signature
+                                                .controls
+                                                        textarea(rows=3, name="Signature", ng-model="quoteEmail.signature", placeholder="Signature", required)                                                        
+                                                        label.help-inline.required(ng-show="form.Signature.$error.required") *
+
+                                pane(heading="Template")
+                                        .control-group
+                                                label.control-label Template                                             

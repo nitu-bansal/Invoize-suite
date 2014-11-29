@@ -1,0 +1,29 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+//- .row-fluid.top-outline
+.container-fluid
+        include common_top_row
+        section
+                .row-fluid
+                        .span3.bs-docs-sidebar(style="cursor: pointer;")
+                                ul.nav.nav-list.bs-docs-sidenav
+                                        input(type="text",ng-change="searchWorkflow()", placeholder="Search", ng-model="search")
+                                        li.nav-header
+                                                h4(rel="tooltip") Workflow
+                                                        .badge.label-info.pull-right(bs-tooltip="tooltip.total")  {{totalWorkflow}}
+                                                span
+                                                        a.btn.btn-success.btn-mini(permission="createWorkflow.*.*",ng-disabled="$state.includes('workflow.new')",href="#/workflow/new",bs-tooltip="tooltip.new" , ng-click="initializeWorkflow()") 
+                                                                 i.icon-plus.icon-white
+                                                i.icon-spinner.icon-spin.icon-4x(ng-show="workflowLisLoader")
+                                        ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMore()")
+                                                li(ng-class="{ active: $stateParams.workflowId == l.id}", ng-repeat="l in workflows")
+                                                        a(data-toggle="tab", href="/#/workflow/{{l.id}}", ng-click="selectWorkflow(l.id)")
+                                                                i.icon-chevron-right
+                                                                {{l.v|titlecase}}
+                                        ul
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="loadingMore")
+                        .span9
+                                //- .row-fluid
+                                //-         a.pull-right.btn.btn-success.btn-margin(permission="createWorkflow.*.*", href="#/workflow/new"  , ng-click="initializeWorkflow()")
+                                //-                 i.icon-plus.icon-white
+                                //-                 |  Workflow
+                                div(ui-view="list")

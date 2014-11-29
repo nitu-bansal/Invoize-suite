@@ -1,0 +1,44 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+//- .row-fluid.top-outline
+.container-fluid
+        include common_top_row
+        section
+                .container
+                        //- .well.well-medium
+                        //-         .container
+                        //-                 .span12
+                        //-                         .logo-large(ui-jq="lettering")
+                        //-                                         include config/brand
+                                             
+                        //- br
+                        //- br
+                        //- .row
+                        //-         .span4
+                        //-                 h2 Ranalyze
+                        //-                 p With configurable workflows RANALYZE gives the organization the freedom to define and associate workflows to their clients, accountypes and other configurable elements.!
+                        //-         .span4
+                        //-                 h2 RateRight
+                        //-                 p RateRight is the heart of Invoice-Suite and has the ability to pick rates from tariffs and apply it on your invoices, automating the entire billing process..
+                        //-         .span4
+                        //-                 h2 Greenvoize
+                        //-                 p Holds a complete repository of your invoices and the documents attached to it.Greenvoize helps you manage your invoices and can generate and transform them to any format u want..       
+                    
+                        .row-fluid
+                                .span6
+                                        h4 Revenue - Shipment Type ($) 
+                                        div(organization-Pie-Chart='chartData')
+                                .span6
+                                        h4 Rating Profile
+                                        div(rating-Profile='chartData')
+                        hr                                                
+                        .row-fluid            
+                                .span6
+                                        h4 Revenue - Account ($)
+                                        div(revenue-By-Account='chartData')       
+                                .span6   
+                                        h4 Revenue - Delivery mode ($)
+                                        div(revenue-By-Delivery-Mode='chartData')
+
+                        
+
+

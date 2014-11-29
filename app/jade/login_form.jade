@@ -1,0 +1,15 @@
+form.form-inline(novalidate, name="form", ng-submit="login(userName,password)")
+        .input-prepend
+                span.add-on
+                        i.icon-envelope
+                input(type="text", ng-model="userName",name="userName",placeholder="User Name / Email", required)
+        .input-prepend
+                span.add-on
+                        i.icon-lock
+                input(type="password", ng-model="password",name="password",placeholder="Password", required)
+        input.btn.btn-success(ng-hide="loginLoader", ng-disabled="form.$invalid",type="submit", value="Login")
+        i.icon-spinner.icon-spin.icon-large(ng-show="loginLoader")
+        br    
+        br           
+        a(style='cursor: pointer;color:#92c53f;', ng-click="forgotPassword(userName)")
+                b Forgot Password                

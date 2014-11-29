@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="angularApp" ng-controller="MainCtrl" class="ng-cloak">
+  <head ng-app="angularApp" ng-controller="MainCtrl" class="ng-cloak">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Invoize Suite</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="favicon.ico?id=1" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico?id=1" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="/styles/global.css">
+    <link rel="stylesheet" type="text/css" href="/styles/bootstrap-responsive.css">
+    <!--build:js scripts/scripts.js-->
+    <!--remove in prod-->
+    <script src="/scripts/vendor/jquery.min.js"></script>
+    <script src="/components/Lettering.js/jquery.lettering.js"></script>
+    <script src="/scripts/vendor/jquery-ui.min.js"></script>
+    <script src="/scripts/vendor/angular.js"></script>
+    <script src="/scripts/vendor/angular-ui.js"></script>
+    <script src="/scripts/vendor/bootstrap.min.js"></script>
+    <script src="/scripts/vendor/angular-ui-states.js"></script>
+    <script src="/scripts/vendor/underscore-min.js"></script>
+    <script src="/scripts/vendor/angular-cookies-1.0.0rc10.js"></script>
+    <script src="/scripts/vendor/angular-strap.min.js"></script>
+    <script src="/scripts/vendor/toastr-1.1.5.min.js"></script>
+    <script src="/scripts/vendor/select2.js"></script>
+    <script src="/scripts/vendor/ui-bootstrap-tpls-0.3.0.js"></script>
+    <script src="/scripts/vendor/bootstrap-datepicker.js"></script>
+    <script src="/scripts/vendor/bootstrap-select.js"></script>
+    <script src="http://www.google.com/jsapi"></script>
+    <script src="/scripts/vendor/jFileUpload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/jquery.iframe-transport.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/jquery.fileupload.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/jquery.fileupload-process.js"></script>
+    <script src="/scripts/app.js"></script>
+    <script src="/scripts/filters.js"></script>
+    <script src="/scripts/directives/permissions.js"></script>
+    <script src="/scripts/directives/scroll.js"></script>
+    <script src="/scripts/directives/uploadManager.js"></script>
+    <script src="/scripts/directives/popover.js"></script>
+    <script src="/scripts/directives/factory.js"></script>
+    <script src="/scripts/directives/validations.js"></script>
+    <script src="/scripts/directives/download.js"></script>
+    <script src="/scripts/directives/charts.js">	</script>
+    <script src="/scripts/controllers/dialog.js"></script>
+    <script src="/scripts/controllers/login.js"></script>
+    <script src="/scripts/controllers/account.js"></script>
+    <script src="/scripts/controllers/user.js"></script>
+    <script src="/scripts/controllers/organization.js"></script>
+    <script src="/scripts/controllers/rate.js"></script>
+    <script src="/scripts/controllers/rateRequest.js"></script>
+    <script src="/scripts/controllers/main.js"></script>
+    <script src="/scripts/controllers/group.js"></script>
+    <script src="/scripts/controllers/workflow.js"></script>
+    <script src="/scripts/controllers/role.js"></script>
+    <script src="/scripts/controllers/permission.js"> </script>
+    <script src="/scripts/controllers/register.js"> </script>
+    <script src="/scripts/controllers/metadata.js"> </script>
+    <script src="/scripts/controllers/fileUpload.js"></script>
+    <script src="/scripts/controllers/tms.js">	</script>
+    <script src="/scripts/controllers/uploader.js"></script>
+    <script src="/scripts/controllers/m.controller.js"></script>
+    <script src="/scripts/controllers/quote.js"> </script>
+    <script src="/scripts/services/shared.js"></script>
+    <script src="/scripts/services/workflow.js"></script>
+    <script src="/scripts/services/group.js"></script>
+    <script src="/scripts/services/main.js"></script>
+    <script src="/scripts/services/login.js"></script>
+    <script src="/scripts/services/account.js"></script>
+    <script src="/scripts/services/user.js"></script>
+    <script src="/scripts/services/organization.js"></script>
+    <script src="/scripts/services/rate.js"></script>
+    <script src="/scripts/services/rateRequest.js"></script>
+    <script src="/scripts/services/role.js"></script>
+    <script src="/scripts/services/flash.js"></script>
+    <script src="/scripts/services/permissions.js"></script>
+    <script src="/scripts/services/metadata.js"></script>
+    <script src="/scripts/services/fileUpload.js"></script>
+    <script src="/scripts/services/tms.js"></script>
+    <script src="/scripts/services/quote.js"></script>
+    <!--endbuild-->
+  </head>
+  <body>
+    <div ng-show="flash.get().body" class="alert alert-block alert-{{flash.get().type}}">
+      <h4>{{flash.get().title}}</h4>
+      <p>{{flash.get().body}}</p>
+    </div>
+    <div ng-view></div>
+    <div class="navbar navbar-fixed-bottom navbar-inverse"> 
+      <div class="navbar-inner">
+        <div class="nav-collapse">
+          <ui class="nav">
+            <li class="success">$state = {{$state.current.name}}</li>
+          </ui>
+          <ui class="nav">
+            <li class="success">$stateParams = {{$stateParams}}</li>
+          </ui>
+          <ui class="nav">
+            <li class="success">$route = {{$route.current.name}}</li>
+          </ui>
+          <ui class="nav">
+            <li class="success">$routeParams = {{$routeParams}}</li>
+          </ui>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

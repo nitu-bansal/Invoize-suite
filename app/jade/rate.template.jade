@@ -1,0 +1,49 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="chargeDefnCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        button.btn.btn-primary(ng-hide="chargeDefnCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="createChargeDefn(chargeDefn,$routeParams.accountId)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="chargeDefnCreateLoader")
+                                legend New Rate Definition
+                        .control-group
+                                label.control-label Name
+                                .controls
+                                        input(type="text", name="name", ng-model="chargeDefn.name", placeholder="Name", required)
+                                        label.help-inline.required(ng-show="form.name.$error.required") *
+                        .control-group
+                                label.control-label Group
+                                .controls
+                                        select(ui-select2, multiple="true", name="group", ng-model="chargeDefn.group",required, data-placeholder="Please select...", style="width:200px")
+                                                option(ng-repeat="field in chargeDefnGroup", value="{{field.n}}") {{field.n}}                                                        
+                                        label.help-inline.required(ng-show="form.group.$error.required") *
+                       
+                        .control-group                        
+                                label.control-label Charge Type
+                                .controls
+                                        select(ui-select2, name="chargeType", ng-model="chargeDefn.chargeType", data-placeholder="Please select...", style="width:200px", required)
+                                                option(ng-repeat="row in chargeType", value='{{row.id}}') {{row.val}}
+                                        label.help-inline.required(ng-show="form.chargeType.$error.required") *
+              
+                        .control-group
+                                label.control-label Lane Parameters
+                                .controls
+                                        select(ui-select2="{'closeOnSelect':false}", multiple="true", name="laneParam", ng-model="chargeDefn.laneParam",required, data-placeholder="Please select...", style="width:200px")
+                                                option(ng-repeat="field in laneParameterList", value="{{field.n}}") {{field.n}}                                                        
+                                        label.help-inline.required(ng-show="form.laneParam.$error.required") *
+                        .control-group
+                                label.control-label Effective Base
+                                .controls
+                                        select(ui-select2="{'closeOnSelect':false}", name="effectiveBase", ng-model="chargeDefn.effectiveBase",required, data-placeholder="Please select...", style="width:200px")
+                                                option(value="")
+                                                option(ng-repeat="field in chargeDefnEffectiveBase", value="{{field.n}}") {{field.n}}                                                        
+                                        label.help-inline.required(ng-show="form.effectiveBase.$error.required") *
+                       
+                        .control-group
+                                label.control-label Description
+                                .controls
+                                        textarea(rows=3, name="description", ng-model="chargeDefn.description", placeholder="Short Description")
+        //- {{laneParameterList}}

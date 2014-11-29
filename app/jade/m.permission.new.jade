@@ -1,0 +1,32 @@
+.modal.hide.fade     
+.modal-header
+        h3 New Permission
+           
+.modal-body
+        form.form-horizontal(novalidate, name="form1")       
+                fieldset  
+                        {{item.relatedTo}}             
+                        .control-group
+                                label.control-label Action
+                                .controls
+                                        label
+                                                b {{item.action}}
+                          .control-group
+                                label.control-label Action Code
+                                .controls
+                                        input(type="text", name="permissionActionCode", ng-model="item.actionCode", placeholder="Action Code", required)
+                                        label.help-inline.required(ng-show="form.permissionActionCode.$error.required") *
+                        .control-group
+                                label.control-label Related To
+                                .controls
+                                        label.checkbox(ng-repeat="row in item.relatedToList")
+                                                input(type="checkbox",ng-model="item.relatedTo[row]")
+                                                | {{row}}
+                        .control-group
+                                label.control-label Description
+                                .controls
+                                        textarea(rows=3, name="permissionDescription", ng-model="item.description", placeholder="Description", required)
+                        
+.modal-footer
+        button.btn.btn-primary(ng-disabled="form.$invalid", data-dismiss="modal",ng-click="save()") Save
+        button.btn.btn-inverse(ng-click="close()") Cancel

@@ -1,0 +1,252 @@
+
+<div class="offset1 span8">
+  <form class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="accountDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a permission="updateAccount.*.*" ng-hide="accountDetailLoader || $state.includes('tms.list')" bs-tooltip="tooltip.edit" href="#/account/edit/{{$stateParams.accountId}}" ng-click="editAccount($stateParams.accountId)" class="btn btn-primary btn-margin"><i class="icon-pencil icon-large"></i></a><a permission="deleteAccount.*.*" ng-hide="accountDetailLoader || $state.includes('tms.list')" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteAccount()" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="accountDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+      </div>
+      <tabs>
+        <pane heading="Profile" style="overflow:hidden">
+          <div class="control-group">
+            <label class="control-label">Account Name</label>
+            <div class="controls">
+              <label>: {{account.accountName}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Account Codes</label>
+            <div class="controls">
+              <label>: {{account.accountCodes}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Account Type</label>
+            <div class="controls">
+              <label>: {{account.accountType}}</label>
+            </div>
+          </div>
+          <div ng-show="account.accountType=='INTERNATIONAL'" class="control-group">
+            <label class="control-label"> Shipment Modes</label>
+            <div class="controls">
+              <label>: {{account.shipmentModes | list2text}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Shipment Volume</label>
+            <div class="controls">
+              <label>: {{account.shipmentVolume}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> AR Booked in</label>
+            <div class="controls">
+              <label>: {{account.ARBookedIn}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Invoicing Type</label>
+            <div class="controls">
+              <label>: {{account.invoicingType}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Rating Type</label>
+            <div class="controls">
+              <label>: {{account.ratingType}}</label>
+            </div>
+          </div>
+          <div ng-show="account.ratingType=='TARIFF'" class="control-group">
+            <label class="control-label"> Currency Conversion Applicable</label>
+            <div class="controls">
+              <label>: {{account.currencyConversionApplicable}}</label>
+            </div>
+          </div>
+          <div ng-show="account.ratingType=='TARIFF'" class="control-group">
+            <label class="control-label"> Sources Of Currency Conversation</label>
+            <div class="controls">
+              <label>: {{account.sourcesOfCurrencyConversation | list2text}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Any Limitation On # Of Days To Invoice</label>
+            <div class="controls">
+              <label>: {{account.anyLimitationOnNoOfDaysToInvoice}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> criteria</label>
+            <div class="controls">
+              <label>: {{account.criteria}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> # Of Days</label>
+            <div class="controls">
+              <label>: {{account.noOfDaysToInvoice}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Workflow Mode</label>
+            <div class="controls">
+              <label>: {{workflowModeList[account.workflowMode-1].n}}</label>
+            </div>
+          </div>
+          <div ng-switch="account.workflowMode">
+            <div ng-switch-when="1" class="control-group">
+              <label class="control-label">Select Workflow</label>
+              <div class="controls">
+                <label>: {{account.workflow.v}}</label>
+              </div>
+            </div>
+            <div ng-switch-when="2" class="control-group">
+              <label class="control-label">Select Tag</label>
+              <div class="controls">
+                <label>: {{account.tag.v}}</label>
+              </div>
+            </div>
+            <div ng-switch-when="3" class="control-group">
+              <label class="control-label">Add Condition</label>
+              <div class="controls">
+                <label>: {{account.condition}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Created By</label>
+            <div class="controls">
+              <label>: {{account.createdBy}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Created On</label>
+            <div class="controls">
+              <label>: {{account.createdOn}}</label>
+            </div>
+          </div>
+          <div ng-show="account.updatedBy" class="control-group">
+            <label class="control-label">Updated By</label>
+            <div class="controls">
+              <label>: {{account.updatedBy}}</label>
+            </div>
+          </div>
+          <div ng-show="account.updatedOn" class="control-group">
+            <label class="control-label">Updated On</label>
+            <div class="controls">
+              <label>: {{account.updatedOn}}</label>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Invoice Delivery" style="overflow:hidden">
+          <div class="control-group">
+            <label class="control-label"> Invoice Delivery Mode</label>
+            <div class="controls">
+              <label>: {{account.invoiceDeliveryMode | list2text}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Invoice Delivery Frequency</label>
+            <div class="controls">
+              <label>: {{account.invoiceDeliveryFrequency}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Invoice Redelivery Mode</label>
+            <div class="controls">
+              <label>: {{account.invoiceRedeliveryMode | list2text}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Back-Up Document Requirements</label>
+            <div class="controls">
+              <label>: {{account.backUpDocumentRequirements | list2text}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Back-Up Data Requirements</label>
+            <div class="controls">
+              <label>: {{account.backUpDataRequirements | list2text}}</label>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Collections" style="overflow:hidden">
+          <div class="control-group">
+            <label class="control-label"> Payment Mode</label>
+            <div class="controls">
+              <label>: {{account.paymentMode}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Payment Frequency</label>
+            <div class="controls">
+              <label>: {{account.paymentFrequency}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Is FPC Applicable?</label>
+            <div class="controls">
+              <label>: {{account.isFpcApplicable}}</label>
+            </div>
+          </div>
+          <div ng-show="account.isFpcApplicable=='YES'" class="control-group">
+            <label class="control-label"> Name of FPC</label>
+            <div class="controls">
+              <label>: {{account.fpcName}}</label>
+            </div>
+          </div>
+          <div ng-show="account.isFpcApplicable=='YES'" class="control-group">
+            <label class="control-label"> Website Link</label>
+            <div class="controls">
+              <label>: {{account.fpcWebsiteLink}}</label>
+            </div>
+          </div>
+          <div ng-show="account.isFpcApplicable=='YES'" class="control-group">
+            <label class="control-label"> Login ID (If applicable)</label>
+            <div class="controls">
+              <label>: {{account.fpcLoginId}}</label>
+            </div>
+          </div>
+          <div ng-show="account.isFpcApplicable=='YES'" class="control-group">
+            <label class="control-label"> Password (if applicable)</label>
+            <div class="controls">
+              <label>: {{account.fpcPassword}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Approval Notification Format</label>
+            <div class="controls">
+              <label>: {{account.approvalNotificationFormat}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Approval Notification Frequency</label>
+            <div class="controls">
+              <label>: {{account.approvalNotificationFrequency}}</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> Is remittance received</label>
+            <div class="controls">
+              <label>: {{account.isRemittanceReceived}}</label>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Contacts" style="overflow:hidden">
+          <div class="control-group">
+            <div class="span6">Role</div>
+            <div class="span6">User</div>
+          </div>
+          <ng-form name="permissionForm" ng-repeat="row in account.role">
+            <div class="row-fluid">
+              <div class="span6">
+                <label>{{account.role[$index] | array2text}}</label>
+              </div>
+              <div class="span6">
+                <label>{{account.user[$index] | array2text}}</label>
+              </div>
+            </div><br/>
+          </ng-form>
+        </pane>
+      </tabs>
+    </div>
+  </form>
+</div>

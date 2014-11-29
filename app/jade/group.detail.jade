@@ -1,0 +1,31 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="groupDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="updateGroup.*.*", ng-hide="groupDetailLoader", bs-tooltip="tooltip.edit", href="#/group/edit/{{$stateParams.groupId}}", ng-click="editGroup()")
+                                                i.icon-pencil.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="deleteGroup.*.*", ng-hide="groupDetailLoader", style="cursor: pointer;", bs-tooltip="tooltip.delete"  , ng-click="confirmDeleteGroup()")
+                                                i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="groupDetailLoader")
+                legend Group
+                .control-group
+                        label.control-label Name
+                        .controls
+                                {{group.name}}                                         
+                .control-group
+                        label.control-label Type
+                        .controls
+                                {{group.type}}                                          
+                .control-group
+                        label.control-label Description
+                        .controls
+                                {{group.description}}                                       
+                .control-group
+                        label.control-label Definition
+                        .controls
+                                {{group.definition | array2text}}   
+               
+                        //- {{group}}

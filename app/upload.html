@@ -1,0 +1,28 @@
+
+<div id="newFiles" ng-controller="FileUploadController">
+  <form data-upload-template-id="template-upload-1" method="POST" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+    <div class="row-fluid">
+      <div bs-tooltip="tooltip.drop" id="drop-area" class="span12">
+        <div bs-tooltip="tooltip.attach" class="btn btn-success fileinput-button pull-left"><i class="icon-paper-clip icon-white icon-2x"></i>
+          <input type="file" id="files-upload" name="files[]" multiple="multiple"/>
+        </div>
+        <div class="drop-instructions">Browse and upload multiple files or drag and drop files here</div>
+        <div class="drop-over">Drop files here!</div>
+      </div>
+    </div>
+    <div data-ng-repeat="file in queue">
+      <div class="row-fluid">
+        <div ng-class="file.$viewStyle()" class="btn-toolbar well well-small alert">
+          <div data-dismiss="alert" ng-click="removeNewAttachment(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="btn btn-danger"><i class="icon-remove"></i></div>
+          <div class="btn-group">
+            <div class="btn"><i ng-class="file.$iconStyle()" class="icon-large"></i><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="http://invoize.info/api/tms/download/file?id={{file.id}}" download="{{file.name}}" class="link wrapIt"><strong>{{file.name}} &nbsp</strong></a></div>
+          </div>
+          <div bs-tooltip="tooltip.type" class="btn-group pull-right span3">
+            <select name="fileTypeSelect" ng-model="file.t" ng-change="setNewFileType(file.id,file.t)" ng-options="value.id as value.name for (key, value) in fileTypeSelects" data-style="btn btn-success btn-small show-tick" bs-select="bs-select" required="required" class="span12"></select>
+            <label ng-show="form.fileTypeSelect.$error.required" class="help-inline required">*</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,34 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                fieldset
+                        legend Permission 
+                        .control-group
+                                label.control-label Action
+                                .controls
+                                        input(type="text", name="permissionAction", duplicate="permission", ng-model="permissions.action", placeholder="Action", required)
+                                        label.help-inline.required(ng-show="form.permissionAction.$error.required") *
+                                        label.help-inline.required(ng-show="form.permissionAction.$error.duplicate") Permission exists.
+                        .control-group
+                                label.control-label Action Code
+                                .controls
+                                        input(type="text", name="permissionActionCode", ng-model="permissions.actionCode", placeholder="Action Code", required)
+                                        label.help-inline.required(ng-show="form.permissionActionCode.$error.required") *
+                        .control-group
+                                .controls
+                                        label.checkbox(ng-repeat="row in relatedToList")
+                                                input(type="checkbox",ng-model="permissions.relatedTo[row]")
+                                                | {{row}}
+                        .control-group.input-append
+                                    input(type='text', ng-model='datepicker.date', data-date-format='dd/mm/yyyy', bs-datepicker='bs-datepicker')
+                                      button.btn(type='button', data-toggle='datepicker')
+                                        i.icon-calendar
+                        .control-group
+                                label.control-label Description
+                                .controls
+                                        textarea(rows=3, name="permissionDescription", ng-model="permissions.description", placeholder="Description", required)
+                                       
+                        .form-actions
+                                button.btn.btn-primary(ng-disabled="form.$invalid", type="submit",ng-click="create(permissions)") Save
+                                button.btn.btn-inverse(type="submit") Cancel
+
+                        //- {{permissions}}

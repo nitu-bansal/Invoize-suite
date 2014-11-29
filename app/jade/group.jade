@@ -1,0 +1,29 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+.container-fluid
+        include common_top_row
+        section
+                .row-fluid
+                        .span2.bs-docs-sidebar(style="cursor: pointer;")
+                                ul.nav.nav-list.bs-docs-sidenav
+                                        input(type="text",ng-change="searchGroup()", placeholder="Search", ng-model="search")
+                                        li.nav-header
+                                                h4(rel="tooltip") Group
+                                                        .badge.label-info.pull-right(bs-tooltip="tooltip.total")  {{totalGroup}}
+                                                span
+                                                        a.btn.btn-success.btn-mini(permission="createGroup.*.*", ng-disabled="$state.includes('group.new')",href="#/group/new",bs-tooltip="tooltip.new" , ng-click="initializeGroup()") 
+                                                                 i.icon-plus.icon-white
+                                                i.icon-spinner.icon-spin.icon-4x(ng-show="groupListLoader")
+                                ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMore()")
+                                        li(ng-class="{ active: $stateParams.groupId == l.id}", ng-repeat="l in groupList")
+                                                a(ng-click="selectGroup(l.id)", data-toggle="tab", href="#/group/{{l.id}}") 
+                                                        //- i(ng-class="{icon-chevron-right: $stateParams.userId == l.id.$oid}")
+                                                        i.icon-chevron-right
+                                                        {{l.v|titlecase}}
+                                        ul
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="loadingMore")
+                        .span10
+                                //- .row-fluid
+                                //-         a.pull-right.btn.btn-success.btn-margin(href="#/group/new" , ng-click="initializeGroup()") 
+                                //-                 i.icon-plus.icon-white
+                                //-                 |  Group
+                                div(ui-view="list")

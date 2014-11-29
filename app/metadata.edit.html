@@ -1,0 +1,51 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>                       
+      <div class="fluid-row">
+        <div class="pull-right"> <a ng-hide="metadataUpdateLoader" ng-click="backToDetailsMetadata()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a permission="editMetadata.*.*" ng-hide="metadataUpdateLoader" bs-tooltip="tooltip.save" ng-click="updateMetadata(selectedMetadata)" class="btn btn-primary btn-margin"><i class="icon-ok icon-large"></i></a><a permission="deleteMetadata.*.*" ng-hide="metadataUpdateLoader" ng-click="confirmDeleteMetadata()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="metadataUpdateLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+        <legend>Metadata</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Value</label>
+        <div class="controls">
+          <input type="text" name="value" ng-model="selectedMetadata.value" placeholder="Value" required="required"/>
+          <label ng-show="form.value.$error.required" class="help-inline required">*                            </label>
+        </div>
+      </div>
+      <ng-form name="fieldsForm" ng-repeat="row in selectedMetadataFields" ng-switch="row.t">
+        <div ng-switch-when="text" class="control-group">
+          <label class="control-label">{{row.v}}</label>
+          <div class="controls">                                               
+            <input type="text" name="otherFields" ng-model="selectedMetadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+            <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*                                                </label>
+          </div>
+        </div>
+        <div ng-switch-when="email" class="control-group">
+          <label class="control-label">{{row.v}}</label>
+          <div class="controls">                                               
+            <input type="email" name="otherFields" ng-model="selectedMetadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+            <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+            <label ng-show="fieldsForm.otherFields.$error.date" class="help-inline required">This is not a valid email!</label>
+          </div>
+        </div>
+        <div ng-switch-when="date" class="control-group">
+          <label class="control-label">{{row.v}}</label>
+          <div class="controls">                                               
+            <input type="text" value="{{selectedMetadata[row.v] | date:'mediumDate'}}" data-date-format="M d, yyyy" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker" name="otherFields" ng-model="selectedMetadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+            <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+            <label ng-show="fieldsForm.otherFields.$error.date" class="help-inline required">This is not a valid date.!</label>
+          </div>
+        </div>
+        <div ng-switch-when="number" class="control-group">
+          <label class="control-label">{{row.v}}</label>
+          <div class="controls">                                               
+            <input type="number" name="otherFields" ng-model="selectedMetadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+            <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+            <label ng-show="fieldsForm.otherFields.$error.email" class="help-inline required">This is not a valid number!</label>
+          </div>
+        </div>
+      </ng-form>
+    </fieldset>
+  </form>
+</div>

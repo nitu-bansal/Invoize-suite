@@ -1,0 +1,91 @@
+//- .alert.alert-warning.span1.offset8(ng-show="loading") Loading.....
+.navbar.navbar-fixed-top.navbar-inverse(ng-controller="loginCtrl")
+        .navbar-inner
+                button.btn.btn-navbar(type="button", data-toggle="collapse", data-target=".nav-collapse")
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                a.brand(href="/")
+                        .logo
+                                img(src="img/invoize-logo-green.png", style="height:33px;width:105px;margin-top:-5px;padding-left:10px;")
+                                //- include config/brand
+                .nav-collapse.collapse
+                        ul.nav.pull-left
+                                ul.nav
+                                        li(ng-class="{ active: $state.includes('route:/home')}")
+                                                a(href="#/home")
+                                                        i.icon-home
+                                                        |  Home
+                                ul.nav(permission="quoteNav.*.*")
+                                        li(ng-class="{ active: $state.includes('quote')}")
+                                                a(href="#/quote")
+                                                        i.icon-list-alt
+                                                        |  Quote
+                                ul.nav(permission="rateNav.*.*")
+                                        li(ng-class="{ active: $state.includes('rate')}")
+                                                a(href="#/rate")
+                                                        i.icon-list-alt
+                                                        |  Rate
+                                ul.nav(permission="requestNav.*.*")
+                                        li(ng-class="{ active: $state.includes('request')}")
+                                                a(href="#/request")
+                                                        i.icon-inbox
+                                                        |  Requests
+                                                        span.badge.badge-warning(ng-show="pendingRateRequestCount+pendingTmsRequestCount"){{pendingRateRequestCount+ pendingTmsRequestCount}}
+                                ul.nav(permission="tmsNav.*.*")
+                                        li(ng-class="{ active: $state.includes('tms')}")
+                                                a(href="#/tms")
+                                                        i.icon-list-alt
+                                                        |  Tariff
+                                ul.nav(permission="administrationNav.*.*")
+                                        li.dropdown(ng-class="{ active: $state.includes('organization') || $state.includes('role') || $state.includes('user') || $state.includes('account') || $state.includes('group') || $state.includes('workflow')}")
+                                                a.dropdown-toggle(href="#",data-toggle="dropdown")
+                                                        i.icon-wrench
+                                                        |  Administration
+                                                        strong.caret
+                                                ul.dropdown-menu
+                                                        //- li(permission="readOrganization.*.*",ng-class="{ active: $state.includes('organization')}")
+                                                        //-         a(href="#/organization") Organizations
+                                                        //- li(ng-class="{ active: $state.includes('permission')}")
+                                                        //-         a(href="#/permission") Permission
+                                                        li(permission="readRole.*.*",ng-class="{ active: $state.includes('role')}")
+                                                                a(href="#/role") Roles
+                                                        li(permission="readUser.*.*",ng-class="{ active: $state.includes('user')}")
+                                                                a(href="#/user") Users
+                                                        li(permission="readGroup.*.*",ng-class="{ active: $state.includes('group')}")
+                                                                a(href="#/group") Groups
+                                                        li(permission="readAccount.*.*", ng-class="{ active: $state.includes('account')}")
+                                                                a(href="#/account") Accounts
+                                                        li(permission="readWorkflow.*.*",ng-class="{ active: $state.includes('workflow')}")
+                                                                a(href="#/workflow") Workflows
+                                                        li(permission="readMetadata.*.*",ng-class="{ active: $state.includes('metadata')}")
+                                                                a(href="#/metadata") Metadata
+                        ul.nav.pull-right
+                                li.dropdown
+                                        a.dropdown-toggle(href="#",data-toggle="dropdown")
+                                                i.icon-user
+                                                |  {{email}}
+                                                strong.caret
+                                        ul.dropdown-menu
+                                                li(ng-class="{ active: $state.includes('changePassword')}")
+                                                                a(href="#/changePassword") Change Password
+                                                li
+                                                        a(ng-click="logout()") Logout
+        //- .badge.badge-warning.span1.offset8(ng-show="loading") Loading.....
+        //- .alert.label-warning.span1.offset8(style="color:#FFF;", ng-show="loading") Loading.....
+        img.offset8(ng-show="loading", src="/img/loader5.gif", alt="Loading...")
+        //- .span1.offset8.warning
+        //-         img(src="/img/loader4.gif", alt="Loading...")
+        //- .row-fluid.top-row
+        //- //logo
+        //- .span3
+        //-         .logo(ui-jq="lettering")
+        //-                 include config/brand
+
+        //- //links
+        //- .span3.offset2
+        //-         include common_links
+
+        //- //Login Section
+        //- .span4.pull-right
+        //-         include profile_links

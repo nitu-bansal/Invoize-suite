@@ -1,0 +1,68 @@
+
+<!--Using fluid as the other has fixed pixels and doesnt extend the whole screen.-->
+<div class="row-fluid top-outline"></div>
+<div class="container-fluid">
+  <div ng-controller="loginCtrl" class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+      <button type="button" data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="brand">
+        <div class="logo"><img src="img/invoize-logo-green.png" style="height:33px;width:105px;margin-top:-5px;padding-left:10px;"/>
+        </div></a>
+      <div class="nav-collapse collapse">
+        <ul class="nav pull-left">
+          <ul class="nav">
+            <li ng-class="{ active: $state.includes('route:/home')}"><a href="#/home"><i class="icon-home"></i> Home</a></li>
+          </ul>
+          <ul permission="quoteNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('quote')}"><a href="#/quote"><i class="icon-list-alt"></i> Quote</a></li>
+          </ul>
+          <ul permission="rateNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('rate')}"><a href="#/rate"><i class="icon-list-alt"></i> Rate</a></li>
+          </ul>
+          <ul permission="requestNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('request')}"><a href="#/request"><i class="icon-inbox"></i> Requests<span ng-show="pendingRateRequestCount+pendingTmsRequestCount" class="badge badge-warning">{{pendingRateRequestCount+ pendingTmsRequestCount}}</span></a></li>
+          </ul>
+          <ul permission="tmsNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('tms')}"><a href="#/tms"><i class="icon-list-alt"></i> Tariff</a></li>
+          </ul>
+          <ul permission="administrationNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('organization') || $state.includes('role') || $state.includes('user') || $state.includes('account') || $state.includes('group') || $state.includes('workflow')}" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-wrench"></i> Administration<strong class="caret"></strong></a>
+              <ul class="dropdown-menu">
+                <li permission="readRole.*.*" ng-class="{ active: $state.includes('role')}"><a href="#/role">Roles</a></li>
+                <li permission="readUser.*.*" ng-class="{ active: $state.includes('user')}"><a href="#/user">Users</a></li>
+                <li permission="readGroup.*.*" ng-class="{ active: $state.includes('group')}"><a href="#/group">Groups</a></li>
+                <li permission="readAccount.*.*" ng-class="{ active: $state.includes('account')}"><a href="#/account">Accounts</a></li>
+                <li permission="readWorkflow.*.*" ng-class="{ active: $state.includes('workflow')}"><a href="#/workflow">Workflows</a></li>
+                <li permission="readMetadata.*.*" ng-class="{ active: $state.includes('metadata')}"><a href="#/metadata">Metadata</a></li>
+              </ul>
+            </li>
+          </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-user"></i> {{email}}<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+              <li ng-class="{ active: $state.includes('changePassword')}"><a href="#/changePassword">Change Password</a></li>
+              <li><a ng-click="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div><img ng-show="loading" src="/img/loader5.gif" alt="Loading..." class="offset8"/>
+  </div>
+  <section>
+    <div class="row-fluid">
+      <div style="cursor: pointer;" class="span2">
+        <ul class="nav nav-list">
+          <input type="search" placeholder="Search" ng-model="search" class="search-query"/>
+          <li rel="tooltip" class="nav-header">Permission
+            <div bs-tooltip="tooltip.total" class="badge label-info pull-right"> {{totalPermission}}</div>
+          </li>
+          <li ng-repeat="l in permissionList() | filter:search"><a data-toggle="tab" href="#/permission/{{l.id}}">{{l.name}}</a></li>
+        </ul>
+      </div>
+      <div class="span10">
+        <div class="row-fluid"><a href="#/permission/new" class="pull-right btn btn-success btn-margin"><i class="icon-plus icon-white"></i> Permission</a></div>
+        <div ui-view="list"></div>
+      </div>
+    </div>
+  </section>
+</div>

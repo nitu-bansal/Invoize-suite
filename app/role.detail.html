@@ -1,0 +1,54 @@
+
+<div class="offset1 span8">
+  <form class="form-horizontal">
+    <fieldset>
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="roleDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a permission="updateRole.*.*" ng-hide="roleDetailLoader" bs-tooltip="tooltip.edit" href="#/role/edit/{{$stateParams.roleId}}" ng-click="editRole()" class="btn btn-primary btn-margin"><i class="icon-pencil icon-large"></i></a><a permission="deleteRole.*.*" ng-hide="roleDetailLoader" ng-click="confirmDeleteRole()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="roleDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+        <legend>Role</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Role Name</label>
+        <div class="controls">
+          <label>: {{role.name}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+          <label>: {{role.description}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Permission</label>
+        <div class="controls">
+          <label>: {{role.definition | array2text}}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Created By</label>
+        <div class="controls">
+          <label>: {{role.createdBy}}</label>
+        </div>
+      </div>
+      <div ng-hide="!role.createdBy" class="control-group">
+        <label class="control-label">Created On</label>
+        <div class="controls">
+          <label ng-show="!role.createdBy">: {{role.createdOn}}</label>
+          <label ng-hide="!role.createdBy">: 2013-06-25</label>
+        </div>
+      </div>
+      <div ng-show="role.updatedBy" class="control-group">
+        <label class="control-label">Modified By</label>
+        <div class="controls">
+          <label>: {{role.updatedBy}}</label>
+        </div>
+      </div>
+      <div ng-show="role.updatedOn" class="control-group">
+        <label class="control-label">Modified On</label>
+        <div class="controls">
+          <label>: {{role.updatedOn}}</label>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

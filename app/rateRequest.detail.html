@@ -1,0 +1,85 @@
+
+<div class="span11">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="requestUpdateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button permission="approveRate.*.*" ng-hide="requestUpdateLoader || isInProcess" ng-disabled="form.$invalid" type="submit" ng-click="approveRateRequest(selectedRequest)" style="cursor: pointer;" bs-tooltip="tooltip.approve" class="btn btn-success"><i class="icon-ok icon-large">                                               </i></button>
+          <button permission="rejectRate.*.*" ng-hide="requestUpdateLoader || isInProcess" type="submit" ng-disabled="form.$invalid" ng-click="rejectRateRequest(selectedRequest)" style="cursor: pointer;" bs-tooltip="tooltip.reject" class="btn btn-danger"><i class="icon-remove icon-large"></i></button><i ng-show="requestUpdateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>Requested Quote</legend>
+      </div>
+    </div>
+    <div ng-repeat="row in selectedRequest.selection" class="control-group">
+      <label class="control-label">{{row.n|titlecase}}</label>
+      <div class="controls">
+        <input type="text" name="{{row.n}}" ng-model="selectedRequest.selection[$index]['v']" placeholder="{{row.n}}" value="{{row.v}}" required="required"/>
+        <label ng-show="form.{{row.n}}.$error.required" class="help-inline required">*</label>
+        <label class="help-inline"><a ng-click="removeFromList($index)" class="close">&times;</a></label>
+      </div>
+    </div>
+    <div class="control-group">                       
+      <label class="control-label">Charge Type</label>
+      <div class="controls">
+        <select ui-select2="{allowClear: true,closeOnSelect:false}" name="chargeType" ng-model="selectedRequest.chargeType" data-placeholder="Please select..." style="width:200px" required="required">
+          <option value=""></option>
+          <option ng-repeat="row in chargeType" value="{{row.id}}">{{row.val}}</option>
+        </select>
+        <label ng-show="form.chargeType.$error.required" class="help-inline required">*</label>
+      </div>
+    </div>
+    <div class="control-group">                       
+      <label class="control-label">Rate Qualifier</label>
+      <div class="controls">
+        <select ui-select2="{allowClear: true}" name="rateQualifier" ng-model="selectedRequest.rateQualifier" data-placeholder="Please select..." style="width:200px" required="required">
+          <option value=""></option>
+          <option ng-repeat="row in rateQualifier" value="{{row.id}}">{{row.val}}</option>
+        </select>
+        <label ng-show="form.rateQualifier.$error.required" class="help-inline required">*                </label>
+      </div>
+    </div>
+    <div class="control-group">                       
+      <label class="control-label">Weight Brackets</label>
+      <div class="controls">
+        <div ng-repeat="row in selectedRequest.weightBracket" class="row-fluid">
+          <ng-form name="weightBracketForm">
+            <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;s&quot;,$index)'}" name="s" ng-model="selectedRequest.weightBracket[$index]['s']" placeholder="{{row.sph}}" required="required" class="span2"/>&nbsp-&nbsp
+            <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;e&quot;,$index)'}" name="e" ng-model="selectedRequest.weightBracket[$index]['e']" placeholder="{{row.eph}}" required="required" class="span2"/>&nbsp&nbsp&nbsp&nbsp 
+            <input type="text" name="v" ng-model="selectedRequest.weightBracket[$index]['v']" placeholder="Value" required="required" class="span2"/>
+            <label ng-show="weightBracketForm.v.$error.required" class="help-inline required">*</label>
+            <label class="help-inline"><a ng-hide="$index == 0 || $index + 1 &lt;  selectedRequest.weightBracket.length " ng-click="removeFromWeightBracketFields($index)" class="close">&times;                         </a></label>
+          </ng-form>
+        </div>
+      </div>
+    </div>
+    <div ng-hide="isInProcess" class="control-group">
+      <label class="control-label">Comments</label>
+      <div class="controls">
+        <textarea rows="3" name="rateComments" ng-model="selectedRequest.comment" placeholder="Comments" required="required"></textarea>
+        <label ng-show="form.rateComments.$error.required" class="help-inline required">*</label>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">More Fields</label>
+      <div class="controls">
+        <select ui-select2="{'closeOnSelect':false}" multiple="true" ng-change="appendToList(currentSelectedField)" name="workflowMode" ng-model="currentSelectedField" data-placeholder="Please select..." style="width:200px">                                      
+          <option ng-repeat="field in otherFieldsList" value="{{field}}">{{field.n}}                                      </option>
+        </select>
+      </div>
+    </div>
+    <hr/>
+    <h5 permission="historyRate.*.*">History<i ng-show="rateRequestHistoryLoader" class="icon-spinner icon-spin icon icon-large"> </i></h5>
+    <div ng-hide="rateRequestHistoryAvailable || rateRequestHistoryLoader" permission="historyRate.*.*" class="div">       
+      <h3>History not available for this request      </h3>
+    </div>
+    <div ng-show="rateRequestHistoryAvailable" permission="historyRate.*.*" class="div">         
+      <div class="control-group"> 
+        <div ng-repeat="row in rateRequestHistory" class="alert-blank">                                       
+          <div ng-click="getRateRequestHistoryDetail($index,row);isCollapse = !isCollapse" class="fluid-row"> <i class="icon-user">                               </i><strong style="cursor: pointer;" bs-tooltip="tooltip.expand" class="text-info">{{row.un}}                        </strong><span ng-show="row.action=='Created'" class="small label label-info">Created</span><span ng-show="row.action=='Approved'" class="small label label-success">Approved</span><span ng-show="row.action=='Rejected'" class="small label label-important">Rejected</span><small class="muted">  -  {{row.actionTaken}} </small>
+            <div id="{{$index}}" collapse="isCollapse" class="fluid-row">                       </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

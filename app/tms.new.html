@@ -1,0 +1,75 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="tariffCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button ng-hide="tariffCreateLoader" ng-disabled="form.$invalid || !IsFileAttached" type="submit" ng-click="create(tariff)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="tariffCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>New Tariff</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Effective Date</label>
+        <div class="controls">
+          <input type="text" name="effectiveDate" ng-model="tariff.effectiveDate" placeholder="Effective Date" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker" required="required"/>
+          <label ng-show="form.effectiveDate.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Expiry Date</label>
+        <div class="controls">
+          <input type="text" name="expiryDate" ng-model="tariff.expiryDate" placeholder="Expiry Date" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker" required="required"/>
+          <label ng-show="form.expiryDate.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Received Date</label>
+        <div class="controls">
+          <input type="text" name="receivedDate" ng-model="tariff.receivedDate" placeholder="Received Date" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker"/>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Received From</label>
+        <div class="controls">
+          <input type="text" name="receivedFrom" ng-model="tariff.receivedFrom" placeholder="Received From" required="required"/>
+          <label ng-show="form.receivedFrom.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Comments</label>
+        <div class="controls">
+          <textarea rows="3" name="tariffComments" ng-model="tariff.comment" placeholder="Comments"></textarea>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="control-group">
+    <div id="newFiles" ng-controller="FileUploadController">
+      <form data-upload-template-id="template-upload-1" method="POST" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+        <div class="row-fluid">
+          <div bs-tooltip="tooltip.drop" id="drop-area" class="span12">
+            <div bs-tooltip="tooltip.attach" class="btn btn-success fileinput-button pull-left"><i class="icon-paper-clip icon-white icon-2x"></i>
+              <input type="file" id="files-upload" name="files[]" multiple="multiple"/>
+            </div>
+            <div class="drop-instructions">Browse and upload multiple files or drag and drop files here</div>
+            <div class="drop-over">Drop files here!</div>
+          </div>
+        </div>
+        <div data-ng-repeat="file in queue">
+          <div class="row-fluid">
+            <div ng-class="file.$viewStyle()" class="btn-toolbar well well-small alert">
+              <div data-dismiss="alert" ng-click="removeNewAttachment(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="btn btn-danger"><i class="icon-remove"></i></div>
+              <div class="btn-group">
+                <div class="btn"><i ng-class="file.$iconStyle()" class="icon-large"></i><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="http://invoize.info/api/tms/download/file?id={{file.id}}" download="{{file.name}}" class="link wrapIt"><strong>{{file.name}} &nbsp</strong></a></div>
+              </div>
+              <div bs-tooltip="tooltip.type" class="btn-group pull-right span3">
+                <select name="fileTypeSelect" ng-model="file.t" ng-change="setNewFileType(file.id,file.t)" ng-options="value.id as value.name for (key, value) in fileTypeSelects" data-style="btn btn-success btn-small show-tick" bs-select="bs-select" required="required" class="span12"></select>
+                <label ng-show="form.fileTypeSelect.$error.required" class="help-inline required">*</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

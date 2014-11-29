@@ -1,0 +1,67 @@
+.span11
+        form.form-horizontal(novalidate, name="form")
+                        .fieldset
+                                .fluid-row
+                                        .pull-right
+                                                a.btn.btn-primary.btn-margin(ng-hide="requestUpdateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-success(permission="requestApprove.*.*", ng-hide="requestUpdateLoader || isInProcess", ng-disabled="form.$invalid", type="submit", ng-click="approveRateRequest(selectedRequest)", style="cursor: pointer;", bs-tooltip="tooltip.approve")
+                                                        i.icon-ok.icon-large                                                
+                                                button.btn.btn-danger(permission="requestReject.*.*", ng-hide="requestUpdateLoader || isInProcess", type="submit", ng-click="rejectRateRequest()", style="cursor: pointer;", bs-tooltip="tooltip.reject")
+                                                        i.icon-remove.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="requestUpdateLoader")
+                                        legend Requested Quote
+                        .control-group(ng-repeat="row in selectedRequest.selection")
+                                label.control-label {{row.n|titlecase}}
+                                .controls
+                                        input(type="text", name="{{row.n}}", ng-model="selectedRequest.selection[$index]['v']", placeholder="{{row.n}}",value='{{row.v}}', required)
+                                        label.help-inline.required(ng-show="form.{{row.n}}.$error.required") *
+                                        label.help-inline
+                                                a.close(ng-click="removeFromList($index)") &times;
+                        .control-group                        
+                                label.control-label Charge Type
+                                .controls
+                                        select(ui-select2="{allowClear: true,closeOnSelect:false}", name="chargeType", ng-model="selectedRequest.chargeType", data-placeholder="Please select...", style="width:200px", required)
+                                                option(value="")
+                                                option(ng-repeat="row in chargeType", value='{{row.id}}') {{row.val}}
+                                        label.help-inline.required(ng-show="form.chargeType.$error.required") *
+                        .control-group                        
+                                label.control-label Rate Qualifier
+                                .controls
+                                        select(ui-select2="{allowClear: true}", name="rateQualifier", ng-model="selectedRequest.rateQualifier", data-placeholder="Please select...", style="width:200px", required)
+                                                option(value="")
+                                                option(ng-repeat="row in rateQualifier", value='{{row.id}}') {{row.val}}
+                                        label.help-inline.required(ng-show="form.rateQualifier.$error.required") *                
+                        .control-group                        
+                                label.control-label Weight Brackets
+                                .controls
+                                        .row-fluid(ng-repeat="row in selectedRequest.weightBracket")
+                                                ng-form(name="weightBracketForm")
+                                                        input.span2(type="text", ui-event="{ blur : 'weightBracketCallback(\"s\",$index)'}", name="s", ng-model="selectedRequest.weightBracket[$index]['s']", placeholder="{{row.sph}}", required)                                                
+                                                        | &nbsp-&nbsp
+                                                        input.span2(type="text", ui-event="{ blur : 'weightBracketCallback(\"e\",$index)'}", name="e", ng-model="selectedRequest.weightBracket[$index]['e']", placeholder="{{row.eph}}", required)                                                
+                                                        | &nbsp&nbsp&nbsp&nbsp 
+                                                        input.span2(type="text", name="v", ng-model="selectedRequest.weightBracket[$index]['v']", placeholder="Value", required)
+                                                        label.help-inline.required(ng-show="weightBracketForm.v.$error.required") *
+                                                        label.help-inline
+                                                                a.close(ng-hide="$index == 0 || $index + 1 <  selectedRequest.weightBracket.length ", ng-click="removeFromWeightBracketFields($index)") &times;                         
+                        .control-group
+                                label.control-label More Fields
+                                .controls
+                                        select(ui-select2="{'closeOnSelect':false}",multiple="true", ng-change="appendToList(currentSelectedField)", name="workflowMode", ng-model="currentSelectedField", data-placeholder="Please select...", style="width:200px")                                       
+                                                option(ng-repeat="field in otherFieldsList", value="{{field}}") {{field.n}}                                      
+                        hr
+                        h5 History
+                                i.icon-spinner.icon-spin.icon.icon-large(ng-show="rateRequestHistoryLoader")  
+                        .div(ng-hide="rateRequestHistoryAvailable || rateRequestHistoryLoader" )        
+                                h3 History not available for this request      
+                        .div(ng-show="rateRequestHistoryAvailable")          
+                                .control-group  
+                                        .alert-blank(ng-repeat="row in rateRequestHistory")                                        
+                                                .fluid-row(ng-click="getRateRequestHistoryDetail($index,row);isCollapse = !isCollapse") 
+                                                        i.icon-user                                
+                                                        strong.text-info(style="cursor: pointer;", bs-tooltip="tooltip.expand"){{row.un}}                        
+                                                        span.small.label.label-success(ng-show="row.action=='Approved'") Approved
+                                                        span.small.label.label-important(ng-show="row.action=='Rejected'") Rejected
+                                                        small.muted   -  {{row.actionTaken}} 
+                                                        .fluid-row(id="{{$index}}",collapse='isCollapse')                        

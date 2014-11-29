@@ -1,0 +1,30 @@
+div(id= "newFiles",ng-controller="FileUploadController")
+
+   form.fileupload.fileUps(data-upload-template-id="template-upload-1",method='POST', enctype='multipart/form-data',data-ng-app="angularApp", data-file-upload='options')
+
+        .row-fluid
+                div(bs-tooltip="tooltip.drop")#drop-area.span12
+                   .btn.btn-success.fileinput-button.pull-left(,bs-tooltip="tooltip.attach")
+                                i.icon-paper-clip.icon-white.icon-2x
+                                input(type='file',id="files-upload", name='files[]', multiple='multiple')
+                   .drop-instructions
+                       | Browse and upload multiple files or drag and drop files here
+                   .drop-over Drop files here!
+
+        //- {{queue}}
+        div(data-ng-repeat='file in queue')
+                .row-fluid
+                        .btn-toolbar.well.well-small.alert(ng-class='file.$viewStyle()')
+                                        .btn.btn-danger(data-dismiss='alert',ng-click="removeNewAttachment(file.id)", bs-tooltip="tooltip.delete",style="cursor: pointer;")
+                                                        i.icon-remove
+                                        .btn-group
+                                                .btn
+                                                        i.icon-large(ng-class='file.$iconStyle()')
+                                                        a.link.wrapIt(style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='http://invoize.info/api/tms/download/file?id={{file.id}}', download='{{file.name}}' )
+                                                                strong {{file.name}} &nbsp
+                                                                //- | ({{file.size | formatFileSize}})
+
+                                        .btn-group.pull-right.span3(bs-tooltip="tooltip.type")
+                                                select.span12(name='fileTypeSelect',ng-model='file.t',ng-change="setNewFileType(file.id,file.t)",ng-options='value.id as value.name for (key, value) in fileTypeSelects', data-style='btn btn-success btn-small show-tick', bs-select='bs-select' ,required)
+                                                label.help-inline.required(ng-show="form.fileTypeSelect.$error.required") *
+

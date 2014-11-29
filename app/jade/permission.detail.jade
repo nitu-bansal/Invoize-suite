@@ -1,0 +1,24 @@
+form.form-horizontal
+        fieldset
+                legend Permission Details :
+                .control-group
+                        label.control-label Action
+                        .controls
+                                label : {{permissions.action}}
+                .control-group
+                        label.control-label Action Code
+                        .controls
+                                label : {{permissions.actionCode}}
+                .control-group
+                        label.control-label Expired On
+                        .controls
+                                label : {{permissions.expiredOn}}
+                .control-group
+                        label.control-label Description
+                        .controls
+                                label : {{permissions.description}}
+                .form-actions
+                        a.btn.btn-primary(href="#/account/edit/{{$stateParams.account_name}}", ng-click="read($stateParams.account_name)")
+                                i.icon-pencil.icon-white  
+                                |   Edit
+                        button.btn.btn-inverse(type="submit") Cancel

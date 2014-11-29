@@ -1,0 +1,17 @@
+.control-group
+        .controls
+                span.btn.btn-success.fileinput-button
+                        i.icon-plus.icon-white.icon-2large
+                        input(type='file', name='file', data-url='api/upload/metadata', multiple='multiple', upload='upload')
+                        span Add files...                
+                //- button.btn.btn-primary(type='submit', ng-click='upload()') Upload
+div.alert
+        span(ng-show='!files.length')
+                h3 Drop files here..
+        ul
+                li(ng-repeat='file in files') 
+                        h4 {{file}}
+.progress(ng-show='percentage')
+        .bar
+
+

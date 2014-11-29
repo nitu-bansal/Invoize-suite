@@ -1,0 +1,97 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                fieldset(ng-hide="tariffDetailLoader")
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="tariffDetailLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                    i.icon-mail-reply.icon-large
+                                        //- a.btn.btn-primary.btn-margin(permission="editTariff.*.*", ng-hide="tariffDetailLoader", bs-tooltip="tooltip.revise",ng-click="initExistingDocs()", href="#/tms/list/{{$stateParams.accountId}}/edit/{{tariff.id}}")
+                                        //-             i.icon-pencil.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="tariffDetailLoader")
+                                legend Tariff Details
+                        .control-group
+                                label.control-label Effective Date
+                                .controls
+                                    label : {{tariff.effectiveDate | date:'mediumDate'}}
+                        .control-group
+                                label.control-label Expiry Date
+                                .controls
+                                        label : {{tariff.expiryDate | date:'mediumDate'}}
+                        .control-group
+                                label.control-label Received Date
+                                .controls
+                                        label : {{tariff.receivedDate | date:'mediumDate'}}
+                        .control-group
+                                label.control-label Received From
+                                .controls
+                                        label : {{tariff.receivedFrom}}
+                        .control-group
+                                label.control-label Comments
+                                .controls
+                                        label : {{tariff.comment}}
+
+                fieldset
+                        .fluid-row
+                                legend Attached Documents
+                        .control-group
+                                div(data-ng-repeat='file in tariff.docId')
+                                        .alert-blank
+                                                div
+                                                        div.pull-right
+                                                                &nbsp
+                                                                span.label.label-warning {{file.t}}
+
+                                                        |&nbsp
+                                                        i.icon-large.icon-paper-clip &nbsp
+                                                        a.link(permission="downloadTariff.*.*",href='http://invoize.info/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download")
+                                                                strong|{{file.v}}
+                                                        strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                            br
+                                                            small.muted  You do not have download permissions
+                fieldset(permission="historyTariff.*.*")
+                        .fluid-row
+                                legend History
+                                        i.icon-spinner.icon-spin.icon.icon-large(ng-show="tariffHistoryLoader")
+                        .div(ng-hide="tariffHistoryAvailable || tariffHistoryLoader" )
+                                h5 History not available for this tariff
+                        .div(ng-show="tariffHistoryAvailable")
+                                .control-group
+                                        .alert-blank(ng-repeat="row in documentRequestHistory")
+                                                .fluid-row(ng-click='isCollapsed = !isCollapsed')
+                                                        i.icon-user
+                                                        span.small.label.label-success.pull-right(ng-show="row.action=='A'") Approved
+                                                        span.small.label.label-important.pull-right(ng-show="row.action=='R'") Rejected
+                                                        span.small.label.label-info.pull-right(ng-show="row.action=='C'") Created
+                                                        strong.text-info(style="cursor: pointer;", bs-tooltip="tooltip.expand") &nbsp {{row.email}}
+                                                        br
+                                                        small.muted     Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} ,
+                                                        small.muted     Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} ,
+                                                        small.muted     Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}
+                                                        div(collapse='isCollapsed')
+                                                                strong.text-black Attached Documents
+
+                                                                div(data-ng-repeat='file in row.oldSnapshot.docId')
+                                                                        div
+                                                                                div.pull-right
+                                                                                        &nbsp
+                                                                                        span.small.label.label-info {{file.t}}
+
+                                                                                i.icon-large.icon-paper-clip &nbsp
+                                                                                a.link(permission="downloadTariff.*.*",href='http://invoize.info/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download",data-placement="right")
+                                                                                        strong|{{file.v}}
+                                                                                strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                                                    br
+                                                                                    small.muted  You do not have download permissions
+
+                                                                                //- .control-group
+                                                                                //-         div
+                                                                                //-                 i.icon-small.icon-paper-clip &nbsp
+                                                                                //-                 a.link.span.small(href='http://invoize.info/api/tms/download/file?id={{file.id}}',download='{{file.name}}') {{file.v}}
+                                                                                //-         div.pull-right
+                                                                                //-                 span.small.label.label-info {{file.t}}
+                                                                strong.text-black  Comments
+                                                                br
+                                                                small {{row.oldSnapshot.comment}}
+                                                .fluid-row(id="{{$index}}")
+
+

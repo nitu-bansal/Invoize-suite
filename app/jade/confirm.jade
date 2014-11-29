@@ -1,0 +1,11 @@
+.modal-header
+        h3 Confirm
+.modal-body
+        | You really want to delete this?
+.modal-footer
+        button.btn.btn-primary(ng-click="save()")
+                i.icon-ok 
+                | Yes
+        button.btn(ng-click="close()")
+                i.icon-remove 
+                | No

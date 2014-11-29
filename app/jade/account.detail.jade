@@ -1,0 +1,196 @@
+.offset1.span8
+        form.form-horizontal
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="accountDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+
+                                        a.btn.btn-primary.btn-margin(permission="updateAccount.*.*", ng-hide="accountDetailLoader || $state.includes('tms.list')", bs-tooltip="tooltip.edit", href="#/account/edit/{{$stateParams.accountId}}", ng-click="editAccount($stateParams.accountId)")
+                                                i.icon-pencil.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="deleteAccount.*.*", ng-hide="accountDetailLoader || $state.includes('tms.list')", style="cursor: pointer;", bs-tooltip="tooltip.delete" , ng-click="confirmDeleteAccount()")
+                                                i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="accountDetailLoader")
+                        tabs
+                                pane(heading="Profile",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label Account Name
+                                                .controls
+                                                        label : {{account.accountName}}
+                                        .control-group
+                                                label.control-label Account Codes
+                                                .controls
+                                                        label : {{account.accountCodes}}
+                                        .control-group
+                                                label.control-label  Account Type
+                                                .controls
+                                                        label : {{account.accountType}}
+                                        .control-group(ng-show="account.accountType=='INTERNATIONAL'")
+                                                label.control-label  Shipment Modes
+                                                .controls
+                                                        label : {{account.shipmentModes | list2text}}
+                                        .control-group
+                                                label.control-label  Shipment Volume
+                                                .controls
+                                                        label : {{account.shipmentVolume}}
+                                        .control-group
+                                                label.control-label  AR Booked in
+                                                .controls
+                                                        label : {{account.ARBookedIn}}
+                                        .control-group
+                                                label.control-label  Invoicing Type
+                                                .controls
+                                                        label : {{account.invoicingType}}
+                                        .control-group
+                                                label.control-label  Rating Type
+                                                .controls
+                                                        label : {{account.ratingType}}
+                                        .control-group(ng-show="account.ratingType=='TARIFF'")
+                                                label.control-label  Currency Conversion Applicable
+                                                .controls
+                                                        label : {{account.currencyConversionApplicable}}
+                                        .control-group(ng-show="account.ratingType=='TARIFF'")
+                                                label.control-label  Sources Of Currency Conversation
+                                                .controls
+                                                        label : {{account.sourcesOfCurrencyConversation | list2text}}
+                                        .control-group
+                                                label.control-label  Any Limitation On # Of Days To Invoice
+                                                .controls
+                                                        label : {{account.anyLimitationOnNoOfDaysToInvoice}}
+                                        .control-group
+                                                label.control-label  criteria
+                                                .controls
+                                                        label : {{account.criteria}}
+                                        .control-group
+                                                label.control-label  # Of Days
+                                                .controls
+                                                        label : {{account.noOfDaysToInvoice}}
+                                        .control-group
+                                                label.control-label Workflow Mode
+                                                .controls
+                                                        label : {{workflowModeList[account.workflowMode-1].n}}
+                                        div(ng-switch="account.workflowMode")
+                                                .control-group(ng-switch-when="1")
+                                                        label.control-label Select Workflow
+                                                        .controls
+                                                                label : {{account.workflow.v}}
+                                                .control-group(ng-switch-when="2")
+                                                        label.control-label Select Tag
+                                                        .controls
+                                                                label : {{account.tag.v}}
+                                                .control-group(ng-switch-when="3")
+                                                        label.control-label Add Condition
+                                                        .controls
+                                                                label : {{account.condition}}
+                                        .control-group
+                                                label.control-label Created By
+                                                .controls
+                                                        label : {{account.createdBy}}
+                                        .control-group
+                                                label.control-label Created On
+                                                .controls
+                                                        label : {{account.createdOn}}
+                                        .control-group(ng-show="account.updatedBy")
+                                                label.control-label Updated By
+                                                .controls
+                                                        label : {{account.updatedBy}}
+                                        .control-group(ng-show="account.updatedOn")
+                                                label.control-label Updated On
+                                                .controls
+                                                        label : {{account.updatedOn}}
+                                        //- .control-group
+                                        //-         label.control-label Account Owner
+                                        //-         .controls
+                                        //-                 label : {{account.accountOwner}}
+                                        //- .control-group
+                                        //-         label.control-label Tariff Type
+                                        //-         .controls
+                                        //-                 label : {{account.tariffType}}
+                                        //- .control-group
+                                        //-         label.control-label Tariff Status
+                                        //-         .controls
+                                                        label : {{account.tariffStatus}}
+                                        //- .control-group
+                                        //-         label.control-label Quote Template
+                                        //-         .controls
+                                                        label : {{account.quoteTemplate}}
+                                pane(heading="Invoice Delivery",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label  Invoice Delivery Mode
+                                                .controls
+                                                        label : {{account.invoiceDeliveryMode | list2text}}
+                                        .control-group
+                                                label.control-label  Invoice Delivery Frequency
+                                                .controls
+                                                        label : {{account.invoiceDeliveryFrequency}}
+                                        .control-group
+                                                label.control-label  Invoice Redelivery Mode
+                                                .controls
+                                                        label : {{account.invoiceRedeliveryMode | list2text}}
+                                        .control-group
+                                                label.control-label  Back-Up Document Requirements
+                                                .controls
+                                                        label : {{account.backUpDocumentRequirements | list2text}}
+                                        .control-group
+                                                label.control-label  Back-Up Data Requirements
+                                                .controls
+                                                        label : {{account.backUpDataRequirements | list2text}}
+                                pane(heading="Collections",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label  Payment Mode
+                                                .controls
+                                                        label : {{account.paymentMode}}
+                                        .control-group
+                                                label.control-label  Payment Frequency
+                                                .controls
+                                                        label : {{account.paymentFrequency}}
+                                        .control-group
+                                                label.control-label  Is FPC Applicable?
+                                                .controls
+                                                        label : {{account.isFpcApplicable}}
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Name of FPC
+                                                .controls
+                                                        label : {{account.fpcName}}
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Website Link
+                                                .controls
+                                                        label : {{account.fpcWebsiteLink}}
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Login ID (If applicable)
+                                                .controls
+                                                        label : {{account.fpcLoginId}}
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Password (if applicable)
+                                                .controls
+                                                        label : {{account.fpcPassword}}
+                                        .control-group
+                                                label.control-label  Approval Notification Format
+                                                .controls
+                                                        label : {{account.approvalNotificationFormat}}
+                                        .control-group
+                                                label.control-label  Approval Notification Frequency
+                                                .controls
+                                                        label : {{account.approvalNotificationFrequency}}
+                                        .control-group
+                                                label.control-label  Is remittance received
+                                                .controls
+                                                        label : {{account.isRemittanceReceived}}
+                                pane(heading="Contacts",style="overflow:hidden")
+                                        .control-group
+                                                .span6 Role
+                                                .span6 User
+                                        ng-form(name="permissionForm", ng-repeat="row in account.role")
+                                                .row-fluid
+                                                        .span6
+                                                                label {{account.role[$index] | array2text}}
+                                                        .span6
+                                                                label {{account.user[$index] | array2text}}
+                                                br
+                        //- .form-actions
+                        //-         a.btn.btn-primary(href="#/account/edit/{{$stateParams.accountId}}", ng-click="read($stateParams.accountId)")
+                        //-                 i.icon-pencil.icon-white  
+                        //-                 |   Edit
+                        //-         button.btn.btn-inverse(type="submit") Cancel
+                        //- .fluid-row
+                        //-         {{account}} 

@@ -1,0 +1,57 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+//- .row-fluid.top-outline
+.container
+        include common_top_row
+        section
+                .row-fluid
+                        div
+                                ul.nav.nav-pills
+                                        li(ng-repeat="step in steps", ng-class="{active: $index==getCurrentStepIndex()}")
+                                                a
+                                                        span(ng-show="$index==getCurrentStepIndex()") {{$index + 1}}  {{step}}
+                                                        span(ng-show="$index!=getCurrentStepIndex()")
+                                                                span.badge {{$index + 1}}
+                                div(ng-switch="selection")
+                                        <!-- First Step -->
+                                        div(ng-switch-when="Organization Type")
+                                                ng-form.form-horizontal(novalidate, name="form1")
+                                                        legend {{selection}}
+                                                        .control-group
+                                                                .controls
+                                                                        select(ui-select2="{allowClear: true}", ng-model="wizard.organizationType",data-placeholder="Please select...", style="width:200px", required)
+                                                                                option(value="")
+                                                                                option(ng-repeat="type in organizationTypeList", value="{{type}}") {{type}}
+                                                        .form-actions
+                                                                button.btn.btn-primary(ng-disabled="form1.$invalid", ng-click="incrementStep()") Next Step  
+                                                                        i.icon-arrow-right.icon-white
+                                        <!-- Second Step -->
+                                        div(ng-switch-when="Transport Mode")
+                                                ng-form.form-horizontal(novalidate, name="form2")
+                                                        legend {{selection}}
+                                                        .control-group
+                                                                .controls
+                                                                        label.checkbox(ng-repeat="mode in transportModeList")
+                                                                                input(type="checkbox",ng-model="wizard.transportMode[mode]")
+                                                                                | {{mode}}
+                                                        .form-actions
+                                                                button.btn.btn-primary(ng-click="decrementStep()") 
+                                                                        i.icon-arrow-left.icon-white
+                                                                        | &nbsp;&nbsp; Prev Step
+                                                                button.btn.btn-primary(ng-disabled="form2.$invalid", ng-click="incrementStep()") Next Step  
+                                                                        i.icon-arrow-right.icon-white
+                                        <!-- Third Step -->
+                                        div(ng-switch-when="Metadata")
+                                                ng-form.form-horizontal(novalidate, name="form3")
+                                                        legend {{selection}}
+                                                        .control-group
+                                                                .controls
+                                                                        label.checkbox(ng-repeat="data in metadataList")
+                                                                                input(type="checkbox",ng-model="wizard.metaData[data]")
+                                                                                | {{data}}
+                                                        .form-actions
+                                                                button.btn.btn-primary(ng-click="decrementStep()") 
+                                                                        i.icon-arrow-left.icon-white
+                                                                        | &nbsp;&nbsp; Prev Step
+                                                                button.btn.btn-success(ng-disabled="form3.$invalid", ng-show="!hasNextStep()", ng-click="setupOrg(wizard)") Continue and setup
+                                .clearfix
+                                //- {{wizard}}

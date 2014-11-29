@@ -1,0 +1,31 @@
+
+<div class="row-fluid">
+  <div id="FixedRate" style="position:fixed;" class="span3">
+    <h4>Tariffs Requests</h4>
+    <div ng-hide="oldTmsRequest.length" class="row-fluid">
+      <h4>Couldn't find any requests<i class="icon-frown"></i></h4>
+    </div>
+    <table class="table table-hover">
+      <tbody ng-repeat="r in oldTmsRequest  | filter:searchs">
+        <tr>
+          <td>
+            <ul bs-tooltip="tooltip.expand" ng-class="{'alert alert-info': ($state.includes('request.tmsList.detail') ) &amp;&amp; $stateParams.requestId == r.id}" class="nav nav-list">
+              <label style="cursor: pointer;" ng-click="isCurrentTmsStackHolderCollapsed = !isCurrentTmsStackHolderCollapsed"><strong class="text-info"> Current Stakeholders : {{r.workflowUsers.length}}</strong></label>
+              <div collapse="isCurrentTmsStackHolderCollapsed">
+                <div ng-repeat="u in r.workflowUsers" class="alert-blank"><i class="icon-user"></i><small>&nbsp; {{u.email}}</small></div>
+              </div>
+            </ul>
+            <ul href="#/tms/list/{{$stateParams.accountId}}/detail/{{r.id}}" ng-class="{'alert alert-info': ($state.includes('request.tmsList.detail') ) &amp;&amp; $stateParams.requestId == r.id}" ng-click="selectTmsRequest(r.id)" class="nav nav-list">
+              <label><strong popover-placement="right" popover="{{quickViewAttachments[$index]}}" popover-trigger="mouseenter"> {{r.docId.length}} Attachments  ({{r.accountName}})</strong><span ng-show="r.action=='A'" class="small label label-success pull-right">Approved</span><span ng-show="r.action=='R'" class="small label label-important pull-right">Rejected</span></label>
+              <li style="cursor: pointer;"><i class="icon-large icon-calendar">&nbsp Effective Date - {{r.effectiveDate  | date:'mediumDate'}}</i></li>
+              <li style="cursor: pointer;"><i class="icon-large icon-calendar">&nbsp Expiry Date - {{r.expiryDate  | date:'mediumDate'}}</i></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="span9 offset4">
+    <div ui-view="detail"></div>
+  </div>
+</div>

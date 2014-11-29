@@ -1,0 +1,17 @@
+.row-fluid
+        .span3(id="FixedRate",style="position:fixed;")                
+                i.icon-spinner.icon-spin.icon-2x(ng-show="rateRequestListLoader")
+                table.table.table-hover(ng-hide="rateRequestListLoader")
+                        tbody(ng-repeat="row in oldRequest  | filter:search")
+                                tr(ng-class="{  'alert alert-info': $state.includes('rateRequest.list.detail') && $stateParams.requestId == row.requestId}", href="#/rate/request/{{$stateParams.requestType}}/{{row.requestId}}", ng-click="selectRateRequest(row.requestId)")
+                                        td
+                                                ul.nav.nav-list
+                                                        strong {{row.accountName}}
+                                                        li(style="cursor: pointer;")
+                                                                i.icon-large.icon-calendar &nbsp Effective - {{row.effectiveDate}}
+                                                        li(style="cursor: pointer;")
+                                                                i.icon-large.icon-calendar &nbsp Expiry - {{row.expiryDate}}
+                                                        li(style="cursor: pointer;", ng-repeat="val in row.fields") {{val.n | toHumanReadable}} : {{val.v}}
+
+        .span8.offset4
+                div(ui-view="detail")

@@ -1,0 +1,51 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="groupCreateLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button permission="createGroup.*.*" ng-hide="groupCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="create(group)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="groupCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+      </div>
+    </div>
+    <legend>Group</legend>
+    <div class="control-group">
+      <label class="control-label">Name</label>
+      <div class="controls">
+        <input type="text" name="groupName" duplicate="group" ng-model="group.name" placeholder="Group Name" required="required"/>
+        <label ng-show="form.groupName.$error.required" class="help-inline required">*</label>
+        <label ng-show="form.groupName.$error.duplicate" class="help-inline required">Group exists.</label>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Type</label>
+      <div class="controls">                               
+        <select ui-select2="ui-select2" name="groupType" ng-change="groupTypeChanged()" ng-model="group.type" data-placeholder="Please select..." style="width:200px" required="required">
+          <option value=""></option>
+          <option ng-repeat="groupType in groupTypeList" value="{{groupType.n}}">{{groupType.v}}</option>
+        </select>
+        <label ng-show="form.groupType.$error.required" class="help-inline required">*</label>
+      </div>
+    </div>
+    <div ng-show="group.type=='account'" class="control-group">
+      <label class="control-label">Workflow</label>
+      <div class="controls">
+        <input ui-select2="groupWorkflow" name="groupWorkflow" ng-model="group.workflow" style="width:200px" required="required"/>
+        <label ng-show="form.groupWorkflow.$error.required" class="help-inline required">*</label>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls">
+        <textarea rows="3" name="groupDescription" ng-model="group.description" placeholder="Group Description" required="required"></textarea>
+      </div>
+    </div>
+    <div class="control-group">                                   
+      <label class="control-label">Definition</label>
+      <div class="controls">
+        <input ui-select2="groupBar" ng-click="checkWorkflow($event)" name="groupBar" ng-model="group.definition" select-validate="select-validate" required="required" class="span9"/>
+        <label ng-show="form.groupBar.$error.selectvalidate || form.groupBar.$error.required" class="help-inline required"> &nbsp;*                        </label>
+      </div>
+    </div>
+  </form>
+</div>

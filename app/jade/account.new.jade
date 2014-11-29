@@ -1,0 +1,249 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="accountCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        button.btn.btn-primary(permission="createAccount.*.*", ng-hide="accountCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="create(account)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="accountCreateLoader")
+                        tabs
+                                pane(heading="Account",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label Account Name
+                                                .controls
+                                                        input(type="text", name="accountName", duplicate="account", ng-model="account.accountName", placeholder="Account Name",style="width:200px", required)
+                                                        label.help-inline.required(ng-show="form.accountName.$error.required") *
+                                                        label.help-inline.required(ng-show="form.accountName.$error.duplicate") Account exists.
+                                        .control-group
+                                                label.control-label Account Codes
+                                                .controls
+                                                        input(type="text", name="accountCodes", duplicate="accountCode", ng-model="account.accountCodes", placeholder="Account Codes",style="width:200px", required)
+                                                        label.help-inline.required(ng-show="form.accountCodes.$error.required") *
+                                                        label.help-inline.required(ng-show="form.accountCodes.$error.duplicate") Account code exists.
+                                        .control-group
+                                                label.control-label  Account Type
+                                                .controls
+                                                        select(ui-select2, name="accountType", ng-model="account.accountType", data-placeholder="Account Type", style="width:220px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in accountTypeList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.accountType.$error.required") *
+                                        .control-group(ng-show="account.accountType=='INTERNATIONAL'")
+                                                label.control-label Shipment Modes
+                                                .controls
+                                                        select(ui-select2, multiple="multiple", name="shipmentModes", ng-model="account.shipmentModes", data-placeholder="Shipment Modes", style="width:220px")
+                                                                option(ng-repeat="row in shipmentModesList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.shipmentModes.$error.required") *
+                                        .control-group
+                                                label.control-label  Shipment Volume
+                                                .controls
+                                                        input(type="text", name="shipmentVolume", ng-model="account.shipmentVolume", placeholder="Shipment Volume", style="width:205px", required)
+                                                        label.help-inline.required(ng-show="form.shipmentVolume.$error.required") *
+                                        .control-group
+                                                label.control-label  AR Booked in
+                                                .controls
+                                                        select(ui-select2, name="ARBookedIn", ng-model="account.ARBookedIn", data-placeholder="AR Booked In", style="width:220px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in ARBookedInList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.ARBookedIn.$error.required") *
+                                        .control-group
+                                                label.control-label  Invoicing Type
+                                                .controls
+                                                        select(ui-select2, name="invoicingType", ng-model="account.invoicingType", data-placeholder="Invoicing Type", style="width:220px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in invoicingTypeList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.invoicingType.$error.required") *
+                                        .control-group
+                                                label.control-label Rating Type
+                                                .controls
+                                                        select(ui-select2, name="ratingType", ng-model="account.ratingType", data-placeholder="Rating Type", style="width:220px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in ratingTypeList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.ratingType.$error.required") *
+                                        .control-group(ng-show="account.ratingType=='TARIFF'")
+                                                label.control-label Currency Conversion Applicable
+                                                .controls
+                                                        select(ui-select2, name="currencyConversionApplicable", ng-model="account.currencyConversionApplicable", data-placeholder="Currency Conversion Applicable", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in currencyConversionApplicableList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.currencyConversionApplicable.$error.required") *
+                                        .control-group(ng-show="account.ratingType=='TARIFF'")
+                                                label.control-label Sources Of Currency Conversation
+                                                .controls
+                                                        select(ui-select2, multiple="multiple", name="sourcesOfCurrencyConversation", ng-model="account.sourcesOfCurrencyConversation", data-placeholder="Sources Of Currency Conversation", style="width:220px")
+                                                                option(ng-repeat="row in sourcesOfCurrencyConversationList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.sourcesOfCurrencyConversation.$error.required") *
+                                        .control-group
+                                                label.control-label Any Limitation On # Of Days To Invoice
+                                                .controls
+                                                        select(ui-select2, name="anyLimitationOnNoOfDaysToInvoice", ng-model="account.anyLimitationOnNoOfDaysToInvoice", data-placeholder="Any Limitation On # Of Days To Invoice", style="width:220px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in anyLimitationOnNoOfDaysToInvoiceList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.anyLimitationOnNoOfDaysToInvoice.$error.required") *
+                                        .control-group(ng-show="account.anyLimitationOnNoOfDaysToInvoice=='YES'")
+                                                label.control-label Criteria
+                                                .controls
+                                                        select(ui-select2, name="criteria", ng-model="account.criteria", data-placeholder="Criteria", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in criteriaList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.noOfDaysToInvoice.$error.required") *
+                                        .control-group(ng-show="account.anyLimitationOnNoOfDaysToInvoice=='YES'")
+                                                label.control-label # Of Days
+                                                .controls
+                                                        select(ui-select2, name="noOfDaysToInvoice", ng-model="account.noOfDaysToInvoice", data-placeholder="# Of Days", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in noOfDaysToInvoiceList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.noOfDaysToInvoice.$error.required") *
+                                        .control-group
+                                                label.control-label Workflow Mode
+                                                .controls
+                                                        select(ui-select2="{allowClear: true}", name="workflowMode", ng-model="account.workflowMode", data-placeholder="Please select...", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="workflowMode in workflowModeList", value="{{workflowMode.wmid}}") {{workflowMode.n}}
+                                                        //- label.help-inline.required(ng-show="form.workflowMode.$error.required") *
+                                        div(ng-switch="account.workflowMode")
+                                                .control-group(ng-switch-when="1")
+                                                        label.control-label Select Workflow
+                                                        .controls
+                                                                input.span4(ui-select2="workflowBar", name="workflowBar", ng-model="account.workflow")
+                                                                //- .help-inline.required(ng-show="form.workflowBar.$error.required") *
+                                                .control-group(ng-switch-when="2")
+                                                        label.control-label Select Group
+                                                        .controls
+                                                                input.span4(ui-select2="groupBar", name="groupBar", ng-model="account.group", required)
+                                                                .help-inline.required(ng-show="form.groupBar.$error.required") *
+                                                .control-group(ng-switch-when="3")
+                                                        label.control-label Add Condition
+                                                        .controls
+                                                                input(type="text", name="condition", ng-model="account.condition", required)
+                                                                .help-inline.required(ng-show="form.condition.$error.required") *
+                                        //- .control-group
+                                        //-         label.control-label Account Owner
+                                        //-         .controls
+                                        //-                 input(type="text", name="accountOwner", ng-model="account.accountOwner", placeholder="Account Owner", required)
+                                        //-                 label.help-inline.required(ng-show="form.accountOwner.$error.required") *
+                                        //- .control-group
+                                        //-         label.control-label Tariff Status
+                                        //-         .controls
+                                        //-                 input(type="text", name="tariffStatus", ng-model="account.tariffStatus", placeholder="Tariff Status", required)
+                                        //-                 label.help-inline.required(ng-show="form.tariffStatus.$error.required") *
+                                        //- .control-group
+                                        //-         label.control-label Quote Template
+                                        //-         .controls
+                                        //-                 input(type="text", name="quoteTemplate", ng-model="account.quoteTemplate", placeholder="Quote Template", required)
+                                        //-                 label.help-inline.required(ng-show="form.quoteTemplate.$error.required") *
+                                pane(heading="Invoice Delivery",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label  Invoice Delivery Mode
+                                                .controls
+                                                        select(ui-select2, multiple="multiple", name="invoiceDeliveryMode", ng-model="account.invoiceDeliveryMode", data-placeholder="Invoice Delivery Mode", style="width:220px", required)                                                                
+                                                                option(ng-repeat="row in invoiceDeliveryModeList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.invoiceDeliveryMode.$error.required") *
+                                        .control-group
+                                                label.control-label  Invoice Delivery Frequency
+                                                .controls
+                                                        select(ui-select2, name="invoiceDeliveryFrequency", ng-model="account.invoiceDeliveryFrequency", data-placeholder="Invoice Delivery Frequency", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in invoiceDeliveryFrequencyList", value="{{row.v}}") {{row.n}}                                                       
+                                        .control-group
+                                                label.control-label  Invoice Redelivery Mode
+                                                .controls
+                                                        select(ui-select2,multiple="multiple", name="invoiceRedeliveryMode", ng-model="account.invoiceRedeliveryMode", data-placeholder="Invoice Redelivery Mode", style="width:220px")                                                                
+                                                                option(ng-repeat="row in invoiceRedeliveryModeList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.invoiceRedeliveryMode.$error.required") *
+                                        .control-group
+                                                label.control-label  Back-Up Document Requirements
+                                                .controls
+                                                        select(ui-select2, multiple="multiple", name="backUpDocumentRequirements", ng-model="account.backUpDocumentRequirements", data-placeholder="Back-Up Document Requirements", style="width:220px")
+                                                                option(ng-repeat="row in backUpDocumentRequirementsList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.backUpDocumentRequirements.$error.required") *
+                                        .control-group
+                                                label.control-label  Back-Up Data Requirements
+                                                .controls
+                                                        select(ui-select2, multiple="multiple", name="backUpDataRequirements", ng-model="account.backUpDataRequirements", data-placeholder="Back-Up Data Requirements", style="width:220px")
+                                                                option(ng-repeat="row in backUpDataRequirementsList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.backUpDataRequirements.$error.required") *
+                                pane(heading="Collections",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label  Payment Mode
+                                                .controls
+                                                        select(ui-select2, name="paymentMode", ng-model="account.paymentMode", placeholder="Payment Mode", style="width:205px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in paymentModeList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.paymentMode.$error.required") *
+                                        .control-group
+                                                label.control-label  Payment Frequency
+                                                .controls
+                                                        select(ui-select2, name="paymentFrequency", ng-model="account.paymentFrequency", placeholder="Payment Frequency", style="width:205px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in paymentFrequencyList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.paymentFrequency.$error.required") *
+                                        .control-group
+                                                label.control-label Is FPC Applicable?
+                                                .controls
+                                                        select(ui-select2, name="isFpcApplicable", ng-model="account.isFpcApplicable", data-placeholder="Is FPC Applicable?", style="width:220px", required)
+                                                                option(value="")
+                                                                option(ng-repeat="row in isFpcApplicableList", value="{{row.v}}") {{row.n}}
+                                                        label.help-inline.required(ng-show="form.isFpcApplicable.$error.required") *
+
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Name of FPC
+                                                .controls
+                                                        input(type="text",name="fpcName", ng-model="account.fpcName", placeholder="Name of FPC", style="width:205px")
+                                                        //- label.help-inline.required(ng-show="form.fpcName.$error.required") *
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Website Link
+                                                .controls
+                                                        input(type="url", name="fpcWebsiteLink", ng-model="account.fpcWebsiteLink", placeholder="Website Link", style="width:205px")
+                                                        //- label.help-inline.required(ng-show="form.fpcWebsiteLink.$error.required") *
+                                                        label.help-inline.required(ng-show="form.fpcWebsiteLink.$error.url")   invalid url
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Login ID (If applicable)
+                                                .controls
+                                                        input(type="text", name="fpcLoginId", ng-model="account.fpcLoginId", placeholder="Login ID", style="width:205px")                                                        
+                                        .control-group(ng-show="account.isFpcApplicable=='YES'")
+                                                label.control-label  Password (if applicable)
+                                                .controls
+                                                        input(type="text", name="fpcPassword", ng-model="account.fpcPassword", placeholder="Password", style="width:205px")                                                        
+                                        .control-group
+                                                label.control-label Approval Notification Format
+                                                .controls
+                                                        select(ui-select2, name="approvalNotificationFormat", ng-model="account.approvalNotificationFormat", data-placeholder="Approval Notification Format", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in approvalNotificationFormatList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.approvalNotificationFormat.$error.required") *
+                                        .control-group
+                                                label.control-label Approval Notification Frequency
+                                                .controls
+                                                        select(ui-select2, name="approvalNotificationFrequency", ng-model="account.approvalNotificationFrequency", data-placeholder="Approval Notification Frequency", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in approvalNotificationFrequencyList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.approvalNotificationFrequency.$error.required") *
+                                        .control-group
+                                                label.control-label Is remittance received
+                                                .controls
+                                                        select(ui-select2, name="isRemittanceReceived", ng-model="account.isRemittanceReceived", data-placeholder="Is remittance received", style="width:220px")
+                                                                option(value="")
+                                                                option(ng-repeat="row in isRemittanceReceivedList", value="{{row.v}}") {{row.n}}
+                                                        //- label.help-inline.required(ng-show="form.isRemittanceReceived.$error.required") *
+                                pane(heading="Contacts",style="overflow:hidden")
+                                        .control-group
+                                                .span6 Role
+                                                .span6 User
+                                        ng-form(name="permissionForm", ng-repeat="row in account.role")
+                                                .row-fluid
+                                                        .span6
+                                                                input.span9(ng-disabled="$index == 0", ui-select2="roleBar", ng-click="rolesCallback($index)", name="roleBar", ng-model="account.role[$index]", required)
+                                                                .help-inline.required(ng-show="form.roleBar.$error.required") *
+                                                        .span6
+                                                                input.span9(ui-select2="userBar", ng-click="rolesCallback($index)", name="userBar", ng-model="account.user[$index]", required)
+                                                                .help-inline.required(ng-show="form.userBar.$error.required") *
+                                                                .help-inline
+                                                                        a.close(ng-hide="$index == 0", ng-click="removeRoles($index)") &times;
+                                                br
+                        //- .form-actions
+                        //-         button.btn.btn-primary(ng-disabled="form.$invalid", type="submit",ng-click="create(account)") Save
+                        //-         button.btn.btn-inverse(type="submit") Cancel
+
+                        //- {{account}}

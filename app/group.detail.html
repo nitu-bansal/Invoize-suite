@@ -1,0 +1,27 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="groupDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a><a permission="updateGroup.*.*" ng-hide="groupDetailLoader" bs-tooltip="tooltip.edit" href="#/group/edit/{{$stateParams.groupId}}" ng-click="editGroup()" class="btn btn-primary btn-margin"><i class="icon-pencil icon-large"></i></a><a permission="deleteGroup.*.*" ng-hide="groupDetailLoader" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteGroup()" class="btn btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="groupDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+      </div>
+    </div>
+    <legend>Group</legend>
+    <div class="control-group">
+      <label class="control-label">Name</label>
+      <div class="controls">{{group.name}}                                         </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Type</label>
+      <div class="controls">{{group.type}}                                          </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls">{{group.description}}                                       </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Definition</label>
+      <div class="controls">{{group.definition | array2text}}   </div>
+    </div>
+  </form>
+</div>

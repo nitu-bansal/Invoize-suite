@@ -1,0 +1,21 @@
+
+<div class="row-fluid">
+  <div id="FixedRate" style="position:fixed;" class="span3">               <i ng-show="rateRequestListLoader" class="icon-spinner icon-spin icon-2x"></i>
+    <table ng-hide="rateRequestListLoader" class="table table-hover">
+      <tbody ng-repeat="row in oldRequest  | filter:search">
+        <tr ng-class="{  'alert alert-info': $state.includes('rateRequest.list.detail') &amp;&amp; $stateParams.requestId == row.requestId}" href="#/rate/request/{{$stateParams.requestType}}/{{row.requestId}}" ng-click="selectRateRequest(row.requestId)">
+          <td>
+            <ul class="nav nav-list"><strong>{{row.accountName}}</strong>
+              <li style="cursor: pointer;"><i class="icon-large icon-calendar">&nbsp Effective - {{row.effectiveDate}}</i></li>
+              <li style="cursor: pointer;"><i class="icon-large icon-calendar">&nbsp Expiry - {{row.expiryDate}}</i></li>
+              <li style="cursor: pointer;" ng-repeat="val in row.fields">{{val.n | toHumanReadable}} : {{val.v}}</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="span8 offset4">
+    <div ui-view="detail"></div>
+  </div>
+</div>

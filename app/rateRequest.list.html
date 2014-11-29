@@ -1,0 +1,28 @@
+
+<div class="row-fluid">
+  <div id="FixedRate" style="position:fixed;" class="span3"><i ng-show="rateRequestListLoader" class="icon-spinner icon-spin icon-2x"></i>
+    <table ng-hide="rateRequestListLoader" class="table table-hover">
+      <tbody ng-repeat="row in oldRequest  | filter:search">
+        <tr>
+          <td>
+            <ul bs-tooltip="tooltip.expand" ng-class="{'alert alert-info': ($state.includes('request.rateList.detail') ) &amp;&amp; $stateParams.requestId == row.requestId}" class="nav nav-list">
+              <label style="cursor: pointer;" ng-click="isCurrentRateStackHolderCollapsed = !isCurrentRateStackHolderCollapsed"><strong class="text-info"> Current Stakeholders : {{row.pendingFor.length}}</strong></label>
+              <div collapse="isCurrentRateStackHolderCollapsed">
+                <div ng-repeat="u in row.pendingFor" class="alert-blank"><i class="icon-user"></i><small>&nbsp; {{u.UserName}}</small></div>
+              </div>
+            </ul>
+            <ul ng-class="{'alert alert-info': $state.includes('request.rateList.detail') &amp;&amp; $stateParams.requestId == row.requestId}" href="#/request/rate/{{$stateParams.requestType}}/{{row.requestId}}" ng-click="selectRateRequest(row.requestId)" class="nav nav-list">
+              <label><strong class="text-info">{{row.accountName}}</strong></label>
+              <li style="cursor: pointer;"><i class="icon-large icon-calendar">&nbsp Effective - {{row.effectiveDate}}</i></li>
+              <li style="cursor: pointer;"><i class="icon-large icon-calendar">&nbsp Expiry - {{row.expiryDate}}</i></li>
+              <li style="cursor: pointer;" ng-repeat="val in row.fields">{{val.n | toHumanReadable}} : {{val.v}}</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="span8 offset4">
+    <div ui-view="detail"></div>
+  </div>
+</div>

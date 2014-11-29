@@ -1,0 +1,103 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="pull-right"><a onClick="window.history.back()" bs-tooltip="tooltip.back" style="cursor: pointer;" class="btn btn-primary btn-margin"> <i class="icon-mail-reply icon-largeasd"></i></a>
+          <button ng-disabled="form.$invalid" bs-tooltip="tooltip.sendRequest" style="cursor: pointer;" ng-click="create(selection,weightBracketFields,currentRateQualifier,$stateParams.accountId,$stateParams.quoteTemplateId,workflow,quoteEmail)" class="btn btn-primary btn-margin"> <i class="icon-ok icon-large"> </i></button>
+        </div>
+      </div>
+      <tabs>
+        <pane heading="Profile">
+          <div ng-repeat="row in defaultFields.selectionCriteria" ng-switch="row.n" class="control-group">
+            <label class="control-label">{{row.n | toHumanReadable}}</label>
+            <div class="controls">
+              <input type="text" name="{{row.n}}" ng-model="selection[row.n]" placeholder="{{row.n | toHumanReadable}}" value="{{selection[row.n]}}" required="required"/>
+              <label ng-show="form.{{row.n}}.$error.required" class="help-inline required">*                                                        </label>
+            </div>
+          </div>
+          <div ng-repeat="rows in  weightBracketFields" class="well">
+            <ng-form name="chargeTypeForm">
+              <div class="control-group"> <b>
+                  <label class="control-label">{{defaultFields.chargeType[$index]}}                                   </label></b></div>
+              <div class="control-group">                       
+                <label class="control-label">Rate Qualifier</label>
+                <div class="controls">                                                
+                  <select ui-select2="ui-select2" name="rateQualifier" ng-model="currentRateQualifier[$index]" data-placeholder="Please select..." style="width:200px" required="required">
+                    <option value=""></option>
+                    <option ng-repeat="row in rateQualifier" value="{{row.id}}">{{row.val}}</option>
+                  </select>
+                  <label ng-show="form.rateQualifier.$error.required" class="help-inline required">*                           </label>
+                </div>
+              </div>
+              <div class="control-group">                       
+                <label class="control-label">Weight Brackets</label>
+                <div class="controls">
+                  <div ng-repeat="row in rows" class="row-fluid">
+                    <ng-form name="weightBracketForm">
+                      <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;s&quot;,$parent.$index,$index)'}" name="s" ng-model="weightBracketFields[$parent.$index][$index]['s']" placeholder="{{row.sph}}" required="required" class="span1"/>&nbsp-&nbsp
+                      <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;e&quot;,$parent.$index,$index)'}" name="e" ng-model="weightBracketFields[$parent.$index][$index]['e']" placeholder="{{row.eph}}" required="required" class="span1"/>&nbsp&nbsp&nbsp&nbsp  
+                      <input type="text" name="v" ng-model="weightBracketFields[$parent.$index][$index]['v']" placeholder="Value" required="required" class="span2 offset1"/>
+                      <label ng-show="weightBracketForm.v.$error.required" class="help-inline required">*</label>
+                      <label class="help-inline"><a ng-hide="$index == 0" ng-click="removeFromWeightBracketFields($parent.$index,$index)" class="close">&times;                                        </a></label>
+                    </ng-form>
+                  </div>
+                </div>
+              </div>
+            </ng-form>
+          </div>
+        </pane>
+        <pane heading="Workflow" style="overflow:hidden">
+          <div class="control-group">
+            <label class="control-label">Workflow Definition</label>
+          </div>
+          <ng-form name="WorkflowDefinitionsForm" ng-repeat="row in workflowDefinitions">
+            <div class="control-group">
+              <label class="control-label"><span class="label label-inverse">Level {{$index + 1}}</span><br/><span ng-show="workflow.definition[$index].length &gt; 1" id="workflowLevel{{$index}}">
+                  <div style="cursor: pointer;" onclick="toggle(this,{{$index}})" count="*" class="label label-warning help-inline">All</div>
+                  <div ng-repeat="r in workflow.definition[$index] | limitTo:workflow.definition[$index].length-1" style="cursor: pointer;display: none;" onclick="toggle(this,{{$parent.$index}})" count="{{$index+1}}" class="label label-warning help-inline">Any {{$index + 1}}</div></span></label>
+              <input ui-select2="userGroupBar" name="workflowDefinition" ng-click="workflowDefinitionsCallback($index)" ng-model="workflow.definition[$index]" id="workflowId{{$index+1}}" select-validate="select-validate" required="required" class="span9"/>
+              <div class="help-inline"><a ng-hide="workflowDefinitions.length == 1" ng-click="removeFromWorkflowDefinitions($index)" class="close">&times;</a></div>
+              <label ng-show="WorkflowDefinitionsForm.workflowDefinition.$error.selectvalidate || WorkflowDefinitionsForm.workflowDefinition.$error.required" class="help-inline required">*</label>
+            </div>
+          </ng-form>
+        </pane>
+        <pane heading="Email" style="overflow:hidden">                                       
+          <div class="control-group">                                   
+            <label class="control-label">To</label>
+            <div class="controls">
+              <input ui-select2="userBar" name="toUserBar" ng-model="quoteEmail.to" select-validate="select-validate" required="required" class="span9"/>
+              <label ng-show="form.toUserBar.$error.selectvalidate || form.toUserBar.$error.required" class="help-inline required"> &nbsp;*                        </label>
+            </div>
+          </div>
+          <div class="control-group">                                   
+            <label class="control-label">Cc</label>
+            <div class="controls">
+              <input ui-select2="userBar" name="ccUserBar" ng-model="quoteEmail.cc" select-validate="select-validate" required="required" class="span9"/>
+              <label ng-show="form.ccUserBar.$error.selectvalidate || form.ccUserBar.$error.required" class="help-inline required"> &nbsp;*                                        </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Subject</label>
+            <div class="controls">
+              <input type="text" name="Subject" ng-model="quoteEmail.subject" placeholder="Subject" required="required"/>
+              <label ng-show="form.Subject.$error.required" class="help-inline required">*</label>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Signature</label>
+            <div class="controls">
+              <textarea rows="3" name="Signature" ng-model="quoteEmail.signature" placeholder="Signature" required="required">                                                       </textarea>
+              <label ng-show="form.Signature.$error.required" class="help-inline required">*</label>
+            </div>
+          </div>
+        </pane>
+        <pane heading="Template">
+          <div class="control-group">
+            <label class="control-label">Template                                             </label>
+          </div>
+        </pane>
+      </tabs>
+    </div>
+  </form>
+</div>

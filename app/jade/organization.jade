@@ -1,0 +1,29 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+//- .row-fluid.top-outline
+.container-fluid
+        include common_top_row
+        section(ng-init="list()")
+                .row-fluid
+                        .span2.bs-docs-sidebar(style="cursor: pointer;")
+                                ul.nav.nav-list.bs-docs-sidenav
+                                        input(type="text",ng-change="searchOrganization()", placeholder="Search", ng-model="search")
+                                        li.nav-header
+                                                h4(rel="tooltip") Organization
+                                                        .badge.label-info.pull-right(bs-tooltip="tooltip.total")  {{totalOrganization}}
+                                                span
+                                                         a.btn.btn-success.btn-mini(permission="createOrganization.*.*",ng-disabled="$state.includes('organization.new')",href="#/organization/new",bs-tooltip="tooltip.new" , ng-click="initializeOrganization()") 
+                                                                 i.icon-plus.icon-white
+                                                i.icon-spinner.icon-spin.icon-4x(ng-show="organizationListLoader")
+                                        ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMore()")
+                                                li(ng-class="{ active: $stateParams.organizationId == l.id}", ng-repeat="l in organizations")
+                                                        a(href="/#/organization/{{l.id}}", ng-click="selectOrganization(l.id)")
+                                                                i.icon-chevron-right
+                                                                {{l.v|titlecase}}
+                                        ul
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="loadingMore")
+                        .span10
+                                //- .row-fluid
+                                //-         a.pull-right.btn.btn-success.btn-margin(href="#/organization/new", ng-click="initializeOrganization()")
+                                //-                 i.icon-plus.icon-white
+                                //-                 |  Organization
+                                div(ui-view="list")

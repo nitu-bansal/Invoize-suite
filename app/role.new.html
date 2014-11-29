@@ -1,0 +1,34 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="roleCreateLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button permission="createRole.*.*" ng-hide="roleCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="create(role)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="roleCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>Role</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls">
+          <input type="text" id="rolname" name="roleName" duplicate="role" ng-model="role.name" placeholder="Role Name" required="required"/>
+          <label ng-show="form.roleName.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.roleName.$error.duplicate" class="help-inline required">Role exists.</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+          <textarea rows="3" name="roleDescription" ng-model="role.description" placeholder="Role Description" required="required"></textarea>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Permissions</label>
+        <div class="controls">
+          <input ui-select2="roleBar" name="roleBar" ng-model="role.definition" ng-change="showDialog(role.definition)" select-validate="select-validate" required="required" class="span9 roleBarselect"/>
+          <div ng-show="form.roleBar.$error.selectvalidate || form.roleBar.$error.required" class="help-inline required">*</div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

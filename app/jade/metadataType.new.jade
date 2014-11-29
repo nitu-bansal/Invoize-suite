@@ -1,0 +1,54 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form", class="css-form")
+                .fieldset
+                        legend Metadata Type
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="metadataTypeCreateLoader", ng-click="backToListMetadataType()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        button.btn.btn-primary(permission="createMetadataType.*.*", ng-hide="metadataTypeCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="createMetadataType(metadataType)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="metadataTypeCreateLoader")
+                        tabs
+                                pane(heading="Profile",style="overflow:hidden")
+                                        .control-group
+                                                label.control-label Type
+                                                .controls
+                                                        input(type="text", name="metadataTypeName", duplicate="metadataType", ng-model="metadataType.Name", placeholder="Type", required)
+                                                        label.help-inline.required(ng-show="form.metadataTypeName.$error.required") *
+                                                        label.help-inline.required(ng-show="form.metadataTypeName.$error.duplicate") MetadataType exists.
+                                        .control-group
+                                                label.control-label Description
+                                                .controls
+                                                        textarea(rows=3, name="metadataTypeDescription", ng-model="metadataType.description", placeholder="Description")                                                        
+                                pane(heading="Fields",style="overflow:hidden")
+                                        .control-group
+                                                .span4 Detail Structure
+                                                .span4 Data Type
+                                                .span4 Mandatory
+                                        ng-form(name="fieldsForm", ng-repeat="field in metadataType.fields")
+                                                .row-fluid
+                                                        .span4
+                                                                input(type="text", name="detailStructureBar", ng-model="metadataType.fields[$index]['detailStructure']", placeholder="Field name", required)                                                                
+                                                                label.help-inline.required(ng-show="form.detailStructureBar.$error.required") *
+                                                        .span4
+                                                                select(ui-select2, name="dataTypeBar", ng-click="dataTypeChanged($index)", ng-model="metadataType.fields[$index]['dataType']", data-placeholder="Please select...", style="width:200px", required)
+                                                                        option(value="")
+                                                                        option(ng-repeat="dataType in dataTypeList", value="{{dataType.v}}") {{dataType.n}}
+                                                                label.help-inline.required(ng-show="form.dataTypeBar.$error.required") *                                                                
+                                                        .span3
+                                                                input(type="checkbox", name="isMandatory", ng-model="metadataType.fields[$index]['isMandatory']")
+                                                        .span1
+                                                                a.close(ng-hide="metadataType.fields.length == 1", ng-click="removeFields($index)") &times;                                                                
+                                                br
+                        //- .form-actions
+                        //-         button.btn.btn-primary(ng-disabled="form.$invalid", type="submit",ng-click="createMetadataType(metadataType)") Save
+                        //-         button.btn.btn-inverse(type="submit") Cancel
+
+                        //- {{metadataType}}
+                        //- {{fields}}
+                        //- 
+
+                        //- {{metadataType.fields}}
+
+

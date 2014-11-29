@@ -1,0 +1,41 @@
+
+include common_top_row
+section
+        .container-fluid
+                .row-fluid
+                        .span3.bs-docs-sidebar(style="cursor: pointer;")
+                                ul.nav.nav-list.bs-docs-sidenav.affix
+                                        li.nav-header                                                
+                                                h4(rel="tooltip") Rates
+                                                li(ng-class="{ active: $state.includes('request.rateList') && $stateParams.requestType == 'pending'}")
+                                                        a(data-toggle="tab", href="#/request/rate/pending", ng-click="getRateRequestList('pending')") Pending
+                                                                span.badge.badge-warning.pull-right(ng-show="pendingRateRequestCount"){{pendingRateRequestCount}}
+                                                li(ng-class="{ active: $state.includes('request.rateList') && $stateParams.requestType == 'inprocess'}")
+                                                        a(data-toggle="tab", href="#/request/rate/inprocess", ng-click="getRateRequestList('inprocess')") Inprocess
+                                                                span.badge.badge-warning.pull-right(ng-show="inProcessRateRequestCount") {{inProcessRateRequestCount}}
+                                        li(permission="readTariff.*.*").nav-header
+                                                h4(rel="tooltip") Tariffs
+                                                li(permission="readTariff.*.*",ng-class="{ active: $state.includes('request.tmsList') && $stateParams.requestType == 'pending'}")
+                                                        a(data-toggle="tab", href="#/request/tms/pending", ng-click="getTmsRequestList('pending')") Pending
+                                                                span.badge.badge-warning.pull-right(ng-show="pendingTmsRequestCount"){{pendingTmsRequestCount}}
+                                                li(permission="readTariff.*.*",ng-class="{ active: $state.includes('request.tmsList') && $stateParams.requestType == 'inprocess'}")
+                                                        a(data-toggle="tab", href="#/request/tms/inprocess", ng-click="getTmsRequestList('inprocess')") Inprocess
+                                                                span.badge.badge-warning.pull-right(ng-show="inProcessTmsRequestCount") {{inProcessTmsRequestCount}}
+                        .span9
+                                .container(ng-hide="$routeParams.requestType")
+                                        .row-fluid
+                                                        .span5
+                                                                h4 Quote Approval Status
+                                                                div(quote-Approval-Status='chartData')
+                                                        .span5
+                                                                h4 Successful Quotes Comparison
+                                                                div(quote-Success-Compare='chartData')
+
+                                        hr
+                                        .row-fluid
+                                                        .span5
+                                                                h4 Not Addressed
+                                                                div(not-Addressed='chartData')
+
+                                div(ui-view="list") 
+

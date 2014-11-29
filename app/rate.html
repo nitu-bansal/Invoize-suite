@@ -1,0 +1,121 @@
+
+<!--Using fluid as the other has fixed pixels and doesnt extend the whole screen.-->
+<div ng-controller="loginCtrl" class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <button type="button" data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="brand">
+      <div class="logo"><img src="img/invoize-logo-green.png" style="height:33px;width:105px;margin-top:-5px;padding-left:10px;"/>
+      </div></a>
+    <div class="nav-collapse collapse">
+      <ul class="nav pull-left">
+        <ul class="nav">
+          <li ng-class="{ active: $state.includes('route:/home')}"><a href="#/home"><i class="icon-home"></i> Home</a></li>
+        </ul>
+        <ul permission="quoteNav.*.*" class="nav">
+          <li ng-class="{ active: $state.includes('quote')}"><a href="#/quote"><i class="icon-list-alt"></i> Quote</a></li>
+        </ul>
+        <ul permission="rateNav.*.*" class="nav">
+          <li ng-class="{ active: $state.includes('rate')}"><a href="#/rate"><i class="icon-list-alt"></i> Rate</a></li>
+        </ul>
+        <ul permission="requestNav.*.*" class="nav">
+          <li ng-class="{ active: $state.includes('request')}"><a href="#/request"><i class="icon-inbox"></i> Requests<span ng-show="pendingRateRequestCount+pendingTmsRequestCount" class="badge badge-warning">{{pendingRateRequestCount+ pendingTmsRequestCount}}</span></a></li>
+        </ul>
+        <ul permission="tmsNav.*.*" class="nav">
+          <li ng-class="{ active: $state.includes('tms')}"><a href="#/tms"><i class="icon-list-alt"></i> Tariff</a></li>
+        </ul>
+        <ul permission="administrationNav.*.*" class="nav">
+          <li ng-class="{ active: $state.includes('organization') || $state.includes('role') || $state.includes('user') || $state.includes('account') || $state.includes('group') || $state.includes('workflow')}" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-wrench"></i> Administration<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+              <li permission="readRole.*.*" ng-class="{ active: $state.includes('role')}"><a href="#/role">Roles</a></li>
+              <li permission="readUser.*.*" ng-class="{ active: $state.includes('user')}"><a href="#/user">Users</a></li>
+              <li permission="readGroup.*.*" ng-class="{ active: $state.includes('group')}"><a href="#/group">Groups</a></li>
+              <li permission="readAccount.*.*" ng-class="{ active: $state.includes('account')}"><a href="#/account">Accounts</a></li>
+              <li permission="readWorkflow.*.*" ng-class="{ active: $state.includes('workflow')}"><a href="#/workflow">Workflows</a></li>
+              <li permission="readMetadata.*.*" ng-class="{ active: $state.includes('metadata')}"><a href="#/metadata">Metadata</a></li>
+            </ul>
+          </li>
+        </ul>
+      </ul>
+      <ul class="nav pull-right">
+        <li class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-user"></i> {{email}}<strong class="caret"></strong></a>
+          <ul class="dropdown-menu">
+            <li ng-class="{ active: $state.includes('changePassword')}"><a href="#/changePassword">Change Password</a></li>
+            <li><a ng-click="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div><img ng-show="loading" src="/img/loader5.gif" alt="Loading..." class="offset8"/>
+</div>
+<div>
+  <div class="container-fluid well">
+    <div class="row-fluid">
+      <div class="span10 offset1">
+        <div class="row-fluid">
+          <input ui-select2="searchBar" ng-model="searchBarValue" ng-click="itemChanged($event)" ui-keypress="{enter: 'searchCharge(searchBarValue)'}" class="span9"/>
+          <button ng-disabled="!$routeParams.accountId" ng-click="searchCharge(searchBarValue,$stateParams.accountId,$stateParams.templateId)" type="submit" class="btn btn-primary btn-margin">&nbsp&nbsp&nbsp&nbsp<i class="icon-search icon-white">&nbsp&nbsp&nbsp&nbsp</i></button>
+          <button permission="createRate.*.*" ng-disabled="!$stateParams.templateId" ng-click="getTemplate($stateParams.accountId,$stateParams.templateId)" href="#/rate/new/{{$routeParams.accountId}}/{{$routeParams.templateId}}" bs-tooltip="tooltip.rateRequestNew" class="pull-right btn btn-success btn-margin"><i class="icon-plus icon-white"></i> Request Rate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div style="cursor: pointer;" class="span2 bs-docs-sidebar">
+      <ul class="nav nav-list bs-docs-sidenav">
+        <input type="text" ng-change="searchAccount();toggleCollapse(false)" placeholder="Search" ng-model="search"/>
+        <li class="nav-header">
+          <h4>Accounts
+          </h4>
+          <li ng-show="isCollapsed" class="active"><a ng-click="toggleCollapse(false)" bs-tooltip="tooltip.showMore"><i class="icon-chevron-down pull-right"></i>{{selectedAccount}}</a></li>
+          <div collapse="isCollapsed">  
+            <div style="cursor: pointer;" class="span2 bs-docs-sidebar">
+              <ul id="Fixed" when-scrolled="loadMoreAccounts()" class="nav nav-list bs-docs-sidenav">                                   
+                <li ng-class="{ active: $stateParams.accountId == l.id}" ng-repeat="l in accountList | filter:search"><a ng-click="selectAccount(l.v);toggleCollapse(true);getChargeDefs(l.id);searchFor('Account',l.v,l.id,$stateParams.templateId)"><i class="icon-chevron-right"></i>{{l.v|titlecase}}</a></li>
+              </ul>
+            </div>
+          </div><i ng-show="accountListLoader" class="icon-spinner icon-spin icon-4x"></i>
+        </li>
+      </ul>
+      <ul ng-show="isCollapsed" class="nav nav-list bs-docs-sidenav">                     
+        <li class="nav-header">
+          <h4>Charge Definitions<i ng-show="chargeDefnListLoader" class="icon-spinner icon-spin icon-4x"></i></h4>
+        </li>
+        <li>
+          <span2><a permission="createChargeDefnRate.*.*" ng-disabled="$state.includes('rate.template')" href="#/rate/template/{{$routeParams.accountId}}" bs-tooltip="tooltip.new" ng-click="newChargeDefn()" class="btn btn-mini btn-success btn-margin"> <i class="icon-plus icon-white"></i></a></span2>
+          <ul id="FixedCharge" class="nav nav-list bs-docs-sidenav"> 
+            <li ng-class="{ active: $stateParams.templateId == l.id}" ng-click="searchFor('chargeDefn',l.v,$stateParams.accountId,l.id);selectChargeDefn(l.id)" ng-repeat="l in chargeDefinitions"><a> <i class="icon-chevron-right"></i>{{l.n | inflector:humanize}} </a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="span10">
+      <div ng-show="accountList">
+        <div ng-hide="$routeParams.accountId" class="container offset1">
+          <div class="row-fluid">
+            <div class="span5">
+              <h4>Total Revenue per Lane</h4>
+              <div total-Revenue="chartData"></div>
+            </div>
+            <div class="span5">
+              <h4>Top Quoted</h4>
+              <div top-Quoted="chartData"></div>
+            </div>
+          </div>
+          <hr/>
+          <div class="row-fluid">
+            <div class="span5">
+              <h4>Accounts</h4>
+              <div accounts="chartData"></div>
+            </div>
+            <div class="span5">
+              <h4>Lane Expiry Status</h4>
+              <div lane-Expiry="chartData"></div>
+            </div>
+          </div>
+        </div>
+        <div ui-view="list"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,246 @@
+
+<!--Using fluid as the other has fixed pixels and doesnt extend the whole screen.-->
+<div class="row-fluid top-outline"></div>
+<div class="container-fluid">
+  <div ng-controller="loginCtrl" class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+      <button type="button" data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="brand">
+        <div class="logo">Invoize.</div></a>
+      <div class="nav-collapse collapse">
+        <ul class="nav pull-left">
+          <ul class="nav">
+            <li ng-class="{ active: $state.includes('route:/home')}"><a href="#/home"><i class="icon-home"></i> Home </a></li>
+          </ul>
+          <ul permission="rateNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('rate')}"><a href="#/rate"><i class="icon-list-alt"></i> Rates </a></li>
+          </ul>
+          <ul permission="requestNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('rateRequest')}"><a href="#/rate/request"><i class="icon-inbox"></i> Requests <span class="badge badge-warning">13</span></a></li>
+          </ul>
+          <ul permission="administrationNav.*.*" class="nav">
+            <li ng-class="{ active: $state.includes('organization') || $state.includes('role') || $state.includes('user') || $state.includes('account') || $state.includes('group') || $state.includes('workflow')}" class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-wrench"></i> Administration <strong class="caret"></strong></a>
+              <ul class="dropdown-menu">
+                <li permission="readOrganization.*.*" ng-class="{ active: $state.includes('organization')}"><a href="#/organization">Organizations</a></li>
+                <li permission="readRole.*.*" ng-class="{ active: $state.includes('role')}"><a href="#/role">Roles</a></li>
+                <li permission="readUser.*.*" ng-class="{ active: $state.includes('user')}"><a href="#/user">Users</a></li>
+                <li permission="readGroup.*.*" ng-class="{ active: $state.includes('group')}"><a href="#/group">Groups</a></li>
+                <li permission="readAccount.*.*" ng-class="{ active: $state.includes('account')}"><a href="#/account">Accounts</a></li>
+                <li permission="readWorkflow.*.*" ng-class="{ active: $state.includes('workflow')}"><a href="#/workflow">Workflows</a></li>
+                <li permission="readMetadata.*.*" ng-class="{ active: $state.includes('metadata')}"><a href="#/metadata">Metadata                                                        </a></li>
+              </ul>
+            </li>
+          </ul>
+        </ul>
+        <ul class="nav pull-right">
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-user"></i> {{email}}<strong class="caret"></strong></a>
+            <ul class="dropdown-menu">
+              <li ng-class="{ active: $state.includes('changePassword')}"><a href="#/changePassword">Change Password</a></li>
+              <li><a ng-click="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div><img ng-show="loading" src="/img/loader5.gif" alt="Loading..." class="offset8"/>
+  </div>
+  <section>
+    <div class="row-fluid space">
+      <div class="span3">
+        <div class="row-fluid"><a href="#/laneTemplate/new" class="btn btn-primary">New Lane Template</a></div><br/>
+        <div class="row-fluid">
+          <input type="search" placeholder="Search .." ng-model="search"/>
+        </div>
+        <div class="row-fluid">
+          <table class="table">
+            <tbody>
+              <ul ng-repeat="l in list() | filter:search" class="nav nav-list">
+                <li><a href="#/laneTemplate/{{l.templateName}}">{{l.templateName}}</a></li>
+              </ul>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="span8">
+        <form novalidate="novalidate" name="form" class="well form-horizontal">
+          <div class="row-fluid">
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Template Name</label>
+                <div class="controls">
+                  <input type="text" name="templateName" ng-model="template.templateName" placeholder="Template Name" required="required"/>
+                  <label ng-show="form.templateName.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+            </div>
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Accounts</label>
+                <div class="controls">
+                  <select ui-select2="ui-select2" multiple="multiple" name="accountId" ng-model="template.accountId" data-placeholder="Please select..." style="width:200px" required="required">
+                    <option ng-repeat="item in accountList" value="{{item.text}}">{{item.text}}</option>
+                  </select>
+                  <label ng-show="form.accountId.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span12">
+              <div class="control-group">
+                <div class="controls">
+                  <ul class="unstyled">
+                    <li ng-repeat="l in template.templateId"><span>{{l.id}} : {{l.value}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Template Id</label>
+                <div class="controls">
+                  <select ui-select2="ui-select2" name="tempId" ng-model="template.tempId" data-placeholder="Please select..." style="width:200px" required="required">
+                    <option value=""></option>
+                    <option ng-repeat="item in accountList" value="{{item.text}}">{{item.text}}</option>
+                  </select>
+                  <label ng-show="form.tempId.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+            </div>
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Template Id Value</label>
+                <div class="controls">
+                  <input type="text" name="tempValue" ng-model="template.tempValue" size="30" placeholder="Value" required="required"/>
+                  <label ng-show="form.tempValue.$error.required" class="help-inline required">*</label><a ng-hide="form.tempId.$error.required || form.tempValue.$error.required" ng-click="addToTemplateId(template)" class="btn btn-info">Add</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="offset5 span2">
+              <button ng-hide="form.templateName.$error.required || form.accountId.$error.required || !template.templateId.length" type="submit" ng-click="create(template)" class="btn btn-primary">Save Template</button>
+            </div>
+          </div>
+        </form>
+        <form novalidate="novalidate" name="chargeForm" class="well form-horizontal">                               
+          <div ng-repeat="charge in template.charge" class="row-fluid well">
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Charge :</label>
+                <div class="controls">
+                  <label>{{charge.name}}</label>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Fields :</label>
+                <div class="controls">
+                  <label ng-repeat="value in charge.field">{{value}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="span6"> 
+              <div class="control-group">
+                <label class="control-label">Description :</label>
+                <div class="controls">
+                  <label>{{charge.description}}</label>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Tariff Application Base :</label>
+                <div class="controls">
+                  <label>{{charge.base}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid well">
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Charge</label>
+                <div class="controls">
+                  <select ui-select2="ui-select2" name="chargeName" ng-model="template.chargeName" data-placeholder="Please select..." style="width:200px" required="required">
+                    <option value=""></option>
+                    <option ng-repeat="item in chargeList" value="{{item.text}}">{{item.text}}</option>
+                  </select>
+                  <label ng-show="chargeForm.chargeName.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Fields</label>
+                <div class="controls">
+                  <select ui-select2="ui-select2" multiple="multiple" name="chargeField" ng-model="template.chargeField" data-placeholder="Please select..." style="width:200px" required="required">
+                    <option ng-repeat="item in fieldList" value="{{item.text}}">{{item.text}}</option>
+                  </select>
+                  <label ng-show="chargeForm.chargeField.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+            </div>
+            <div class="span6"> 
+              <div class="control-group">
+                <label class="control-label">Description</label>
+                <div class="controls">
+                  <input type="text" name="chargeDescription" ng-model="template.chargeDescription" placeholder="Charge Description" required="required"/>
+                  <label ng-show="chargeForm.chargeDescription.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Tariff Application Base</label>
+                <div class="controls">
+                  <select ui-select2="ui-select2" name="chargeBase" ng-model="template.chargeBase" style="width:200px" data-placeholder="Please select..." required="required">
+                    <option value=""></option>
+                    <option ng-repeat="item in fieldList" value="{{item.text}}">{{item.text}}</option>
+                  </select>
+                  <label ng-show="chargeForm.chargeBase.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="offset5 span2"><a ng-hide="chargeForm.$invalid" ng-click="addToTemplateCharge(template)" class="btn btn-primary">Save Charge</a></div>
+          </div>
+        </form>
+        <form novalidate="novalidate" name="exceptionForm" class="well form-horizontal">
+          <div class="row-fluid">
+            <div class="span12">
+              <div class="control-group">
+                <div class="controls">
+                  <ul class="unstyled">
+                    <li ng-repeat="l in template.exception"><span>{{l.id}} : {{l.value}}</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Exception</label>
+                <div class="controls">
+                  <select ui-select2="ui-select2" name="exceptionId" ng-model="template.exceptionId" data-placeholder="Please select..." style="width:200px" required="required">
+                    <option value=""></option>
+                    <option ng-repeat="item in exceptionList" value="{{item.text}}">{{item.text}}</option>
+                  </select>
+                  <label ng-show="exceptionForm.exceptionId.$error.required" class="help-inline required">*</label>
+                </div>
+              </div>
+            </div>
+            <div class="span6">
+              <div class="control-group">
+                <label class="control-label">Exception Value</label>
+                <div class="controls">
+                  <input type="text" name="exceptionValue" ng-model="template.exceptionValue" size="30" placeholder="Value" required="required"/>
+                  <label ng-show="exceptionForm.exceptionValue.$error.required" class="help-inline required">*</label><a ng-hide="exceptionForm.$invalid" ng-click="addToException(template)" class="btn btn-info">Add</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="offset5 span2"><a ng-show="template.exception.length" ng-click="" class="btn btn-primary">Save Exception</a></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

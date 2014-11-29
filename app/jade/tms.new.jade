@@ -1,0 +1,44 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="tariffCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        button.btn.btn-primary(ng-hide="tariffCreateLoader", ng-disabled="form.$invalid || !IsFileAttached", type="submit", ng-click="create(tariff)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="tariffCreateLoader")
+                                legend New Tariff
+                        //- .control-group
+                        //-     label.control-label Account
+                        //-     .controls
+                        //-             input.input-xlarge(ui-select2="accountBar", name="accountBar", ng-model="tariff.account", required)
+                        //-             label.help-inline.required(ng-show="form.accountBar.$error.required") *
+
+                        .control-group
+                            label.control-label Effective Date
+                            .controls
+                                    input(type="text", name="effectiveDate", ng-model="tariff.effectiveDate", placeholder="Effective Date", b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.effectiveDate.$error.required") *
+                        .control-group
+                            label.control-label Expiry Date
+                            .controls
+                                    input(type="text", name="expiryDate", ng-model="tariff.expiryDate", placeholder="Expiry Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.expiryDate.$error.required") *
+                        .control-group
+                            label.control-label Received Date
+                            .controls
+                                    input(type="text", name="receivedDate", ng-model="tariff.receivedDate", placeholder="Received Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker')
+                        .control-group
+                            label.control-label Received From
+                            .controls
+                                    input(type="text", name="receivedFrom", ng-model="tariff.receivedFrom", placeholder="Received From", required)
+                                    label.help-inline.required(ng-show="form.receivedFrom.$error.required") *
+                        .control-group
+                            label.control-label Comments
+                            .controls
+                                    textarea(rows=3, name="tariffComments", ng-model="tariff.comment", placeholder="Comments")
+        .control-group
+                include upload
+//- {{tariff}}

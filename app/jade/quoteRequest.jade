@@ -1,0 +1,34 @@
+
+include common_top_row
+section
+        .container-fluid        
+                .row-fluid
+                        .span3.bs-docs-sidebar(style="cursor: pointer;")                                
+                                ul.nav.nav-list.bs-docs-sidenav.affix                                     
+                                        li.nav-header
+                                                h4(rel="tooltip") Quotes                                                
+                                                li(ng-class="{ active: $state.includes('rateRequest.list') && $stateParams.requestType == 'pending'}")
+                                                        a(data-toggle="tab", href="#/rate/request/pending", ng-click="getRateRequestList('pending')") Pending 
+                                                                span.badge.badge-warning.pull-right(ng-show="pendingRateRequestCount"){{pendingRateRequestCount}}
+                                                li(ng-class="{ active: $state.includes('rateRequest.list') && $stateParams.requestType == 'inprocess'}")
+                                                        a(data-toggle="tab", href="#/rate/request/inprocess", ng-click="getRateRequestList('inprocess')") Inprocess 
+                                                                span.badge.badge-warning.pull-right(ng-show="inProcessRateRequestCount") {{inProcessRateRequestCount}}                       
+
+                        .span9
+                                .container(ng-hide="$routeParams.requestType")
+                                        .row-fluid
+                                                        .span5
+                                                                h4 Quote Approval Status 
+                                                                div(quote-Approval-Status='chartData') 
+                                                        .span5  
+                                                                h4 Successful Quotes Comparison  
+                                                                div(quote-Success-Compare='chartData')     
+                                                        
+                                        hr                                                        
+                                        .row-fluid
+                                                        .span5  
+                                                                h4 Not Addressed     
+                                                                div(not-Addressed='chartData')                                                                                                     
+                       
+                                div(ui-view="list")
+                       

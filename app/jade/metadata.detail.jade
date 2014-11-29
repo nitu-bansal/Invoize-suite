@@ -1,0 +1,24 @@
+.fluid-row
+        .offset1.span8
+                form.form-horizontal(novalidate, name="form")
+                        fieldset                        
+                                .fluid-row
+                                        .pull-right 
+                                                a.btn.btn-primary.btn-margin(ng-hide="metadataDetailLoader", ng-click="backToListMetadata()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                a.btn.btn-primary.btn-margin(permission="editMetadata.*.*", ng-hide="userDetailLoader", bs-tooltip="tooltip.edit", href="#/metadata/{{$stateParams.metadataType}}/edit/{{$stateParams.metadataId}}")
+                                                        i.icon-pencil.icon-large
+                                                a.btn.btn-primary.btn-margin(permission="deleteMetadata.*.*", ng-hide="metadataDetailLoader", ng-click="confirmDeleteMetadata()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                        i.icon-trash.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="metadataDetailLoader")
+                                        legend Metadata
+                                .control-group
+                                        label.control-label Value
+                                        .controls                                        
+                                                label : {{selectedMetadata.value}}    
+                                .control-group(ng-repeat="row in selectedMetadataFields",ng-switch='row.t')
+                                        label.control-label {{row.v}}
+                                        .controls(ng-switch-when='date')
+                                                label : {{selectedMetadata[row.v] | date:'mediumDate'}}
+                                        .controls(ng-switch-default)
+                                                label : {{selectedMetadata[row.v]}}

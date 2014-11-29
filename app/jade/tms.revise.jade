@@ -1,0 +1,135 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="tariffCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                            i.icon-mail-reply.icon-large
+                                        button.btn.btn-success(permission="tariffApprove.*.*", ng-hide="tariffCreateLoader || isInProcess", ng-disabled="form.$invalid", type="submit", ng-click="approveTariff(tariff)", style="cursor: pointer;", bs-tooltip="tooltip.approve")
+                                            i.icon-ok.icon-large
+                                        button.btn.btn-danger(permission="tariffReject.*.*", ng-hide="tariffCreateLoader || isInProcess", ng-disabled="form.$invalid",type="submit", ng-click="rejectTariff()", style="cursor: pointer;", bs-tooltip="tooltip.reject")
+                                            i.icon-remove.icon-large
+
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="tariffCreateLoader")
+                                legend Revise Tariff
+                        //- .control-group
+                        //-     label.control-label Account
+                        //-     .controls
+                        //-             label(ng-model="tariff.account") : {{tariff}}
+                        //-             //- input.input-xlarge(ui-select2="accountBar", name="accountBar", ng-model="tariff.account", ng-readonly ="true")
+
+                        .control-group
+                            label.control-label Effective Date
+                            .controls
+                                    input(type="text", name="effectiveDate", ng-model="tariff.effectiveDate",value="{{tariff.effectiveDate | date:'mediumDate'}}",data-date-format="M d, yyyy" , placeholder="Effective Date", b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.effectiveDate.$error.required") *
+                        .control-group
+                            label.control-label Expiry Date
+                            .controls
+                                    input(type="text", name="expiryDate", ng-model="tariff.expiryDate",value="{{tariff.expiryDate | date:'mediumDate'}}",data-date-format="M d, yyyy" , placeholder="Expiry Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.expiryDate.$error.required") *
+                        .control-group
+                            label.control-label Received Date
+                            .controls
+                                    input(type="text", name="receivedDate", ng-model="tariff.receivedDate",value="{{tariff.receivedDate | date:'mediumDate'}}",data-date-format="M d, yyyy" , placeholder="Received Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.receivedDate.$error.required") *
+                        .control-group
+                            label.control-label Received From
+                            .controls
+                                    input(type="text", name="receivedFrom", ng-model="tariff.receivedFrom", placeholder="Received From", required)
+                                    label.help-inline.required(ng-show="form.receivedFrom.$error.required") *
+                        .control-group
+                            label.control-label Comments
+                            .controls
+                                    textarea(rows=3, name="tariffComments", ng-model="tariff.comment", placeholder="Comments",required)
+                                    label.help-inline.required(ng-show="form.tariffComments.$error.required") *
+
+                        //- {{tariff.docId | json}}
+
+                fieldset
+                        .fluid-row
+                                legend Attached Documents
+                         .control-group
+                                div(data-ng-repeat='f in tariff.docId')
+                                        ng-form.row
+                                                .alert-blank
+                                                        .btn-toolbar.reviseFiles(id="reviseFiles{{$index}}",ng-controller="FileUploadController",ng-class='queue[0].$viewStyle()')
+                                                                .row-fluid
+                                                                        .btn-group(permission="reviseTariffDocument.*.*")
+                                                                                div(ng-init="updateCurrentFile=true;")
+                                                                                        form.fileupload(data-upload-template-id="template-upload-2",method='POST', enctype='multipart/form-data',data-ng-app="angularApp")
+                                                                                               .a.btn.btn-success.fileinput-button(bs-tooltip="tooltip.upload")
+                                                                                                        i.icon-upload-alt
+                                                                                                        input(type='file',id="files-upload", name='files[]',ng-click="fileToReplace(f)")
+
+                                                                         .btn-group
+                                                                                .btn.btn-danger.btn-small(permission="deleteTariffDocument.*.*",data-dismiss='alert',ng-click="removeExistingAttachment(f.id)", bs-tooltip="tooltip.delete",style="cursor: pointer;")
+                                                                                        i.icon-remove
+                                                                                .btn.btn-small
+                                                                                        //- {{queue.length}}
+                                                                                        i.icon-large.icon-paper-clip(ng-hide="queue.length")
+                                                                                        i.icon-large(ng-class='queue[0].$iconStyle()')
+                                                                                        a.link(permission="downloadTariff.*.*",ng-hide="queue.length",style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='http://invoize.info/api/tms/download/file?id={{f.id}}', download='{{f.name}}' )
+                                                                                                strong {{f.v}}
+                                                                                        a.link(permission="downloadTariff.*.*",ng-show="queue.length",style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='http://invoize.info/api/tms/download/file?id={{queue[0].id}}', download='{{queue[0].name}}' )
+                                                                                                strong {{queue[0].name}}
+                                                                                        strong(ng-hide="queue.length",ng-hide="checkType(downloadTariff)") {{f.v}}
+                                                                                        strong(ng-show="queue.length",ng-hide="checkType(downloadTariff)") {{queue[0].name}}
+
+                                                                                .btn.btn-warning.btn-small(ng-show="queue.length",ng-click="UndoFileRevision(f.id,$index)", bs-tooltip="tooltip.undo",style="cursor: pointer;")
+                                                                                        i.icon-undo
+                                                                        .btn-group.pull-right.span3(bs-tooltip="tooltip.type",permission="reviseTariffDocument.*.*")
+                                                                                select.span12(name='fileTypeSelect',ng-model='f.t',ng-change="setFileType(f.id,f.t)",ng-options='value.id as value.name for (key, value) in fileTypeSelects', data-style='btn btn-success btn-small show-tick', bs-select='bs-select' ,required)
+                                                                                label.help-inline.required(ng-show="form.fileTypeSelect.$error.required") *
+                fieldset(ng-hide="isInProcess",permission="uploadTariffDocument.*.*")
+                        .fluid-row
+                                legend Upload New Documents
+                         .control-group
+                                include upload
+
+
+                fieldset(permission="historyTariff.*.*")
+                        .fluid-row
+                                legend History
+                                        i.icon-spinner.icon-spin.icon.icon-large(ng-show="tariffHistoryLoader")
+                        .div(ng-hide="tariffHistoryAvailable || tariffHistoryLoader" )
+                                h5 History not available for this tariff
+                        .div(ng-show="tariffHistoryAvailable")
+                                .control-group
+                                        .alert-blank(ng-repeat="row in documentRequestHistory")
+                                                .fluid-row(ng-click='isCollapsed = !isCollapsed')
+                                                        i.icon-user
+                                                        strong.text-info(style="cursor: pointer;", bs-tooltip="tooltip.expand") &nbsp {{row.email}}
+                                                        span.small.label.label-success.pull-right(ng-show="row.oldSnapshot.action=='A'") Approved
+                                                        span.small.label.label-important.pull-right(ng-show="row.oldSnapshot.action=='R'") Rejected
+                                                        span.small.label.label-info.pull-right(ng-show="row.action=='C'") Created
+                                                        br
+                                                        small.muted     Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} ,
+                                                        small.muted     Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} ,
+                                                        small.muted     Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}
+                                                        div(collapse='isCollapsed')
+                                                                strong.text-black Attached Documents
+
+                                                                div(data-ng-repeat='file in row.oldSnapshot.docId')
+                                                                        div
+                                                                                div.pull-right
+                                                                                        &nbsp
+                                                                                        span.small.label.label-info {{file.t}}
+
+                                                                                i.icon-large.icon-paper-clip &nbsp
+                                                                                a.link(permission="downloadTariff.*.*",href='http://invoize.info/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download",data-placement="right")
+                                                                                        strong|{{file.v}}
+                                                                                strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                                                    br
+                                                                                    small.muted  You do not have download permissions
+
+                                                                                //- .control-group
+                                                                                //-         div
+                                                                                //-                 i.icon-small.icon-paper-clip &nbsp
+                                                                                //-                 a.link.span.small(href='http://invoize.info/api/tms/download/file?id={{file.id}}',download='{{file.name}}') {{file.v}}
+                                                                                //-         div.pull-right
+                                                                                //-                 span.small.label.label-info {{file.t}}
+                                                                strong.text-black  Comments
+                                                                br
+                                                                small {{row.oldSnapshot.comment}}
+                                                .fluid-row(id="{{$index}}")

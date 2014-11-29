@@ -1,0 +1,63 @@
+
+<div class="offset1 span8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="quoteDefnCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button ng-hide="quoteDefnCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="createquoteDefn(quoteDefn,$routeParams.accountId)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="quoteDefnCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>New Quote Definition</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Name</label>
+        <div class="controls">
+          <input type="text" name="name" ng-model="quoteDefn.name" placeholder="Name" required="required"/>
+          <label ng-show="form.name.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Group</label>
+        <div class="controls">
+          <select ui-select2="ui-select2" multiple="true" name="group" ng-model="quoteDefn.group" required="required" data-placeholder="Please select..." style="width:200px">
+            <option ng-repeat="field in quoteDefnGroup" value="{{field.n}}">{{field.n}}                                                        </option>
+          </select>
+          <label ng-show="form.group.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">                       
+        <label class="control-label">Charge Type</label>
+        <div class="controls">
+          <select ui-select2="ui-select2" multiple="multiple" name="chargeType" ng-model="quoteDefn.chargeType" data-placeholder="Please select..." style="width:200px" required="required">
+            <option ng-repeat="row in chargeType" value="{{row.id}}">{{row.val}}</option>
+          </select>
+          <label ng-show="form.chargeType.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Lane Parameters</label>
+        <div class="controls">
+          <select ui-select2="{'closeOnSelect':false}" multiple="true" name="laneParam" ng-model="quoteDefn.laneParam" required="required" data-placeholder="Please select..." style="width:200px">
+            <option ng-repeat="field in laneParameterList" value="{{field.n}}">{{field.n}}                                                        </option>
+          </select>
+          <label ng-show="form.laneParam.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Effective Base</label>
+        <div class="controls">
+          <select ui-select2="{'closeOnSelect':false}" name="effectiveBase" ng-model="quoteDefn.effectiveBase" required="required" data-placeholder="Please select..." style="width:200px">
+            <option value=""></option>
+            <option ng-repeat="field in quoteDefnEffectiveBase" value="{{field.n}}">{{field.n}}                                                        </option>
+          </select>
+          <label ng-show="form.effectiveBase.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+          <textarea rows="3" name="description" ng-model="quoteDefn.description" placeholder="Short Description">       </textarea>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

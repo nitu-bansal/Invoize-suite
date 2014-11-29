@@ -1,0 +1,71 @@
+.span9
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .pull-right
+                                a.btn.btn-primary.btn-margin(ng-hide="workflowDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                        i.icon-mail-reply.icon-large
+                                a.btn.btn-primary.btn-margin(permission="updateWorkflow.*.*", ng-hide="workflowDetailLoader", href="#/workflow/edit/{{$stateParams.workflowId}}", ng-click="editWorkflow()", style="cursor: pointer;", bs-tooltip="tooltip.edit")
+                                        i.icon-pencil.icon-large
+                                a.btn.btn-primary.btn-margin(permission="deleteWorkflow.*.*", ng-hide="workflowDetailLoader", ng-click="confirmDeleteWorkflow()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                        i.icon-trash.icon-large
+                                i.icon-spinner.icon-spin.icon-2x(ng-show="workflowDetailLoader")
+                        legend Workflow
+                        .control-group
+                                label.control-label Workflow Name
+                                .controls
+                                        label {{workflow.name}}
+
+                        //- legend Workflow Definition
+                     
+                        .alert-blank
+                                .control-group
+                                h4 Workflow Definition
+                                .control-group.well.well-small(ng-repeat="row in workflowDefinitions")
+                                        label.control-label
+                                                span.label.label-inverse Level {{$index + 1}}
+                                                br
+                                                .label.label-warning.help-inline(ng-switch="workflow.definitionCount[$index]")
+                                                        div(ng-switch-when="*") All
+                                                        div(ng-switch-default) Any {{workflow.definitionCount[$index]}}
+                                        .controls
+                                                label {{workflow.definition[$index] | workflowArray2text}}
+                        .control-group
+                                span   
+                                        b Created By : 
+                                        |{{workflow.createdBy}}, &nbsp
+                                span(ng-hide="workflow.createdOn") Created On : 2013-06-25, &nbsp
+                                span(ng-show="workflow.createdOn")
+                                        b Created On : 
+                                        |{{workflow.createdOn}}, &nbsp
+                               
+                                span(ng-show="workflow.updatedBy") 
+                                        b Modified By :
+                                        |{{workflow.updatedBy}}, &nbsp 
+
+                                span(ng-hide="workflow.updatedOn") 
+                                        b Modified On : 
+                                        |2013-06-25, &nbsp
+                                span(ng-show="workflow.updatedOn") 
+                                        b Modified On : 
+                                        |{{workflow.updatedOn}}
+
+
+                        //- .control-group
+                        //-         label.control-label 
+                        //-         .controls
+                                         
+                        //- .control-group(ng-show="workflow.updatedBy")
+                        //-         label.control-label Modified By
+                        //-         .controls
+                        //-                 label : {{workflow.updatedBy}}
+                        //- .control-group(ng-show="workflow.updatedBy")
+                        //-         label.control-label Modified On
+                        //-         .controls
+                        //-                 label(ng-hide="workflow.updatedOn") : 2013-06-25
+                        //-                 label(ng-show="workflow.updatedOn")  : {{workflow.updatedOn}}
+                        //- .form-actions
+                        //-         a.btn.btn-primary(href="#/workflow/edit/{{$stateParams.workflowId}}", ng-click="editWorkflow()")
+                        //-                 i.icon-pencil.icon-white  
+                        //-                 |   Edit
+                        //-         button.btn.btn-inverse(type="submit") Cancel
+        //- {{workflow}}

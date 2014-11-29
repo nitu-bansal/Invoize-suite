@@ -1,0 +1,119 @@
+.offset1.span8
+        form.form-horizontal
+                .fieldset
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="userDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="updateUser.*.*", ng-hide="userDetailLoader", bs-tooltip="tooltip.edit", href="#/user/edit/{{$stateParams.userId}}", ng-click="editUser($stateParams.userId)")
+                                                i.icon-pencil.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="deleteUser.*.*", ng-hide="userDetailLoader", ng-click="confirmDeleteUser()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                            i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-large(ng-show="userDetailLoader")
+                        tabs
+                                pane(heading="Profile")
+                                        .control-group
+                                                label.control-label User Name
+                                                .controls
+                                                        label : {{user.userName}}                                                        
+                                        .control-group
+                                                label.control-label Email
+                                                .controls
+                                                        label : {{user.email}}
+                                        .control-group
+                                                label.control-label First Names
+                                                .controls
+                                                        label : {{user.firstName | titlecase}} 
+                                        .control-group
+                                                label.control-label Last Name
+                                                .controls
+                                                        label : {{user.lastName | titlecase}}
+                                        .control-group
+                                                label.control-label Department
+                                                .controls
+                                                        label(ng-show="user.department") : {{user.department | titlecase}}
+                                                        label(ng-hide="user.department") : Rating                                                                                                         
+                                        .control-group
+                                                label.control-label Type
+                                                .controls
+                                                        label(ng-show="user.type") : {{user.type | titlecase}}
+                                                        label(ng-hide="user.type") : Internal 
+                                        .control-group
+                                                h4 Location                                        
+                                        .control-group
+                                                label.control-label Contact 1
+                                                .controls
+                                                        label(ng-show="user.contact1") : {{user.contact1 | titlecase}}
+                                                        label(ng-hide="user.contact1") : Not Available                                                                                                           
+                                        .control-group
+                                                label.control-label Contact 2
+                                                .controls
+                                                        label(ng-show="user.contact2") : {{user.contact2 | titlecase}}
+                                                        label(ng-hide="user.contact2") : Not Available                                                           
+                                        .control-group
+                                                label.control-label Company
+                                                .controls
+                                                        label(ng-show="user.company") : {{user.company | titlecase}}
+                                                        label(ng-hide="user.company") :  Ceva                                             
+                                        .control-group
+                                                label.control-label Address 1
+                                                .controls
+                                                        label(ng-show="user.address1") : {{user.address1 | titlecase}}
+                                                        label(ng-hide="user.address1") :  Not Available         
+                                        .control-group
+                                                label.control-label Address 2
+                                                .controls
+                                                        label(ng-show="user.address2") : {{user.address2 | titlecase}}
+                                                        label(ng-hide="user.address2") :  Not Available 
+                                        .control-group
+                                                label.control-label Country
+                                                .controls
+                                                        label(ng-show="user.country") : {{user.country | titlecase}}
+                                                        label(ng-hide="user.country") :  U.S.A                                                                                                              
+                                        .control-group
+                                                label.control-label Station
+                                                .controls
+                                                        label(ng-show="user.station") : {{user.station | titlecase}}
+                                                        label(ng-hide="user.station") :  DFW 
+
+                                pane(heading="Roles")
+                                        .control-group
+                                                label.control-label Roles
+                                                .controls
+                                                        label : {{user.role | array2text}} 
+
+                                pane(heading="Permissions",style="overflow:hidden")
+                                        .control-group
+                                                .row-fluid
+                                                        .span4
+                                                         h5 Permission
+                                                        .span4 
+                                                         h5 For
+                                                        .span4 
+                                                         h5 On
+
+                                                ng-form(name="permissionForm", ng-repeat="row in user.permission")
+                                                        .row-fluid
+                                                                .span4
+                                                                        label {{user.permission[$index]['permission'] | array2text}}
+                                                                .span4 
+                                                                        label {{user.permission[$index]['for']}}
+                                                                .span4 
+                                                                        label {{user.permission[$index]['on']| array2text}}
+                                                                        
+                                                                                a.close(ng-hide="user.permission.length == 1", ng-click="removePermissions($index)") &times;
+                                                        br
+
+
+                                pane(heading="Groups")
+                                        .control-group
+                                                label.control-label Groups
+                                                .controls
+                                                        label : {{user.group | array2text}}                                               
+                        //- .form-actions
+                        //-         a.btn.btn-primary(ng-disabled="userDetailLoader", href="#/user/edit/{{$stateParams.userId}}", ng-click="editUser($stateParams.userId)")
+                        //-                 i.icon-pencil.icon-white  
+                        //-                 |   Edit
+                        //-         button.btn.btn-inverse(ng-disabled="userDetailLoader", type="submit") Cancel
+        //- {{user}}
+

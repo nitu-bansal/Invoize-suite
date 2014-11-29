@@ -1,0 +1,65 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+div
+        .container-fluid.well
+                .row-fluid
+                        .span10.offset1
+                                .row-fluid
+                                        input.span9(ui-select2="searchBar", ng-model="searchBarValue",ng-click="itemChanged($event)", ui-keypress="{enter: 'searchQuote(searchBarValue)'}")
+                                        button.btn.btn-primary.btn-margin(ng-disabled="!$routeParams.accountId",ng-click="searchQuote(searchBarValue,$stateParams.accountId,$stateParams.quoteTemplateId)",type="submit")&nbsp&nbsp&nbsp&nbsp
+                                                i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp                                        
+                                        button.pull-right.btn.btn-success.btn-margin(ng-disabled="!$stateParams.quoteTemplateId",ng-click="getTemplate($stateParams.accountId,$stateParams.quoteTemplateId)",href="#/quote/new/{{$routeParams.accountId}}/{{$routeParams.templateId}}",bs-tooltip="tooltip.rateRequestNew")
+                                                i.icon-plus.icon-white
+                                                |  Request Quote
+.container-fluid
+        .row-fluid
+                .span2.bs-docs-sidebar(style="cursor: pointer;")
+                        ul.nav.nav-list.bs-docs-sidenav
+                                input(type="text",ng-change="searchAccount();toggleCollapse(false)", placeholder="Search", ng-model="search")
+                                li.nav-header
+                                        h4 Accounts                                                
+                                        li.active(ng-show='isCollapsed')
+                                                a(ng-click='toggleCollapse(false)',bs-tooltip="tooltip.showMore")
+                                                        i.icon-chevron-down.pull-right
+                                                        {{selectedAccount}}
+                                        div(collapse='isCollapsed')   
+                                                .span2.bs-docs-sidebar(style="cursor: pointer;")
+                                                        ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMoreAccounts()")                                    
+                                                                li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+                                                                        a(ng-click="selectAccount(l.v);toggleCollapse(true);getQuoteDefs(l.id);searchFor('Account',l.v,l.id,$stateParams.quoteTemplateId)")
+                                                                                i.icon-chevron-right
+                                                                                {{l.v|titlecase}}
+                                        i.icon-spinner.icon-spin.icon-4x(ng-show="accountListLoader")                                                        
+                        ul.nav.nav-list.bs-docs-sidenav(ng-show='isCollapsed')                      
+                                li.nav-header
+                                        h4 Quote Definitions
+                                                i.icon-spinner.icon-spin.icon-4x(ng-show="QuoteDefnListLoader")
+                                li
+                                        span2
+                                                a.btn.btn-mini.btn-success.btn-margin(permission="createQuoteDefin.*.*",ng-disabled="$state.includes('quote.template')",href="#/quote/template/{{$routeParams.accountId}}", bs-tooltip="tooltip.new" , ng-click="newQuoteDefn()") 
+                                                        i.icon-plus.icon-white
+                                        ul.nav.nav-list.bs-docs-sidenav(id="FixedQuote") 
+                                                li(ng-class="{ active: $stateParams.quoteTemplateId == l.id}", ng-click="searchFor('quoteDefn',l.v,$stateParams.accountId,l.id);selectQuoteDefn(l.id)", ng-repeat="l in quoteDefinitions")
+                                                        a 
+                                                                i.icon-chevron-right
+                                                                {{l.n | inflector:humanize}}                        
+
+                .span10                        
+                        div(ng-show="accountList")
+                                .container.offset1(ng-hide="$routeParams.accountId")
+                                        //- .row-fluid
+                                        //-                 .span5
+                                        //-                         h4 Total Revenue per Lane
+                                        //-                         div(total-Revenue='chartData')
+                                        //-                 .span5
+                                        //-                         h4 Top Quoted
+                                        //-                         div(top-Quoted='chartData')
+                                        //- hr
+                                        //- .row-fluid
+                                        //-                 .span5
+                                        //-                         h4 Accounts
+                                        //-                         div(accounts='chartData')
+                                        //-                 .span5
+                                        //-                         h4 Lane Expiry Status
+                                        //-                         div(lane-Expiry='chartData')
+                                div(ui-view="list")             

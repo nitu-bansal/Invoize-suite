@@ -1,0 +1,45 @@
+.offset1.span8
+        form.form-horizontal(novalidate, name="form")
+                fieldset                        
+                        .fluid-row
+                                .pull-right 
+                                        a.btn.btn-primary.btn-margin(ng-hide="metadataUpdateLoader", ng-click="backToDetailsMetadata()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="editMetadata.*.*", ng-hide="metadataUpdateLoader", bs-tooltip="tooltip.save", ng-click="updateMetadata(selectedMetadata)")
+                                                i.icon-ok.icon-large
+                                        a.btn.btn-primary.btn-margin(permission="deleteMetadata.*.*", ng-hide="metadataUpdateLoader", ng-click="confirmDeleteMetadata()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="metadataUpdateLoader")
+                                legend Metadata
+                        .control-group
+                                label.control-label Value
+                                .controls
+                                        input(type="text", name="value", ng-model="selectedMetadata.value", placeholder="Value", required)
+                                        label.help-inline.required(ng-show="form.value.$error.required") *                            
+                        ng-form(name="fieldsForm", ng-repeat="row in selectedMetadataFields",ng-switch='row.t')
+                                .control-group(ng-switch-when='text')
+                                        label.control-label {{row.v}}
+                                        .controls                                                
+                                                input(type="text", name="otherFields", ng-model="selectedMetadata[row.v]", placeholder="{{row.v}}", required="{{row.m}}")                                                
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.required")*                                                
+                                .control-group(ng-switch-when='email')
+                                        label.control-label {{row.v}}
+                                        .controls                                                
+                                                input(type="email", name="otherFields", ng-model="selectedMetadata[row.v]", placeholder="{{row.v}}", required="{{row.m}}")                                                
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.required")*
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.date" ) This is not a valid email!
+                                .control-group(ng-switch-when='date')
+                                        label.control-label {{row.v}}
+                                        .controls                                                
+                                                input(type="text",value="{{selectedMetadata[row.v] | date:'mediumDate'}}", data-date-format="M d, yyyy" ,b-datepicker='{{dateOptions}}', bs-datepicker='bs-datepicker', name="otherFields", ng-model="selectedMetadata[row.v]", placeholder="{{row.v}}", required="{{row.m}}" )
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.required")*
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.date" ) This is not a valid date.!
+                                .control-group(ng-switch-when='number')
+                                        label.control-label {{row.v}}
+                                        .controls                                                
+                                                input(type="number",name="otherFields", ng-model="selectedMetadata[row.v]", placeholder="{{row.v}}", required="{{row.m}}" )                                                
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.required")*
+                                                label.help-inline.required(ng-show="fieldsForm.otherFields.$error.email" ) This is not a valid number!
+
+
+                

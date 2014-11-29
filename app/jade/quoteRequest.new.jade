@@ -1,0 +1,49 @@
+form.form-horizontal(novalidate, name="form")
+        legend New Quote Request
+        .control-group(ng-repeat="row in defaultFields")
+                label.control-label {{row.dn}}
+                .controls
+                        input(type="text", name="{{row.n}}", ng-model="newRequest[row.n]", placeholder="{{row.dn}}", required)
+                        label.help-inline.required(ng-show="form.{{row.n}}.$error.required") *
+                        label.help-inline
+                                a.close(ng-click="removeFromList($index)") &times;
+        .control-group                        
+                label.control-label Charge Type
+                .controls
+                        select(ui-select2="{allowClear: true}", name="chargeType", ng-model="newRequest.chargeType", data-placeholder="Please select...", style="width:200px", required)
+                                option(value="")
+                                option(ng-repeat="row in chargeType", value='{{row.id}}') {{row.val}}
+                        label.help-inline.required(ng-show="form.chargeType.$error.required") *
+        .control-group                        
+                label.control-label Rate Qualifier
+                .controls
+                        select(ui-select2="{allowClear: true}", name="rateQualifier", ng-model="newRequest.rateQualifier", data-placeholder="Please select...", style="width:200px", required)
+                                option(value="")
+                                option(ng-repeat="row in rateQualifier", value='{{row.id}}') {{row.val}}
+                        label.help-inline.required(ng-show="form.rateQualifier.$error.required") *        
+        .control-group                        
+                label.control-label Weight Brackets
+                .controls
+                        .row-fluid(ng-repeat="row in weightBracketFields")
+                                ng-form(name="weightBracketForm")
+                                        input.span1(type="text", ui-event="{ blur : 'weightBracketCallback(\"s\",$index)'}", name="s", ng-model="weightBracketFields[$index]['s']", placeholder="{{row.sph}}", required)
+                                        | &nbsp-&nbsp                                        
+                                        input.span1(type="text", ui-event="{ blur : 'weightBracketCallback(\"e\",$index)'}", name="e", ng-model="weightBracketFields[$index]['e']", placeholder="{{row.eph}}", required)
+                                        | &nbsp&nbsp&nbsp&nbsp                                         
+                                        input.span2(type="text", name="v", ng-model="weightBracketFields[$index]['v']", placeholder="Value", required)
+                                        label.help-inline.required(ng-show="weightBracketForm.v.$error.required") *
+                                        label.help-inline
+                                                a.close(ng-hide="$index == 0 || $index + 1 <  weightBracketFields.length ", ng-click="removeFromWeightBracketFields($index)") &times;
+        br
+        .control-group                        
+                label.control-label More Fields
+                .controls
+                        select(ui-select2, name="tag", ng-model="selectedOtherField", data-placeholder="Please select...", style="width:200px")
+                                option(value="")
+                                option(ng-repeat="row in otherFields", value='{{row}}') {{row.dn}}
+                        a.btn.btn-success.btn-margin(ng-click="appendToList()")
+                                i.icon-white.icon-plus
+
+        .form-actions
+                button.btn.btn-primary(ng-disabled="form.$invalid", type="submit",ng-click="createNewRequest(newRequest)") Send Request
+                        button.btn.btn-inverse(type="submit") Cancel                
