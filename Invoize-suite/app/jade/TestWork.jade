@@ -1,0 +1,13 @@
+// Created by avinash.kumar on 10/13/2014.
+include common_top_row
+link(rel="stylesheet", type="text/css", href="/styles/org_setup.css")
+link(rel="stylesheet", type="text/css", href="/styles/inz-in.css")
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-sm-12.col-md-12
+        a.margin10(name='btnAddTag',tool-tip,data-placement="top", data-toggle="tooltip", style="cursor:pointer" )
+            span.in-add-sign +
+            span.in-add-txt Add
+        div(ng-repeat="")
+            .row#rules
+                .row
+                    .ds-tree(rules,style="height:auto !important;")

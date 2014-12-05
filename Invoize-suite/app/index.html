@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="angularApp" ng-controller="MainCtrl" class="ng-cloak">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Invoize Suite</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" type="image/png" href="/styles/images/inoize-favicon_16x16.png">
+    <link rel="stylesheet" type="text/css" href="/styles/global.css">
+    <link rel="stylesheet" type="text/css" href="/scripts/vendor/Handsontable/jquery.handsontable.full.css">
+    <link rel="stylesheet" type="text/css" href="/scripts/vendor/Handsontable/jquery.handsontable.custom.css">
+    <link rel="stylesheet" type="text/css" href="/scripts/vendor/Handsontable/jquery-ui.custom.css">
+    <link rel="stylesheet" type="text/css" href="/scripts/vendor/jvectormap/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" type="text/css" href="/styles/jquery.orgchart.css">
+    <link rel="stylesheet" type="text/css" href="/styles/summernote.css">
+    <link rel="stylesheet" type="text/css" href="/styles/smart-table.css">
+    <link rel="stylesheet" type="text/css" href="/styles/smart-table.css">
+    <link rel="stylesheet" type="text/css" href="/styles/chosen.css">
+    <link rel="stylesheet" type="text/css" href="/styles/ui-layout.css">
+    <link rel="stylesheet" type="text/css" href="/styles/angularLoader.css">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/styles/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/styles/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/styles/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/styles/assets/ico/apple-touch-icon-57-precomposed.png">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
+    <script src="/scripts/vendor/jquery-1.9.1.js"></script>
+    <script src="/components/Lettering.js/jquery.lettering.js"></script>
+    <script src="/scripts/vendor/chosen.jquery.js"></script>
+    <script src="/scripts/vendor/jquery.cookie.js"></script>
+    <script src="/scripts/vendor/angular.js"></script>
+    <script src="/scripts/vendor/angular-ui.js"></script>
+    <script src="/scripts/vendor/bootstrap.min.js"></script>
+    <script src="/scripts/vendor/jquery-ui-1.10.3.custom.js"></script>
+    <script src="/scripts/vendor/angular-ui-states.js"></script>
+    <script src="/scripts/vendor/underscore-min.js"></script>
+    <script src="/scripts/vendor/angular-cookies-1.0.0rc10.js"></script>
+    <script src="/scripts/vendor/angular-strap.min.js"></script>
+    <script src="/scripts/vendor/toastr-1.1.5.min.js"></script>
+    <script src="/scripts/vendor/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="/scripts/vendor/bootstrap-select.js"></script>
+    <script src="/scripts/vendor/select2.js"></script>
+    <script src="/scripts/vendor/angular-resource.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="/scripts/vendor/restangular0.6.0.min.js"></script>
+    <script src="/scripts/vendor/jquery.maskedinput.js"></script>
+    <script src="/scripts/vendor/angular-animate.js"></script>
+    <script src="/scripts/vendor/jquery.ui.touch-punch.js"></script>
+    <script src="/scripts/vendor/jquery.easy-pie-chart.js"></script>
+    <script src="/scripts/vendor/jquery.sparkline.js"></script>
+    <script src="/scripts/vendor/flot/jquery.flot.js"></script>
+    <script src="/scripts/vendor/flot/jquery.flot.pie.js"></script>
+    <script src="/scripts/vendor/flot/jquery.flot.resize.js"></script>
+    <script src="/scripts/vendor/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="/scripts/vendor/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/scripts/vendor/ng-grid.debug.js"></script>
+    <script src="/scripts/vendor/Handsontable/jquery.handsontable.full.js"></script>
+    <script src="/scripts/vendor/Handsontable/jquery-ui.custom.min.js"></script>
+    <!--script(src="/scripts/vendor/jquery-ui-1.10.3.custom.js")-->
+    <!--script(src="/scripts/vendor/date-time/bootstrap-datepicker.js")-->
+    <script src="/scripts/vendor/jFileUpload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/jquery.iframe-transport.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/jquery.fileupload.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/jquery.fileupload-process.js"></script>
+    <script src="/scripts/vendor/markdown/markdown.js"></script>
+    <script src="/scripts/vendor/markdown/bootstrap-markdown.js"></script>
+    <script src="/scripts/vendor/bootstrap-wysiwyg.js"></script>
+    <script src="/scripts/vendor/jquery.nicescroll.js"></script>
+    <script src="/scripts/vendor/ace-elements.js"></script>
+    <script src="/scripts/vendor/ace.js"></script>
+    <script src="/scripts/vendor/ace-extra.js"></script>
+    <script src="/scripts/vendor/jquery.orgchart.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/angular-file-upload.min.js"></script>
+    <script src="/scripts/vendor/jFileUpload/js/angular-file-upload-shim.min.js"></script>
+    <script src="/scripts/vendor/summernote.js"></script>
+    <script src="/scripts/vendor/Smart-Table.min.js"></script>
+    <script src="/scripts/vendor/draganddrop.js"></script>
+    <script src="/scripts/vendor/rangyinputs_jquery.js"></script>
+    <script src="/scripts/vendor/jsaes.js"></script>
+    <script src="/scripts/vendor/angularLoader.js"></script>
+    <script src="/scripts/vendor/base64.js"></script>
+    <script src="/scripts/app.js"></script>
+    <script src="/scripts/filters.js"></script>
+    <script src="/scripts/directives/w2layout.js"></script>
+    <script src="/scripts/directives/ui-select2.js"></script>
+    <script src="/scripts/directives/permissions.js"></script>
+    <script src="/scripts/directives/scroll.js"></script>
+    <script src="/scripts/directives/uploadManager.js"></script>
+    <script src="/scripts/directives/popover.js"></script>
+    <script src="/scripts/directives/factory.js"></script>
+    <script src="/scripts/directives/validations.js"></script>
+    <script src="/scripts/directives/download.js"></script>
+    <!--script(src="/scripts/vendor/ng-google-chart.js")-->
+    <script src="/scripts/directives/charts.js"></script>
+    <script src="/scripts/directives/dynamic.js"></script>
+    <script src="/scripts/directives/sortableTable.js"></script>
+    <script src="/scripts/directives/handsontable.js"></script>
+    <script src="/scripts/directives/treeView.js"></script>
+    <script src="/scripts/directives/richTextBox.js"></script>
+    <script src="/scripts/directives/dropdownMultiselect.js"></script>
+    <script src="/scripts/directives/chosen.js"></script>
+    <script src="/scripts/directives/ui-layout.js"></script>
+    <script src="/scripts/directives/autoFillSync.js"></script>
+    <script src="/scripts/inz-common.js"></script>
+    <script src="/scripts/controllers/dialog.js"></script>
+    <script src="/scripts/controllers/login.js"></script>
+    <script src="/scripts/controllers/account.js"></script>
+    <script src="/scripts/controllers/accountRules.js"></script>
+    <script src="/scripts/controllers/main.js"></script>
+    <script src="/scripts/controllers/group.js"></script>
+    <script src="/scripts/controllers/permission.js"></script>
+    <script src="/scripts/controllers/register.js"></script>
+    <script src="/scripts/controllers/metadata.js"></script>
+    <script src="/scripts/controllers/fileUpload.js"></script>
+    <script src="/scripts/controllers/tms.js"></script>
+    <script src="/scripts/controllers/uploader.js"></script>
+    <script src="/scripts/controllers/redirection.js"></script>
+    <script src="/scripts/controllers/registration.js"></script>
+    <script src="/scripts/controllers/organizationSetup.js"></script>
+    <script src="/scripts/controllers/fieldsConfig.js"></script>
+    <script src="/scripts/controllers/location.js"></script>
+    <script src="/scripts/controllers/company.js"></script>
+    <script src="/scripts/controllers/system.js"></script>
+    <script src="/scripts/controllers/operation.js"></script>
+    <script src="/scripts/controllers/treeview.js"></script>
+    <script src="/scripts/controllers/userProfile.js"></script>
+    <script src="/scripts/controllers/billright.js"></script>
+    <script src="/scripts/controllers/tmsDocManage.js"></script>
+    <script src="/scripts/controllers/tmsTariffMange.js"></script>
+    <script src="/scripts/controllers/systemProfilesConfig.js"></script>
+    <script src="/scripts/controllers/accessRight.js"></script>
+    <script src="/scripts/controllers/accountProfile.js"></script>
+    <script src="/scripts/controllers/systemMetadata.js"></script>
+    <script src="/scripts/controllers/accountCharge.js"></script>
+    <script src="/scripts/controllers/dataSource.js"></script>
+    <script src="/scripts/controllers/invoiceDeliveryRule.js"></script>
+    <script src="/scripts/controllers/rulesEngine.js"></script>
+    <script src="/scripts/controllers/invoiceProcessing.js"></script>
+    <script src="/scripts/controllers/shipmentProcessing.js"></script>
+    <script src="/scripts/controllers/shipment.details.js"></script>
+    <script src="/scripts/controllers/notification.js"></script>
+    <script src="/scripts/controllers/billRightTmsEdit.js"></script>
+    <script src="/scripts/controllers/emailConfigure.js"></script>
+    <script src="/scripts/controllers/accountMetadata.js"></script>
+    <script src="/scripts/controllers/InvoiceDeliveryEDI.js"></script>
+    <script src="/scripts/controllers/invoiceDeliveryEmail.js"></script>
+    <script src="/scripts/controllers/invoiceDeliveryWeb.js"></script>
+    <script src="/scripts/controllers/metadataForm.js"></script>
+    <script src="/scripts/controllers/breackage.js"></script>
+    <script src="/scripts/controllers/ims.js"></script>
+    <script src="/scripts/controllers/workAllocation.js"></script>
+    <script src="/scripts/controllers/billRightDashboard.js"></script>
+    <script src="/scripts/controllers/shipment.processing.invoices.js"></script>
+    <script src="/scripts/controllers/invoiceDelivery.js"></script>
+    <script src="/scripts/controllers/emailInvoice.js"></script>
+    <script src="/scripts/controllers/calculationCode.js"></script>
+    <script src="/scripts/controllers/reallocation.js"></script>
+    <script src="/scripts/controllers/reAllocateUser.js"></script>
+    <script src="/scripts/controllers/hawbStatusReport.js"></script>
+    <script src="/scripts/controllers/uploadDocument.js"></script>
+    <script src="/scripts/controllers/invoiceCapture.js"></script>
+    <script src="/scripts/controllers/environmentSelection.js"></script>
+    <script src="/scripts/controllers/inputDialog.js"></script>
+    <script src="/scripts/controllers/tmsTariffUpload.js"></script>
+    <script src="/scripts/controllers/invoiceDocProfile.js"></script>
+    <script src="/scripts/controllers/docManagementUserGroup.js"></script>
+    <script src="/scripts/controllers/uploadNewInvoice.js"></script>
+    <script src="/scripts/controllers/approvalRequest.js"></script>
+    <script src="/scripts/controllers/approval.js"></script>
+    <script src="/scripts/controllers/tmsTariffManageLaneHistory.js"></script>
+    <script src="/scripts/controllers/approvalRequestReInitiate.js"></script>
+    <script src="/scripts/services/common.js"></script>
+    <script src="/scripts/services/flash.js"></script>
+    <script src="/scripts/services/shared.js"></script>
+    <script src="/scripts/services/cryptionService.js"></script>
+    <!--script(src='/scripts/controllers/m.controller.js')-->
+    <!--script(src='/scripts/controllers/organization.js')-->
+    <!--script(src='/scripts/controllers/rate.js')-->
+    <!--script(src='/scripts/controllers/rateRequest.js')-->
+    <!--script(src='/scripts/controllers/workflow.js')-->
+    <!--script(src='/scripts/controllers/role.js')-->
+    <!--script(src='/scripts/controllers/quote.js')-->
+    <!--script(src='/scripts/controllers/jobCard.searchPanel.js')-->
+    <!--script(src='/scripts/controllers/jobCard.rulePanel.js')-->
+    <!--script(src='/scripts/controllers/profile.js')-->
+    <!--script(src='/scripts/controllers/payright.js')-->
+    <!--script(src='/scripts/controllers/invoice.js')-->
+    <!--script(src='/scripts/controllers/payment.js')-->
+    <!--script(src='/scripts/controllers/shipment.js')-->
+    <!--script(src='/scripts/services/workflow.js')-->
+    <!--script(src='/scripts/services/group.js')-->
+    <!--script(src='/scripts/services/main.js')-->
+    <!--script(src='/scripts/services/login.js')-->
+    <!--script(src='/scripts/services/user.js')-->
+    <!--script(src='/scripts/services/organization.js')-->
+    <!--script(src='/scripts/services/rate.js')-->
+    <!--script(src='/scripts/services/rateRequest.js')-->
+    <!--script(src='/scripts/services/permissions.js')-->
+    <!--script(src='/scripts/services/metadata.js')-->
+    <!--script(src='/scripts/services/tms.js')-->
+    <!--script(src='/scripts/services/quote.js')-->
+    <!--script(src='/scripts/services/jobCard.searchPanel.js')-->
+    <!--script(src='/scripts/services/profile.js')-->
+    <!--script(src='/scripts/services/payright.js')-->
+  </head>
+  <body nice-scroll class="navbar-fixed">
+    <div ng-show="flash.get().body" class="alert alert-block alert-{{flash.get().type}}">
+      <h4 ng-cloak>{{flash.get().title}}</h4>
+      <p ng-cloak>{{flash.get().body}}</p>
+    </div>
+    <div ng-view></div>
+  </body>
+  <div class="loader-backdrop">
+    <div class="center-con"><span class="in-load-bar t"></span><span class="in-load-bar r"></span><span class="in-load-bar b"></span><span class="in-load-bar g"></span></div>
+  </div>
+</html>

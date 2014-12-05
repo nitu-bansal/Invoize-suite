@@ -1,0 +1,27 @@
+
+<link rel="stylesheet" type="text/css" href="/styles/inz-chart.css"/>
+<div class="loader-backdrop">
+  <div class="center-con"><span class="in-load-bar t"></span><span class="in-load-bar r"></span><span class="in-load-bar b"></span><span class="in-load-bar g"></span></div>
+</div>
+<div id="content">
+  <h1><i class="fa fa-sitemap"></i> Organisation Chart
+    <div class="legends">
+      <!--.title LEGENDS-->
+      <div class="leg"><i class="fa fa-building-o"></i> : Company</div>
+      <div class="leg"><i class="fa fa-desktop"></i> : System</div>
+    </div>
+  </h1>
+  <div id="main"></div>
+</div>
+<div id="left">
+  <ul id="organisation">
+    <li tree-View="child in data.children at ul">
+      <!--div ID : {{child.companyid}}-->
+      <div class="line com"><i class="fa fa-building-o"></i>  {{child.company}}
+        <button ng-if="child.system.length&gt;0" data-content="{{CurrentStackHolder[$index]}}" data-placement="right" data-toggle="popover" data-container="body" type="button" data-original-title="System" title="System" class="btn-pop"><i class="fa fa-caret-right"></i></button>
+      </div>
+      <ul ng-class="{p:child.children.length}"></ul>
+    </li>
+    <div class="clearfix"></div>
+  </ul>
+</div>

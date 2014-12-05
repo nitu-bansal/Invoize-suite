@@ -1,0 +1,116 @@
+
+<div class="col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="btn-group pull-right"><a ng-hide="profileDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary btn-margin"><i class="icon-mail-reply">                                       </i></a><a permission="updateProfile.*.*" ng-hide="profileDetailLoader" bs-tooltip="tooltip.edit" href="#/payright/vendor/edit/{{$stateParams.profileId}}" ng-click="editProfile($stateParams.profileId)" class="btn btn-sm btn-primary"><i class="icon-pencil">                                      </i></a><a permission="deleteProfile.*.*" ng-hide="profileDetailLoader" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteProfile()" class="btn btn-sm btn-primary"><i class="icon-trash"></i></a><i ng-show="profileDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+      </div>
+      <tabset>
+        <tab heading="Profile" style="overflow:hidden">
+          <ng-form name="form2">
+            <div class="form-group">
+              <label class="control-label">Company Name</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.companyName}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Company Headquarters City</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.companyHeadquartersCity}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Name</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.name}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Vender #</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.venderNo}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Pay to</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.payTo}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Payment Mode</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.paymentMode}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Department</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.department}}</label>
+              </div>
+            </div>
+          </ng-form>
+        </tab>
+        <tab heading="Contact Info" style="overflow:hidden">
+          <ng-form name="form3">
+            <div class="form-group">
+              <label class="control-label">Phone</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.phone}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Mobile</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.mobile}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Fax</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.fax}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Email</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.email}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Address 1</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.address1}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Address 2</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.address2}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Location</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.location}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">State</label>
+              <div class="col-sm-9"> 
+                <label>{{profile.state}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Zipcode </label>
+              <div class="col-sm-9"> 
+                <label>{{profile.zipcode}}</label>
+              </div>
+            </div>
+          </ng-form>
+        </tab>
+      </tabset>
+    </div>
+  </form>
+</div>

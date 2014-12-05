@@ -1,0 +1,411 @@
+form.form-horizontal(novalidate, name="frm1")
+    .row.in-wiz-ttl.in-fix-scroll(set-width)
+        .col-xs-12.col-md-12.col-sm-12
+            .pull-left
+                span.in-wiz-info(ng-hide="{{$state.current.name.split('.')[2]=='viewTariff'}}") New tariff configuration for : &nbsp
+                span.in-wiz-info(ng-show="{{$state.current.name.split('.')[2]=='viewTariff'}}") Showing tariff configuration for : &nbsp
+                span.in-wiz-info.red(ng-show="{{$state.current.name.split('.')[2]=='viewTariff'}}") {{global.account | selectFormat}}
+                //i.icon-spinner.icon-spin.blue.icon-large(ng-show="Loader")
+                span(ng-if="$state.current.name.split('.')[2]=='newTariff'")
+                    dynamic-Select(required,name="account",ng-model="global.account",ph="account",change="setAccounts(global.account,isGroupSelected)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository"}',toolTip="Account Number",placeholder="Search by Account")
+                    span.red(ng-show="frm1.account.$error.required") *
+                    span.green.validTick(ng-show="frm1.account.$valid") &#10004;
+                    //,ng-readonly="{{$state.current.name.split('.')[2]=='viewTariff'}}"
+                    //dynamic-single-select(name="accountNumber",ng-model="accountGlobal",ph="accountNumber",change="setAccounts(accountGlobal)",customobj='{"systemId":"{{userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")
+            .pull-right
+                button.inz-btn.btn.btn-ico.btn-default.go-back(ng-click="redirectTo('/tariffManagement');setAccounts(global.account,isGroupSelected);quickSearch(currentPage,true,'tariffConfig')",tool-tip,data-placement="top", data-toggle="tooltip", title="Back to Account List")
+                    i.fa.fa-reply
+    div(ng-if="$state.current.name.split('.')[2]=='viewTariff'",style="clear:both; height:47px;",ng-init="onloadAddTariffPage();openEditTemplate()")
+    div(ng-if="$state.current.name.split('.')[2]=='newTariff'",style="clear:both; height:47px;",ng-init="onloadAddTariffPage();getCharges()")
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Basic Information
+            .cpanel-body
+                .row
+                    .col-md-6.col-sm-12.col-xs-12
+                        label Tariff Name &nbsp;
+                            //span.input-large1.non-valid
+                        input.input-large(ng-trim ,type="text", name="tname",placeholder="Name", ng-change="validateTariffGroup();", ng-model="basicInfo.tariffName",required,auto-fill-sync)
+                        span.red(ng-show="frm1.tname.$error.required") &nbsp; *
+                        span.green.validTick(ng-show="frm1.tname.$valid") &nbsp; &#10004;
+                    .col-md-6.col-sm-12.col-xs-12
+                        label(style="margin-right:7px") Tariff Type &nbsp;
+                        span.input-large1.non-valid
+                            select.input-large(ui-select2, name="TariffType",required,ng-change="validateTariffGroup();", ng-model="basicInfo.tariffType", data-placeholder="Please select...",auto-select-sync)
+                                option(value="")
+                                option(value="Main")  Main
+                                option(value="Accessorial")  Accessorial
+                                option(value="Others")  Others
+                        //dynamic-Select.input-large1(name='TariffType',ng-model="basicInfo.tariffType",ph="metadata_tariffTypes",data-placeholder="Please select...",change="validateTariffGroup();")
+                        span.red(ng-show="frm1.TariffType.$error.required") &nbsp; *
+                        span.green.validTick(ng-show="frm1.TariffType.$valid") &nbsp; &#10004;
+                    //.col-md-6.col-sm-12.col-xs-12
+                    //    label Effective date &nbsp;
+                    //        //span.input-large1.non-valid
+                    //    input.input-large(type="text",required,datepicker-popup="{{format}}",ng-change="validateTariffGroup();",datepicker-options="dateOptions",name="effDate",ng-model="additionalTariffInfo.effectiveDate",auto-fill-sync,ng-change="setMinData(additionalTariffInfo.effectiveDate)")
+                    //    span.red(ng-show="frm1.effDate.$error.required") &nbsp; *
+                    //    span.green.validTick(ng-show="frm1.effDate.$valid") &nbsp; &#10004;
+                    //.col-md-6.col-sm-12.col-xs-12
+                    //    label(style="margin-right:7px") Expiry Date
+                    //        //span.input-large1.non-valid
+                    //    input.input-large(type="text",required,datepicker-popup="{{format}}",ng-change="validateTariffGroup();",datepicker-options="dateOptions",name="expDate",min="minDate",ng-model="additionalTariffInfo.expiryDate",auto-fill-sync)
+                    //    span.red(ng-show="frm1.expDate.$error.required") &nbsp; *
+                    //    span.green.validTick(ng-show="frm1.expDate.$valid") &nbsp; &#10004;
+                    //.col-md-6.col-sm-12.col-xs-12
+                    //    label Effective date
+                    //    input.input-large(type="text",required,datepicker-popup="{{format}}",datepicker-options="dateOptions",name="effDate",ng-model="additionalTariffInfo.effectiveDate",auto-fill-sync,ng-change="setMinData(additionalTariffInfo.effectiveDate)")
+                    //    span.red(ng-show="frm1.effDate.$error.required") &nbsp; *
+                    //    span.green.validTick(ng-show="frm1.effDate.$valid") &nbsp; &#10004;
+                    //    //br
+                    //    //span.input-large1.non-valid
+                    //
+                    //.col-md-6.col-sm-12.col-xs-12
+                    //    label(style="margin-right:7px") Expiry Date
+                    //    //br
+                    //    //span.input-large1.non-valid
+                    //    input.input-large(type="text",required,datepicker-popup="{{format}}",datepicker-options="dateOptions",name="expDate",min="minDate",ng-model="additionalTariffInfo.expiryDate",auto-fill-sync)
+                    //    span.red(ng-show="frm1.expDate.$error.required") &nbsp; *
+                    //    span.green.validTick(ng-show="frm1.expDate.$valid") &nbsp; &#10004;
+
+        //- .col-md-6
+        //-     .cpanel
+        //-         .cpanel-heading
+        //-             a.accordion-toggle()
+        //-                 span.ico-container
+        //-                     i.fa.fa-plus-square-o
+        //-                 | &nbsp;
+        //-                 span.label(toolTip="Information") Base Profile
+        //-         .cpanel-body()
+        //-             div(style="clear:both; height:10px;")
+        //-             .col-xs-12
+        //-             .row
+
+        //-                 .col-md-12
+        //-                     table.inz-table.inz-table1
+        //-                         thead
+        //-                             th  Field
+        //-                             th  Value
+        //-                         tbody
+        //-                             tr(ng-repeat="type in basicInfo.template")
+        //-                                 td {{type.label}}
+        //-                                 td
+        //-                                     dynamic-Select(name="TypeValue_{{$index}}",ng-model="type.value",ph="{{type.suggestionsSource}}",placeholder="Please Select")
+        //-                     div(style="clear:both; height:10px;")
+        //-                     .row.pull-right
+        //-                         button.inz-btn.btn-xs.btn-default(ng-click="reset()") Reset
+        //-                         button.inz-btn.btn-xs.btn-success(ng-click="getFields()") Apply
+    div(style="clear:both;",ng-show="true")
+        .col-xs-12.col-md-12.col-sm-12
+            .cpanel
+                .cpanel-heading.cpanel-heading1
+                    a.accordion-toggle( ng-click='isOpenIdentifiers = !isOpenIdentifiers', ng-class='{ open: isOpenIdentifiers}')
+                        span.ico-container
+                            i.fa.fa-plus-square.white(ng-hide="isOpenIdentifiers")
+                            i.fa.fa-minus-square.white(ng-show="isOpenIdentifiers")
+                        | &nbsp;
+                        span.label.white( toolTip="Identifiers") Identifiers
+
+                .cpanel-body.overflow-auto(ng-show="isOpenIdentifiers")
+                    .row
+                        .col-xs-12.col-sm-12.col-md-9
+                            table.inz-table.inz-table1
+                                thead
+                                    th  Identifier Name
+                                    th  Identifier value
+                                    th
+                                        button.command.light(ng-click="identifiers.fields.push({fieldKey:null,fieldVal:null,readOnly:false,defaultVal:false});",tool-tip,data-placement="top", data-toggle="tooltip", title="Add Identifier")
+                                            i.fa.fa-plus.greenplus
+                                tbody
+                                    tr(ng-repeat="field in identifiers.fields")
+                                        td
+                                            div(ng-form="subForm1")
+
+                                                dynamic-Select.input-large1(name='s1',customobj='{ "selected":"{{fieldKeys.join()}}","type":"identifier"}',ng-model="field.fieldKey",ph="tarrifShipmentFields",data-placeholder="Identifier",change="fieldKeyChanged($index,field)",ng-readonly="{{field.readOnly}}",required)
+                                                span.red(ng-show="subForm1.s1.$error.required") *
+                                                span.green.validTick(ng-show="subForm1.s1.$valid") &#10004;
+                                        td
+                                            div(ng-form="subForm2")
+                                                span.input-large1
+                                                    //span.non-valid.form-section
+                                                    dynamic-Select.input-large1(required,enterchoice,name='s2',customobj='{"type":"identifier","identifierName":"{{field.fieldKey[0].id!=null ? field.fieldKey[0].id : "none"}}"}',ng-model="field.fieldVal",ph="tarrifShipmentFields",data-placeholder="Identifier Value")
+                                                    span.red(ng-show="subForm2.s2.$error.required") *
+                                                    span.green.validTick(ng-show="subForm2.s2.$valid") &#10004;
+                                        td
+                                            button.command(ng-click="removeIdentifier($index);",tool-tip,data-placement="top", data-toggle="tooltip", title="Remove Permission",ng-disabled="field.readOnly")
+                                                i.fa.fa-minus.redminus(ng-hide="field.readOnly")
+                                                i.fa.fa-minus.grey(ng-show="field.readOnly")
+                                                //- i.fa.fa-minus.redminus
+        .col-xs-12.col-md-12.col-sm-12
+            .cpanel
+                .cpanel-heading.cpanel-heading1
+                    a.accordion-toggle( ng-click='isOpenTariffInfo = !isOpenTariffInfo', ng-class='{ open: isOpenTariffInfo}')
+                        span.ico-container
+                            i.fa.fa-plus-square.white(ng-hide="isOpenTariffInfo")
+                            i.fa.fa-minus-square.white(ng-show="isOpenTariffInfo")
+                        | &nbsp;
+                        span.label.white( toolTip="Tariff Info") Additional Information
+                .cpanel-body(ng-show="isOpenTariffInfo")
+                    .row
+                        .col-md-4.col-sm-12.col-xs-12
+                            label Tariff Applied On
+                            br
+                            //span.input-large1.non-valid.form-section
+                            dynamic-single-select(name="tappon",ng-model="additionalTariffInfo.tariffAppliedOn",ph="tarrifAppliedOnDates",toolTip="Date",placeholder="Select")
+                            //span.red(ng-show="frm1.tappon.$error.required") *
+                            //span.green.validTick(ng-show="frm1.tappon.$valid") &#10004;
+                        .col-md-4.col-sm-6.col-xs-12
+                            label Effective date
+                            span.red(ng-show="frm1.effDate.$error.required") &nbsp; *
+                            span.green.validTick(ng-show="frm1.effDate.$valid") &nbsp; &#10004;
+                            br
+                            //span.input-large1.non-valid
+                            input.input-large(type="text",required,datepicker-popup="{{format}}",datepicker-options="dateOptions",name="effDate",ng-model="additionalTariffInfo.effectiveDate",auto-fill-sync,ng-change="setMinData(additionalTariffInfo.effectiveDate)")
+
+                        .col-md-4.col-sm-6.col-xs-12
+                            label Expiry Date
+                            span.red(ng-show="frm1.expDate.$error.required") &nbsp; *
+                            span.green.validTick(ng-show="frm1.expDate.$valid") &nbsp; &#10004;
+                            br
+                            //span.input-large1.non-valid
+                            input.input-large(type="text",required,datepicker-popup="{{format}}",datepicker-options="dateOptions",name="expDate",min="minDate",ng-model="additionalTariffInfo.expiryDate",auto-fill-sync)
+                    fieldset.row.inz-fs(ng-hide="perChargeCurrencyConversion")
+                        legend Currency Conversion
+                        .col-md-3.col-sm-6.col-xs-12
+                            label Source
+                            br
+                            //span.input-large1.non-valid
+                            dynamic-single-select(ng-model="additionalTariffInfo.currencySource",ph="metadata_currencySource",toolTip="CurrencySource",placeholder="Select")
+
+
+                        .col-md-3.col-sm-6.col-xs-12
+                            label Frequency
+                            br
+                            //span.input-large1.non-valid
+                            dynamic-single-select(ng-model="additionalTariffInfo.currencyFrequency",ph="metadata_currencyFrequency",toolTip="CurrencyFrequency",placeholder="Select")
+
+                        .col-md-3.col-sm-6.col-xs-12
+                            label Exchange Rate on Date
+                            br
+                            //span.input-large1.non-valid
+                            dynamic-single-select(ng-model="additionalTariffInfo.tariffAppliedOnDate",ph="tarrifAppliedOnDates",toolTip="Date",placeholder="Select")
+                        .col-md-3.col-sm-6.col-xs-12
+                            label Currency
+                            br
+                            //span.input-large1.non-valid
+                            dynamic-single-select(ng-model="additionalTariffInfo.currency",ph="currency",toolTip="Currency",placeholder="Select")
+
+
+
+        .col-xs-12.col-sm-12.col-md-12
+            .cpanel
+                .cpanel-heading.cpanel-heading1
+                    a.accordion-toggle( ng-click='isOpenParam = !isOpenParam', ng-class='{ open: isOpenParam}')
+                        span.ico-container
+                            i.fa.fa-plus-square.white(ng-hide="isOpenParam")
+                            i.fa.fa-minus-square.white(ng-show="isOpenParam")
+                        | &nbsp;
+                        span.label.white( toolTip="Parameters") Parameters
+                .cpanel-body.overflow-auto(ng-show="isOpenParam")
+                    .row
+                        .col-xs-12.col-sm-12.col-md-10
+                            table.inz-table.inz-table1
+                                thead
+                                    th
+                                        button.command.light(ng-click="parameters.fields.push({fieldKey:null,fieldVal:null,displayOrder:null,uniqueCalculationParam: false});",tool-tip,data-placement="top", data-toggle="tooltip", title="Add Parameter")
+                                            i.fa.fa-plus.greenplus
+                                        | Parameter Name
+                                    th  Display Name
+                                    th  Display Order
+                                    th  Calc. Param
+
+                                tbody
+                                    tr(ng-repeat="field in parameters.fields ")
+                                        td
+                                            div(ng-form="subForm3")
+                                                button.command(ng-click="parameters.fields.splice($index,1);fieldKeyChangedParameters();",tool-tip,data-placement="top", data-toggle="tooltip", title="Remove parameter",ng-disabled="field.readOnly")
+                                                    i.fa.fa-minus.redminus(ng-hide="field.readOnly")
+                                                    i.fa.fa-minus.grey(ng-show="field.readOnly")
+                                                span.input-large1.form-section(ng-class='{ invalidEle: subForm3.pname.$invalid}')
+                                                    dynamic-Select.input-large1(required,name='pname',customobj='{"selected":"{{fieldKeysParams.join()}}","type":"parameter"}',ng-model="field.fieldKey",ph="tarrifShipmentFields",data-placeholder="Parameter",change="fieldKeyChangedParameters($index,field);",ng-readonly="{{field.readOnly}}")
+                                        td
+                                            div(ng-form="subForm4")
+                                                span.input-large1.form-section(ng-class='{ invalidEle: subForm4.dname.$invalid}')
+                                                    input(required,type="text",name="dname", placeholder="Display Name",ng-model="field.fieldVal",auto-fill-sync)
+
+                                        td
+                                            div(ng-form="subForm6")
+                                                span.input-small.non-valid.form-section
+                                                    .in-err
+                                                        div(ng-show="subForm6.dispOrd.$error.pattern") Invalid Value
+                                                    input(required,ng-change="checkDuplicate(field,$index)",type="text",name="dispOrd", placeholder="Display Order",ng-model="field.displayOrder",ng-pattern= /^[0-9]{0,3}$/,auto-fill-sync)
+
+                                        td
+                                            span.input-large100
+                                                input(required,id="chk",type='checkbox',ng-click="setUniqueParamTrue($index,$event)",ng-disabled="field.readOnly",auto-fill-sync)
+        .col-xs-12.col-md-12.col-sm-12
+            .cpanel
+                .cpanel-heading.cpanel-heading1
+                    a.accordion-toggle( ng-click='isOpenCharges = !isOpenCharges', ng-class='{ open: isOpenCharges}')
+                        span.ico-container
+                            i.fa.fa-plus-square.white(ng-hide="isOpenCharges")
+                            i.fa.fa-minus-square.white(ng-show="isOpenCharges")
+                        | &nbsp;
+                        span.label.white( toolTip="Charge") Charges
+                .cpanel-body.overflow-auto(ng-show="isOpenCharges")
+                    .row
+                        .col-xs-12.col-md-12.col-sm-12
+                            table.inz-table.inz-table2
+                                thead
+                                    tr
+                                        th(rowspan="2",colspan="0",class="center borderleftB ")
+                                            button.command.light(ng-class="{'greendisabled': chargeList.fields.length>=chargeData.length-1}",ng-disabled="chargeList.fields.length>=chargeData.length-1",ng-click="addCharge()",tool-tip,data-placement="top", data-toggle="tooltip", title="Add Charge")
+                                                i.fa.fa-plus.greenplus
+                                        th(rowspan="2",colspan="3", class="center borderleftB" ) Charge
+                                        th(colspan="3",class="center borderleftB") Charge Rounding
+                                        th(colspan="4",class="center borderleftB") Calculation Method
+                                        th(colspan="4",class="center borderleftB") Currency Conversion
+                                            span.input-large100
+                                            input(id="m",type='checkbox',ng-model="perChargeCurrencyConversion",value="{{perChargeCurrencyConversion}}",ng-checked="currencyPercharge(perChargeCurrencyConversion)")
+                                        th(colspan="2",class="center borderleftB") Limit
+                                        th(rowspan="2",colspan="0",class="center borderleftB") Breakage
+
+
+                                    tr
+
+                                        th.borderleftB Method
+                                        th.borderleftB Decimal
+                                        th.borderleftB Nearest(Dec.)
+                                        th.borderleftB Calculation
+                                        th.borderleftB Weight
+                                        th.borderleftB Charge
+                                        th.borderleftB Operand
+                                        th.borderleftB Currency
+                                        th.borderleftB CurrencySource
+                                        th.borderleftB Exch.Rt.Appl
+                                        th.borderleftB LaneCurrency
+                                        //th.borderleftB Freq.
+                                        th.borderleftB MAX
+                                        th.borderleftB MIN
+
+                                tbody
+
+                                    tr(ng-repeat="field in chargeList.fields")
+                                        td
+                                            button.command(ng-click="chargeRemoveConfirmation($index);",tooltip-placement="right",data-placement="top", data-toggle="tooltip",tooltip="Remove Charge"  )
+                                                i.fa.fa-minus.redminus
+                                        td
+                                            span.non-valid.form-section
+                                                //dynamic-single-Select(customobj='{"selected":"{{fieldKeysCharges.join()}}"}',ng-model="field.chargeID",ph="systemChargeCode", url="api/suggestion?tariffName={{basicInfo.tariffName}}&tariffType={{basicInfo.tariffType}}&account={{accountGlobal[0].n}}",data-placeholder="Charge",change="checkCharge(field.chargeID,$index)", emptySelect=false, style="width:100px !important;")
+                                                dynamic-single-Select(customobj='{"systemId":"{{loggedInUser.userSystem[0].id}}","selected":"{{fieldKeysCharges.join()}}","tariffName":"{{basicInfo.tariffName}}","tariffType":"{{basicInfo.tariffType}}","account":"{{global.account[0].id}}"}',ng-model="field.chargeID",ph="systemChargeCode",data-placeholder="Charge Code",change="checkCharge(field.chargeID,$index,'chargeCode')")
+                                        td
+                                            span.non-valid.form-section
+                                                //dynamic-single-Select(customobj='{"selected":"{{fieldKeysCharges.join()}}"}',ng-model="field.chargeID",ph="systemChargeCode", url="api/suggestion?tariffName={{basicInfo.tariffName}}&tariffType={{basicInfo.tariffType}}&account={{accountGlobal[0].n}}",data-placeholder="Charge",change="checkCharge(field.chargeID,$index)", emptySelect=false, style="width:100px !important;")
+                                                dynamic-single-Select(customobj='{"systemId":"{{loggedInUser.userSystem[0].id}}","selected":"{{fieldKeysChargeNames.join()}}","tariffName":"{{basicInfo.tariffName}}","tariffType":"{{basicInfo.tariffType}}","account":"{{global.account[0].id}}"}',ng-model="field.chargeName",ph="systemChargeName",data-placeholder="Charge Name",change="checkCharge(field.chargeName,$index,'chargeName')")
+                                        td
+                                            span.non-valid.form-section
+                                                input(required,type="text",name="chargedname", placeholder="Display Name",ng-model="field.displayName",auto-fill-sync)
+                                        td
+                                            span.non-valid.form-section
+                                                //input.input-type-table(required,type="text", placeholder="",ng-model="field.chargeRounding" ,auto-fill-sync)
+                                                select.inz-txt(required,ui-select2, name="chrgRounding",required, ng-model="field.chargeRounding", data-placeholder="Please select...",auto-select-sync)
+                                                    option(value='')
+                                                    option(value="roundUp")  Round Up
+                                                    option(value="roundDown") Round Down
+                                                    option(value="noRounding")  No Rounding
+                                        td
+                                            //span.non-valid.form-section
+
+                                            input.input-type-table(ng-hide="field.chargeRounding=='' || field.chargeRounding=='noRounding'",type="text", placeholder="",ng-model="field.chargeDecimal",value=0 ,auto-fill-sync)
+                                            span(ng-show="field.chargeRounding=='' || field.chargeRounding=='noRounding'") N/A
+
+                                        td
+                                            //span.non-valid.form-section
+                                            input.input-type-table(ng-hide="field.chargeRounding=='' ||  field.chargeRounding=='noRounding'",type="text", placeholder="",ng-model="field.chargeNearest",auto-fill-sync)
+                                            span(ng-show="field.chargeRounding=='' || field.chargeRounding=='noRounding'") N/A
+
+                                        td
+                                            span.non-valid.form-section
+                                            //select(ui-select2,ng-model="field.calculation")
+                                            //    option(value="") Select
+                                            //    option(value="{{c.id}}",ng-repeat="c in calculationCodes") {{c.n}}
+                                            dynamic-single-select(ng-model="field.calculation",ph="calculationCode",toolTip="Calculation",placeholder="Select", emptySelect=true,url="api/suggestion?systemId={{loggedInUser.userSystem[0].id}}")
+
+                                        td
+                                            span.non-valid.form-section
+                                            //select(ui-select2,ng-model="field.weight")
+                                            //    option(value="") Select
+                                            //    option(value="{{w}}",ng-repeat="w in weightDS") {{w.n}}
+                                            dynamic-single-select.input-large(ng-model="field.weight",ph="weight",toolTip="Weight",placeholder="Select" , emptySelect=true, url="api/suggestion?systemId={{loggedInUser.userSystem[0].id}}")
+
+                                        td
+                                            //span.non-valid.form-section
+                                            dynamic-Select.input-large1(multiselect,customobj='{"selected":"{{fieldKeysCharges.join()}}","calculationMethod":"true"}',ng-model="field.calculationOnCharge",ph="systemChargeCode",data-placeholder="Charge")
+                                        td
+                                            //span.non-valid.form-section
+                                            //select(ui-select2,ng-model="field.operand")
+                                            //    option(value="") Select
+                                            //    option(value="{{o}}",ng-repeat="o in operandDS") {{o.n}}
+                                            dynamic-single-select.input-medium(ng-model="field.operand",ph="metadata_operandMethod",toolTip="Operand",placeholder="Select", emptySelect=true)
+                                        td
+                                            div(ng-hide="!perChargeCurrencyConversion")
+                                                span.non-valid.form-section
+                                                    dynamic-single-select(ng-model="field.currency",ph="currency",toolTip="Currency",placeholder="Select", emptySelect=true , style="width:100px !important;")
+                                            div(ng-hide="perChargeCurrencyConversion")
+                                                    span.green
+                                                        b Inherit
+
+                                        td
+                                            div(ng-hide="!perChargeCurrencyConversion")
+                                                span.non-valid.form-section
+                                                    dynamic-single-select.input-large(ng-model="field.currencySource",ph="metadata_currencySource",toolTip="CurrencySource",placeholder="Select")
+                                             div(ng-hide="perChargeCurrencyConversion")
+                                                    span.green
+                                                        b Inherit
+
+                                        td
+                                            div(ng-hide="!perChargeCurrencyConversion")
+                                                span.non-valid.form-section
+                                                    //dynamic-single-select(ng-model="field.exchangeRateAppldOn",customobj='{ph="tarrifAppliedOnDates",toolTip="Date",placeholder="Select"}' , style="width:100px !important;")
+                                                    dynamic-single-select(ng-model="field.exchangeRateAppldOn",ph="tarrifAppliedOnDates",toolTip="Date",placeholder="Select" , style="width:100px !important;")
+                                            div(ng-hide="perChargeCurrencyConversion")
+                                                    span.green
+                                                        b Inherit
+                                        td
+                                            span.input-large100
+                                                input(id="laneCurrency_chk_{{$index}}",type='checkbox',value="{{field.isLaneCurrency}}", ng-model="field.isLaneCurrency")
+                                        td
+                                            span.input-large100
+                                                input(id="max_chk_{{$index}}",type='checkbox',value="{{field.max}}", ng-model="field.max")
+                                        td
+                                            span.input-large100
+                                                input(id="min_chk_{{$index}}",type='checkbox',value="{{field.min}}",ng-model="field.min")
+
+                                        td
+                                            button.command.inz-btn.btn-xs.btn-success(ng-click="openDialogChargeBreakage($index)", href="javascript:void(0);" ,tooltip="Add Breakages") Add
+
+                                    div(style="clear:both;height:auto !important;")
+    div(style="clear:both;height:5px;")
+    .row.center
+        button.inz-btn.btn-xs.btn-success(ng-click="CreateandSendTemplate()",ng-disabled="frm1.$invalid || chargeList.fields.length<=0 || parameters.fields.length<=0 || identifier.fields.length<=0") Preview
+
+    div(style="clear:both;height:10px;")
+    .col-xs-12.col-sm-12.col-md-12
+        div(ui-handsontable='{currentRowClassName: "currentRow",currentColClassName: "currentCol"}',rowHeaders="rowNos",datarows='t in TempR',height="hh",width='hw',manualColumnResize='true', columns='columnsTariff',minsparerows='0',ng-show="showPreviewTable")
+    div(style="clear:both;height:20px;")
+    .row.center
+        button.inz-btn.btn-xs.btn-success(permission="tariffRepository.editTariff",ng-show="btnDoneShow",ng-click="saveTemplate()") Done
+    div(style="clear:both;height:100px;")
+
+
+
+
+
+
+
+
+                

@@ -1,0 +1,17 @@
+form(name="form",novalidate)
+.row.in-wiz-ttl.in-fix-scroll(set-width, ng-init="getMetadataType(false)")
+    .col-xs-12
+        .pull-left.in-wiz-info Metadata Type :
+            span.red &nbsp;  {{metadataType.Name}}
+        .pull-right
+            input.input-search-new(type='text',ng-model='querySearch', placeholder='Type here...')
+            button.input-search-new(ng-click="gridFilter(querySearch)")
+                i.fa.fa-search
+            i.icon-spinner.icon-spin.icon-2x(ng-show="metadataLoader")
+            a.inz-btn.btn-sm.btn-default(ng-hide="metadataLoader", ng-href="/#/organizationSetup/metadata/view") Back
+            button.inz-btn.btn-sm.btn-default(ng-click="addKeys($event.currentTarget)") Add Keys
+            button.inz-btn.btn-sm.btn-success(ng-hide="metadataLoader", ng-disabled="form.$invalid", type="submit", ng-click="validateFields()",) Save Changes
+div(style="clear:both;")
+.col-xs-12.col-md-12.col-sm-12
+    div#keyHT(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-show='isKeys',height='400',onBeforeChange="beforeKeyChange",datarows='key in keys', columns='keyColumns',minsparerows='1',contextMenu='false')
+    div#fch(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-hide='isKeys',height='hh_metadataType',onchange="afterChange",width='hw_metadataType',datarows='field in metadataType.fields', columns='templateColumns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='celChangeMetadataType',afterRender='afterRender_metadataType()')

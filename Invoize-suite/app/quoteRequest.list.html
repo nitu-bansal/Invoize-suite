@@ -1,0 +1,46 @@
+
+<div id="FixedRate" class="col-md-4">     
+  <row>
+    <h4 class="header smaller lighter gray">Quotes   <i ng-show="quoteRequestListLoader" class="icon-spinner icon-spin icon"> </i></h4>
+  </row>
+  <div ng-hide="oldRequest.length || quoteRequestListLoader">
+    <h4>No quote requests available.<i class="icon-frown"></i></h4>
+  </div>
+  <div ng-show="oldRequest.length" class="widget-box transparent">             
+    <div class="widget-body">
+      <div class="widget-main no-padding">
+        <table ng-hide="!oldRequest.length || quoteRequestListLoader" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th><i class="icon-stop">&nbsp Quote #</i></th>
+              <th class="hidden-767"> <i class="icon-time">&nbsp Quote Date</i></th>
+              <th class="hidden-767"> <i class="icon-reorder">&nbsp Account Name</i></th>
+              <th class="hidden-767"> <i class="icon-group">&nbsp Holders</i></th>
+              <th><i class="icon-flag">&nbsp Status</i></th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="r in oldRequest  | filter:searchFilter">
+            <tr data-placement="bottom" permission="readQuote.*.*" style="cursor: pointer;" bs-tooltip="tooltip.detail" ng-class="{'alert alert-info': $state.includes('request.quoteList.detail') &amp;&amp; $stateParams.requestId == r.quoteRequestId}" href="#/request/quote/{{$stateParams.requestType}}/detail/{{r.requestId}}" ng-click="selectQuoteRequest(r.quoteRequestId)">
+              <td>
+                <div tooltip="{{r.quoteNo}}" class="col-md- trim-info-sm">{{r.quoteNo}}</div>
+              </td>
+              <td class="hidden-767">
+                <div tooltip="{{r.quoteDate}}" class="col-md- trim-info-sm">{{r.quoteDate}}</div>
+              </td>
+              <td class="hidden-767">{{r.accountName}}</td>
+              <td class="hidden-767">
+                <div popover-placement="right" popover="{{r.pendingFor[$index].UserName}}" popover-trigger="mouseenter" class="col-md-">  {{r.pendingFor.length}}</div>
+              </td>
+              <td>
+                <div class="center"><span ng-show="r.isActive==1" class="small label label-success">Active</span><span ng-show="r.isActive==0" class="small label label-warning">Inactive</span></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-8">
+  <div ui-view="detail" class="row"> </div>
+</div>

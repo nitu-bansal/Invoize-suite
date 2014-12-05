@@ -1,0 +1,41 @@
+div
+    form.form-horizontal(novalidate, name="form", ng-init="readMetadata()")
+        .col-xs-12
+            .pull-right.in-add
+                .btn-group(style="vertical-align: inherit;")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right(data-toggle='dropdown', type='button' ,tooltip="Configuration Mode",tooltip-placement="left")
+                        i.fa.fa-angle-down
+                        |&nbsp; Mode
+                    ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                        li
+                            table
+                                tbody
+                                    tr(ng-repeat="type in metadataType.profileBase")
+                                        td( style="padding:0 10px") {{type.label}}
+                                        td
+                                            dynamic-Select(name="TypeValue_{{$index}}",ng-model="type.value",ph="{{type.suggestionsSource}}",placeholder="Please Select")
+
+
+        .col-xs-12
+            .col-sm-6.in-wiz-row( ng-repeat="row1 in metadataType.fields",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}", alt-render,hasParent='row',hasCount='2',ng-cloak='ng-cloak')
+                    label {{row1.label}}
+                    .controls(ng-switch-when="true",ng-switch='row1.type')
+                        input(ng-switch-when='text',ng-if="row1.key!='script'",type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                        dynamic-Select(ng-if="row1.key!='translationProfile' && row1.key!='incomingChannel' && row1.key!='outgoingChannel'",ng-switch-when='dropdown',,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                        dynamic-Select(ng-if="row1.key=='translationProfile' || row1.key=='incomingChannel' || row1.key=='outgoingChannel'",ng-switch-when='dropdown',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}",customobj='{"systemId":"{{$routeParams.systemId}}"}')
+
+                        input(ng-switch-when='text',type="text",ng-required="row1.isMandatory",ng-if="row1.key=='script'", ng-model="row1.value" ,name="name",id="{{row1.key}}",ng-readonly="{{row1.isReadonly}}",typeahead="suggestion for suggestion in scriptBar($viewValue,row1.suggestionsSource,row1.key)", typeahead-editable="false",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+
+                        button.command(ng-show="row1.key=='translationProfile' || row1.key=='incomingChannel' ||row1.key=='outgoingChannel'", toolTip="add {{row1.label}}",ng-click='openDialog(row1.suggestionsSource)')
+                            i.fa.fa-cog
+                        textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        span(ng-show="subForm.name.$error.required") *
+                        span(ng-show="subForm.name.$error.unique") already Exists
+                        span(ng-show="subForm.name.$error.number") only numbers
+                        span(ng-show="subForm.name.$error.date") only date
+                        span(ng-show="subForm.name.$error.maxlength") max length is {{row1.length}}
+                        span(ng-show="subForm.name.$error.pattern") Can contain only text
+                        span.green.validTick(ng-show="subForm.name.$valid") &#10004;

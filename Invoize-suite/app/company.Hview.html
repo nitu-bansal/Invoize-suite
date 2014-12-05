@@ -1,0 +1,50 @@
+
+<link rel="stylesheet" type="text/css" href="/styles/inz-chart.css"/>
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" hide-pop="hide-pop" class="row in-wiz-ttl fix-scroll">
+  <div class="col-md-7 col-sm-6">
+    <div class="in-wiz-info">Company Hierarchy in your organization.</div>
+  </div>
+  <div class="col-md-5 col-sm-6 in-add"><i ng-show="companyListLoader" class="icon-spinner icon-spin blue icon-large"></i><a permission="listCompany" hide-pop="hide-pop" ng-click="redirectTo('/company/view')" style="cursor:pointer" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Tile View" class="inz-btn btn-sm btn-ico btn-default"><i class="fa fa-th"></i></a><a permission="createCompany" hide-pop="hide-pop" style="cursor:pointer" ng-click="redirectTo('/company/new')" ng-hide="loggedInUser.companyType!='Multiple'"><span class="in-add-sign">+</span><span class="in-add-txt">Add company</span></a>
+  </div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Company Hierarchy in your organization.</div>
+    </div>
+    <div class="pull-right"><i ng-show="companyListLoader" class="icon-spinner icon-spin blue icon-large"></i><a hide-pop="hide-pop" ng-click="redirectTo('/company/view')" style="cursor:pointer" tool-tip="tool-tip" data-placement="bottom" data-toggle="tooltip" title="Tile View" class="inz-btn btn-sm btn-ico btn-default"><i class="fa fa-th"></i></a><a permission="createCompany" style="vertical-align: top;cursor:pointer;" ng-click="redirectTo('/company/new')" ng-hide="loggedInUser.companyType!='Multiple'"><span class="in-add-sign">+</span><span class="in-add-txt">Add Company</span></a>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div id="content">      
+    <div class="legends">
+      <!--.title LEGENDS-->
+      <div class="leg"><i class="fa fa-building-o"></i> : Company</div>
+      <div class="leg"><i class="fa fa-desktop"></i> : System</div>
+      <div class="leg"><i class="fa fa-map-marker"></i> : Location</div>
+      <div class="leg"><i class="fa fa-bar-chart-o"></i> : Operation</div>
+      <div class="leg"><i class="fa fa-tags"></i> : Account</div>
+    </div>
+  </div>
+  <div style="clear:both;height:20px;"></div>
+  <div id="main"></div>
+</div>
+<div id="left">
+  <ul id="organisation">
+    <li tree-View="child in companyTree.children at ul">
+      <!--div ID : {{child.companyid}}-->
+      <div class="line com"><i class="fa fa-building-o"></i>&nbsp; {{child.company}}
+        <button ng-if="child.system.length&gt;0" data-content="{{child.system | formatSystem}}" data-placement="right" data-toggle="popover" data-container="body" type="button" data-original-title="System" title="System &amp; Profiles" class="btn-pop"><i class="fa fa-caret-right"></i></button>
+      </div>
+      <ul ng-class="{p:child.children.length}"></ul>
+    </li>
+    <div class="clearfix"></div>
+  </ul>
+</div>
+<div class="in-wiz-footer">  <a href="#/wizard/system/view" class="inz-btn btn-sm btn-success">Next Step      <i class="fa fa-long-arrow-right"></i></a>
+</div>
+<div class="loader-backdrop">
+  <div class="center-con"><span class="in-load-bar t"></span><span class="in-load-bar r"></span><span class="in-load-bar b"></span><span class="in-load-bar g"></span></div>
+</div>

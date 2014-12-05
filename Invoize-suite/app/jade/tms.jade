@@ -1,0 +1,208 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+.main-container(id="main-container")
+        a(id="menu-toggler", href="#")
+                .col-md-
+        .fixed.sidebar(id="sidebar")
+                .sidebar-shortcuts(id="sidebar-shortcuts")
+                        div(id="sidebar-shortcuts-large")
+                                a.btn.btn-xs(style="left: -155px;") 
+                                btn.pull-left
+                                        h4 &nbsp; Accounts                        
+                        div(id="sidebar-shortcuts-mini")
+                                span.btn.btn-success
+                                span.btn.btn-info
+                                span.btn.btn-warning
+                                span.btn.btn-danger
+                <!--#sidebar-shortcuts-->
+                div(id="sidebar-collapse").sidebar-collapse
+                        i(data-icon2="icon-double-angle-right", data-icon1="icon-double-angle-left").icon-double-angle-left
+                div.sidebar-shortcuts(id="sidebar-shortcuts")
+                        div(id="sidebar-shortcuts-large")
+                                span.input-icon
+                                        input.input-medium.search-query(id="nav-search-input",type="text",ng-change="searchAccount()", placeholder="Search ...",ng-model="search", autocomplete="off")
+                                        i.icon-search.icon-lg(id="nav-search-icon",ng-hide="accountListLoader")
+                                        i.icon-spinner.icon-spin.blue.icon-lg(ng-show="accountListLoader")
+                        div(id="sidebar-shortcuts-mini")
+                                i.icon-search.blue.icon-lg 
+                ul.nav.nav-list(id='fixed-rate',when-scrolled="loadMore()")
+                        li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+                                a(data-toggle="tab",ng-click="listTariffs(l.id)", data-toggle="tab", href="#/tms/list/{{l.id}}")
+                                        i.icon-blank {{l.v|firstLetter}}
+                                        span.menu-text {{l.v|titlecase}}
+                <!--/.nav-list-->
+
+        .main-content(id="main-content")
+                .fixed.breadcrumbs(id="breadcrumbs")
+                        ul.breadcrumb
+                                li
+                                        .icon-home.home-icon
+                                        a(href="#") Home                                        
+                                li.active Tariffs
+                         <!--.breadcrumb-->  
+                .clearfix.page-content(id="page-content")                   
+                        .page-header                     
+                        .col-md-12<!--PAGE CONTENT BEGINS HERE-->
+                                div(ng-hide="$routeParams.accountId")
+                                        .row                                
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Volume Shipped Per Day
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6 
+                                                                                             div(shipped-Per-Day='chartData') 
+
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Tariff Expiry Rate
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6                                                                                 
+                                                                                              div(expiry-Rate='chartData') 
+                                        .row                                
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Tariffs Not Normalized
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6 
+                                                                                             div(not-Normalized='chartData')
+                               
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Tariff Uploaded After Effective Date
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6 
+                                                                                             div(tariff-Updated-After-Effective-Date='chartData')
+
+                        .col-md-12<!--PAGE CONTENT BEGINS HERE-->
+                                //- .center
+                                .row(ui-view="list")
+                                <!--PAGE CONTENT ENDS HERE-->
+                        <!--/row-->
+                <!--/#page-content-->
+
+                div(id="ace-settings-container")
+
+                <!--/#ace-settings-container-->
+        <!--/#main-content-->
+<!--/.fluid-container#main-container-->
+
+a.btn.btn-sm.btn-inverse(href="#", id="btn-scroll-up")
+        i.icon-double-angle-up.icon-only.bigger-110
+
+//- container-fluid(id="main-container")
+//-         a(id="menu-toggler",href="#")
+//-                 span
+//-         div.fixed(id="sidebar")
+//-                 div(id="sidebar-shortcuts")
+//-                         div(id="sidebar-shortcuts-large")
+//-                                 h3 Accounts
+//-                                 a.btn
+//-                         div(id="sidebar-shortcuts-mini")
+//-                                 span.btn.btn-success
+//-                                 span.btn.btn-info
+//-                                 span.btn.btn-warning
+//-                                 span.btn.btn-danger
+
+//-                 div.center(id="nav-search")
+//-                                 form.form-search
+//-                                         span.input-icon
+//-                                                 input.input-medium.search-query(id="nav-search-input",type="text",ng-change="searchAccount()", placeholder="Search ...",ng-model="search", autocomplete="off")
+//-                                                 i.icon-spinner.icon-spin.blue.icon-large(ng-show="accountListLoader")
+//-                                                 i.icon-search(id="nav-search-icon",ng-hide="accountListLoader")
+//-                 ul.nav.nav-list(when-scrolled="loadMore()")
+//-                         li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+//-                                 a(data-toggle="tab",ng-click="listTariffs(l.id)", data-toggle="tab", href="#/tms/list/{{l.id}}")
+//-                                         i.icon-blank {{l.v|firstLetter}}
+//-                                         span {{l.v|titlecase}}
+
+//-                 div(id="sidebar-collapse")
+//-                         i.icon-double-angle-left
+//-         .clearfix(id="main-content")
+//-                 div.fixed(id="breadcrumbs")
+//-                         ul.breadcrumb
+//-                                 li
+//-                                         i.icon-home
+//-                                         a Home
+//-                                         span.divider
+//-                                                 i.icon-angle-right
+//-                                 li.active Tariff
+//-                 .row
+//-                         .col-md-9
+//-                                 .row
+//-                                         .container-fluid(ng-hide="$routeParams.accountId")
+//-                                                 .row
+//-                                                         .col-md-5
+//-                                                                 h4 Tariff Expiring in Coming Months
+//-                                                                 div(tariff-Expired='chartData')
+
+
+//-                                                 hr
+//-                                                 .row
+//-                                                         .col-md-5
+//-                                                                 h4 Tariff Expired Since
+//-                                                                 div(tariff-Expiry='chartData')
+//-                 .row.clearfix(id="page-content",ui-view="list")
+
+
+
+
+//- section
+//-         .container-fluid
+//-                 .row
+//-                         .col-md-3.bs-docs-sidebar(style="cursor: pointer;")
+//-                                 ul.nav.nav-list.bs-docs-sidenav.sidebar-nav.sidebar-nav-fixed
+//-                                         li.nav-header
+//-                                                 h4 Accounts
+//-                                                 input.search-query.input-medium(ng-change="searchAccount()",type="search", placeholder="Search", ng-model="search")
+//-                                                 .col-md-1.pull-right
+//-                                                         i.icon-spinner.icon-spin.icon.icon-large(ng-show="accountListLoader")
+
+
+//-                                         ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMore()")
+
+//-                                                 li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+//-                                                         a(data-toggle="tab",ng-click="listTariffs(l.id)", data-toggle="tab", href="#/tms/list/{{l.id}}")
+//-                                                                 i.icon-chevron-right
+//-                                                                 {{l.v|titlecase}}
+//-                                         ul
+//-                                                 i.icon-spinner.icon-spin.icon-2x(ng-show="loadingMore")
+//-                         .col-md-9
+//-                                 .row
+//-                                         .container-fluid(ng-hide="$routeParams.accountId")
+//-                                                 .row
+//-                                                         .col-md-5
+//-                                                                 h4 Tariff Expiring in Coming Months
+//-                                                                 div(tariff-Expired='chartData')
+
+
+//-                                                 hr
+//-                                                 .row
+//-                                                         .col-md-5
+//-                                                                 h4 Tariff Expired Since
+//-                                                                 div(tariff-Expiry='chartData')
+
+
+//-                                 div(ui-view="list")
+
+
+

@@ -1,0 +1,137 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+.page-header
+.main-container(id="main-container")
+        a(id="menu-toggler",href="#")
+                span
+        div.sidebar(id="sidebar")
+                div.sidebar-shortcuts(id="sidebar-shortcuts")
+                        div.sidebar-shortcuts-large(id="sidebar-shortcuts-large")
+                                a.btn.btn-sm(ng-hide='isCollapsed',style="left: -155px;")
+                                a.btn.btn-md.btn-success.btn-margin(ng-show='isCollapsed',data-placement="right",permission="createChargeDefnRate.*.*",ng-disabled="$state.includes('rate.template')",href="#/rate/template/{{$routeParams.accountId}}", bs-tooltip="tooltip.new" , ng-click="newChargeDefn()") 
+                                        i.icon-plus.icon-white
+                                //- a.btn.btn-mini.btn-success(data-placement="right",permission="createRole.*.*",ng-disabled="$state.includes('role.new')",href="#/role/new",bs-tooltip="tooltip.new" , ng-click="initializeRole()")
+                                //-         i.icon-plus                                 
+                                btn.pull-left
+                                        h4(ng-hide='isCollapsed') &nbsp; Accounts
+                                        h5(ng-show='isCollapsed') &nbsp; Rate Definitions                                              
+                        div(id="sidebar-shortcuts-mini")
+                                span.btn.btn-success
+                                span.btn.btn-info
+                                span.btn.btn-warning
+                                span.btn.btn-danger     
+                div.sidebar-collapse(id="sidebar-collapse")
+                        i.icon-double-angle-left 
+                div.sidebar-shortcuts(id="sidebar-shortcuts")
+                        div.sidebar-shortcuts-small(id="sidebar-shortcuts-small")
+                                a.btn.btn-sm.btn-inverse(ng-show='isCollapsed',data-placement="right",bs-tooltip="tooltip.showMore" , ng-click="toggleCollapse(false)")
+                                        |Show All Accounts 
+                                        i.icon-eye-open
+                                span.input-icon(ng-hide='isCollapsed')
+                                        input.input-medium(id="nav-search-input",type="text",ng-change="searchAccount();toggleCollapse(false)", placeholder="Search ...",ng-model="search", autocomplete="off")
+                                        i.icon-spinner.icon-spin.blue.icon-large(ng-show="accountListLoader")
+                                        i.icon-search.icon-large(id="nav-search-icon",ng-hide="accountListLoader")
+                        div.sidebar-shortcuts-mini(id="sidebar-shortcuts-mini")
+                                i.icon-search.blue.icon-large            
+
+
+
+
+
+                ul.nav.nav-list(id='fixed-rate', when-scrolled="loadMoreAccounts()",ng-hide='isCollapsed')  
+                        li(ng-class="{active : $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")                                
+                                a.dropdown-toggle(href='#', data-toggle="tab",ng-click="selectAccount(l.v);toggleCollapse(true);getChargeDefs(l.id);searchFor('Account',l.v,l.id,$stateParams.templateId)")
+                                        i.icon-blank.green {{l.v|firstLetter}}
+                                        span.trim-info-large {{l.v|toHumanReadable}}
+
+
+
+
+                                         
+                                        
+                ul.nav.nav-list(id='fixed-rate', ng-show='isCollapsed') 
+                        li.open.active     
+                                a                                       
+                                        i.icon-blank {{selectedAccount |firstLetter}}
+                                        span {{selectedAccount}}
+                                        i.arrow.icon-angle-down                                   
+                                ul.submenu(style="display: block;")
+                                        li(ng-class="{ active: $stateParams.templateId == l.id}",ng-repeat="l in chargeDefinitions ")
+                                                a.dropdown-toggle(href='#',ng-click="searchFor('chargeDefn',l.v,$stateParams.accountId,l.id);selectChargeDefn(l.id)") 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-large {{l.n | toHumanReadable}}    
+        .main-content(id="main-content")                       
+                .well.well-sm
+                        .col-md-offset-1
+                                .control-group
+                                        input.input-xxlarge.search-query(ui-select2="searchBar", ng-model="searchBarValue", ui-keypress="{enter: 'searchCharge(searchBarValue)'}")
+                                        button.btn.btn-primary.btn-sm(ng-click="searchCharge(searchBarValue,$stateParams.accountId,$stateParams.templateId)",type="submit")&nbsp&nbsp&nbsp&nbsp
+                                                i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp                                       
+                                        button.btn.btn-success.btn-margin.btn-sm(permission="createRate.*.*",ng-disabled="!$stateParams.templateId",ng-click="getTemplate($stateParams.accountId,$stateParams.templateId)",href="#/rate/new/{{$routeParams.accountId}}/{{$routeParams.templateId}}" ,bs-tooltip="tooltip.rateRequestNew")
+                                                        i.icon-plus.icon-white
+                                                        |  Request Rate
+                .clearfix(id="page-content-PullUp") 
+                        <!--/.page-header-->
+                        .col-sm-10<!--PAGE CONTENT BEGINS HERE-->
+                                div(ng-hide="$routeParams.accountId")
+                                        .row                                
+                                                .col-sm-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Top lanes by volume
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row      
+                                                                                        .col-sm-6 
+                                                                                              div(top-Lanes-Volume='chartData') 
+
+                                                .col-sm-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Top lanes by revenue
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row     
+                                                                                        .col-sm-6                                                                                 
+                                                                                              div(top-Lanes-Revenue='chartData')
+                                                                                              
+                                        .row
+                                                .col-sm-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-pie-chart &nbsp Domestic vs International Shipments
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row      
+                                                                                        .col-sm-6                                                                                 
+                                                                                              div(domestic-Vs-International-Shipments='chartData')
+
+                                                .col-sm-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-column-chart &nbsp Expiring Tariffs
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row     
+                                                                                        .col-sm-6                                                                                 
+                                                                                              div(expiring-Tariffs='chartData')
+                                                                              
+                                div(ui-view="list")<!--PAGE CONTENT BEGINS HERE-->
+                                //- .center
+                            
+                                <!--PAGE CONTENT ENDS HERE-->
+                        <!--/row-->
+                <!--/#page-content-->                
+//- script(src="/scripts/vendor/prettify.js")
+//- script(src="/scripts/vendor/ace-elements.js")
+//- script(src="/scripts/vendor/ace.js")                                    
+
+                             

@@ -1,0 +1,61 @@
+
+<div class="col-md-9">
+  <form novalidate="novalidate" name="form3" class="form-horizontal">               
+    <div class="row">                       
+      <h4 class="header smaller lighter">New Tariff
+        <div class="pull-right btn-group"><a onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary"><i class="icon-mail-reply"></i></a>
+          <button ng-class="{'disabled': form3.$invalid}" ng-disabled="form3.$invalid" type="submit" ng-click="create(tariff)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-sm btn-primary"><i class="icon-ok"></i></button>
+        </div>
+      </h4>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Effective Date</label>
+      <div class="controls">
+        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="effectiveDate" type="text" ng-model="tariff.effectiveDate" placeholder="Effective Date" required="required"/><span ng-show="form3.effectiveDate.$error.required">*</span><span ng-show="form3.effectiveDate.$valid" class="green validTick">&#10004;  </span>
+      </div>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Expiry Date</label>
+      <div class="controls">
+        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="expiryDate" type="text" ng-model="tariff.expiryDate" placeholder="Expiry Date" required="required"/><span ng-show="form3.expiryDate.$error.required">*</span><span ng-show="form3.expiryDate.$valid" class="green validTick">&#10004;  </span>
+      </div>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Received Date</label>
+      <div class="controls">
+        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="receivedDate" type="text" ng-model="tariff.receivedDate" placeholder="Received Date" required="required"/><span ng-show="form3.receivedDate.$error.required">*</span><span ng-show="form3.receivedDate.$valid" class="green validTick">&#10004;</span>
+      </div>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Received From</label>
+      <div class="controls">
+        <input placeholder="Email" ng-model="tariff.receivedFrom" name="receivedFrom" required="required" type="email"/><span ng-show="form3.receivedFrom.$error.required">*</span><span ng-show="form3.receivedFrom.$error.email">Invalid email.</span><span ng-show="form3.receivedFrom.$valid" class="green validTick">&#10004;  </span>
+      </div>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Comments</label>
+      <div class="controls">
+        <textarea rows="3" name="tariffComments" ng-model="tariff.comment" placeholder="Comments"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="col-md-9">
+  <div id="newFiles" ng-controller="FileUploadController" url="/api/tms/upload/file">
+    <form data-upload-template-id="template-upload-1" method="POST" action="/api/tms/upload/file" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+      <div bs-tooltip="tooltip.drop" id="drop-area">
+        <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+          <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+        </div>
+        <div class="drop-instructions">
+          <mute> Browse and upload multiple files or drag and drop files here</mute>
+        </div>
+        <div class="drop-over">Drop files here!</div>
+      </div>
+      <div ng-hide="proceedClicked" class="row uploaded">
+        <div data-ng-repeat="file in queue" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+        <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+      </div>
+    </form>
+  </div>
+</div>

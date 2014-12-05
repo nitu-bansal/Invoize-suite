@@ -1,0 +1,47 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+.container-fluid(id="main-container")                 
+	a(id="menu-toggler",href="#")
+		span
+	div.fixed(id="sidebar")
+
+		div(id="sidebar-shortcuts")
+			div(id="sidebar-shortcuts-large")
+				a.btn.btn-xs.btn-success(data-placement="right",ng-click="read(0)",permission="createJobCard.*.*",ng-disabled="$state.includes('jobCard.new')",href="",bs-tooltip="tooltip.new")
+					i.icon-plus 
+				btn.pull-left
+					h4 &nbsp; Job Cards  
+			div(id="sidebar-shortcuts-xs")
+				span.btn.btn-success
+				span.btn.btn-info
+				span.btn.btn-warning
+				span.btn.btn-danger     
+		div(id="sidebar-collapse")
+			i.icon-double-angle-left 
+		div(id="sidebar-shortcuts")
+			//- Need to change function and variable names in sidebar buttons
+			div(id="sidebar-shortcuts-large")
+				span.input-icon
+					input.input-medium(id="nav-search-input",type="text",ng-change="searchJobCard()", placeholder="Search ...",ng-model="search", autocomplete="off")
+					i.icon-spinner.icon-spin.blue.icon-large(ng-show="userListLoader")
+					i.icon-search.icon-large(id="nav-search-icon",ng-hide="userListLoader")
+			div(id="sidebar-shortcuts-xs")
+				i.icon-search.blue.icon-large
+		ul.nav.nav-list(id='fixed-rate',when-scrolled="loadMore()")
+			li(ng-repeat="l in jobCardList")
+				a(data-toggle="tab",ng-click="read(l.id)", data-toggle="tab",href="")
+					i.icon-blank {{l.v|firstLetter}}
+					span.trim-info-large {{l.v|toHumanReadable}}   		
+	.clearfix(id="main-content")
+		div.fixed(id="breadcrumbs")
+			ul.breadcrumb 
+				li
+					i.icon-home
+					a Home
+					span.divider
+						i.icon-angle-right
+					|Administration
+					span.divider
+						i.icon-angle-right
+				li.active Job Card                         
+	.clearfix(id="page-content",ui-view="list")

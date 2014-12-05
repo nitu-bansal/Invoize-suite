@@ -1,0 +1,30 @@
+
+<!--Created by pallavi.dandane on 7/29/2014.-->
+<div class="modal-dialog modal">
+  <div style="margin: 0 auto;width: 80%;" class="modal-content">
+    <div class="modal-header">
+      <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+      <h4 class="modal-title">Upload Tariff &nbsp;</h4>
+    </div>
+    <div class="modal-body">
+      <div id="newFiles">
+        <div bs-tooltip="tooltip.drop" ng-disable="proceedClicked" id="drop-area">
+          <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+            <input type="file" id="files-upload" name="file" onchange="angular.element(this).scope().setFiles(this)"/><i class="icon-cloud-upload"></i>
+          </div>
+          <div class="drop-instructions">
+            <mute> Browse and upload multiple files or drag and drop files here</mute>
+          </div>
+          <div class="drop-over">Drop files here!</div>
+        </div>
+        <div ng-hide="proceedClicked" class="row uploaded">
+          <div data-ng-repeat="file in files" class="file"><span class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="files.splice($index,1);" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button ng-click="uploadFile()" class="inz-btn btn-sm btn-success">Done</button>
+      <button ng-click="close();" class="inz-btn btn-sm btn-default">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+
+<div set-width="set-width" ng-init="setData();clear()" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Notification</div>
+    </div>
+    <div class="pull-right"><a ng-href="/#/organizationSetup/notification/view" class="inz-btn btn-sm btn-default">Back</a>
+      <button type="submit" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" ng-click="saveData()" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="ds-tree">
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="input-group"><span class="input-group-addon">Module</span>
+          <dynamic-Select name="module" ng-model="data.module" change="moduleChange(data.module[0].n)" customobj="{&quot;type&quot;:&quot;module&quot;}" ph="metadata_Events" placeholder="Module" ng-required="false"></dynamic-Select>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="input-group"><span class="input-group-addon">Event</span>
+          <dynamic-Select name="event" ng-model="data.event" customobj="{&quot;module&quot;:&quot;{{data.module[0].n}}&quot;}" ph="metadata_Events" placeholder="Event" ng-required="false"></dynamic-Select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <form novalidate="novalidate" name="form">
+    <h3 class="header smaller lighter red"><i class="icon-edit">&nbsp;</i>Compose</h3>
+    <label class="input-xxlarge label-noti">From<span ng-show="form.from.$error.required" class="red">&nbsp; *</span><span ng-show="form.from.$valid" class="green validTick">&nbsp; &#10004;</span>
+    </label><span class="span-large">
+      <dynamic-Select name="from" ng-model="data.notifications.from" ph="metadata_emailAccounts" placeholder="From" required="required"></dynamic-Select></span>
+    <button toolTip="Configure Email" ng-click="toggleConfigureEmailBox()" class="command"><i class="fa fa-cog"></i>
+      <!-- span(ng-hide='showConfigureEmailBox')-->
+      <!-- include configureEmailBox-->
+    </button>
+    <label class="input-xxlarge label-noti">To<span ng-show="form.to.$error.required" class="red">&nbsp; *</span><span ng-show="form.to.$valid" class="green validTick">&nbsp; &#10004;</span></label>
+    <input name="to" placeholder="Enter comma(,) separated Email address for External Contacts" ng-model="data.notifications.to" type="text" required="required" class="input-xxlarge"/>
+    <label class="input-xxlarge label-noti">CC</label>
+    <input name="cc" ng-model="data.notifications.cc" type="text" placeholder="Enter comma(,) separated Email address for Internal Contacts" ng-required="false" class="input-xxlarge"/>
+    <label class="input-xxlarge">Subject<span ng-show="form.subject.$error.required" class="red">&nbsp; *</span><span ng-show="form.subject.$valid" class="green validTick">&nbsp; &#10004;</span></label>
+    <input name="subject" ng-model="data.notifications.subject" type="text" placeholder="Subject" required="required" class="input-xxlarge"/>
+    <label class="input-xxlarge label-noti">Reply to<span ng-show="form.replyto.$error.required" class="red">&nbsp; *</span><span ng-show="form.replyto.$valid" class="green validTick">&nbsp; &#10004;</span></label>
+    <input name="replyto" ng-model="data.notifications.replyto" type="text" placeholder="Enter your or Team group Email address" required="required" class="input-xxlarge"/>
+    <div style="clear:both;height:5px;"></div>
+    <label for="bool-attach" class="input-medium label-noti">Attachment</label>
+    <label>
+      <input type="checkbox" name="switch-field-1" ng-model="data.notifications.attachment" ng-required="false" class="ace ace-switch ace-switch-2"/><span class="lbl"></span>
+    </label>
+    <div style="clear:both"></div>
+    <rich-text ng-model="data.notifications.body" name="body" id="txtBody" ng-required="false"></rich-text>
+    <div style="display:none"><b id="startIndex"></b>to<b id="endIndex"></b></div>
+    <div style="clear:both;"></div>
+    <label class="label-noti input-xxlarge">Signature</label><br/>
+    <textarea ng-model="data.notifications.signature" type="text" style="min-width:100%; max-width:100%;" ng-required="false" class="inz-txt"></textarea>
+    <div style="clear:both;height:40px;"></div>
+  </form>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <h3 class="header smaller lighter red"><i class="fa fa-unlink">&nbsp;</i>Fields</h3>
+  <div class="pull-left">
+    <label tooltip="if this need to be used in Email" class="blue">Drag and Drop Variables</label>
+  </div>
+  <div class="pull-right">
+    <input type="text" ng-model="querySearch" ng-change="gridFilter(querySearch)" placeholder="Type here to search..." class="in-query1"/>
+  </div>
+  <div style="clear:both;height:5px;"></div>
+  <div nice-scroll="nice-scroll" class="de-block">
+    <ul class="in-fields">
+      <li ui-draggable="true" drag="fields" ng-repeat="fields in fields track by $index">{{fields}}</li>
+    </ul>
+  </div>
+  <div style="clear:both;height:5px;"></div>
+  <h3 class="header smaller lighter red"><i class="fa fa-clock-o">&nbsp;</i>Scheduling</h3>
+  <div class="row">
+    <div class="pull-right">
+      <label style="margin-bottom:0;">
+        <input type="checkbox" name="switch-field-1" ng-click="toggleScheduling()" ng-model="schedulingOnOff" ng-required="false" class="ace ace-switch ace-switch-1"/><span class="lbl"></span>
+      </label>
+      <!--button.inz-btn.btn-default.btn-sm.btn-ico(ng-click='toggleScheduling()')-->
+      <!--    i.fa.fa-calendar-->
+    </div>
+  </div>
+  <div class="row">
+    <div ng-hide="showScheduling">
+      <div class="col-xs-12 col-md-8 col-sm-7">
+        <div style="margin-top:28px">
+          <label>Start date &nbsp;</label>
+          <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" name="SchedulingStartDate" type="text" ng-model="data.scheduling.schedulingStartDate" close-text="Close" placeholder="Start On Date" ng-required="false"/>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-4 col-sm-5">
+        <div ng-model="data.scheduling.schedulingStartTime" style="display:inline-block;" ng-required="false" class="inz-time-picker">
+          <timepicker hour-step="hstep" minute-step="mstep" show-meridian="ismeridianStart"></timepicker>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-xs-12 col-md-6 col-sm-7">
+        <label>End On &nbsp;</label>
+        <select ui-select2="ui-select2" data-placeholder="Select" ng-model="data.scheduling.schedulingEndOn" ng-required="false" class="w150">
+          <option value="{{key}}" ng-repeat="(key,val) in endOnOption">{{val}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-md-6 col-sm-5">
+        <label ng-show="data.scheduling.schedulingEndOn=='ondate'">
+          <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" type="text" ng-model="data.scheduling.schedulingEndOnDate" ng-required="false" close-text="Close" placeholder="End On Date" class="input-medium"/>
+        </label>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-xs-12 col-md-8 col-sm-7">
+        <div style="margin-top:28px">
+          <select ui-select2="ui-select2" data-placeholder="Select" ng-model="data.scheduling.schedulingOn" ng-required="false">
+            <option value="{{key}}" ng-repeat="(key,val) in schedulingOnOption">{{val}}</option>
+          </select>
+          <label>&nbsp; at &nbsp;</label>
+          <select ui-select2="ui-select2" ng-model="data.scheduling.schedulingOption" ng-required="false">
+            <option value="{{key}}" ng-repeat="(key,val) in schedulingOption">{{val}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-4 col-sm-5">
+        <div ng-show="data.scheduling.schedulingOption=='interval'">
+          <div ng-model="data.scheduling.schedulingIntervalTime" style="display:inline-block;" ng-required="false" class="inz-time-picker">
+            <timepicker hour-step="hstep" minute-step="mstep" show-meridian="ismeridianInterval"></timepicker>
+          </div><span style="vertical-align:middle;" class="hrs">hrs
+            <!-- input.inz-txt.w60(type="text", placeholder="Hours")--></span>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <label ng-show="data.scheduling.schedulingOn=='weekly'">
+          <dynamic-Select multiselect="multiselect" name="name" ng-model="data.scheduling.schedulingDayList" ph="metadata_weekDay" placeholder="Select" ng-required="false"></dynamic-Select>
+        </label>
+        <label ng-show="data.scheduling.schedulingOn=='monthly'">
+          <dynamic-Select multiselect="multiselect" name="name" ng-model="data.scheduling.schedulingMonthList" ph="metadata_monthDays" placeholder="Select" ng-required="false"></dynamic-Select>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:220px"></div>
+</div>

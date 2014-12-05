@@ -1,0 +1,79 @@
+
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <h3 class="header smaller lighter red"><i class="icon-edit">&nbsp;</i>Compose</h3>
+  <div>
+    <label class="label-span">Module</label>
+    <label class="label-label input-xlarge margin-4px">{{data.module}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label class="label-span">Event</label>
+    <label class="label-label input-xlarge margin-4px">{{data.event}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label class="label-span">From</label>
+    <label class="label-label input-xlarge margin-4px">{{data.notifications.from}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label class="label-span">To</label>
+    <label class="label-label input-xlarge margin-4px">{{data.notifications.to}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label class="label-span">CC</label>
+    <label class="label-label input-xlarge margin-4px">{{data.notifications.cc}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label class="label-span">Subject</label>
+    <label class="label-label input-xlarge margin-4px">{{data.notifications.subject}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label class="label-span">Reply to</label>
+    <label class="label-label input-xlarge margin-4px">{{data.notifications.replyto}}</label>
+    <div style="clear:both;"></div>
+  </div>
+  <div>
+    <label for="bool-attach" class="label-span">Attachment</label>
+    <label class="label-label input-xlarge margin-4px">{{data.notifications.attachment}}</label>
+  </div>
+  <rich-text ng-model="data.body" name="name" id="txtBody"></rich-text>
+  <div style="display:none"><b id="startIndex"></b>to<b id="endIndex"></b></div>
+  <label>Signature</label><br/>
+  <textarea ng-model="data.notifications.signature" type="text" style="min-width:100%; max-width:100%;" ng-readonly="true"></textarea>
+  <div style="clear:both;height:20px;"></div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <h3 class="header smaller lighter red"><i class="fa fa-unlink">&nbsp;</i>Fields</h3>
+  <div>
+    <label class="label-span">Start date</label>
+    <label class="label-label input-medium margin-4px"> {{data.scheduling.schedulingStartDate}}</label>
+    <label class="label-label input-medium margin-4px">{{data.scheduling.schedulingStartTime}}</label>
+    <div style="clear:both"></div>
+  </div>
+  <div>
+    <label class="label-span">End On</label>
+    <label class="label-label input-medium margin-4px">{{data.scheduling.schedulingEndOn}}</label><span ng-show="data.scheduling.schedulingEndOn=='ondate'">
+      <label class="label-label input-medium">{{data.scheduling.schedulingEndOnDate}}</label></span>
+    <div style="clear:both"></div>
+  </div>
+  <div>
+    <label class="label-label input-small">{{data.scheduling.schedulingOn}}</label>
+    <label class="label-span margin-4px">at</label>
+    <label class="label-label input-small margin-4px">{{data.scheduling.schedulingOption}}</label><span ng-show="data.scheduling.schedulingOption=='interval'">
+      <label class="label-label input-small">{{data.scheduling.schedulingIntervalTime}}</label>
+      <label class="label-span margin-4px">hrs</label></span>
+    <div style="clear:both"></div>
+  </div>
+  <div ng-show="data.scheduling.schedulingOn=='weekly'">
+    <label class="label-label input-medium">{{data.scheduling.schedulingDayList}}</label>
+    <div style="clear:both"></div>
+  </div>
+  <div ng-show="data.scheduling.schedulingOn=='monthly'">
+    <label class="label-label input-medium">{{data.scheduling.schedulingMonthList}}</label>
+    <div style="clear:both"></div>
+  </div>
+</div>

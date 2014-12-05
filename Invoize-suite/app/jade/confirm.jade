@@ -1,0 +1,13 @@
+
+.modal-dialog(style="width:80%")
+        .modal-content
+            form(name="confirmForm",novalidate)
+                .modal-header
+                        button.close(aria-hidden='true', data-dismiss='modal', type='button',ng-click="close()")     &times;                            
+                        h4.modal-title Confirm {{confirmForm.$invalid}}
+                .modal-body
+                        .modal-msg(inner-html)  {{item.msg?item.msg:'Are you sure?'}}
+
+                .modal-footer                       
+                        button.inz-btn.btn-sm.btn-default(ng-click="close()") No
+                        button.inz-btn.btn-sm.btn-success(ng-click="save()",ng-focus="true",ng-disabled="confirmForm.$invalid",ng-class="{'disable':confirmForm.$invalid}",type="submit") Yes

@@ -1,0 +1,31 @@
+.modal-dialog.container
+	.modal-content
+		.modal-header
+			button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+			h4.modal-title DashBoard Data &nbsp;
+		.modal-body
+			.ee In DB: {{abc}}
+			table.inz-table(border="1",style="border-collapse:collapse")
+				thead
+					th.center Hawb
+					th.center Invoice
+					th.center Status
+					th.center Visibility Source
+					th.center Issue Category
+					th.center Age
+					th.center Party
+					th.center Rating Station
+					th.center Region
+					th.center Consignee
+					th.center Bill Amount
+					th.center Issue Resolved Agegroup
+
+			.col-xs-12.space
+
+		.modal-footer
+			p.inz-btn.btn-sm.btn-success.pull-left modal-footer
+			button.inz-btn.btn-sm.btn-default(ng-click="close()") Close
+
+
+
+

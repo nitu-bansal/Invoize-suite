@@ -1,0 +1,104 @@
+
+<!--Using fluid as the other has fixed pixels and doesnt extend the whole screen.-->
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-md-12">
+    <div class="pull-left">
+      <label class="lbl-dash"><span class="blue">Billing Pending Report for : &nbsp;</span><span class="bolder orange"><i class="fa fa-calendar-o">&nbsp;&nbsp;</i>
+          <input id="dt" datepicker-popup="yyyy-MM-dd" readonly="readonly" datepicker-options="dateOptions" type="text" ng-model="entryDate" close-text="Close" placeholder="Select date" class="input-small height-20"/></span></label>
+    </div>
+    <div class="pull-right">
+      <label style="padding-right:5px;"><span>{{updatedOn}}</span></label>
+      <div style="padding-right:10px;" class="btn-group filter-dd rule-filter">
+        <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle"><i class="fa fa-filter"></i> Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+        <div aria-labelledby="btnGroupVerticalDrop1" role="menu" style="white-space: nowrap;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <div ng-init="getRuleFields()" class="showme custom-filter-display overflow-auto">
+            <li ng-repeat="f in sortedFields" ng-switch="fields[f].type">
+              <div class="opt-title">{{fields[f].label}}</div>
+              <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="fields[f].val" close-text="Close" placeholder="{{fields[f].label}}" class="input-large"/>
+              <dynamic-Select ng-switch-default="ng-switch-default" name="{{fields[f]}}" ng-model="fields[f].val" ph="{{fields[f].autoSuggestSource}}" customobj="{{custObj[fields[f].label]}}" placeholder="{{fields[f].label}}"></dynamic-Select>
+            </li>
+          </div>
+          <div>
+            <div class="opt-cmd">
+              <button type="reset" ng-click="resetEasyFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button ng-click="applyEasyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;padding:50px 0 0"></div>
+<div class="col-md-12">
+  <div height="Hhw" class="overflow-auto border1px div-bpr">
+    <table style="text-align:left;" class="inz-table inz-table2 table4">
+      <thead>
+        <tr>
+          <th rowspan="2" colspan="0" ng-repeat="tHeaderObj in summaryTemplate.fields | filter:{isActive: true}" class="borderleftB">{{tHeaderObj.label}}</th>
+          <th rowspan="1" colspan="0" ng-repeat="h in initData.headers" class="borderleftB ">{{h}}</th>
+          <th rowspan="1" colspan="0" class="borderleftB ">Total</th>
+        </tr>
+        <tr>
+          <th ng-repeat="tHeaderObj in summaryTemplate.fields | filter:{isActive: true}">Count | Amount</th>
+          <!--th(ng-repeat="h in initData.headers")-->
+          <!--th  Count | Amount-->
+        </tr>
+      </thead>
+      <tbody toggle-table="toggle-table" meta-keys="{{sortedFields}}">
+        <tr ng-repeat="data in initData.data">
+          <td id="region_{{$index}}" class="center-text color1">{{data.region}}</td>
+          <td ng-repeat="tRowObj in summaryTemplate.fields | filter:{isActive: true} | slice:1:summaryTemplate.fields.length" ng-click="fillData($event.target)" id="{{tRowObj.key}}_{{$index}}" class="text-left"><i class="fa fa-folder folder2"></i>All</td>
+          <td ng-repeat="bg in data.ageGroup track by $index" ng-click="showDetails($event.target,$index)" class="center-text tdh"> {{bg.count}} | ${{bg.amount}}</td>
+          <td ng-click="showDetails($event.target,data.ageGroup.length)" class="center-text">
+            <div class="lbldash">{{data.total.count}} | ${{data.total.amount}}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div ng-show="dialog" class="row">
+  <div class="col-sm-12">
+    <div class="modal-dialog modal">
+      <div style="margin: 0 auto;width: 80%;" class="modal-content">
+        <form name="form" novalidate="novalidate">
+          <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="dialog=false" class="close">    &times;</button>
+            <h4 class="modal-title">Details &nbsp;<i ng-show="loader" class="icon-spinner icon-spin icon-large"></i></h4>
+          </div>
+          <div class="modal-body">
+            <div style="overflow: auto;height:460px;" ng-init="details.allChange = false">
+              <table class="table-hawb">
+                <thead>
+                  <th>Sr. No.</th>
+                  <th details.all="details.all" style="padding: 0 8px;">
+                    <input type="checkbox" ng-model="details.all" ng-click="excludesAll($event.target)"/>
+                  </th>
+                  <th ng-repeat="(i,th) in details.headers"><span ng-repeat="(k,v) in th">{{v}}</span></th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="row in details.data track by $index" ng-class="{'alert-warning':row['tag.excluded']}">
+                    <td>{{$index+1}}</td>
+                    <td title="{{row['tag.excluded']}}">
+                      <input type="checkbox" ng-checked="exclude.indexOf(row.id)!==-1" ng-click="setExcludes($event.target,row.id)" class="ex"/>
+                    </td>
+                    <td ng-repeat="(i,th) in details.headers track by $index"><span ng-repeat="(k,v) in th">{{row[k]}}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="pagination.totalItems" items-per-page="pagination.pageLimit" max-size="pagination.paginationSize" rotate="true" page="pagination.currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+          </div>
+          <div class="modal-footer">
+            <button ng-click="reAllocateShipments();" class="inz-btn btn-xs btn-primary">Re-Allocate</button>
+            <button ng-click="excludeShipments('delivered');" class="inz-btn btn-xs btn-success">Mark-As-Delivered</button>
+            <button ng-click="excludeShipments('excluded');" class="inz-btn btn-xs btn-danger">Exclude</button>
+            <button ng-click="exportData();" class="inz-btn btn-xs btn-success">Export</button>
+            <button ng-click="dialog=false" class="inz-btn btn-xs btn-default">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

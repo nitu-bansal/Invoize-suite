@@ -1,0 +1,32 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12
+        .pull-left
+            .in-wiz-info Metadata Type :
+                span.red &nbsp;  {{metadataType.Name}}
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="metadataLoader")
+            a(ng-click='editMetadataType($routeParams.metadataTypeId);',href="javascript:void(0)")
+                span.in-add-sign +
+                span.in-add-txt Edit Profile
+            a.inz-btn.btn-sm.btn-default(ng-href="/#/organizationSetup/metadata/view") Cancel
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-click="saveMetadatas()") Save Changes
+            .btn-group.filter-dd.rule-filter(style="vertical-align: inherit;")
+                button.btn-sm.btn-ico.btn-custom.dropdown-toggle.pad6-12(data-toggle='dropdown', type='button')
+                    i.fa.fa-filter
+                    |  Filter &nbsp;
+                    i.fa.fa-angle-down
+                div.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                    div.custom-filter-display.showme(ng-show="!isAdvancedFilter")
+                        div(ng-repeat="(k,lb) in fields",ng-switch="lb.type")
+                            .opt-title {{lb.label}}
+                            input.input-large(ng-switch-when="date", datepicker-popup="yyyy-mm-dd",datepicker-options="dateOptions",type="text",ng-model="filter[k]",close-text="Close",placeholder="{{lb.label}}", )
+                            dynamic-Select(ng-switch-default,multiselect,name="{{k}}",ng-model="filter[k]",ph="{{autosuggestSource}}",customobj="{{custObj[lb.label]}}",placeholder="{{lb.label}}")
+
+                    div(ng-show="!isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetFilter()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply
+div(style="clear:both")
+.col-md-12.col-sm-12.col-xs-12
+    div(ui-handsontable='{currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",ng-show="!metadataLoader",height='hh',width='hw',datarows='metadata in metadatas',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChangeMetadata',ng-init="getMetadataType(true)",afterRender='afterRender()')
+    pagination(total-items="totalItems",items-per-page="pageLimit",max-size="paginationSize",rotate="true",ng-init="paginationSize=20", page="currentPage",ng-show="!metadataLoader", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

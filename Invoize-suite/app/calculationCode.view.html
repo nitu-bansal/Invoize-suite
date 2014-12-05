@@ -1,0 +1,37 @@
+
+<div ng-init="getCodeList('');" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Calulation Code Configuration</div>
+    </div>
+    <div class="pull-right">
+      <input placeholder="Search Code" ng-change="getCodeList(q)" ng-model="q" class="input-search-new"/>
+      <button class="input-search-new"><i class="fa fa-search"></i></button><a permission="calculationCode.createCalculationCode" style="cursor:pointer" ng-href="/#/billright/calculationCode/new"><span class="in-add-sign">+</span><span class="in-add-txt">Add Code</span></a>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:50px;"></div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div ng-repeat="ListItem in codeList | orderBy:title" ng-form="subForm" style="margin-bottom:10px;" class="col-md-4 col-sm-6 col-xs-12 inz-blk">
+    <div class="in-view-block">
+      <div class="title"><i class="fa fa-tags small">&nbsp;</i>{{ListItem.name}}</div>
+      <div class="line">
+        <div class="caption">Calculation Text</div>
+        <div class="data">{{ListItem.description}}</div>
+      </div>
+      <div class="line">
+        <div class="caption">Calculation Format</div>
+        <div class="data">{{ListItem.format}}</div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button permission="deleteCode" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Delete" ng-click="confirmDeleteCode(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
+          <button permission="calculationCode.editCalculationCode" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="codeEditView(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+          <button permission="readCode" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="View" ng-click="codeView(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-eye"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

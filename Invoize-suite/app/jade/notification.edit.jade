@@ -1,0 +1,13 @@
+form(name="form",novalidate)
+    .row.in-wiz-ttl.in-fix-scroll(set-width,ng-init="setData();clear();editNotification();")
+        .col-xs-12
+                .pull-left
+                    label.in-wiz-info Notification
+            
+                .pull-right
+                    a.inz-btn.btn-sm.btn-default( ng-href="/#/organizationSetup/notification/view") Back
+                    button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",  ng-disabled="form.$invalid", type="submit", ng-click="saveData()",) Save Changes
+
+    .row
+        .col-xs-12
+            include emailTemplate

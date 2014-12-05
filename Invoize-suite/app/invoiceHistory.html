@@ -1,0 +1,15 @@
+
+<div class="col-md-12">
+  <table ng-show="deliveryData[$index].doc.length" class="inz-table inz-table5">
+    <thead>
+      <tr>
+        <th ng-repeat="val1 in deliveryData[$index].doc[0]" ng-show="$index&gt;0"><span tooltip="{{val1 |toHumanReadable}}" class="trim-info-large">{{val1 | toHumanReadable}}</span></th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="rowInvoice in deliveryData[$index].doc" ng-show="$index &gt; 0">
+      <tr>
+        <td ng-repeat="colInvoice in rowInvoice track by $index" ng-show="$index&gt;0"><span tooltip="{{colInvoice}}" class="trim-info-large">{{colInvoice}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

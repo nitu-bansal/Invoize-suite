@@ -1,0 +1,102 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-sm-12.col-md-12
+        .pull-left
+            .in-wiz-info Work Allocation
+        .pull-right
+            .btn-group.nowrap
+                button.inz-btn.btn-default.btn-ico(type='button',name='reset',ng-click='reset(true)',toolTip="Reset all",tooltip-placement="left") Reset &nbsp
+                    i.fa.fa-refresh
+                button.inz-btn.btn-success.btn-ico(permission="workAllocation.editRuleWorkAllocation",type='button',ng-disabled="rulForm2.$invalid",ng-class="{'disabled': rulForm2.$invalid}",id='newRule',name='ruleGroup',ng-click='save()',toolTip="Save & Proceed to Next Rule",tooltip-placement="bottom", style="color:#FFF;") Save & proceed &nbsp
+                    i.fa.fa-forward
+                    input#createRul(type='radio',name='ruleGroup',class='hide')
+            //button.inz-btn.btn-sm.inz-btn.btn-default.btn-ico(toolTip="View all available rules", type='file', ng-click='showAll=!showAll;listRules()',ng-init="showAll=false")
+            //    i.fa.fa-eye
+
+            //    input#createRul(type='radio',name='ruleGroup',class='hide')
+div(style="clear:both;height:40px;")
+form(name="rulForm",novalidate)
+    .col-xs-12.col-md-12.col-sm-12
+        .ds-tree
+            .row
+                .col-md-4.col-sm-6.col-xs-12
+                     label For
+                     span.red(ng-show="rulForm.stream.$error.required") &nbsp *
+                     br
+                     select.input-large(ui-select2='ui-select2',ng-required="true",name="stream", ng-model='rule.stream',ng-change='listRules();', data-placeholder='Select Stream')
+                         option(value="") Select
+                         option(ng-repeat="stream in streams",value="{{stream.id}}") {{stream.n}}
+
+                .col-md-4.col-sm-6.col-xs-12
+                     label Source
+                     span.red(ng-show="rulForm.source.$error.required") &nbsp *
+                     br
+                     select.input-large(ui-select2='ui-select2',name="source", multiple=false,ng-change="getFields();listRules()",ng-model="rule.source" ,ng-options="report.details.displayName for report in reports",required)
+                         option(value="") Select
+                .col-md-4.col-sm-6.col-xs-12
+                     label Trigger
+                     br
+                     select.input-large(ui-select2='ui-select2',name="triggerPoint", ng-model='rule.triggerPoint', data-placeholder='Trigger Point',ng-init="rule.triggerPoint='now'",ng-change="listRules()")
+                         option(value="now") Now
+                         option(value="onReportUpload") On Report Upload
+
+div(style="clear:both;")
+.col-md-4.col-sm-12.col-xs-12
+    .ds-tree
+        .row
+            .col-md-12.col-xs-12.col-sm-12
+                div(style="background:#EEEEEE; padding:6px 0; text-align:center; border:1px solid #ddd;") Available Rules
+                    a.pull-right(permission="workAllocation.createRuleWorkAllocation",type='button',id='newRule',name='ruleGroup',ng-click='reset()',toolTip="Create Rule ",tooltip-placement="left",style="cursor:pointer;margin-right:10px;")
+                        i.fa.fa-plus.green
+                div.center(style="margin:15px 0;",ng-show="rules.length==0")
+                    label(style="font-size:16px;text-align:center;color:#F46728;") No rule to display :(
+                ul.item-list(ng-show="rules.length>0")
+                    li.item-orange.border-list(ng-repeat="r in rules",ng-class="{'active-list':rule.id == r.id}",ng-click="setRule(r)") {{r.name}}
+
+.col-md-8.col-sm-12.col-xs-12
+    form(name="rulForm2",novalidate)
+        .ds-tree
+            .row
+                .col-sm-12.col-xs-12.col-md-12
+                    div.input-group.non-valid.form-section
+                        span.input-group-addon Rule Name
+                        input(type='text',ng-required="true",name='rulNam',ng-model="rule.name", style="width:100%;padding:6px;")
+                div(style="clear:both;height:20px;")
+                .col-sm-6.col-md-6.col-xs-12
+                    div.input-group.non-valid.form-section
+                        span.input-group-addon(toolTip="Effective Date")
+                            i.icon-calendar.bigger-110
+                        input.input-medium(datepicker-popup="{{format}}",name="effectiveDate",datepicker-options="dateOptions",type="text",ng-model="rule.effectiveDate",ng-required="true",close-text="Close",placeholder="Effective Date",ng-change="setMinData(rule.effectiveDate)")
+                .col-sm-6.col-md-6.col-xs-12
+                    div.input-group.non-valid.form-section
+                        span.input-group-addon(toolTip="Expiry Date")
+                            i.icon-calendar.bigger-110
+                        input.input-medium(datepicker-popup="{{format}}",name="expiryDate",datepicker-options="dateOptions",type="text",min="minDate",ng-model="rule.expiryDate",ng-required="true",close-text="Close",placeholder="Expiry Date")
+
+        .row#rules
+            .row
+                .ds-tree(rules,style="height:auto !important;")
+        div(style="clear:both;")
+        .ds-tree(style="height:auto !important;")
+            .row
+                .col-sm-12.col-md-12.col-xs-12
+                    div.input-group(style="height:26px;")
+                        span.input-group-addon Team Members
+                        button.btn-warning(type='button',name='allUser',ng-click='distribute()',toolTip="Distribute to all users equally")
+                            i.fa.fa-random
+                div(style="clear:both;height:10px;")
+                .col-sm-12.col-md-12.col-xs-12
+                    span(ng-repeat="aw in rule.allocated",ng-form="subForm")
+                        .input-group
+                            span.input-group-addon
+                                i.fa.fa-user
+                            select.input-large.text-left(id="user_{{$index}}",ui-select2='ui-select2',ng-required="true",name="user",ng-change="checkDuplicate(aw,$index)", ng-model='aw.user', data-placeholder='Choose Team Member', style="padding-top:0 !important;height:auto !important")
+                                option(value="")
+                                option(ng-repeat="user in users",value="{{user.id}}") {{user.n}}
+
+                            input(type="text",ng-model="aw.work",ng-blur="setValue(aw)",maxlength="3",size="3")
+                            strong &nbsp %
+                            span.red(ng-show="subForm.user.$error.required" ,style="padding:0 5px;",toolTip="Team Member Required") &nbsp *
+                            button.inz-btn2.btn-cross.btn-ico(ng-if="$index!=0 && $index==rule.allocated.length-1",ng-click="removeUser($index)",toolTip="Remove User")
+                                i.fa.fa-trash-o
+                            br
+        div(style="clear:both;height:240px;")

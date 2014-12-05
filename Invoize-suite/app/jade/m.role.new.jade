@@ -1,0 +1,34 @@
+.modal.hide.fade     
+.modal-header
+        h3 New Role           
+.modal-body
+        form.form-horizontal(novalidate, name="form",ng-controller="mRoleCtrl")       
+                 fieldset
+                        //- .fluid-row
+                        //-         .pull-right
+                        //-                 a.btn.btn-primary.btn-margin(ng-hide="roleCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                        //-                         i.icon-mail-reply.icon-large
+                        //-                 button.btn.btn-primary(permission="createRole.*.*", ng-hide="roleCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="create(role)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                        //-                         i.icon-ok.icon-large
+                        //-                 i.icon-spinner.icon-spin.icon-2x(ng-show="roleCreateLoader")
+                        //-         legend Role
+                        .control-group
+                                label.control-label Name
+                                .controls
+                                         label
+                                                b {{item.name}}
+                                        
+                        .control-group
+                                label.control-label Description
+                                .controls
+                                        textarea(rows=3, name="roleDescription", ng-model="item.description", placeholder="Role Description", required)
+                                        
+                        .control-group
+                                label.control-label Permissions
+                                .controls
+                                        input.roleBarselect(ui-select2="roleBar", name="roleBar", ng-model="item.definition",required)
+                                        .help-inline.required(ng-show="form.roleBar.$error.required") *
+                        
+.modal-footer
+        button.btn.btn-primary(ng-disabled="form.$invalid", type="submit", data-dismiss="modal",ng-click="save()") Save
+        button.btn.btn-inverse(ng-click="close()") Cancel

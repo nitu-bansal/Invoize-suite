@@ -1,0 +1,31 @@
+
+<div ng-show="deliveryData.length==0" class="row">
+  <div class="in-gs-block">
+    <div ng-hide="showGoBtn" class="gs-sub-title">Choose Account & Hit Search&nbsp;<i class="fa fa-search"></i></div>
+    <div ng-show="showGoBtn" class="gs-sub-title">No Data available &nbsp;<span ng-show="form.companyType.$error.required" class="help-inline required">&nbsp;&nbsp;*</span></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div style="padding:0 2px;" class="overflow-auto">
+      <table ng-show="deliveryData.length" class="inz-table inz-table2">
+        <thead>
+          <tr>
+            <th><span>
+                <input tooltip="Select All" type="checkbox" ng-click="checkAll($event)"/></span></th>
+            <th ng-repeat="val in deliveryData[0]" ng-show="$index &gt;2"><span tooltip="{{val |toHumanReadable}}" class="trim-info-large">{{val | toHumanReadable}}</span></th>
+          </tr>
+        </thead>
+        <tbody ng-repeat="row in deliveryData" ng-show="$index &gt; 0">
+          <tr ng-click="isRowCollapsed[$index]=!isRowCollapsed[$index]" style="cursor: pointer;">
+            <td ng-repeat="col in row track by $index" ng-show="$index==0">
+              <input name="chk_{{$parent.$index}}" type="checkbox" ng-click="updateSelection($event,row[1],row[2],$parent.$index)"/>
+            </td>
+            <td ng-repeat="col in row track by $index" ng-show="$index&gt;2"><span tooltip="{{col}}" class="trim-info-large">{{col}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination id="" ng-hide="deliveryData.length==0" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+    </div>
+  </div>
+</div>

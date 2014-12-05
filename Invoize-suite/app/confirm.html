@@ -1,0 +1,18 @@
+
+<div style="width:80%" class="modal-dialog">
+  <div class="modal-content">
+    <form name="confirmForm" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;                            </button>
+        <h4 class="modal-title">Confirm {{confirmForm.$invalid}}</h4>
+      </div>
+      <div class="modal-body">
+        <div inner-html="inner-html" class="modal-msg"> {{item.msg?item.msg:'Are you sure?'}}</div>
+      </div>
+      <div class="modal-footer">                      
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">No</button>
+        <button ng-click="save()" ng-focus="true" ng-disabled="confirmForm.$invalid" ng-class="{'disable':confirmForm.$invalid}" type="submit" class="inz-btn btn-sm btn-success">Yes</button>
+      </div>
+    </form>
+  </div>
+</div>

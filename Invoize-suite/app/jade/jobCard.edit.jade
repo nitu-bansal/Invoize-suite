@@ -1,0 +1,118 @@
+.col-md-10
+	form(novalidate, name="form")	
+			.profile-container(id="profile-container")	
+				.widget-box.transparent
+					.widget-header
+						.input-group
+							.input-group
+								span.input-group-addon
+									| Job Card Title 							
+								input.col-md-2(type="text", name="jobCardName", duplicate="jobCardName", ng-model="jobCard.jobCardName", placeholder="Enter text", required)
+							.input-group
+								span.input-group-addon
+									| Vendor								
+								input(ui-select2="vendorBar", name="vendorBar", ng-model="jobCard.vendor", style="width: 205px;")
+							.input-group
+								span.input-group-addon
+									| Report(s)
+								dynamic-Element(name="report", ng-model="jobCard.report",ph="payRightReports")
+						.widget-toolbar.no-border							
+							.btn-group
+
+								a.btn.btn-sm.btn-primary(ng-hide="jobCardCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+									i.icon-mail-reply
+								button.btn.btn-sm.btn-primary(ng-hide="jobCardCreateLoader", ng-disabled="form.$invalid", type="submit",ng-hide="$state.includes('payright.jobCard.new')", ng-click="updateJobcard(jobCard)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+									i.icon-ok
+								button.btn.btn-sm.btn-success(ng-hide="jobCardCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="createJobcard(jobCard)", style="cursor: pointer;", bs-tooltip="tooltip.saveNew")
+									i.icon-save  Save as New Copy
+								a.btn.btn-sm.btn-primary(permission="deleteJobCard.*.*", ng-hide="jobCardCreateLoader", style="cursor: pointer;", bs-tooltip="tooltip.delete"  , ng-click="confirmDeleteJobCard()",ng-hide="$state.includes('payright.jobCard.new')")
+									i.icon-trash
+								i.icon-spinner.icon-spin.icon-2x(ng-show="jobCardCreateLoader")
+					.widget-body
+						.widget-main
+								.container.clearfix(id="search-container")
+									h4.header.smaller.lighter Search Criteria 
+													i.icon-spinner.icon-spin(ng-show="searchPanelCardLoader")
+									.row-fluid				
+										.col-md-3(ng-repeat="row in jobCard.searchPanelCard.searchBy",ng-hide="searchPanelCardLoader")
+											form(novalidate, name="form")   
+												.widget-box
+													.widget-header.smaller
+														h5 {{row.groupCaption}}
+														.widget-toolbar
+															.btn-group
+																a.btn.btn-xs.btn-success.dropdown-toggle(ng-hide="groupFieldsLoader[row.groupCaption]",ng-click="getGroupFields(row.groupCaption)",bs-tooltip="tooltip.addCol")
+																	i.icon-plus
+																i.icon-spinner.icon-spin(ng-show="groupFieldsLoader[row.groupCaption]") 
+																ul.dropdown-menu
+																	li(ng-repeat='choice in groupFields[row.groupCaption]')
+																		a(ng-click="addGroupField(choice,$parent.$index,$index)") {{choice.Caption}}															
+													.widget-body
+														.widget-main.no-padding
+															.dialogsJobCard																
+																.control-group(ng-repeat="row1 in row.fields")
+																	ng-form(name="selectionForm")
+																		label.control-label {{row1.Caption | toHumanReadable}}
+																		.controls(ng-switch='row1.ControlType')																			
+																			input.input(ng-switch-when='inputBox',type="text", name="{{row1.FieldName}}", ng-model="jobCard.searchPanel[row.groupCaption][row1.FieldName]", placeholder="{{row1.Caption | toHumanReadable}}")
+																			input(ng-switch-when='Date', type="text",data-date-format="dd-mm-yyyy", bs-datepicker='bs-datepicker', name="{{row1.FieldName}}",b-datepicker="{{dateOptions}}", ng-model="jobCard.searchPanel[row.groupCaption][row1.FieldName]", placeholder="{{row1.Caption | toHumanReadable}}")
+																			dynamic-Element(ng-switch-when='Multiselect',name="{{row1.Captionsnacks}}", ng-model="jobCard.searchPanel[row.groupCaption][row1.FieldName]",ph="{{row1.FieldName}}")
+																			a.grey.pull-right(data-action='close',ng-click="removeGroupField($parent.$index,$index)", style="cursor: pointer;")
+																				i.icon-remove
+																			
+																			
+
+
+
+								.container.clearfix(id="rule-container")
+									h4.header.smaller.lighter Identification Rules
+													i.icon-spinner.icon-spin(ng-show="searchPanelCardLoader") 												
+									.row-fluid
+										div(ng-hide="searchPanelCardLoader")				
+											table.table.table-bordered(style="width:auto;")
+												thead
+													tr
+														th
+															span.trim-info-large.blue Seq #
+														th(ng-repeat="titles in jobCard.RulesPanelCard.data.Titles")
+															li.dropdown(style="list-style: none;")
+																a.trim-info-large.dropdown-toggle(tooltip="Click to change : {{titles.title |toHumanReadable}}") {{titles.title | toHumanReadable}}&nbsp;&nbsp;
+																ul.dropdown-menu
+																	li(ng-repeat='choice in ruleItems',type="none").clearfix
+																		a(ng-click="addRuleItem(choice,$parent.$index,$index)") {{choice}}
+																a.grey.pull-right(ng-hide="titles.deleted==1", data-action='close',ng-click="removeRuleColumn($index)", style="cursor: pointer;")
+																	i.icon-remove
+																a.grey.pull-right(ng-show="titles.deleted==1", data-action='close',ng-click="undoRemoveRuleColumn($index)", style="cursor: pointer;")
+																	i.icon-undo																
+														th
+															span.trim-info-large.blue Match status
+														th
+															li.dropdown(style="list-style: none;")
+																a.btn.btn-sm.btn-success.dropdown-toggle(,bs-tooltip="tooltip.addCol")
+																	i.icon-plus
+																ul.dropdown-menu
+																	li(ng-repeat='choice in ruleItems')
+																		a(ng-click="addRuleColumn(choice,$index)") {{choice}}
+												tbody(ui-sortables,ng-model="jobCard.RulesPanelCard.data.Rules")						
+													tr(ng-repeat="rule in jobCard.RulesPanelCard.data.Rules")
+														td.center
+															span.trim-info-large.grey{{$index+1}}
+															a.grey.pull-right(ng-hide="rule.deleted==1",data-action='close',ng-click="removeRule($index)", style="cursor: pointer;")
+																i.icon-remove
+															a.grey.pull-right(ng-show="rule.deleted==1", data-action='close',ng-click="undoRemoveRule($index)", style="cursor: pointer;")
+																	i.icon-undo
+														td.center(style="cursor: pointer",class="{{statusArr[data.value]}}",ng-class="{Deleted:data.deleted==1}", ng-Click="changeStatus($parent.$index,$index)",ng-repeat="data in rule.ruleData")
+															div(style="position: relative;")
+																div(style="position: absolute;right: 7px;")															
+																	a.btn-margin.pull-right(ng-show="data.value==1 && data.deleted!=1",ng-click="openDialog($parent.$index,$index); $event.stopPropagation()")
+																		i.icon-external-link.white.icon-small								
+																i.icon-ok-sign.icon-2x.white(ng-show="data.value==1")
+																i.icon-remove-sign.icon-2x.white(ng-show="data.value==0")
+																i.icon-minus-sign.icon-2x.grey(ng-show="data.value==2")
+														td.center
+															dynamic-Element(name="matchStatus", ng-model="jobCard.RulesPanelCard.data.Rules[$index].matchStatus",ph="payrightstatus#")														
+											a.btn.btn-sm.btn-success(ng-click="addNewRule()")
+												i.icon-plus(bs-tooltip="tooltip.addRow")
+										//- {{jobCard.searchPanel}}
+
+

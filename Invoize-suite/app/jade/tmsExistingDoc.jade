@@ -1,0 +1,101 @@
+form.form-horizontal(novalidate, name="form" )
+    .col-xs-12.col-sm-12.col-md-12.doc-block
+        ul(ng-hide="list[$index].isHistoryOpen")
+            li(ng-hide='list[$index].doc.showRevision')
+                a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{list[$index].doc.presentDocId.id}}')
+                    i.fa.fa-paperclip
+                    |   {{list[$index].doc.presentDocId.v}}
+                .command-grp(permission="documentRepository.uploadRevisionDoc")
+                    input(type='file',name='files[]', ng-file-select='onFileSelect($files,$index)', tool-tip,data-placement="top", data-toggle="tooltip", title="Revision")
+                    button.command.revise(tool-tip,data-placement="top", data-toggle="tooltip", title="Revision")
+                        i.fa.fa-upload
+
+                button.inz-btn.btn-xs.btn-success.pull-right(ng-show="list[$index][9]",permission="documentRepository.editDocument",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="SaveAccountDocs(list[$index].doc,list[$index][2])") Save
+
+                //button.inz-btn.btn-xs.btn-default.pull-right(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="SaveAccountDocs(list[$index].doc,list[$index][2])") Return
+
+            li(ng-show="list[$index].doc.showRevision")
+                a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{list[$index].doc.revisionDocId.id}}')
+                    i.fa.fa-paperclip
+                    |   {{list[$index].doc.revisionDocId.v}}
+                .command-grp
+                    button.command.revise(tool-tip,data-placement="top", data-toggle="tooltip", title="Undo",ng-click="undoFileUpload($index);list[$index].doc.revisionDocId={};")
+                        i.fa.fa-undo
+                a.doc-expired(href='{{$location.host()}}/api/tms/download/file?id={{list[$index].doc.presentDocId.id}}')
+                    i.fa.fa-paperclip
+                    |   {{list[$index].doc.presentDocId.v}}
+                button.inz-btn.btn-xs.btn-success.pull-right(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="SaveAccountDocs(list[$index].doc,list[$index][2])") Save
+                //button.inz-btn.btn-xs.btn-default.pull-right(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="SaveAccountDocs(list[$index].doc,list[$index][2)") Return
+        ul(ng-show="list[$index].isHistoryOpen")
+            li
+                a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{list[$index].historyData.fileId}}')
+                    i.fa.fa-paperclip
+                    |   {{list[$index].historyData.fileName}}
+                button.inz-btn.btn-xs.btn-success.pull-right(permission="documentRepository.restoreDocumentRevision",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="confirmToSetCurrent(list[$index].doc.id,list[$index].historyData,list[$index][2])") Set as current
+                button.inz-btn.btn-xs.btn-default.pull-right(ng-click="ReturnToCurrent($index)")
+                    i.fa.fa-reply
+                    | &nbsp;current version
+
+
+    //- .col-xs-12.doc-block(style="margin-bottom:20px;")
+    //-     .title Document Details
+
+    .col-md-8.col-sm-12.col-xs-12.doc-fields(ng-class="{ docpopup : list[$index].isHistoryOpen}")
+        div(ng-hide="list[$index].isHistoryOpen" , ng-init="sectionIndex = $index")
+            .col-md-6.col-sm-12.col-xs-12( ng-repeat="row1 in list[$index].doc.fields | orderBy:'displayOrder'",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}", alt-render,hasParent='row',hasCount='2',ng-cloak='ng-cloak')
+                form.form-horizontal(novalidate, name="subForm")
+                    label.input-medium(style="display:inline-table;") {{row1.label}}
+                    div(ng-switch-when="true",ng-switch='row1.type',style="display:inline-table;")
+                        input.input-medium(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,title="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        input.input-medium(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",title="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        input.input-medium(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,title="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        dynamic-Select.input-medium(ng-switch-when='multiselect',multiselect,customobj='{"column":"{{row1.suggestionField}}"}',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",change="changeData(row1.key,row1.value,$index, sectionIndex)",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                        dynamic-Select.input-medium(ng-switch-when='dropdown',customobj='{"column":"{{row1.suggestionField}}"}',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",change="changeData(row1.key,row1.value,$index, sectionIndex)",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                        textarea.input-medium(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,title="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        span.red(ng-show="subForm.name.$error.required") &nbsp; *
+                        span.red(ng-show="subForm.name.$error.unique") &nbsp; already Exists
+                        span.red(ng-show="subForm.name.$error.number") &nbsp; only numbers
+                        span.red(ng-show="subForm.name.$error.date") &nbsp; only date
+                        span.red(ng-show="subForm.name.$error.maxlength") &nbsp; max length is {{row1.length}}
+                        span.red(ng-show="subForm.name.$error.pattern") &nbsp; Can contain only text
+                        span.red(ng-show="subForm.name.$error.email") &nbsp; Only Email
+                        span.green.validTick(ng-show="subForm.name.$valid") &nbsp; &#10004;
+            .col-xs-12.doc-block(style="margin-bottom:20px;")
+                .title Shared With
+                .col-xs-12
+                    .col-md-12.in-wiz-row
+                        label.control-label Can Edit
+                        dynamic-Select(multiselect,ng-model="list[$index].doc.sharedWithEdit.Groups",ph="userGroup",placeholder="Select Group(s)",toolTip="Select Group(s)",change="addUsersinView('group', $index)")
+                        dynamic-Select(multiselect,ng-model="list[$index].doc.sharedWithEdit.Users",ph="user",placeholder="Select User(s)",toolTip="Select User(s)")
+                    .col-md-12.in-wiz-row
+                        label.control-label Can View
+                        dynamic-Select(multiselect,ng-model="list[$index].doc.sharedWithView.Groups",ph="userGroup",placeholder="Select Group(s)",toolTip="Select Group(s)")
+                        dynamic-Select(multiselect,ng-model="list[$index].doc.sharedWithView.Users",ph="user",placeholder="Select User(s)",toolTip="Select User(s)")
+
+        div(ng-show="list[$index].isHistoryOpen")
+            .col-md-6.col-sm-12.col-xs-12.iwr-read-only(ng-repeat="l in list[$index].historyData.fields | orderBy:'displayOrder'", alt-render,hasParent='row',hasCount='2',ng-cloak='ng-cloak',ng-switch='l.type')
+                label.input-medium(style="display:inline-table;") {{l.label}}  :
+                div(style="display:inline-table;")
+                    .data.input-medium(ng-switch-when='date') {{l.value | date:fullDate}}
+                    .data.input-medium(ng-switch-default) {{l.value | selectFormat}}
+
+        // .line(ng-repeat="l in list[$index].doc.fields",ng-show="list[$index].isHistoryOpen")
+        //    .caption {{l.label}}
+        //    .data {{l.value | selectFormat}}
+    .col-md-4.col-xs-12.col-sm-12
+        div.history-block
+            .his-title
+                i.fa.fa-clock-o
+                |Version history &nbsp;
+                i.icon-spinner.icon-spin.white.icon-small(ng-show="historyLoader")
+
+            div(ng-show="list[$index].historyTemp.count<=0") No history available
+            ul.his-list
+                li(ng-repeat="obj in list[$index].historyTemp.history", ng-click="getHistory($parent.$index,$index,obj)", ng-class="{active: list[$parent.$index].historyTemp.history[$index].isHistoryOpen}")
+                    a.row
+                        .pull-left
+                            i.fa.fa-chevron-left
+                            span.his-email {{obj.emailID}}
+                        .pull-right
+                            span.his-time {{obj.timestamp}}
+

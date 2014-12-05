@@ -1,0 +1,265 @@
+
+<div ng-init="getCategory()" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Shipment Processing<i ng-show="companyListLoader" class="icon-spinner icon-spin blue icon-large"></i></div>
+    </div>
+    <!--added by sushrut-->
+    <div class="pull-right">
+      <label ng-show="$route.current.url == '/pending/:account/:accountID/:emailID'"> <span>User : &nbsp;</span><span class="blue">{{$route.params.emailID}} &nbsp;</span></label>
+      <div class="btn-group">
+        <button data-toggle="dropdown" type="button" tooltip-placement="left" tooltip="Current Processing Mode" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right">Mode &nbsp<i class="fa fa-angle-down"></i></button>
+        <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" id="rulesProfile" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <div ng-repeat="type in rulesProfile.template" class="div-shipment"><span>{{type.label}}
+              <dynamic-Select name="TypeValue_{{$index}}" ng-model="type.value" customobj="{&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.shipmentEntry&quot;}" ph="{{type.suggestionsSource}}" placeholder="Please Select" change="setProfileFilterStatus()"></dynamic-Select></span></div>
+        </ul>
+      </div>
+      <dynamic-Select required="required" customobj="{&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;,&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.shipmentEntry&quot;}" name="searchAccount" ng-model="global.account" ph="account" placeholder="Select Account"></dynamic-Select>
+      <button permission="shipmentEntry.viewShipmentData" tooltip="Search Data" tooltip-placement="left" ng-show="global.account" ng-click="getTemplate()" class="input-search-new1"><i class="fa fa-search"></i></button>
+      <div ng-show="showGrid" class="btn-group filter-dd rule-filter">
+        <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle"><i class="fa fa-filter"></i> Filter &nbsp; <i class="fa fa-angle-down"></i></button>
+        <div aria-labelledby="btnGroupVerticalDrop1" role="menu" style="white-space: nowrap;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <div>
+            <button ng-click="isAdvancedFilter=!isAdvancedFilter" class="btn-sm btn-ico btn-custom pull-right"><span ng-show="isAdvancedFilter">Easy Filter</span><span ng-show="!isAdvancedFilter">Flexi Filter</span></button><br/>
+          </div>
+          <div ng-show="isAdvancedFilter" class="rule-filter1 showme custom-filter-display overflow-auto">
+            <div id="rules" class="row">
+              <div class="row">
+                <div ng-form="rulesForm" rules="rules" ng-init="getRuleFields()" class="ds-tree"></div>
+              </div>
+            </div>
+          </div>
+          <div ng-show="isAdvancedFilter">
+            <div class="opt-cmd">
+              <button ng-click="reset()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button ng-click="getData(currentPage,true)" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </div>
+          <div ng-show="!isAdvancedFilter" class="showme custom-filter-display overflow-auto">
+            <li ng-repeat="f in sortedFields" ng-switch="fields[f].type">
+              <div class="opt-title">{{fields[f].label}}</div>
+              <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="fields[f].val" close-text="Close" placeholder="{{fields[f].label}}" class="input-large"/>
+              <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" name="{{fields[f]}}" ng-model="fields[f].val" ph="{{autosuggestSource=='location'?'Location':autosuggestSource}}" customobj="{{custObj[fields[f].label]}}" placeholder="{{fields[f].label}}"></dynamic-Select>
+            </li>
+          </div>
+          <div ng-show="!isAdvancedFilter">
+            <div class="opt-cmd">
+              <button type="reset" ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button ng-show="showGrid" type="submit" ng-class="{'disabled': (isSaveActive==false)}" ng-disabled="isSaveActive==false" tooltip="Save Changes" tooltip-placement="left" ng-click="saveShipments()" permission="shipmentEntry.saveShipmentEntry" class="inz-btn btn-sm btn-success"><i class="fa fa-save"></i>&nbsp Save</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:47px;"></div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+  <div class="btn-group filter-dd rule-filter">
+    <button ng-show="showGrid" data-toggle="tooltip" type="button" data-placement="top" style="margin: 0 0 0 0 !important;" tooltip-placement="top" tooltip="Show / Hide columns" permission="shipmentEntry.showHideColumnsShipmentEntry" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-eye"></i></button>
+    <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="max-height:350px;width:230px;" class="dropdown-menu filter-ddm arrow-left dropdown-caret">
+      <li>
+        <div class="opt-title">
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="max-height:335px;margin-left:0px;" nice-scroll="nice-scroll">
+            <li ng-repeat="item in columns" ng-click="setWidth($index)" style="cursor:pointer;" ng-hide="item.title.indexOf('chkAll') != -1" class="pb0">
+              <input type="checkbox" id="id-{{item.key}}" ng-model="item.visible"/>
+              <label for="id-{{item.key}}"> {{item.title}}</label>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div ng-hide="isSaveActive==false" class="btn-group">
+    <button data-toggle="dropdown" type="button" tooltip-placement="top" tooltip="Mark As" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-tag"></i>&nbsp  Mark as
+      <!--i.fa.fa-angle-down-->
+    </button>
+    <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu arrow-left dropdown-caret">
+      <li ng-repeat="item in categories" ng-click="EditStatus(item.n)"><a style="cursor:pointer">{{item.n}}</a></li>
+    </ul>
+  </div>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+  <div ng-show="showGrid" class="pull-right">
+    <div class="btn-group">
+      <button data-toggle="dropdown" type="button" ng-show="showGrid" class="btn-sm btn-custom dropdown-toggle">Export</button>
+      <ul aria-labelledby="btnGroupVerticalDrop1" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+        <li><a href="" ng-click="pullFile(true)"> Selected</a></li>
+        <li><a href="" ng-click="pullFile(false)"> All</a></li>
+      </ul>
+    </div>
+    <div style="vertical-align: top;" class="btn-group">
+      <button ng-click="RenderHTW(false)" data-placement="bottom" data-toggle="tooltip" title="Extend" tooltip-placement="bottom" tooltip="Extend" type="button" class="btn-sm btn-split btn loadUI"><i class="fa fa-columns"></i></button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:2px;"></div>
+<div class="row">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="div-layout-ew">
+      <div ui-layout="" class="layout-mock">
+        <ui-layout options="{ flow : &quot;column&quot; }">
+          <sidebar style="margin-right:10px;" class="west-back div-west">
+            <div height="hh" width="hw" id="dataGrid" ng-show="showGrid &amp;&amp; !templateLoader" ui-handsontable="{ currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" datarows="shipment in shipments" manualColumnResize="true" columns="columns" onBeforeChange="celChange" columnSorting="true"></div>
+            <pagination ng-show="showGrid &amp;&amp; !templateLoader" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+          </sidebar>
+          <sidebar style="padding:5px 10px 0;margin-left:20px;" class="east-back div-east">
+            <div>
+              <select placeholder="Select Document" ui-select2="ui-select2" ng-model="fileName" ng-change="loadFile(fileName)" class="input-large">
+                <option value=""></option>
+                <option ng-repeat="item in files" value="{{item}}">{{item}}</option>
+              </select>
+            </div>
+            <div style="clear:both !important;height:5px !important;"></div>
+            <iframe id="docFrame" style="border:1px solid #F6F6F6 !important;" frameborder="0"></iframe>
+          </sidebar>
+        </ui-layout>
+      </div>
+    </div>
+    <div ng-show="showDialog==true" ng-if="showDialog==true" class="ng-hide">
+      <div class="modal-dialog modal">
+        <div style="margin: 0 auto;width: 80%;" class="modal-content">
+          <form name="form" novalidate="novalidate">
+            <div class="modal-header">
+              <button aria-hidden="true" type="button" ng-click="closeDialog()" class="close">    &times;</button>
+              <h4 class="modal-title">Issue &nbsp;</h4>
+            </div>
+            <div class="modal-body">
+              <div ng-controller="imsCtrl" class="col">
+                <div ng-show="dialog" class="row">
+                  <div class="col-sm-12">
+                    <div class="modal-dialog modal">
+                      <div style="margin: 0 auto;width: 80%;" class="modal-content">
+                        <form name="form" novalidate="novalidate">
+                          <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+                            <h4 ng-show="modelType == 'summary'" class="modal-title">Issue Summary &nbsp;</h4>
+                            <h4 ng-hide="modelType == 'summary'" class="modal-title">Upload / Download documents &nbsp;<i ng-show="templateLoader" class="icon-spinner icon-spin icon-large"></i></h4>
+                          </div>
+                          <div class="modal-body">
+                            <div style="padding: 10px 0 15px;" ng-show="modelType == 'summary'" nice-scroll="nice-scroll">
+                              <table class="table-hawb">
+                                <thead>
+                                  <tr>
+                                    <th ng-repeat="(k,v) in summaryData[0]">{{v}}</th>
+                                    <th>Files</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr ng-repeat="row in summaryData[1]">
+                                    <td ng-repeat="(key,col) in summaryData[0]">{{row[key]}}</td>
+                                    <td><a href="/api/tms/download/file?id={{file.id}}" ng-repeat="file in row['IMSfiles']" target="_blank">{{file.name}} &nbsp;</a></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div ng-hide="modelType == 'summary'">
+                              <div id="newFiles" ng-controller="FileUploadController" url="/api/tms/upload/file">
+                                <form data-upload-template-id="template-upload-1" method="POST" action="/api/tms/upload/file" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+                                  <div bs-tooltip="tooltip.drop" id="drop-area">
+                                    <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+                                      <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+                                    </div>
+                                    <div class="drop-instructions">
+                                      <mute> Browse and upload multiple files or drag and drop files here</mute>
+                                    </div>
+                                    <div class="drop-over">Drop files here!</div>
+                                  </div>
+                                  <div ng-hide="proceedClicked" class="row uploaded">
+                                    <div data-ng-repeat="file in queue" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+                                    <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer"></div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="clear:both;"></div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="pull-right"><i ng-show="loader" class="icon-spinner icon-spin blue icon-large"></i>
+                      <input placeholder="Free Search" ng-model="q" class="input-search-new"/>
+                      <button class="input-search-new"><i class="fa fa-search"></i></button>
+                      <div class="btn-group filter-dd rule-filter">
+                        <button class="command dropdown-toggle"><i class="fa fa-caret-down"></i></button>
+                        <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+                          <div style="margin:5px 0" nice-scroll="nice-scroll" class="showme">
+                            <li>
+                              <div ng-repeat="(k,obj) in fields" ng-switch="obj.type">
+                                <div class="opt-title">{{obj.label}}</div>
+                                <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="obj.val" close-text="Close" placeholder="{{obj.label}}"/>
+                                <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" name="{{k}}" ng-model="obj.val" ph="ims" customobj="{&quot;column&quot;:&quot;{{k}}&quot;,&quot;module&quot;:&quot;{{templateData.module.v}}&quot;,&quot;templateId&quot;:&quot;{{templateData.templateId}}&quot;,&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.ims&quot;}" placeholder="{{obj.label}}"></dynamic-Select>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="opt-cmd">
+                            <button ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+                            <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+                          </div>
+                        </ul>
+                      </div>
+                      <div style="vertical-align: inherit;" class="btn-group">
+                        <button data-toggle="dropdown" type="button" class="btn-sm btn-custom dropdown-toggle"><i class="fa fa-filter"></i>   Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+                        <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+                          <li>
+                            <div class="col-sm-12">
+                              <label>Module :
+                                <select ui-select2="ui-select2" ng-required="true" name="Module" ng-model="templateData.module" data-placeholder="Module" ng-change="getTemplate()" ng-options="module.n for module in modules" class="input-large">
+                                  <option value=""></option>
+                                </select>
+                              </label>
+                            </div>
+                            <div class="col-sm-12">
+                              <label>Process :
+                                <select ui-select2="ui-select2" ng-required="true" name="process" ng-model="templateData.process" data-placeholder="Process" ng-change="getTemplate()" class="input-large">
+                                  <option value=""></option>
+                                  <option value="{{process.id}}" ng-repeat="process in processes">{{process.n}}</option>
+                                </select>
+                              </label>
+                            </div>
+                            <div class="col-sm-12">
+                              <label>Profile Type :
+                                <select ui-select2="ui-select2" ng-required="true" name="type" ng-model="templateData.docType" data-placeholder="Profile Type" ng-change="getTemplate()" class="input-large">
+                                  <option value=""></option>
+                                  <option value="IMSRaiseProfile">Raise</option>
+                                  <option value="IMSResponseProfile">Response</option>
+                                </select>
+                              </label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <label style="margin-bottom:0;" ng-if="templateData.docType == 'IMSRaiseProfile'">
+                        <input type="checkbox" name="switch-field-1" ng-click="switchMode($event)" ng-required="false" text-on="Add" class="ace ace-switch ace-switch-addUpdate"/><span class="lbl"></span>
+                      </label><a ng-click="editTemplate();" href="javascript:void(0)" ng-show="templateData.process &amp;&amp; templateData.docType"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Edit Fields</span></a>
+                      <button type="submit" ng-click="saveIssues()" class="btn-sm btn-success-1">Save Changes</button>
+                    </div>
+                  </div>
+                  <div style="clear:both;height:10px;"></div>
+                  <div class="col-sm-12">
+                    <div ng-show="!templateLoader">
+                      <div ng-show="templateData.fields.length&gt;0">
+                        <div ui-handsontable="{ currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" datarows="issue in issues" manualColumnResize="true" columns="columns" minsparerows="spareRow" afterRender="afterRender()" onBeforeChange="celChange"></div>
+                        <pagination total-items="totalItems" items-per-page="pageLimit" max-size="paginationSize" rotate="true" ng-init="paginationSize=20" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+                      </div>
+                      <div ng-show="templateData.fields.length==0">
+                        <h4 class="orange">Template Not Found :(</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

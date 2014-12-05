@@ -1,0 +1,148 @@
+link(rel="stylesheet", type="text/css", href="/styles/home2.css")
+.nav.navbar.navbar-invoize.navbar-fixed-top(role="navigation")
+    .container#in-head
+        .navbar-header
+                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                a.navbar-brand(href='#')
+                        span.in-logo-bar.r
+                        span.in-logo-bar.b
+                        span.in-logo-bar.g
+                        | invoize
+
+        .collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right
+                        li
+                                a(href='#') Home
+                        //li
+                        //        a(href='#') Pricing
+                        li
+                                a(href='#') Demo
+                        li
+                                a(href='#') About
+                        //li.active(ng-hide="$state.current.name.contains('landing')")  /*****hide by avinash*****/
+                        //        a(href='#myModal', data-toggle='modal') Sign In
+                        li.active(ng-hide="$state.current.name.indexOf('landing')!==-1")
+                                a(href='#myModal', data-toggle='modal') Sign In
+
+.in-log-block
+    .container
+        .col-xs-12.col-sm-12.col-md-6.in-lhs
+                h1 Sign In
+                .in-log-des
+                    blink Recommended -
+                    |  Before you sign-in, please clear your browser's cache/cookies to experience some new features.
+                .in-gs-btn
+                        a.in-btn(href="#") Get Started
+
+        .col-xs-12.col-sm-12.col-md-6.in-reg(ng-show="showlogin")
+                form.text-center(novalidate, name="form", ng-submit="login(userEmail,password)")
+                        .row
+                                .col-xs-4.in-title Email ID
+                                .col-xs-8.in-txt-blk
+                                        .in-err
+                                                i.icon-asterisk(ng-show="form.userEmail.$error.required")
+                                                div(ng-show="form.userEmail.$error.email") Invalid email address
+                                        input.in-txt(type='email', ng-model="userEmail",name="userEmail",ng-change="password='';", placeholder='Email ID',required,ng-trim,auto-fill-sync)
+
+                        .row
+                                .col-xs-4.in-title Password
+                                .col-xs-8.in-txt-blk
+                                        .in-err
+                                                i.icon-asterisk(ng-show="form.password.$error.required")
+                                        input.in-txt(type='password',ng-model="password",auto-fill-sync,name="password", placeholder='Password',required,avoid-cutcopy,auto-fill-sync)
+
+                        .row
+                                .col-xs-4.in-title
+                                .col-xs-8.in-txt-blk
+                                        button.in-btn(type='submit', ng-hide="loginLoader", ng-disabled="form.$invalid", ng-class="{'disabled': form.$invalid}") Sign In
+                                        i.icon-spinner.icon-spin.icon-2x.white(ng-show="loginLoader")
+                        .row
+                                .col-xs-4.in-title
+                                .col-xs-8.in-txt-blk
+                                        .in-err
+                                                //- div(ng-show="form.subDomain.$error.maxlength") maximum length 10
+                                        div(style="text-align:right")
+                                                a.forgot-password-link(ng-click="showlogin=!showlogin",ng-hide="isCevaSubdomain") Trouble Signing in ?
+                                                a.forgot-password-link(href="https://helpdesk.invoize.com/recovery.php", ng-show="isCevaSubdomain") Trouble Signing in ?
+
+
+        .col-xs-12.col-sm-6.col-md-6.in-reg(ng-hide="showlogin")
+                form.text-center(novalidate, name="form2")
+                        .row
+                                .col-xs-4.in-title Email ID
+                                .col-xs-8.in-txt-blk
+                                        .in-err
+                                                i.icon-asterisk(ng-show="form2.userEmail.$error.required")
+                                                div(ng-show="form2.userEmail.$error.email") Invalid email address
+                                        input.in-txt(type='email',ng-model="userEmail",name="userEmail",placeholder='Email ID',required,ng-trim)
+
+                        .row
+                                .col-xs-4.in-title
+                                .col-xs-8.in-txt-blk
+                                        button.in-btn(type='button',ng-click="forgotPassword(userEmail)", ng-hide="forgotPassLoader", ng-disabled="form2.$invalid", ng-class="{'disabled': form2.$invalid}") Send Password
+                                        i.icon-spinner.icon-spin.icon-2x.blue(ng-show="forgotPassLoader")
+                        .row
+                                .col-xs-4.in-title
+                                .col-xs-8.in-txt-blk
+                                        .in-err
+                                                //- div(ng-show="form.subDomain.$error.maxlength") maximum length 10
+                                        div(style="text-align:right")
+                                                a.forgot-password-link(ng-click='showlogin=!showlogin') Return to Sign In
+
+                                        label(ng-show="forgotPasswordSuccess").label.label-lg.label-info.arrowed.arrowed-right  Password sent to your email.
+            .clearfix
+
+//div
+//        .container
+//                .row(style="margin-top: 40px;")
+//                        .col-md-4
+//                                .in-info
+//                                        .col-md-12.col-xs-4.block-infocon
+//                                                i.icon-group.in-infocon
+//                                                //- img(src="styles/images/people.png")
+//                                        //.col-md-12.col-sm-8.col-xs-8
+//                                        //        .in-rhs-tt Work with colleagues
+//                                        //        .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+//                                        .clearfix
+//
+//                        .col-md-4
+//                                .in-info
+//                                        .col-md-12.col-xs-4.block-infocon
+//                                                i.icon-search.in-infocon
+//                                                //- img(src="styles/images/zoom.png")  crosshairs
+//                                        //.col-md-12.col-sm-8.col-xs-8
+//                                        //        .in-rhs-tt Inventory Tracking
+//                                        //        .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+//                                        .clearfix
+//
+//                        .col-md-4
+//                                .in-info
+//                                        .col-md-12.col-xs-4.block-infocon
+//                                                i.icon-map-marker.in-infocon
+//                                                //- img(src="styles/images/connect.png")
+//                                        //.col-md-12.col-sm-8.col-xs-8
+//                                        //        .in-rhs-tt Anywhere, Anytime
+//                                        //        .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+//                                        .clearfix
+//                .clearfix
+
+#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+                .modal-content
+                        .modal-header
+                                button.close(aria-hidden='true', data-dismiss='modal', type='button')     &times;
+                                h4#myModalLabel.modal-title How to Sign In to invoize
+                        .modal-body
+                                div(style="font-weight:400; font-size: 13px; color: #666;") When you registered with invoize, we sent you an email with your Web Address. You can sign in from your Web Address, which looks like this:
+
+                                div(style="padding:10px 0; font-size:23px; color:#0073e5;") DOMAIN-NAME.invoize.com
+
+                                div(style=" font-size: 17px; color: #666;")
+                                        a(href="#") Forgot your web address
+                        .modal-footer
+                                button.btn.btn-sm.btn-primary(type='button', data-dismiss="modal") OK, got it!
+

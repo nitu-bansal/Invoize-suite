@@ -1,0 +1,55 @@
+
+<div ng-init="invoiceDeliveryModeView($stateParams.invoiceDeliveryModeID)" class="row">
+  <div class="in-center-block">Mode : {{invoiceDeliveryRuleProfile.mode}}
+    <div when-scrolled="loadMore()" class="de">
+      <div style="margin-bottom:20px" ng-repeat="(k,Groups) in invoiceDeliveryRuleData" alt-render="alt-render" hasParent="row" hasCount="4" class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="in-view-block">
+          <div ng-if="Groups[0].key == null">
+            <div class="in-title">{{k}}</div>
+            <div nice-scroll="nice-scroll" class="de-block">
+              <div ng-repeat="subGroup in Groups">
+                <div ng-repeat="(fk,fields) in subGroup">
+                  <div class="in-sub-title">{{fk}}</div>
+                  <div ng-repeat="item in fields" ng-form="subForm" ng-show="{{item.isActive}}" ng-switch="{{item.isActive}}" class="in-wiz-row sm">
+                    <div>
+                      <label class="control-label">{{item.label}}</label><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green">&#10004;</span>
+                    </div>
+                    <div ng-switch-when="true" ng-switch="item.type" class="controls">
+                      <label ng-switch-when="text" class="control-label">{{item.value}}</label>
+                      <label ng-switch-when="date" class="control-label">{{item.value}}</label>
+                      <label ng-switch-when="numeric" class="control-label">{{item.value}}</label>
+                      <label ng-switch-when="multiselect" class="control-label">{{item.value}}</label>
+                      <label ng-switch-when="dropdown" id="{{item.key}}" class="control-label">{{item.value}}</label>
+                      <label ng-switch-when="multiline" class="control-label">{{item.value}}</label>
+                      <rich-text ng-switch-when="html" name="name" id="{{item.key}}" ng-model="item.value">{{item.value}}</rich-text>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ng-if="Groups[0].key">													
+            <div class="in-title">{{Groups[0].group}}
+              <div nice-scroll="nice-scroll" class="de-block">
+                <div ng-repeat="item in Groups" ng-form="subForm" ng-show="{{item.isActive}}" ng-switch="{{item.isActive}}" class="in-wiz-row sm">
+                  <div>
+                    <label class="control-label">{{item.label}}</label><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green">&#10004;</span>
+                  </div>
+                  <div ng-switch-when="true" ng-switch="item.type" class="controls">
+                    <label ng-switch-when="text" class="control-label">{{item.value}}</label>
+                    <label ng-switch-when="date" class="control-label">{{item.value}}</label>
+                    <label ng-switch-when="numeric" class="control-label">{{item.value}}</label>
+                    <label ng-switch-when="multiselect" class="control-label">{{item.value}}</label>
+                    <label ng-switch-when="dropdown" id="{{item.key}}" class="control-label">{{item.value}}</label>
+                    <label ng-switch-when="multiline" class="control-label">{{item.value}}</label>
+                    <rich-text ng-switch-when="html" name="name" id="{{item.key}}" ng-model="item.value"> </rich-text>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

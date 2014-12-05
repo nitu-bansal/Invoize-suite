@@ -1,0 +1,64 @@
+
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Invoice Capture<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-sm-12">
+          <div style="padding:2px 2px;" class="overflow-auto">
+            <table id="invoiceCaptureData" ng-show="invoiceCaptureData.length" class="inz-table inz-table2">
+              <thead>
+                <tr>
+                  <th><span tooltip="Expand/Collapse"><i class="fa fa-align-justify"></i></span></th>
+                  <th ng-repeat="val in invoiceCaptureData[0]" ng-show="$index&gt;1"><span tooltip="{{val.n |toHumanReadable}}" class="trim-info-large">{{val.n | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody ng-repeat="row in invoiceCaptureData">
+                <tr style="cursor: pointer;" ng-form="subForm" class="invoice">
+                  <td ng-repeat="col in row track by $index" ng-show="$index==0" ng-click="getInvoiceChargesInfo($parent.$index,row[0].v,row[1].v)">
+                    <div ng-hide="row.dataPresent"><i ng-show="row.doc" class="icon-reorder blue"></i><i ng-hide="row.doc" class="icon-reorder orange"></i></div><i ng-show="row.dataPresent" class="icon-spinner icon-spin blue icon small"></i>
+                  </td>
+                  <td ng-repeat="col in row track by $index" ng-switch="{{col.isEditable}}" ng-show="$index&gt;1" style="line-height:30px;"><span ng-switch-when="false" tooltip="{{col.v}}" class="trim-info-large">{{col.v}}</span>
+                    <input ng-switch-when="true" duplicate="invoiceNumber" name="invoiceNumber" type="text" ng-model="col.v" placeholder="{{col.n}}" ng-pattern="/^[0-9]{0,8}$/" ng-if="col.id=='invoice.invoiceNumber'" ng-required="col.isMandatory" class="customerIDCell"/>
+                    <input ng-switch-when="true" name="rigNumber" type="text" ng-model="col.v" placeholder="{{col.n}}" ng-if="col.id=='invoice.rigNumber'" ng-required="col.isMandatory"/>
+                    <input ng-switch-when="true" name="invoiceDate" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-if="col.id=='invoice.invoiceDate'" ng-model="col.v" close-text="Close" placeholder="{{col.n}}" ng-required="col.isMandatory"/>
+                    <input ng-switch-when="true" name="nameElement" type="text" ng-model="col.v" placeholder="{{col.n}}" ng-if="col.id!='invoice.invoiceNumber' &amp;&amp; col.id!='invoice.rigNumber' &amp;&amp; col.id!='invoice.invoiceDate'" ng-required="col.isMandatory"/><span ng-if="subForm.invoiceNumber.$error.pattern &amp;&amp; col.id=='invoice.invoiceNumber'" class="red">&nbsp; Invalid Format</span><span ng-show="subForm.invoiceNumber.$error.duplicate &amp;&amp; col.id=='invoice.invoiceNumber'">already Exists</span><span ng-if="subForm.invoiceNumber.$error.required &amp;&amp; col.id=='invoice.invoiceNumber'" class="red">*</span><span ng-if="subForm.rigNumber.$error.required &amp;&amp; col.id=='invoice.rigNumber'" class="red">*</span><span ng-if="subForm.invoiceDate.$error.required &amp;&amp; col.id=='invoice.invoiceDate'" class="red">*
+                      <tr ng-show="!isRowCollapsed">
+                        <td colspan="{{row.length}}" class="inset">
+                          <div class="col-md-8">
+                            <table ng-show="invoiceCaptureData[$index].doc.length" class="inz-table inz-table5">
+                              <thead>
+                                <tr>
+                                  <th ng-repeat="val1 in invoiceCaptureData[$index].doc[0]" ng-show="$index&gt;1"><span tooltip="{{val1 |toHumanReadable}}">{{val1 | toHumanReadable}}</span></th>
+                                </tr>
+                              </thead>
+                              <tbody ng-repeat="rowCharge in invoiceCaptureData[$index].doc" ng-show="$index &gt; 0">
+                                <tr>
+                                  <td ng-repeat="colCharge in rowCharge track by $index" ng-show="$index&gt;1"><span tooltip="{{colCharge}}">{{colCharge}}</span></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </tr></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination ng-hide="invoiceCaptureData.length==0" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+      <div class="modal-footer">
+        <div class="col-sm-12">
+          <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+          <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" type="submit" ng-click="saveInvoiceCaptureData()" class="inz-btn btn-sm btn-success">Capture</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

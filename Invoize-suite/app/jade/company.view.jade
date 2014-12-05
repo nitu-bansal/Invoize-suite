@@ -1,0 +1,49 @@
+.row.in-wiz-ttl.fix-scroll( ng-show="$state.current.name.split('.')[0]=='wizard'",ng-init="getCompanyList();")
+    .col-md-7.col-sm-6
+        .in-wiz-info Welcome to company configuration. You can add / configure / edit your companies here. You can also arrange the companies as per the company hierarchy in your organization.
+    .col-md-5.col-sm-6.in-add
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyListLoader")
+        input.input-search-new(placeholder="Search Company",ng-change="searchCompany(q)",ng-model="q")
+        button.input-search-new
+            i.fa.fa-search
+        a.inz-btn.btn-sm.btn-ico.btn-default(ng-click="redirectTo('/company/viewH');getTreeData();",style="cursor:pointer",tool-tip,data-placement="top", data-toggle="tooltip", title="Hierarchy View")
+            i.fa.fa-sitemap
+        a(permission="createCompany",style="vertical-align: middle;",ng-click="redirectTo('/company/new')",style="cursor:pointer",ng-hide="loggedInUser.companyType!='Multiple'")
+            span.in-add-sign +
+            span.in-add-txt Add company
+.row.in-wiz-ttl.in-fix-scroll(set-width,ng-hide="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Companies
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyListLoader")
+            input.input-search-new(placeholder="Search Company",ng-change="searchCompany(q)",ng-model="q")
+            button.input-search-new
+                i.fa.fa-search
+            a.inz-btn.btn-sm.btn-ico.btn-default(permission="treeViewCompany",ng-click="redirectTo('/company/viewH');getTreeData();",style="margin-right:10px;",tool-tip,data-placement="bottom", data-toggle="tooltip", title="Hierarchy View")
+                i.fa.fa-sitemap
+            a(permission="createCompany",style="cursor:pointer;",ng-click="redirectTo('/company/new')",style="cursor:pointer",ng-hide="loggedInUser.companyType!='Multiple'")
+                span.in-add-sign +
+                span.in-add-txt Add Company
+div(style="clear:both")
+.col-sm-12.col-md-12.col-xs-12
+    .col-sm-6.col-md-4.col-xs-12.inz-blk(ng-repeat="ListItem in companyList | orderBy:title",ng-form="subForm", style="margin-bottom:10px;")
+        .in-view-block
+            .title
+                i.fa.fa-tags.small &nbsp;
+                | {{ListItem.title}}
+            .line(ng-repeat="l in ListItem.fields")
+                .caption {{l.label}}
+                .data {{l.value | selectFormat}}
+        .in-btn-blk
+            .in-btn-grp
+                .in-btn-row
+                    button.inz-btn.btn-sm.btn-danger(permission="deleteCompany",tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" , ng-click="confirmDeleteProfile(ListItem.id)")
+                        i.fa.fa-trash-o
+                    button.inz-btn.btn-sm.btn-danger(permission="editCompany",tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="companyEditView(ListItem.id)")
+                        i.fa.fa-pencil
+                    button.inz-btn.btn-sm.btn-danger(permission="readCompany",tool-tip,data-placement="top", data-toggle="tooltip", title="View" , ng-click="companyView(ListItem.id)")
+                        i.fa.fa-eye
+.in-wiz-footer
+    a.inz-btn.btn-sm.btn-success(href="#/wizard/system/view") Next Step
+        i.fa.fa-long-arrow-right

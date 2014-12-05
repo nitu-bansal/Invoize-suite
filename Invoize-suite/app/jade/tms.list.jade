@@ -1,0 +1,124 @@
+.col-md-4(id="FixedRate")
+        .col-md-12
+                h4.header.smaller.lighter.gray Tariffs  
+                        i.icon-spinner.icon-spin.icon(ng-show="tariffListLoader")
+                        .btn-group.pull-right
+                                a.btn.btn-sm.btn-primary(permission="createTariff.*.*",ng-disabled="$state.includes('tms.list.new')",href="#/tms/list/{{$stateParams.accountId}}/new",bs-tooltip="tooltip.new" ,data-placement="right", ng-click="new()")
+                                        i.icon-plus.icon
+                                a.btn.btn-sm.btn-primary(ng-show="tariffList.length",permission="readTariff.*.*",ng-click='isFilterCollapsed = !isFilterCollapsed')
+                                        i.icon-filter(bs-tooltip="tooltip.clickToFilter",data-placement="top")
+                                a.btn.btn-sm.btn-primary(permission="readAccount.*.*",href="#/tms/list/{{$stateParams.accountId}}/account/",bs-tooltip="tooltip.accountDetails" ,data-placement="top", ng-click="selectAccount($stateParams.accountId)")
+                                        i.icon-list-alt
+
+        div(collapse='isFilterCollapsed')
+                .alert.alert-warning
+                       .fieldset
+                                .row
+                                        button.close.pull-right(type='button', ng-click='isFilterCollapsed = !isFilterCollapsed') ×
+                        form.form-horizontal
+                                .form-group
+                                    label.control-label Effective on
+                                    .controls
+                                            input.input-sm(type="text", name="filterEffectiveDate", ng-model="searchFilter.effectiveDate",data-placement="right",placeholder="YYYY-MM-DD",bs-tooltip="tooltip.dateExample")
+                                .form-group
+                                    label.control-label Expiring on
+                                    .controls
+                                            input.input-sm(type="text", name="filterExpiryDate", ng-model="searchFilter.expiryDate", value='searchFilter.expiryDate',data-placement="right",placeholder="YYYY-MM-DD",bs-tooltip="tooltip.dateExample")
+                                .form-group
+                                    label.control-label Status
+                                    .controls
+                                        select(ui-select2, name="filterActive", ng-model="searchFilter.isActive", data-placeholder="select", style="width:100px")
+                                                option(value='',selected="selected") Both
+                                                option(value=1) Active
+                                                option(value=0) Inactive                                                        
+        div(permission="readTariff.*.*",ng-show="searchFilter.expiryDate || searchFilter.EffectiveDate || searchFilter.isActive")
+                strong.text-black.linkGreen(ng-click='isFilterCollapsed = !isFilterCollapsed',style="cursor: pointer;")  Showing filterd results..
+                br
+                small.muted(ng-show="searchFilter.isActive==1") Status: Active
+                small.muted(ng-show="searchFilter.isActive==0") Status: Inactive
+                small.muted(ng-show="searchFilter.effectiveDate") ,Effective: {{searchFilter.effectiveDate | date:'mediumDate'}}
+                small.muted(ng-show="searchFilter.expiryDate") ,Expiry: {{searchFilter.expiryDate | date:'mediumDate'}}
+        div(ng-hide="tariffListLoader")
+                h5(ng-hide="tariffList.length").offset1
+                        | Couldn't find tariffs for this account
+                        i.icon-frown
+        .widget-box.transparent((ng-show="tariffList.length"))                
+                .widget-body
+                    .widget-main.no-padding
+                        .col-md-12
+                            table.table.table-bordered.table-striped.table-hover(ng-show="tariffList.length")
+                                thead
+                                        tr
+                                                th
+                                                        i.icon-time.black &nbsp Effective                         
+                                                th
+                                                        i.icon-time.black &nbsp Expiry                            
+
+                                                th.hidden-767 
+                                                        i.icon-paper-clip.black &nbsp Docs.                                                
+                                             
+                                                th.hidden-767 
+                                                        i.icon-flag.black &nbsp Holders  
+                                                th
+                                                        i.icon-flag.black &nbsp Status                         
+                                tbody(ng-repeat="r in tariffList  | filter:searchFilter")
+                              
+                                        tr(data-placement="bottom",permission="readTariff.*.*",style="cursor: pointer;",bs-tooltip="tooltip.detail",href="#/tms/list/{{$stateParams.accountId}}/detail/{{r.id}}",ng-class="{'alert alert-info': ($state.includes('tms.list.detail') || $state.includes('tms.list.edit') ) && $stateParams.tariffId == r.id}", ng-click="selectTariff(r.id)")
+                                                td
+                                                        {{r.effectiveDate  | date:'mediumDate'}}
+                                                td.center
+                                                        {{r.expiryDate  | date:'mediumDate'}}
+                                                td.hidden-767
+                                                        .center
+                                                                .col-md-(popover-placement="right",popover="{{quickViewAttachments[$index]}}",popover-trigger="mouseenter")   {{r.docId.length}}
+                                                td.hidden-767
+                                                        .center
+                                                                .col-md-(popover-placement="right",popover="{{CurrentStackHolder[$index]}}",popover-trigger="mouseenter")   {{r.workflowUsers.length}}
+
+                                                td
+                                                        .center
+                                                                span.label.label-success.arrowed-in.arrowed-in-right(ng-show="r.isActive==1") Active
+                                                                span.label.label-important.arrowed(ng-show="r.isActive==0") Inactive             
+
+        //- table.table.table-hover(ng-show="tariffList.length")
+        //-         thead
+        //-                 tr
+        //-                         th 
+        //-                                 i.icon-time &nbsp Effective
+        //-                         th 
+        //-                                 i.icon-time &nbsp Expiry                                          
+        //-                         th.hidden-767 
+        //-                                 i.icon-paper-clip &nbsp Docs.                                                
+                                 
+        //-                         th.hidden-767 
+        //-                                 i.icon-flag &nbsp Holders  
+        //-                         th
+        //-                                 i.icon-flag &nbsp Status 
+
+
+        //-         tbody(ng-repeat="r in tariffList  | filter:searchFilter")
+        //-                 tr(data-placement="bottom",permission="readTariff.*.*",style="cursor: pointer;",bs-tooltip="tooltip.detail",href="#/tms/list/{{$stateParams.accountId}}/detail/{{r.id}}",ng-class="{'alert alert-info': ($state.includes('tms.list.detail') || $state.includes('tms.list.edit') ) && $stateParams.tariffId == r.id}", ng-click="selectTariff(r.id)")
+        //-                         td
+        //-                                 {{r.effectiveDate  | date:'mediumDate'}}
+        //-                         td.center
+        //-                                 {{r.expiryDate  | date:'mediumDate'}}
+        //-                         td.hidden-767
+        //-                             .center
+        //-                                 .col-md-(popover-placement="right",popover="{{quickViewAttachments[$index]}}",popover-trigger="mouseenter")   {{r.docId.length}}
+        //-                         td.hidden-767
+        //-                             .center
+        //-                                 .col-md-(popover-placement="right",popover="{{CurrentStackHolder[$index]}}",popover-trigger="mouseenter")   {{r.workflowUsers.length}}
+
+        //-                         td
+        //-                             .center
+        //-                                 span.small.label.label-success(ng-show="r.isActive==1") Active
+        //-                                 span.small.label.label-warning(ng-show="r.isActive==0") Inactive
+.col-md-8
+        .col-md-12(ng-show="$state.current.name=='tms.list'")
+                .col-md-6
+                        h4 Tariff Expiring in Coming Months
+                        div(tariff-Expired='chartData')
+                .col-md-6
+                        h4 Tariff Expired Since
+                        div(tariff-Expiry='chartData')
+        .col-md-12(ui-view="detail")

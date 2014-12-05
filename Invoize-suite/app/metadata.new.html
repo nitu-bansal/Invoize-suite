@@ -1,0 +1,71 @@
+
+<div class="page-header">   </div>
+<div class="row">
+  <div class="col-xs-12">
+    <form novalidate="novalidate" name="form" class="form-horizontal">
+      <div class="fieldset">
+        <legend>Metadata                    
+          <div class="btn-group pull-right"><a ng-hide="metadataCreateLoader" ng-click="backToListMetadata()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin btn-sm"><i class="icon-mail-reply icon-large"></i></a>
+            <button permission="createMetadata.*.*" ng-hide="metadataCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="createMetadata(metadata,$stateParams.metadataType)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary btn-sm"><i class="icon-ok icon-large"></i></button><i ng-show="metadataCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+          </div>
+        </legend>
+        <div class="form-group">
+          <label class="col-sm-3 control-label no-padding-right">Value</label>
+          <div class="col-sm-9">
+            <input type="text" name="value" duplicate="metadata" ng-model="metadata.value" placeholder="Value" required="required"/>
+            <label ng-show="form.value.$error.required" class="help-inline required">*</label>
+            <label ng-show="form.value.$error.duplicate" class="help-inline required">Metadata exists.  </label>
+          </div>
+        </div>
+        <ng-form name="fieldsForm" ng-repeat="row in selectedMetadataFields" ng-switch="row.t">
+          <div ng-switch-when="text" ng-switch="row.m" class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">{{row.v}}</label>
+            <div ng-switch-when="true" class="col-sm-9">                                             
+              <input type="text" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+            </div>
+            <div ng-switch-when="false" class="col-sm-9">                                             
+              <input type="text" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}"/>
+            </div>
+          </div>
+          <div ng-switch-when="email" ng-switch="row.m" class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">{{row.v}}</label>
+            <div ng-switch-when="true" class="col-sm-9">                                               
+              <input type="email" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+              <label ng-show="fieldsForm.otherFields.$error.email" class="help-inline required">This is not a valid email!</label>
+            </div>
+            <div ng-switch-when="false" class="col-sm-9"> 
+              <input type="email" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.email" class="help-inline required">This is not a valid email!</label>
+            </div>
+          </div>
+          <div ng-switch-when="date" ng-switch="row.m" class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">{{row.v}}</label>
+            <div ng-switch-when="true" class="col-sm-9">                                                    
+              <input type="date" data-date-format="dd-mm-yyyy" bs-datepicker="bs-datepicker" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+              <label ng-show="fieldsForm.otherFields.$error.date" class="help-inline required">This is not a valid date.!</label>
+            </div>
+            <div ng-switch-when="false" class="col-sm-9"> 
+              <input type="date" data-date-format="dd-mm-yyyy" bs-datepicker="bs-datepicker" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.date" class="help-inline required">This is not a valid date.!</label>
+            </div>
+          </div>
+          <div ng-switch-when="number" ng-switch="row.m" class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">{{row.v}}</label>
+            <div ng-switch-when="true" class="col-sm-9">                                                
+              <input type="number" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}" required="{{row.m}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.required" class="help-inline required">*</label>
+              <label ng-show="fieldsForm.otherFields.$error.email" class="help-inline required">This is not a valid number!</label>
+            </div>
+            <div ng-switch-when="false" class="col-sm-9"> 
+              <input type="number" name="otherFields" ng-model="metadata[row.v]" placeholder="{{row.v}}"/>
+              <label ng-show="fieldsForm.otherFields.$error.email" class="help-inline required">This is not a valid number!</label>
+            </div>
+          </div>
+        </ng-form>
+      </div>
+    </form>
+  </div>
+</div>

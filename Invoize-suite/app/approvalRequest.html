@@ -1,0 +1,164 @@
+
+<!--   Created by pallavi.dandane on 10/13/2014.-->
+<div id="page-content" ui-view="Contents" ng-init="getRequests('tariff')" class="page-content"></div>
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Approval Request</div>
+    </div>
+    <div class="pull-right">
+      <input ng-trim="ng-trim" type="text" name="commentGlobal" placeholder="Comment" ng-model="commentGlobal" required="required" auto-fill-sync="auto-fill-sync" ng-show="requestBucket == 'pending'" class="input-large"/>
+      <div style="vertical-align: inherit;" ng-show="requestBucket == 'pending'" class="btn-group">
+        <button data-toggle="dropdown" type="button" class="btn-sm btn-custom dropdown-toggle">   Actions &nbsp;<i class="fa fa-angle-down"></i></button>
+        <div aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <li ng-click="processRequest('Approve',0,true)" ng-class="{'disabled':  selectedApprovalDocs.length == 0}" ng-disabled=" selectedApprovalDocs.length == 0"><a style="cursor:pointer">Approve</a></li>
+          <li ng-click="processRequest('Reject',0,true)" ng-class="{'disabled': commentGlobal == null || commentGlobal == undefined || commentGlobal.length == 0 || selectedApprovalDocs.length == 0}" ng-disabled=" commentGlobal == null || commentGlobal == undefined || commentGlobal.length == 0 || selectedApprovalDocs.length == 0"><a style="cursor:pointer">Reject</a></li>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:47px;"></div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <ul class="nav nav-tabs">
+    <li ng-click="getRequests('tariff')" class="tab {{selectedTab=='tariff'?'active':''}}"><a>&nbsp; Tariff</a></li>
+  </ul>
+  <div class="col-xs-12 col-sm-12 col-md-12"></div>
+  <div style="margin:10px 5px 20px;min-height:300px;" class="overflow-auto">
+    <table class="inz-table inz-table1 border1px">
+      <thead>
+        <tr>
+          <th><span tooltip="Expand/Collapse"><i class="fa fa-align-justify"></i></span></th>
+          <th><span>
+              <input tooltip="Select All" type="checkbox" ng-click="checkAll($event)" tooltip-placement="right"/></span></th>
+          <th ng-repeat="req in tariffRequestData[0]" ng-show="$index &gt; 0 &amp;&amp; $index !== idIndex &amp;&amp; $index !== templateIdIndex &amp;&amp; $index !== docIdIndex"><span tooltip="{{req |toHumanReadable}}" class="trim-info-large">{{req | toHumanReadable}}</span></th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="data in tariffRequestData" ng-show="$index &gt; 0">
+        <tr style="cursor: pointer;">
+          <td ng-repeat="d in data track by $index" ng-show="$index==0" ng-click="getRequestInfo($parent.$index,data[1])">
+            <div ng-hide="data.dataPresent"><i ng-show="data.doc" class="icon-reorder blue"></i><i ng-hide="data.doc" class="icon-reorder orange"></i></div><i ng-show="data.dataPresent" class="icon-spinner icon-spin blue icon small"></i>
+          </td>
+          <td ng-repeat="d in data track by $index" ng-show="$index==0">
+            <input name="chk_{{$parent.$index}}" type="checkbox" ng-click="updateSelection($event,$parent.$index)"/>
+          </td>
+          <td ng-repeat="d in data track by $index" ng-switch="$index" ng-show="$index &gt; 0 &amp;&amp; $index !== idIndex &amp;&amp; $index !== templateIdIndex &amp;&amp; $index !== docIdIndex">
+            <!--span.trim-info-large(tooltip="{{d}}",ng-switch-when="10", ng-hide="true") {{d }}-->
+            <!--span.trim-info-large(tooltip="{{d}}",ng-switch-when="11", ng-hide="true") {{d }}--><span tooltip="{{d}}" ng-switch-default="ng-switch-default" class="trim-info-large">{{d}}
+              <tr ng-show="!isRowCollapsed[$index] ">
+                <td colspan="{{data.length+1}}" class="inset">
+                  <div style="clear:both;height:3px"></div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="timeline">
+                      <li popover="{{data.approvalData[0].all[0].u}}   on   {{data.approvalData[0].all[0].time}}" popover-title="Initiated by" popover-trigger="mouseenter click" popover-placement="bottom" data-html="true" class="border-10"><span>Request</span></li>
+                      <!--li.red-line(ng-repeat="approvalItem in data.approvalData track by $index",ng-show = "$index > 0" ,popover="{{data.approvalData[$index].all[0].u}}  {{data.approvalData[$index].all[0].action}}  on  {{data.approvalData[$index].all[0].time}}  with comment :  {{data.approvalData[$index].all[0].comment}} || {{data.approvalData[$index].any[0].u}}  {{data.approvalData[$index].any[0].action}}  on  {{data.approvalData[$index].any[0].time}}  with comment :  {{data.approvalData[$index].any[0].comment}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )-->
+                      <li ng-class="{'orange-line':data.currentLevel == $index, 'yellow-line':data.currentLevel &lt; $index, 'green-line':data.currentLevel &gt; $index}" ng-repeat="approvalItem in data.approvalData track by $index" ng-show="approvalItem.length" popover="{{approvalItem}}" popover-trigger="mouseenter click" popover-placement="bottom" data-html="true"><span>Level {{$index}}</span></li>
+                    </div>
+                  </div>
+                  <!--             //script(type="text/ng-template" id="client.html")-->
+                  <!--             div(id="pop_{{$index}}" ,name="pop_{{$index}}" ,  ng-repeat="cItem in data.approvalData[$index].all track by $index" , ng-if= "cItem !== 'undefined'") {{cItem.u}} {{cItem.time}} {{cItem.action}} {{cItem.comment}}-->
+                  <!--             div(id="pop_{{$index}}",,name="pop_{{$index}}"  , ng-repeat="cItem in data.approvalData[$index].any track by $index" , ng-if= "cItem !== 'undefined'") {{cItem}}{{cItem.time}} {{cItem.action}} {{cItem.comment}}-->
+                  <!--         //li.red-line(ng-repeat="approvalItem in data.approvalData track by $index",ng-show = "$index > 0" ,popover="ng-repeat = "childItem in approvalItem.all track by $index {{childItem[$index].u}}  {{childItem[$index].action}}  on  {{childItem[$index].time}}  with comment :  {{dchildItem[$index].comment}} "" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )-->
+                  <!--         //    span Level {{$index}}-->
+                  <!--         //li.orange-line(popover="{{dynamicPopover}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )-->
+                  <!--         //    span Level 1-->
+                  <!--         //li.yellow-line(popover="{{dynamicPopover}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click" ,popover-placement="bottom")-->
+                  <!--         //    span Level 2-->
+                  <!--         //li.black-line(popover="{{dynamicPopover}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )-->
+                  <!--         //    span Level 1-->
+                  <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-6 col-sm-12">
+                        <label ng-show="data.laneData.length == 2" class="input-medium bolder blue">Current Lane</label>
+                        <label ng-show="data.laneData.length == 1" class="input-medium bolder blue">Change Requested</label>
+                      </div>
+                      <div class="col-xs-12 col-md-6 col-sm-12">
+                        <label ng-show="data.laneData.length == 2" class="input-medium bolder blue">Change Requested</label>
+                      </div>
+                    </div>
+                    <div class="cpanel">
+                      <div class="cpanel-heading cpanel-heading1"><span toolTip="Parameters" class="label white">Parameters</span></div>
+                      <div class="cpanel-body">
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <div ng-repeat="row1 in data.laneData[0].parameters | orderBy:'displayName'" ng-if=" row1.displayName!== 'effectiveDate'&amp;&amp; row1.displayName!== 'expiryDate' &amp;&amp; row1.displayName!== 'Effective Date'&amp;&amp; row1.displayName!== 'Expiry Date'" class="row">
+                              <label style="display:inline-table;" class="input-large ellipsis-large">{{row1.displayName.replace("|", ".")}}</label>
+                              <label style="display:inline-table;" toolTip="{{row1.toolTip}}" class="input-medium">{{row1.value}}</label>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <div ng-repeat="row2 in data.laneData[1].parameters | orderBy:'displayName'" ng-if=" row2.displayName!== 'effectiveDate'&amp;&amp; row2.displayName!== 'expiryDate' &amp;&amp; row2.displayName!== 'Effective Date'&amp;&amp; row2.displayName!== 'Expiry Date'" class="row">
+                              <label style="display:inline-table;" class="input-large ellipsis-large">{{row2.displayName.replace("|", ".")}}</label>
+                              <label style="display:inline-table;" toolTip="{{row2.toolTip}}" ng-class="{'red':row2.diff !== true}" class="input-medium">{{row2.value}}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cpanel">
+                      <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Charges</span></div>
+                      <div class="cpanel-body">
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <div ng-repeat="row1 in data.laneData[0].charges | orderBy:'displayOrder'" class="row">
+                              <label style="display:inline-table;" class="input-large ellipsis-large">{{row1.displayName.replace("|", ".")}}</label>
+                              <label style="display:inline-table;" toolTip="{{row1.toolTip}}" class="input-medium">{{row1.value}}</label>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <div ng-repeat="row2 in data.laneData[1].charges | orderBy:'displayOrder'" class="row">
+                              <label style="display:inline-table;" class="input-large ellipsis-large">{{row2.displayName.replace("|", ".")}}</label>
+                              <label style="display:inline-table;" toolTip="{{row2.toolTip}}" ng-class="{'red':row2.diff !== true}" class="input-medium">{{row2.value}}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cpanel">
+                      <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Other Information</span></div>
+                      <div class="cpanel-body">
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <label style="display:inline-table;" class="input-medium">Effective Date</label>
+                            <label style="display:inline-table;" class="input-medium">{{data.laneData[0].parameters[effIndex1].value}}</label>
+                          </div>
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <label style="display:inline-table;" ng-show="data.laneData[1]" class="input-medium">Effective Date</label>
+                            <label style="display:inline-table;" ng-class="{'red':data.laneData[1].parameters.effdiff == true}" class="input-medium">{{data.laneData[1].parameters[effIndex2].value}}</label>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <label style="display:inline-table;" class="input-medium">Expiry Date</label>
+                            <label style="display:inline-table;" class="input-medium">{{data.laneData[0].parameters[expIndex1].value}}</label>
+                          </div>
+                          <div class="col-xs-12 col-md-6 col-sm-12">
+                            <label style="display:inline-table;" ng-show="data.laneData[1]" class="input-medium">Expiry Date</label>
+                            <label style="display:inline-table;" ng-class="{'red':data.laneData[1].parameters.expdiff == true}" class="input-medium">{{data.laneData[1].parameters[expIndex2].value}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--label {{tariffRequestData[$index].diffinLaneData}}-->
+                    <div style="clear:both;height:3px;"></div>
+                    <div ng-show="requestBucket == 'pending'" class="row">
+                      <input ng-trim="ng-trim" type="text" name="comment" placeholder="Comment" ng-model="data.comment" required="required" auto-fill-sync="auto-fill-sync" class="input-large"/><span ng-show="comment.$error.required" class="red">&nbsp; *</span><span ng-show="comment.$valid" class="green validTick">&nbsp; &#10004;</span>
+                      <button ng-click="processRequest('Approve',$index,false)" class="inz-btn btn-sm btn-success">Approve</button>
+                      <button ng-click="processRequest('Reject',$index,false)" ng-disabled="data.comment == undefined || data.comment.length == 0" class="inz-btn btn-sm btn-danger">Reject</button>
+                      <button ng-click="isRowCollapsed[$index] = !isRowCollapsed[$index]" class="inz-btn btn-sm btn-grey">Cancel</button>
+                    </div>
+                    <div ng-show="requestBucket == 'myrejected'" class="row">
+                      <button ng-click="reInitiateRequest($index)" class="inz-btn btn-sm btn-danger">ReInitiate</button>
+                    </div>
+                    <div style="clear:both;height:3px;"></div>
+                  </div>
+                </td>
+              </tr></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="clear:both;height:5px;"></div>
+    <pagination style="position:relative;" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+  </div>
+</div>

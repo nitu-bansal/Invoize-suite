@@ -1,0 +1,114 @@
+
+<div set-width="set-width" ng-init="clear();editApproval();" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Approval</div>
+    </div>
+    <div class="pull-right"><a ng-href="/#/organizationSetup/approval/view" class="inz-btn btn-sm btn-default">Back</a>
+      <button type="submit" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" ng-click="saveData()" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div ng-form="form">
+  <div class="col-md-12 col-xs-12 col-sm-12">
+    <div class="cpanel">
+      <div class="cpanel-heading cpanel-heading1"><a class="accordion-toggle"><span class="ico-container"><i class="fa fa-tag white"></i></span>&nbsp;<span toolTip="Information" class="label white">Basic Information</span></a></div>
+      <div class="cpanel-body">
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label class="blue">Name &nbsp;</label><br/>{{field.name}}
+          </div>
+          <div class="col-md-8 col-sm-6 col-xs-12">
+            <label class="iz-switch line52">
+              <input name="isField" ng-model="field.active" type="checkbox" ng-true-value="Yes" ng-false-value="No" class="ace ace-switch-8"/><span class="lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label class="blue">Select Module &nbsp;</label><br/>Tariff
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label class="blue">Select Accounts &nbsp;</label><span ng-show="form.accounts.$error.required" class="red">*</span><span ng-show="form.accounts.$valid" class="green validTick">&#10004;</span><br/>
+            <dynamic-Select multiselect="multiselect" name="accounts" customobj="{&quot;type&quot;:&quot;accounts&quot;}" ng-model="field.accounts" ph="account" data-placeholder="Accounts" required="required" change="accountSelection()" class="input-large1"></dynamic-Select>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label class="blue">Select Trigger Event &nbsp;</label><span ng-show="form.actions.$error.required" class="red">&nbsp; *</span><span ng-show="form.actions.$valid" class="green validTick">&nbsp; &#10004;</span><br/>
+            <dynamic-Select multiselect="multiselect" name="actions" customobj="" ng-model="field.actions" ph="metadata_workFlowActions" data-placeholder="Trigger Event" required="required" class="input-large1"></dynamic-Select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-xs-12 col-sm-12">
+    <div class="cpanel">
+      <div class="cpanel-heading cpanel-heading1"><a class="accordion-toggle"><span class="ico-container"><i class="fa fa-tag white"></i></span>&nbsp;<span toolTip="Information" class="label white">Condition for the Approval Hirarchy</span></a></div>
+      <div class="cpanel-body">
+        <div class="row">
+          <div class="ds-tree"><a name="btnAddTag" ng-click="field.rulesCondition.push({});" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" style="cursor:pointer" class="margin10"><span class="in-add-sign">+</span><span class="in-add-txt">Add</span></a>
+            <div ng-repeat="row in field.rulesCondition" class="row">
+              <div style="clear:both;height:10px;"></div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="input-group"><span class="input-group-addon">Field</span>
+                  <dynamic-Select name="ruleTagName_{{$index}}" customobj="{&quot;selected&quot;:&quot;{{fieldKeysParams.join()}}&quot;,&quot;mode&quot;:&quot;Tariff&quot;}" ng-model="row.tagName" ph="workFlowRuleKey" data-placeholder="Tag Name" ng-init="fieldKeyChangedParameters($index,row);setCustObj($index,'|')" change="setCustObj($index,'|')" required="required" class="input-large1"></dynamic-Select>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="input-group">
+                  <dynamic-Select name="ruleOperator_{{$index}}" customobj="" ng-model="row.operator" ph="workFlowOperator" data-placeholder="Operator" required="required" class="input-large1"></dynamic-Select><span ng-show="form.ruleOperator_{{$index}}.$error.required" class="red">*</span><span ng-show="form.ruleOperator_{{$index}}.$valid" class="green validTick">&#10004;</span>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <div ng-if="row.operator[0].v=='text'" class="controls">
+                  <input required="required" type="text" name="ruleTagVal_{{$index}}" placeholder="Tag Value" ng-model="row.tagVal" class="input-medium"/><span ng-show="form.ruleTagVal_{{$index}}.$error.required" class="red">*</span><span ng-show="form.ruleTagVal_{{$index}}.$valid" class="green validTick">&#10004;</span>
+                </div>
+                <div ng-if="row.operator[0].v=='single'" class="controls">
+                  <dynamic-Select name="ruleTagVal_{{$index}}" customobj="{{custObj[$index]}}" ng-model="row.tagVal" ph="{{phObj[$index].value}}" data-placeholder="Tag Value" required="required" class="input-medium"></dynamic-Select><span ng-show="form.ruleTagVal_{{$index}}.$error.required" class="red">*</span><span ng-show="form.ruleTagVal_{{$index}}.$valid" class="green validTick">&#10004;</span>
+                </div>
+                <div ng-if="row.operator[0].v=='multiple'" class="controls">
+                  <dynamic-Select multiselect="multiselect" name="ruleTagVal_{{$index}}" customobj="{{custObj[$index]}}" ng-model="row.tagVal" ph="{{phObj[$index].value}}" data-placeholder="Tag Value" required="required" class="input-medium"></dynamic-Select><span ng-show="form.ruleTagVal_{{$index}}.$error.required" class="red">*</span><span ng-show="form.ruleTagVal_{{$index}}.$valid" class="green validTick">&#10004;</span>
+                </div><a data-action="close" ng-click="field.rulesCondition.splice($index, 1)" style="cursor: pointer; margin-left:5px;" ng-show="$index&gt;0" tooltip="Delete" class="grey"><i class="icon-trash"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-xs-12 col-sm-12">
+    <div class="cpanel">
+      <div class="cpanel-heading cpanel-heading1"><a class="accordion-toggle"><span class="ico-container"><i class="fa fa-tag white"></i></span>&nbsp;<span toolTip="Information" class="label white">Action for the Approval Hirarchy</span></a></div>
+      <div class="cpanel-body">
+        <div ng-repeat="uh in field.workFlow" class="div-tree">
+          <div class="row">
+            <div class="pull-left">
+              <label tooltip="All or Any" class="toggle-custom">
+                <input name="isField" ng-model="uh.condition" type="checkbox" ng-true-value="+" ng-false-value="*"/><span data-unchecked="Any" data-checked="All"></span>
+              </label>
+              <!--label.iz-switch-->
+              <!--    input.ace.ace-switch.all(name='isField',ng-model="uh.condition", type='checkbox',ng-true-value="+", ng-false-value="*")-->
+              <!--    span.lbl-->
+              <!--div.inz-chk-->
+              <!---->
+              <!--    input(type="checkbox",class="btn-opt",ng-model="uh.isAllUsers",name='isField',ng-true-value="'All'", ng-false-value="'Any'",ng-model="chk",checked="")-->
+              <!--    label.btn-opt-lbl--><span class="span-check">Level {{$index + 1}}
+                <!--label.iz-switch--></span>
+              <!--    input.ace.ace-switch(name='isField',ng-model="uh.isAllUsers", type='checkbox')-->
+              <!--    span.lbl-->
+            </div>
+            <div class="pull-right">
+              <!--button.btn-sm.btn-custom(ng-click="" ) Add Group--><a ng-click="removeLevel($index)" style="cursor:pointer;" tooltip="Remove This Level" tooltip-placement="left" class="btn-work"><i class="fa fa-times"></i></a>&nbsp;
+            </div>
+            <div style="clear:both;height:3px;"></div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <dynamic-Select multiselect="multiselect" name="users" customobj="" ng-model="uh.users" ph="user" data-placeholder="Select User" class="input-xxlarge">
+                <!--button.btn-sm.btn-custom(ng-click="userHirarchy.push({isAllUsers:false,users:null})") Add Level-->
+              </dynamic-Select>
+            </div>
+          </div>
+        </div><a ng-click="addLevel()" style="cursor:pointer"><span class="in-add-sign">+</span><span class="in-add-txt">Add Level</span></a>
+      </div>
+    </div>
+  </div>
+</div>

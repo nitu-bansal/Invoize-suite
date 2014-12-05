@@ -1,0 +1,38 @@
+.page-header    
+.row
+        .col-md-3
+                .fieldset                      
+                        .fluid-row                                                                  
+                                .btn-group.pull-right
+                                        a.btn.btn-sm.btn-warning(ng-show="metadataList.length",permission="readMetadata.*.*",ng-click='isFilterCollapsed = !isFilterCollapsed')
+                                                i.icon-filter(bs-tooltip="tooltip.clickToFilter",data-placement="left")
+                                        a.btn.btn-primary.btn-margin.btn-sm(permission="createMetadata.*.*",bs-tooltip="tooltip.new", style="cursor: pointer;", href="#/metadata/{{$stateParams.metadataType}}/new",ng-click="getMetadataFields($stateParams.metadataType)") 
+                                                i.icon-plus.icon-white                        
+                                        a.btn.btn-primary.btn-margin.btn-sm(permission="uploadMetadata.*.*",bs-tooltip="tooltip.upload", style="cursor: pointer;", href="#/metadata/{{$stateParams.metadataType}}/fileUpload")
+                                                i.icon-upload-alt.icon-white
+                                        a.btn.btn-primary.btn-margin.btn-sm(bs-tooltip="tooltip.download", style="cursor: pointer;", ng-click="downloadMetadata()")
+                                                i.icon-download-alt.icon-white 
+                                        
+                                        i.icon-spinner.icon-spin.icon-large(ng-show="userUpdateLoader") 
+                                        i.icon-spinner.icon-spin.icon-large(ng-show="metadataListLoader")  
+                div(collapse='isFilterCollapsed')
+                                input.input-medium.search-query(type="search", placeholder="Search", ng-model="searchMetadata")
+                table.table.table-bordered.table-hover
+                        thead
+                                tr
+                                        th 
+                                                i.icon-flag &nbsp  {{$stateParams.metadataType}}                                                  
+                                                a.btn-margin.pull-right(permission="updateRole.*.*", ng-hide="roleDetailLoader", bs-tooltip="tooltip.edit", href="#/metadata/{{$stateParams.metadataType}}/metadataTypeEdit",, ng-click="selectMetadataTypeEdit($stateParams.metadataType)")
+                                                        i.icon-pencil.icon-small
+
+                ul.nav.nav-list(id='fixed-rate',when-scrolled = "loadMoreAccounts()")  
+                        li(ng-class="{ active: $stateParams.workflowId == r.id}", ng-repeat="r in metadataList  | filter:search ")
+                                 a(ng-click="selectMetadata(r.id)", data-toggle="tab", style="cursor: pointer;")
+                                        {{r.v}} 
+
+        .col-md-8.pull-right
+              .row(ui-view="detail")
+
+
+
+                

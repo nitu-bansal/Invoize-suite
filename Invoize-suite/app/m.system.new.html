@@ -1,0 +1,26 @@
+
+<div style="width:600px" class="modal-dialog">
+  <div class="modal-content">
+    <form novalidate="novalidate" name="form1">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;                            </button>
+        <h4 class="modal-title">Add New System</h4>
+      </div>
+      <div class="modal-body">
+        <div class="in-center-block">
+          <div class="line">
+            <div class="data">Name : {{item.systemName}}  </div>
+          </div>
+          <label class="control-label">Attach Company : </label>
+          <div class="controls">
+            <dynamic-Select ng-required="true" name="company" ng-model="item.systemCompany" ph="company"></dynamic-Select><span ng-show="form1.company.$error.required" class="red">*                                         </span><span ng-show="form1.company.$valid" class="green validTick">&#10004;</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">                      
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Close</button>
+        <button ng-class="{'disabled': form1.$invalid}" ng-disabled="form1.$invalid" type="submit" data-dismiss="modal" ng-click="save()" class="inz-btn btn-sm btn-success">Create</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+
+<div id="FixedRate" class="col-md-4">
+  <row>
+    <h4 class="header smaller lighter gray">Rates   <i ng-show="rateRequestListLoader" class="icon-spinner icon-spin icon">  </i></h4>
+  </row>
+  <div collapse="isFilterCollapsed">
+    <div class="alert alert-warning">
+      <div class="fieldset">
+        <div class="row">
+          <button type="button" ng-click="isFilterCollapsed = !isFilterCollapsed" class="close pull-right">×</button>
+        </div>
+      </div>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label">Effective on</label>
+          <div class="controls">
+            <input type="text" name="filterEffectiveDate" ng-model="searchFilter.effectiveDate" data-placement="right" placeholder="YYYY-MM-DD" bs-tooltip="tooltip.dateExample" class="input-small"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Expiring on</label>
+          <div class="controls">
+            <input type="text" name="filterExpiryDate" ng-model="searchFilter.expiryDate" value="searchFilter.expiryDate" data-placement="right" placeholder="YYYY-MM-DD" bs-tooltip="tooltip.dateExample" class="input-small"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Status</label>
+          <div class="controls">
+            <select ui-select2="ui-select2" name="filterActive" ng-model="searchFilter.isActive" data-placeholder="select" style="width:100px">
+              <option value="" selected="selected">Both</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div permission="readRate.*.*" ng-show="searchFilter.expiryDate || searchFilter.EffectiveDate || searchFilter.isActive"><strong ng-click="isFilterCollapsed = !isFilterCollapsed" style="cursor: pointer;" class="text-black linkGreen"> Showing filterd results..</strong><br/><small ng-show="searchFilter.isActive==1" class="muted">Status: Active</small><small ng-show="searchFilter.isActive==0" class="muted">Status: Inactive</small><small ng-show="searchFilter.effectiveDate" class="muted">,Effective: {{searchFilter.effectiveDate | date:'mediumDate'}}</small><small ng-show="searchFilter.expiryDate" class="muted">,Expiry: {{searchFilter.expiryDate | date:'mediumDate'}}</small></div>
+  <div ng-hide="oldRequest.length || rateRequestListLoader">
+    <h4>No rate requests available.<i class="icon-frown"></i></h4>
+  </div>
+  <div ng-show="oldRequest.length" class="widget-box transparent">             
+    <div class="widget-body">
+      <div class="widget-main no-padding">
+        <table ng-hide="!oldRequest.length || rateRequestListLoader" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th><i class="icon-flag black">&nbsp Account</i></th>
+              <th> <i class="icon-time black">&nbsp Effective</i></th>
+              <th> <i class="icon-time black">&nbsp Expiry                                                  </i></th>
+              <th class="hidden-767"> <i class="icon-group black">&nbsp Holders  </i></th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="r in oldRequest  | filter:searchFilter">
+            <tr data-placement="bottom" permission="readTariff.*.*" style="cursor: pointer;" bs-tooltip="tooltip.detail" ng-class="{'alert alert-info': $state.includes('request.rateList.detail') &amp;&amp; $stateParams.requestId == r.requestId}" href="#/request/rate/{{$stateParams.requestType}}/{{r.requestId}}" ng-click="selectRateRequest(r.requestId)">
+              <td>{{r.accountName}}</td>
+              <td>{{r.effectiveDate  | date:'mediumDate'}}</td>
+              <td>{{r.expiryDate  | date:'mediumDate'}}                                        </td>
+              <td class="hidden-767">
+                <div class="center">
+                  <div popover-placement="right" popover="{{CurrentStackHolder[$index]}}" popover-trigger="mouseenter" class="col-md-">  {{r.pendingFor.length}}</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-8">
+  <div ui-view="detail"></div>
+</div>

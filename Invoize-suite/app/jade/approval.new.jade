@@ -1,0 +1,139 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width,ng-init="clear();")
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Approval
+        .pull-right
+            a.inz-btn.btn-sm.btn-default( ng-href="/#/organizationSetup/approval/view") Back
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': form.$invalid}",  ng-disabled="form.$invalid",  ng-click="saveData()") Save Changes
+div(style="clear:both;")
+div(ng-form="form")
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Basic Information
+            .cpanel-body
+                .row
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Name &nbsp;
+                        span.red(ng-show="form.name.$error.required") *
+                        span.green.validTick(ng-show="form.name.$valid") &#10004;
+                        br
+                        input.input-large(required,type="text",name="name", placeholder="Name",ng-model="field.name")
+                    .col-md-8.col-sm-6.col-xs-12
+                        label.iz-switch.line52
+                                input.ace.ace-switch-8(name='isField',ng-model="field.active", type='checkbox',ng-true-value="Yes", ng-false-value="No")
+                                span.lbl
+                .row
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Select Module &nbsp;
+                        //- span.red(ng-show="form.moduleName.$error.required") *
+                        //- span.green.validTick(ng-show="form.moduleName.$valid") &#10004;
+                        br
+                        //- dynamic-Select.input-large1(name='moduleName',customobj='',ng-model="field.module",ph="metadata_workFlowModes",data-placeholder="Module",change="fieldKeyChanged($index,field)",required)
+                        | Tariff
+
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Select Accounts &nbsp;
+                        span.red(ng-show="form.accounts.$error.required") *
+                        span.green.validTick(ng-show="form.accounts.$valid") &#10004;
+                        br
+                        dynamic-Select.input-large1(multiselect,name='accounts',customobj='{"type":"accounts","selected":"{{fieldKeysAccountParams.join()}}"}',ng-model="field.accounts",ph="account",data-placeholder="Accounts",required,change="accountSelection()")
+
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Select Trigger Event &nbsp;
+                        span.red(ng-show="form.actions.$error.required") &nbsp; *
+                        span.green.validTick(ng-show="form.actions.$valid") &nbsp; &#10004;
+                        br
+                        dynamic-Select.input-large1(multiselect,name='actions',customobj='',ng-model="field.actions",ph="metadata_workFlowActions",data-placeholder="Trigger Event",required)
+
+
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Condition for the Approval Hirarchy
+            .cpanel-body
+                .row
+                    .ds-tree
+                        a.margin10(name='btnAddTag',ng-click='field.rulesCondition.push({});',tool-tip,data-placement="top", data-toggle="tooltip", style="cursor:pointer" )
+                            span.in-add-sign +
+                            span.in-add-txt Add
+                        .row(ng-repeat="row in field.rulesCondition")
+                            div(style="clear:both;height:10px;")
+                            .col-md-4.col-sm-6.col-xs-12
+                                div.input-group
+                                    span.input-group-addon Field
+                                    //- dynamic-Select.input-large1(name='ruleTagName_{{$index}}',customobj='{"mode":"{{field.module[0].n}}"}',ng-model="row.tagName",ph="workFlowRuleKey",data-placeholder="Tag Name",required)
+                                    dynamic-Select.input-large1(name='ruleTagName_{{$index}}',customobj='{"selected":"{{fieldKeysParams.join()}}","mode":"Tariff"}',ng-model="row.tagName",ph="workFlowRuleKey",data-placeholder="Tag Name",change="fieldKeyChangedParameters($index,row);setCustObj($index,'|')",required)
+                                   
+                            .col-md-4.col-sm-6.col-xs-12
+                                div.input-group
+                                    dynamic-Select.input-large1(name='ruleOperator_{{$index}}',customobj='',ng-model="row.operator",ph="workFlowOperator",data-placeholder="Operator",required)
+                                    span.red(ng-show="form.ruleOperator_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleOperator_{{$index}}.$valid") &#10004;
+                            .col-md-4.col-sm-6.col-xs-12
+                                .controls(ng-if="row.operator[0].v=='text'")
+                                    input.input-medium(required,type="text",name="ruleTagVal_{{$index}}", placeholder="Tag Value",ng-model="row.tagVal",ng-init="row.tagVal=''")
+                                    span.red(ng-show="form.ruleTagVal_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleTagVal_{{$index}}.$valid") &#10004;
+                                .controls(ng-if="row.operator[0].v=='single'")
+                                    dynamic-Select.input-medium(name='ruleTagVal_{{$index}}',customobj='{{custObj[$index]}}',ng-model="row.tagVal",ph="{{phObj[$index].value}}",data-placeholder="Tag Value",ng-init="row.tagVal=[]",required)
+                                    span.red(ng-show="form.ruleTagVal_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleTagVal_{{$index}}.$valid") &#10004;
+                                .controls(ng-if="row.operator[0].v=='multiple'")
+                                    dynamic-Select.input-medium(multiselect,name='ruleTagVal_{{$index}}',customobj='{{custObj[$index]}}',ng-model="row.tagVal",ph="{{phObj[$index].value}}",data-placeholder="Tag Value",ng-init="row.tagVal=[]",required)
+                                    span.red(ng-show="form.ruleTagVal_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleTagVal_{{$index}}.$valid") &#10004;
+                                a.grey(data-action='close',ng-click="field.rulesCondition.splice($index, 1)", style="cursor: pointer; margin-left:5px;",ng-show="$index>0",tooltip="Delete")
+                                    i.icon-trash
+
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Action for the Approval Hirarchy
+            .cpanel-body
+                div.div-tree(ng-repeat="uh in field.workFlow")
+                    .row
+                        .pull-left
+
+                            label.toggle-custom(tooltip="All or Any")
+                                input(name='isField',ng-model="uh.condition", type='checkbox',ng-true-value="+", ng-false-value="*")
+                                span(data-unchecked="Any",data-checked="All")
+                            //label.iz-switch
+                            //    input.ace.ace-switch.all(name='isField',ng-model="uh.condition", type='checkbox',ng-true-value="+", ng-false-value="*")
+                            //    span.lbl
+
+                            //div.inz-chk
+                            //
+                            //    input(type="checkbox",class="btn-opt",ng-model="uh.isAllUsers",name='isField',ng-true-value="'All'", ng-false-value="'Any'",ng-model="chk",checked="")
+                            //    label.btn-opt-lbl
+                            span.span-check Level {{$index + 1}}
+                                //label.iz-switch
+                            //    input.ace.ace-switch(name='isField',ng-model="uh.isAllUsers", type='checkbox')
+                            //    span.lbl
+                        .pull-right
+
+                            a.btn-work(ng-click="removeLevel($index)",tooltip="Remove This Level",tooltip-placement="left" )
+                                i.fa.fa-times
+                            |&nbsp;
+                        div(style="clear:both;height:3px;")
+                        .col-md-4.col-sm-6.col-xs-12
+                            dynamic-Select.input-xxlarge(multiselect,name='users',customobj='',ng-model="uh.users",ph="user",data-placeholder="Select User")
+                                //button.btn-sm.btn-custom(ng-click="userHirarchy.push({isAllUsers:false,users:null})") Add Level
+                a(ng-click="addLevel()",style="cursor:pointer")
+                    span.in-add-sign +
+                    span.in-add-txt Add Level
+        div(style="clear:both;height:240px;")

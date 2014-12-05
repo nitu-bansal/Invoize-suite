@@ -1,0 +1,64 @@
+
+<div id="modal-form" tabindex="-1" aria-hidden="true" style="display: none;" class="modal hide"></div>
+<div class="modal-header">
+  <button type="button" data-dismiss="modal" ng-click="close()" class="close">×</button>
+  <h4 class="blue bigger">Account        </h4>
+</div>
+<div class="modal-body overflow-visible">         
+  <form novalidate="novalidate" name="form" class="form-horizontal">      
+    <fieldset>                      
+      <div class="control-group">
+        <label class="control-label">Account Name</label>
+        <div class="controls"><b>{{item.accountName}}                                                                        </b></div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Owning Station                                    </label>
+        <div class="controls">
+          <input type="text" name="station" ng-model="item.station" placeholder="Owning Station" style="width:200px" required="required"/>
+          <label ng-show="form.station.$error.required" class="help-inline required">*  </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Account Type                              </label>
+        <div class="controls">
+          <select ui-select2="ui-select2" name="accountType" ng-model="item.accountType" data-placeholder="Account Type" required="required" class="input-large">
+            <option value=""></option>
+            <option value="International">International</option>
+            <option value="Domestic">Domestic</option>
+            <option value="Domestic">Other</option>
+          </select>
+          <label ng-show="form.accountType.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <h3 class="header smaller lighter blue">
+                                         
+        Contact       
+      </h3>
+      <div class="control-group">
+        <label class="control-label">Name                                    </label>
+        <div class="controls">
+          <input type="text" name="user" ng-model="item.user" placeholder="Contact Person" style="width:200px" required="required"/>
+          <label ng-show="form.user.$error.required" class="help-inline required">* </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Email                                    </label>
+        <div class="controls">
+          <input type="text" name="email" ng-model="item.email" placeholder="Email" style="width:200px" required="required"/>
+          <label ng-show="form.email.$error.required" class="help-inline required">* </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Phone                                    </label>
+        <div class="controls">
+          <input type="text" name="phone" ng-model="item.phone" placeholder="Phone" style="width:200px" required="required"/>
+          <label ng-show="form.phone.$error.required" class="help-inline required">* </label>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="modal-footer">
+  <button ng-disabled="form.$invalid" type="submit" data-dismiss="modal" ng-click="save()" class="btn btn-primary">Save</button>
+  <button ng-click="close()" class="btn btn-inverse">Cancel</button>
+</div>

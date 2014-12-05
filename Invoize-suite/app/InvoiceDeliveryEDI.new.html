@@ -1,0 +1,44 @@
+
+<div ng-init="getEDITemplate()">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="col-xs-12">
+      <div class="pull-right in-add">
+        <div style="vertical-align: inherit;" class="btn-group">
+          <button data-toggle="dropdown" type="button" tooltip="Configuration Mode" tooltip-placement="left" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-angle-down"></i>&nbsp; Mode</button>
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+            <li>
+              <table>
+                <tbody>
+                  <tr ng-repeat="type in metadataType.profileBase">
+                    <td style="padding:0 10px;">{{type.label}}</td>
+                    <td>
+                      <dynamic-Select name="TypeValue_{{$index}}" ng-model="type.value" ph="{{type.suggestionsSource}}" placeholder="Please Select"></dynamic-Select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12">
+      <div ng-repeat="row1 in metadataType.fields" ng-form="subForm" ng-show="{{row1.isActive}}" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" ng-cloak="ng-cloak" class="col-sm-6 in-wiz-row">
+        <form novalidate="novalidate" name="subForm" class="form-horizontal">
+          <label>{{row1.label}}</label>
+          <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+            <input ng-switch-when="text" ng-if="row1.key!='script'" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+            <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+            <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+            <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+            <dynamic-Select ng-if="row1.key!='translationProfile' &amp;&amp; row1.key!='incomingChannel' &amp;&amp; row1.key!='outgoingChannel'" ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+            <dynamic-Select ng-if="row1.key=='translationProfile' || row1.key=='incomingChannel' || row1.key=='outgoingChannel'" ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" customobj="{&quot;systemId&quot;:&quot;{{$routeParams.systemId}}&quot;}"></dynamic-Select>
+            <input ng-switch-when="text" type="text" ng-required="row1.isMandatory" ng-if="row1.key=='script'" ng-model="row1.value" name="name" id="{{row1.key}}" ng-readonly="{{row1.isReadonly}}" typeahead="suggestion for suggestion in scriptBar($viewValue,row1.suggestionsSource,row1.key)" typeahead-editable="false" toolTip="{{row1.toolTip}}"/>
+            <button ng-show="row1.key=='translationProfile' || row1.key=='incomingChannel' ||row1.key=='outgoingChannel'" toolTip="add {{row1.label}}" ng-click="openDialog(row1.suggestionsSource)" class="command"><i class="fa fa-cog"></i></button>
+            <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+</div>

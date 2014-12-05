@@ -1,0 +1,41 @@
+.modal-dialog.small
+    .modal-content
+        form(name="form",novalidate,autocomplete="off")
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Configure Email
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body
+                .row(ng-init="setData()")
+                    .col-sm-12.col-md-4.col-xs-12
+                        .his-title
+                            i.fa.fa-file-text-o
+                            |   Account
+                            button.pull-right.command.light(toolTip="New Account",ng-click="clear()")
+                                i.fa.fa-plus
+                        ul.his-list.less(style="max-height:153px;")
+                            li(ng-repeat="field in fields")
+                                a(title="{{field.emailID}}",ng-click="getData(field.id)") {{field.emailID}}
+                                    i.fa.fa-chevron-right
+
+
+                    .col-sm-12.col-md-8.col-xs-12
+                        div.in-wiz-row()
+                            label.control-label Email
+                            input(ng-model="configureEmail.emailID", id='txtEmail',type='text')
+                        div.in-wiz-row()
+                            label.control-label Password
+                            input(ng-model="configureEmail.password", id='txtPassword',type='password')
+                        div.in-wiz-row()
+                            label.control-label Host
+                            input(ng-model="configureEmail.host", id='txtHost',type='text')
+                        div.in-wiz-row()
+                            label.control-label Port
+                            input(ng-model="configureEmail.port", id='txtPort',type='text')
+            .modal-footer
+                button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", permission="*.*.*", type="submit", ng-click="saveEmailBoxData()",) Save
+
+
+
+

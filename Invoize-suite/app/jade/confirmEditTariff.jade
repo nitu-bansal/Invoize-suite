@@ -1,0 +1,11 @@
+.modal-dialog(style="width:600px")
+        .modal-content
+                .modal-header
+                        button.close(aria-hidden='true', data-dismiss='modal', type='button',ng-click="close()")     &times;                            
+                        h4.modal-title Confirm
+                .modal-body
+                        .modal-msg
+                                | {{item.msg?item.msg:'Are you sure?'}}
+                .modal-footer                       
+                        button.inz-btn.btn-sm.btn-warning(permission="tariffRepository.editTariff",ng-click="redirectToEditTamplate()") Edit Configuration
+                        button.inz-btn.btn-sm.btn-success(permission="tariffRepository.editTariffLanes",ng-click="redirectToEditTariff()") Edit Tariff Lanes

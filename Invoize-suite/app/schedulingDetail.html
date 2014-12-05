@@ -1,0 +1,29 @@
+
+<div>
+  <label class="label-span">Start date</label>
+  <label class="label-label input-medium margin-4px"> {{data.scheduling.schedulingStartDate}}</label>
+  <label class="label-label input-medium margin-4px">{{data.scheduling.schedulingStartTime}}</label>
+  <div style="clear:both"></div>
+</div>
+<div>
+  <label class="label-span">End On</label>
+  <label class="label-label input-medium margin-4px">{{data.scheduling.schedulingEndOn}}</label><span ng-show="data.scheduling.schedulingEndOn=='ondate'">
+    <label class="label-label input-medium">{{data.scheduling.schedulingEndOnDate}}</label></span>
+  <div style="clear:both"></div>
+</div>
+<div>
+  <label class="label-label input-small">{{data.scheduling.schedulingOn}}</label>
+  <label class="label-span margin-4px">at</label>
+  <label class="label-label input-small margin-4px">{{data.scheduling.schedulingOption}}</label><span ng-show="data.scheduling.schedulingOption=='interval'">
+    <label class="label-label input-small">{{data.scheduling.schedulingIntervalTime}}</label>
+    <label class="label-span margin-4px">hrs</label></span>
+  <div style="clear:both"></div>
+</div>
+<div ng-show="data.scheduling.schedulingOn=='weekly'">
+  <label class="label-label input-medium">{{data.scheduling.schedulingDayList}}</label>
+  <div style="clear:both"></div>
+</div>
+<div ng-show="data.scheduling.schedulingOn=='monthly'">
+  <label class="label-label input-medium">{{data.scheduling.schedulingMonthList}}</label>
+  <div style="clear:both"></div>
+</div>

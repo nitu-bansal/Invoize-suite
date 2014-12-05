@@ -1,0 +1,93 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="in-wiz-row">
+  <div class="input-group"><span class="input-group-addon">Selected Accounts</span>
+    <dynamic-Select multiselect="multiselect" name="accountNumber" ng-model="accountNumber" ph="accountNumber" customobj="{&quot;templateId&quot;:&quot;{{templateData.templateId}}&quot;}" toolTip="Account Number" placeholder="Account Number"></dynamic-Select>
+  </div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" class="in-wiz-row">
+  <div class="input-group"><span class="input-group-addon">Selected Accounts</span>
+    <dynamic-Select multiselect="multiselect" name="accountNumber" ng-model="accountNumber" ph="accountNumber" customobj="{&quot;templateId&quot;:&quot;{{templateData.templateId}}&quot;}" toolTip="Account Number" placeholder="Account Number" change="accountChange()" ng-init="initAccount()"></dynamic-Select>
+  </div>
+</div>
+<div ng-init="init()"></div>
+<div ng-show="accountNum.length&gt;0" style="margin-top:-10px;" class="row">
+  <div class="col-xs-12">
+    <fieldset ng-hide="isInProcess">
+      <div class="widget-box transparent">
+        <div class="doc-block">
+          <div class="title">Upload new document</div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <dialogss>
+              <div class="form-group">
+                <div id="newFiles" ng-controller="FileUploadController" url="/api/tms/upload/file">
+                  <form data-upload-template-id="template-upload-1" method="POST" action="/api/tms/upload/file" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+                    <div bs-tooltip="tooltip.drop" id="drop-area">
+                      <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+                        <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+                      </div>
+                      <div class="drop-instructions">
+                        <mute> Browse and upload multiple files or drag and drop files here</mute>
+                      </div>
+                      <div class="drop-over">Drop files here!</div>
+                    </div>
+                    <div ng-hide="proceedClicked" class="row uploaded">
+                      <div data-ng-repeat="file in queue" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+                      <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </dialogss>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <!--button.inz-btn.btn-sm.btn-success(type="submit",ng-click="proceed()",ng-show="docExist") Proceed-->
+</div>
+<div ng-show="accountNum.length&gt;0" class="row">
+  <div class="col-xs-12">
+    <div class="doc-block">
+      <div class="title">New documents </div>
+    </div>
+    <form novalidate="novalidate" name="tmsForm" class="form-horizontal">
+      <div ng-repeat="r in tariffMain track by $index" id="File{{$index+1}}">
+        <div class="cpanel">
+          <div class="cpanel-heading"><a class="accordion-toggle open"><i class="fa fa-circle"></i>   {{obj.docType}}</a><span class="hdate">  {{obj.timestamp}}</span>
+            <button ng-click="closeObj($index)" toolTip="Close" type="button" class="command pull-right"><i class="icon-remove"></i></button>
+          </div>
+          <div class="cpanel-body">
+            <div class="row">
+              <div class="col-xs-12 doc-block">
+                <ul>
+                  <li><a href="{{$location.host()}}/api/tms/download/file?id={{r.presentDocId.id}}" class="doc-title"><i class="fa fa-paperclip"></i>  {{r.presentDocId.v}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div style="margin-bottom:10px;" class="col-xs-12 doc-block">
+                <div class="title">Document Details</div>
+              </div>
+              <div class="col-xs-12">
+                <div ng-repeat="row1 in r.fields | orderBy:'displayOrder'" ng-form="subForm" ng-show="{{row1.isActive}}" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 in-wiz-row">
+                  <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                    <label class="control-label">{{row1.label}}</label>
+                    <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                      <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                      <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                      <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                      <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                      <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                      <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Profile Configuration ({{profile.docType}})&nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div id="keyHT" ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-show="isKeys" height="400" onBeforeChange="beforeKeyChange" datarows="key in keys" columns="keyColumns" minsparerows="1" contextMenu="false"></div>
+        <div id="fch" ui-handsontable="{rowHeaders: true,fixedColumnsLeft:2, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-hide="isKeys" height="400" onchange="afterChange" datarows="field in profile.fields" columns="columns" manualColumnResize="true" minsparerows="1" contextMenu="false" onBeforeChange="celChange"></div>
+        <div class="space"></div>
+        <div ng-show="dependentFields.length&gt;0">
+          <h5><span class="blue">Dependent Fields for</span><span>: {{selectedField.key}}</span></h5>
+          <table class="inz-table inz-table1">
+            <thead>
+              <th> Field</th>
+              <th> value</th>
+              <th>
+                <button ng-click="dependentFields.push({fieldKey:null,fieldValue:null});" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add field" class="command light"><i class="fa fa-plus green"></i></button>
+              </th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="df in dependentFields">
+                <td>
+                  <dynamic-Select name="field_{{$index}}" customobj="{&quot;docType&quot;:&quot;{{profile.docType}}&quot;,&quot;selected&quot;:&quot;{{selectedFields.join();}}&quot;}" ng-model="df.fieldKey" ph="columns" placeholder="Field Key" change="setSelected()"></dynamic-Select>
+                </td>
+                <td>
+                  <input name="val_{{$index}}" ng-model="df.fieldValue" ph="metadata_globalFields" placeholder="Field Value" type="text" class="input-large"/>
+                </td>
+                <td>
+                  <button ng-click="dependentFields.splice($index,1);" ng-hide="$index==0" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Remove Field" class="command"><i class="fa fa-minus red"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="addKeys($event.currentTarget)" class="inz-btn btn-sm btn-success pull-left">Add Keys</button>
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-class="{'disabled': form.$invalid}" ng-click="updateTemplate()" ng-disabled="form.$invalid" class="inz-btn btn-sm btn-success">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

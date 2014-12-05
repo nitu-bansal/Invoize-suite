@@ -1,0 +1,25 @@
+.row(ng-show="deliveryData.length==0")
+    .in-gs-block
+        .gs-sub-title(ng-hide="showGoBtn") Choose Account & Hit Search&nbsp;
+            i.fa.fa-search
+        .gs-sub-title(ng-show="showGoBtn") No Data available &nbsp;
+            span.help-inline.required(ng-show="form.companyType.$error.required")&nbsp;&nbsp;*
+.row
+    .col-xs-12
+        div.overflow-auto(style="padding:0 2px;")
+            //- , ng-init="getDeliveryData()"
+            table.inz-table.inz-table2(ng-show="deliveryData.length")
+                thead
+                    tr
+                        th
+                            span
+                                input(tooltip="Select All",type='checkbox',ng-click="checkAll($event)")
+                        th(ng-repeat="val in deliveryData[0]",ng-show="$index >2")
+                            span.trim-info-large(tooltip="{{val |toHumanReadable}}") {{val | toHumanReadable}}
+                tbody(ng-repeat="row in deliveryData",ng-show="$index > 0")
+                    tr(ng-click="isRowCollapsed[$index]=!isRowCollapsed[$index]",style="cursor: pointer;")
+                        td(ng-repeat="col in row track by $index",ng-show="$index==0")
+                            input(name="chk_{{$parent.$index}}",type='checkbox',ng-click="updateSelection($event,row[1],row[2],$parent.$index)")
+                        td(ng-repeat="col in row track by $index",ng-show="$index>2")
+                            span.trim-info-large(tooltip="{{col}}") {{col}}
+            pagination(id="",ng-hide="deliveryData.length==0",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

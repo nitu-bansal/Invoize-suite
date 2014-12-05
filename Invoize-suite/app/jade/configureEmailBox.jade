@@ -1,0 +1,20 @@
+
+.in-wiz-row()
+    label.control-label Email
+    input(ng-model="configureEmail.email", id='txtEmail',type='text')
+
+.in-wiz-row()
+    label.control-label Password
+    input(ng-model="configureEmail.password", id='txtPassword',type='text')
+
+.in-wiz-row()
+    label.control-label Host
+    input(ng-model="configureEmail.host", id='txtHost',type='text')
+
+.in-wiz-row()
+    label.control-label Port
+    input(ng-model="configureEmail.port", id='txtPort',type='text')
+
+.in-wiz-row()
+    button(ng-click='toggleConfigureEmailBox()') Cancel
+    button.inz-btn.btn-sm.btn-success(permission="*.*.*",  ng-disabled="form.$invalid", type="submit", ng-click="saveEmailBoxData()",) Save

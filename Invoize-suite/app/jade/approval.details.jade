@@ -1,0 +1,117 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width,ng-init="clear();editApproval();")
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Approval
+        .pull-right
+            a.inz-btn.btn-sm.btn-default( ng-href="/#/organizationSetup/approval/view") Back
+            
+div(style="clear:both;")
+div(ng-form="form")
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Basic Information
+            .cpanel-body
+                .row
+                    .col-md-4.col-sm-6.col-xs-12
+                        label.blue Name &nbsp;
+                        br
+                        input.input-large(required,type="text",name="name", placeholder="Name",ng-model="field.name",ng-readonly="true")
+                    .col-md-8.col-sm-6.col-xs-12
+                        label.iz-switch.line52
+                            input.ace.ace-switch-8(name='isField',ng-model="field.active", type='checkbox',ng-true-value="Yes", ng-false-value="No",ng-disabled="true")
+                            span.lbl
+                .row
+                    .col-md-4.col-sm-6.col-xs-12
+                        label.blue Select Module &nbsp;
+                        //- span.red(ng-show="form.moduleName.$error.required") *
+                        //- span.green.validTick(ng-show="form.moduleName.$valid") &#10004;
+                        br
+                        //- dynamic-Select.input-large1(name='moduleName',customobj='',ng-model="field.module",ph="metadata_workFlowModes",data-placeholder="Module",change="fieldKeyChanged($index,field)",required)
+                        | Tariff
+
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label.blue Select Accounts &nbsp;
+                        br
+                        dynamic-Select.input-large1(multiselect,name='accounts',customobj='{"type":"accounts"}',ng-model="field.accounts",ph="account",data-placeholder="Accounts",required,change="accountSelection()",ng-readonly="true")
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label.blue Select Trigger Event &nbsp;
+                        br
+                        dynamic-Select.input-large1(multiselect,name='actions',customobj='',ng-model="field.actions",ph="metadata_workFlowActions",data-placeholder="Trigger Event",ng-readonly="true")
+
+
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Condition for the Approval Hirarchy
+            .cpanel-body
+                .row
+                    .ds-tree
+                        .row(ng-repeat="row in field.rulesCondition")
+                            div(style="clear:both;height:10px;")
+                            .col-md-4.col-sm-6.col-xs-12
+                                div.input-group
+                                    span.input-group-addon Field
+                                    //- dynamic-Select.input-large1(name='ruleTagName_{{$index}}',customobj='{"mode":"{{field.module[0].n}}"}',ng-model="row.tagName",ph="workFlowRuleKey",data-placeholder="Tag Name",required)
+                                    dynamic-Select.input-large1(name='ruleTagName_{{$index}}',customobj='{"mode":"Tariff"}',ng-model="row.tagName",ph="workFlowRuleKey",data-placeholder="Tag Name",ng-readonly="true")
+                                   
+                            .col-md-4.col-sm-6.col-xs-12
+                                div.input-group
+                                    dynamic-Select.input-large1(name='ruleOperator_{{$index}}',customobj='',ng-model="row.operator",ph="workFlowOperator",data-placeholder="Operator",ng-readonly="true")
+                                    span.red(ng-show="form.ruleOperator_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleOperator_{{$index}}.$valid") &#10004;
+                            .col-md-4.col-sm-6.col-xs-12
+                                .controls(ng-if="row.operator[0].n!='Equal To'")
+                                    input.input-medium(required,type="text",name="ruleTagVal_{{$index}}", placeholder="Tag Value",ng-model="row.tagVal",ng-readonly="true")
+                                    span.red(ng-show="form.ruleTagVal_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleTagVal_{{$index}}.$valid") &#10004;
+                                .controls(ng-if="row.operator[0].n=='Equal To'")
+                                    dynamic-Select.input-medium(name='ruleTagVal_{{$index}}',customobj='{"column":"{{row.tagName[0].v.indexOf("|") == -1 ? "" : row.tagName[0].v.split("|")[1]}}"}',ng-model="row.tagVal",ph="{{row.tagName[0].v.indexOf('|') == -1 ? row.tagName[0].v : row.tagName[0].v.split('|')[0]}} ",data-placeholder="Tag Value",ng-readonly="true")
+                                    span.red(ng-show="form.ruleTagVal_{{$index}}.$error.required") *
+                                    span.green.validTick(ng-show="form.ruleTagVal_{{$index}}.$valid") &#10004;
+                                
+
+    .col-md-12.col-xs-12.col-sm-12
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                a.accordion-toggle
+                    span.ico-container
+                        i.fa.fa-tag.white
+                    | &nbsp;
+                    span.label.white( toolTip="Information") Action for the Approval Hirarchy
+            .cpanel-body
+                div.div-tree(ng-repeat="uh in field.workFlow")
+                    .row
+                        .pull-left
+                            label.toggle-custom(tooltip="All or Any")
+                                input(name='isField',ng-model="uh.condition", type='checkbox',ng-true-value="+", ng-false-value="*",ng-disabled="true")
+                                span(data-unchecked="Any",data-checked="All")
+                            //label.iz-switch
+                            //    input.ace.ace-switch.all(name='isField',ng-model="uh.condition", type='checkbox',ng-true-value="+", ng-false-value="*",ng-disabled="true")
+                            //    span.lbl
+                            //div.inz-chk
+                            //
+                            //    input(type="checkbox",class="btn-opt",ng-model="uh.isAllUsers",name='isField',ng-true-value="'All'", ng-false-value="'Any'",ng-model="chk",checked="")
+                            //    label.btn-opt-lbl
+                            span.span-check Level {{$index + 1}}
+                                //label.iz-switch
+                            //    input.ace.ace-switch(name='isField',ng-model="uh.isAllUsers", type='checkbox')
+                            //    span.lbl
+                        .pull-right
+                        
+                        div(style="clear:both;height:3px;")
+                        .col-md-4.col-sm-6.col-xs-12
+                            dynamic-Select.input-xxlarge(multiselect,name='users',customobj='',ng-model="uh.users",ph="user",data-placeholder="Select User",ng-readonly="true")
+                                //button.btn-sm.btn-custom(ng-click="userHirarchy.push({isAllUsers:false,users:null})") Add Level
+                
+

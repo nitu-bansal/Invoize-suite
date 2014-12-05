@@ -1,0 +1,44 @@
+//- //Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+//- include common_top_row
+//- .container-fluid(id="main-container")
+//-         a(id="menu-toggler",href="#")
+//-                 span
+//-         div.fixed(id="sidebar")
+//-                 div(id="sidebar-shortcuts")
+//-                         div(id="sidebar-shortcuts-large")
+//-                                 a.btn.btn-small.btn-success(data-placement="right",permission="createProfile.*.*",ng-disabled="$state.includes('profile.new')",href="#/profile/new",bs-tooltip="tooltip.new") 
+//-                                         i.icon-plus                                
+//-                                 btn.pull-left
+//-                                         h5 &nbsp; Profiles 
+//-                         div(id="sidebar-shortcuts-mini")
+//-                                 span.btn.btn-success
+//-                                 span.btn.btn-info
+//-                                 span.btn.btn-warning
+//-                                 span.btn.btn-danger     
+                
+//-                 div(id="sidebar-collapse")
+//-                         i.icon-double-angle-left 
+//-                 div(id="sidebar-shortcuts")
+//-                         div(id="sidebar-shortcuts-large")
+//-                                 span.input-icon
+//-                                         input.input-medium(id="nav-search-input",type="text",ng-change="searchProfile()", placeholder="Search ...",ng-model="search", autocomplete="off")
+//-                                         i.icon-spinner.icon-spin.blue.icon-large(ng-show="profileListLoader")
+//-                                         i.icon-search.icon-large(id="nav-search-icon",ng-hide="profileListLoader")
+//-                         div(id="sidebar-shortcuts-mini")
+//-                                 i.icon-search.blue.icon-large  
+//-                 ul.nav.nav-list(id='fixed-rate',when-scrolled="loadMore()")  
+//-                         li(ng-class="{ active: $stateParams.profileId == l.id}", ng-repeat="l in profileList")
+//-                                  a(data-toggle="tab",ng-click="read(l.id)", data-toggle="tab", href="#/profile/{{l.id}}")
+//-                                         i.icon-blank {{l.v|firstLetter}}
+//-                                         span.trim-info-large {{l.v|toHumanReadable}}                 
+//-         .clearfix(id="main-content")
+//-                 div.fixed(id="breadcrumbs")
+//-                         ul.breadcrumb
+//-                                 li
+//-                                         i.icon-home
+//-                                         a Administrator
+//-                                         span.divider
+//-                                                 i.icon-angle-right
+//-                                 li.active Profile                         
+.row-fluid(ui-view="list")                      
+

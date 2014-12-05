@@ -1,0 +1,48 @@
+body{}
+#content > h1{font-weight: 300; color:#F46728; padding: 0 20px; }
+
+div.orgChart{background: #F6F6F6; border: none;}
+/*div.orgChart h2{font-family: tahoma, arial}*/
+
+div.orgChart div.node {border: 1px solid #DDDDDD;box-shadow: none; border-radius:4px; max-width: 170px; min-height: 40px; height: auto; width: auto; padding:10px; white-space: nowrap; color: #666666; box-shadow: 0 3px 4px -4px rgba(0,0,0,0.2)}
+div.orgChart div.hasChildren {  background-color: #FFFFFF;}
+div.orgChart div.node { background-color: #FFFFFF;}
+.line{ max-width: 150px;  overflow: hidden;  text-overflow: ellipsis; line-height: 150%; white-space: nowrap; text-align: left; color: #888888}
+.com{color: #444444;font-size: 15px; padding: 0 }
+
+
+
+div.orgChart tr.lines td.left {
+    border-right: 2px solid #CCCCCC;
+}
+
+div.orgChart tr.lines td.top {
+    border-top: 2px solid #CCCCCC;
+}
+
+div.orgChart tr.lines td.right {
+    border-left: 2px solid #CCCCCC;
+}
+
+.popover-content { max-height: 200px;overflow: auto; padding: 9px 25px 9px 14px;}
+.pop-line{white-space: nowrap;  color:#4285F4   }
+.pop-des{border-bottom: 1px solid #DDDDDD; margin-bottom: 5px;font-size: 11px; margin-left: 5px;}
+.pop-sys:last-child > .pop-des{border-bottom: none;}
+.pop-des > div{white-space: nowrap; cursor: default; color: #666}
+
+
+
+.legends{float: left; border: 1px solid #ddd; padding: 5px 0; font-size: 13px; color: #888888; font-weight: 400;margin-bottom: 15px;}
+    .legends > .title{   color: #000000;   font-size: 18px;   font-weight: 300;    line-height: 30px;   padding: 0 10px;}
+    .leg{padding: 0 10px; border-right: 1px solid #AAAAAA; float: left;line-height: 22px;}
+    .leg:last-child{border: none;}
+
+.btn-pop {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    color: #444444;
+    font-size: 13px;
+    line-height: 17px;
+    padding: 0 5px;
+}

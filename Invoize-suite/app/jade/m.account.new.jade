@@ -1,0 +1,87 @@
+//- .modal.hide.fade     
+//- .modal-header
+//-         h3 New Role           
+//- .modal-body
+//-         form.form-horizontal(novalidate, name="form")       
+//-                  fieldset                       
+//-                         .control-group
+//-                                 label.control-label Account Name
+//-                                         .controls
+//-                                                  b {{item.accountName}}                                                                        
+                                        
+//-                         .control-group
+//-                                 label.control-label Owning Station                                    
+//-                                     .controls
+//-                                         input(type="text", name="station", ng-model="item.station", placeholder="Owning Station",style="width:200px", required)
+//-                                         label.help-inline.required(ng-show="form.station.$error.required") *                                  
+//-                                          label
+//-                                                 b {{item.station}}
+
+//-                         .control-group
+//-                                 label.control-label Account Type
+//-                                 .controls
+//-                                          .controls
+//-                                                 select(ui-select2, name="accountType", ng-model="item.accountType", data-placeholder="Account Type", style="width:220px", required)
+//-                                                         option(value="")
+//-                                                         option(value="International") International
+//-                                                         option(value="Domestic") Domestic
+//-                                                 label.help-inline.required(ng-show="form.accountType.$error.required") *
+//-                         .control-group
+//-                                 label.control-label Contact Person                                    
+//-                                     .controls
+//-                                         input(type="text", name="contactPerson", ng-model="item.contactPerson", placeholder="Contact Person",style="width:200px", required)
+//-                                         label.help-inline.required(ng-show="form.contactPerson.$error.required") *                                  
+//-                                          label
+//-                                                 b {{item.contactPerson}}
+//- .modal-footer
+//-         button.btn.btn-primary(ng-disabled="form.$invalid", type="submit", data-dismiss="modal",ng-click="save()") Save
+//-         button.btn.btn-inverse(ng-click="close()") Cancel
+
+
+.modal.hide(id="modal-form", tabindex="-1",aria-hidden="true",style="display: none;")
+.modal-header
+        button.close(type="button",data-dismiss="modal",ng-click="close()")×
+        h4.blue.bigger Account        
+
+.modal-body.overflow-visible          
+        form.form-horizontal(novalidate, name="form")       
+                fieldset                       
+                        .control-group
+                                label.control-label Account Name
+                                .controls
+                                         b {{item.accountName}}                                                                        
+                                        
+                        .control-group
+                                label.control-label Owning Station                                    
+                                .controls
+                                        input(type="text", name="station", ng-model="item.station", placeholder="Owning Station",style="width:200px", required)
+                                        label.help-inline.required(ng-show="form.station.$error.required") *  
+                        .control-group
+                                label.control-label Account Type                              
+                                .controls
+                                        select.input-large(ui-select2, name="accountType", ng-model="item.accountType", data-placeholder="Account Type", required)
+                                                option(value="")
+                                                option(value="International") International
+                                                option(value="Domestic") Domestic
+                                                option(value="Domestic") Other
+                                        label.help-inline.required(ng-show="form.accountType.$error.required") *
+                        h3.header.smaller.lighter.blue                                  
+                                                |Contact       
+                                .control-group
+                                        label.control-label Name                                    
+                                        .controls
+                                                input(type="text", name="user", ng-model="item.user", placeholder="Contact Person",style="width:200px", required)
+                                                label.help-inline.required(ng-show="form.user.$error.required") * 
+                                .control-group
+                                        label.control-label Email                                    
+                                        .controls
+                                                input(type="text", name="email", ng-model="item.email", placeholder="Email",style="width:200px", required)
+                                                label.help-inline.required(ng-show="form.email.$error.required") * 
+                                .control-group
+                                        label.control-label Phone                                    
+                                        .controls
+                                                input(type="text", name="phone", ng-model="item.phone", placeholder="Phone",style="width:200px", required)
+                                                label.help-inline.required(ng-show="form.phone.$error.required") * 
+.modal-footer
+        button.btn.btn-primary(ng-disabled="form.$invalid", type="submit", data-dismiss="modal",ng-click="save()") Save
+        button.btn.btn-inverse(ng-click="close()") Cancel

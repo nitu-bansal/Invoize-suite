@@ -1,0 +1,114 @@
+
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Work Allocation</div>
+    </div>
+    <div class="pull-right">
+      <div class="btn-group nowrap">
+        <button type="button" name="reset" ng-click="reset(true)" toolTip="Reset all" tooltip-placement="left" class="inz-btn btn-default btn-ico">Reset &nbsp<i class="fa fa-refresh"></i></button>
+        <button permission="workAllocation.editRuleWorkAllocation" type="button" ng-disabled="rulForm2.$invalid" ng-class="{'disabled': rulForm2.$invalid}" id="newRule" name="ruleGroup" ng-click="save()" toolTip="Save &amp; Proceed to Next Rule" tooltip-placement="bottom" style="color:#FFF;" class="inz-btn btn-success btn-ico">Save & proceed &nbsp<i class="fa fa-forward"></i>
+          <input id="createRul" type="radio" name="ruleGroup" class="hide"/>
+        </button>
+      </div>
+      <!--button.inz-btn.btn-sm.inz-btn.btn-default.btn-ico(toolTip="View all available rules", type='file', ng-click='showAll=!showAll;listRules()',ng-init="showAll=false")-->
+      <!--    i.fa.fa-eye-->
+      <!--    input#createRul(type='radio',name='ruleGroup',class='hide')-->
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:40px;"></div>
+<form name="rulForm" novalidate="novalidate">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="ds-tree">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <label>For</label><span ng-show="rulForm.stream.$error.required" class="red">&nbsp *</span><br/>
+          <select ui-select2="ui-select2" ng-required="true" name="stream" ng-model="rule.stream" ng-change="listRules();" data-placeholder="Select Stream" class="input-large">
+            <option value="">Select</option>
+            <option ng-repeat="stream in streams" value="{{stream.id}}">{{stream.n}}</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <label>Source</label><span ng-show="rulForm.source.$error.required" class="red">&nbsp *</span><br/>
+          <select ui-select2="ui-select2" name="source" ng-change="getFields();listRules()" ng-model="rule.source" ng-options="report.details.displayName for report in reports" required="required" class="input-large">
+            <option value="">Select</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <label>Trigger</label><br/>
+          <select ui-select2="ui-select2" name="triggerPoint" ng-model="rule.triggerPoint" data-placeholder="Trigger Point" ng-init="rule.triggerPoint='now'" ng-change="listRules()" class="input-large">
+            <option value="now">Now</option>
+            <option value="onReportUpload">On Report Upload</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div style="clear:both;"></div>
+<div class="col-md-4 col-sm-12 col-xs-12">
+  <div class="ds-tree">
+    <div class="row">
+      <div class="col-md-12 col-xs-12 col-sm-12">
+        <div style="background:#EEEEEE; padding:6px 0; text-align:center; border:1px solid #ddd;">Available Rules<a permission="workAllocation.createRuleWorkAllocation" type="button" id="newRule" name="ruleGroup" ng-click="reset()" toolTip="Create Rule " tooltip-placement="left" style="cursor:pointer;margin-right:10px;" class="pull-right"><i class="fa fa-plus green"></i></a></div>
+        <div style="margin:15px 0;" ng-show="rules.length==0" class="center">
+          <label style="font-size:16px;text-align:center;color:#F46728;">No rule to display :(</label>
+        </div>
+        <ul ng-show="rules.length&gt;0" class="item-list">
+          <li ng-repeat="r in rules" ng-class="{'active-list':rule.id == r.id}" ng-click="setRule(r)" class="item-orange border-list">{{r.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12">
+  <form name="rulForm2" novalidate="novalidate">
+    <div class="ds-tree">
+      <div class="row">
+        <div class="col-sm-12 col-xs-12 col-md-12">
+          <div class="input-group non-valid form-section"><span class="input-group-addon">Rule Name</span>
+            <input type="text" ng-required="true" name="rulNam" ng-model="rule.name" style="width:100%;padding:6px;"/>
+          </div>
+        </div>
+        <div style="clear:both;height:20px;"></div>
+        <div class="col-sm-6 col-md-6 col-xs-12">
+          <div class="input-group non-valid form-section"><span toolTip="Effective Date" class="input-group-addon"><i class="icon-calendar bigger-110"></i></span>
+            <input datepicker-popup="{{format}}" name="effectiveDate" datepicker-options="dateOptions" type="text" ng-model="rule.effectiveDate" ng-required="true" close-text="Close" placeholder="Effective Date" ng-change="setMinData(rule.effectiveDate)" class="input-medium"/>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-xs-12">
+          <div class="input-group non-valid form-section"><span toolTip="Expiry Date" class="input-group-addon"><i class="icon-calendar bigger-110"></i></span>
+            <input datepicker-popup="{{format}}" name="expiryDate" datepicker-options="dateOptions" type="text" min="minDate" ng-model="rule.expiryDate" ng-required="true" close-text="Close" placeholder="Expiry Date" class="input-medium"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="rules" class="row">
+      <div class="row">
+        <div rules="rules" style="height:auto !important;" class="ds-tree"></div>
+      </div>
+    </div>
+    <div style="clear:both;"></div>
+    <div style="height:auto !important;" class="ds-tree">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-xs-12">
+          <div style="height:26px;" class="input-group"><span class="input-group-addon">Team Members</span>
+            <button type="button" name="allUser" ng-click="distribute()" toolTip="Distribute to all users equally" class="btn-warning"><i class="fa fa-random"></i></button>
+          </div>
+        </div>
+        <div style="clear:both;height:10px;"></div>
+        <div class="col-sm-12 col-md-12 col-xs-12"><span ng-repeat="aw in rule.allocated" ng-form="subForm">
+            <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+              <select id="user_{{$index}}" ui-select2="ui-select2" ng-required="true" name="user" ng-change="checkDuplicate(aw,$index)" ng-model="aw.user" data-placeholder="Choose Team Member" style="padding-top:0 !important;height:auto !important" class="input-large text-left">
+                <option value=""></option>
+                <option ng-repeat="user in users" value="{{user.id}}">{{user.n}}</option>
+              </select>
+              <input type="text" ng-model="aw.work" ng-blur="setValue(aw)" maxlength="3" size="3"/><strong>&nbsp %</strong><span ng-show="subForm.user.$error.required" style="padding:0 5px;" toolTip="Team Member Required" class="red">&nbsp *</span>
+              <button ng-if="$index!=0 &amp;&amp; $index==rule.allocated.length-1" ng-click="removeUser($index)" toolTip="Remove User" class="inz-btn2 btn-cross btn-ico"><i class="fa fa-trash-o"></i></button><br/>
+            </div></span></div>
+      </div>
+    </div>
+    <div style="clear:both;height:240px;"></div>
+  </form>
+</div>

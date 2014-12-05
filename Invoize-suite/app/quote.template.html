@@ -1,0 +1,180 @@
+
+<div class="offset1 col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>
+      <h4 class="header green clearfix">New Quote Definition</h4>
+      <div class="row">
+        <div class="pull-right"><a ng-hide="quoteDefnCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-sm"><i class="icon-mail-reply icon-large"></i></a>
+          <button ng-hide="quoteDefnCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="createQuoteDefn(quoteDefn,$routeParams.accountId,workflow,quoteEmail)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary btn-sm"><i class="icon-ok icon-large"></i></button><i ng-show="quoteDefnCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+      </div>
+      <tabset>
+        <tab heading="Profile" class="tab">
+          <div class="form-group">
+            <label class="control-label">Name </label>
+            <div class="controls">
+              <input type="text" name="name" ng-model="quoteDefn.name" placeholder="Name" required="required"/>
+              <label ng-show="form.name.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.name.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Group</label>
+            <div class="controls">
+              <select ui-select2="ui-select2" multiple="true" name="group" ng-model="quoteDefn.group" required="required" data-placeholder="Please select..." class="input-xxlarge">
+                <option ng-repeat="field in quoteDefnGroup" value="{{field.n}}">{{field.n}}</option>
+              </select>
+              <label ng-show="form.group.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.group.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Sequence</label>
+            <div class="controls">
+              <input type="text" name="sequence" ng-model="quoteDefn.sequence" placeholder="Sequence" required="required"/>
+              <label ng-show="form.sequence.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.sequence.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Sequence Format</label>
+            <div class="controls">
+              <input type="text" name="sequenceFormat" ng-model="quoteDefn.sequenceFormat" placeholder="Sequence Format" required="required"/>
+              <label ng-show="form.sequenceFormat.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.sequenceFormat.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">                       
+            <label class="control-label">Charge Type                                </label>
+            <div class="controls">
+              <input ui-select2="chargeTypeBar" multiple="true" name="chargeType" ng-model="quoteDefn.chargeType" style="width:200px" required="required"/>
+              <label ng-show="form.chargeType.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.chargeType.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Lane Parameters</label>
+            <div class="controls">
+              <input ui-select2="laneParameterBar" multiple="true" name="laneParam" ng-model="quoteDefn.laneParam" required="required" data-placeholder="Please select..." style="width:200px"/>
+              <label ng-show="form.laneParam.$error.required" class="help-inline required">* </label>
+              <label ng-show="form.laneParam.$valid" class="help-inline required validTick">&#10004;                               </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Effective Base</label>
+            <div class="controls">
+              <select ui-select2="{'closeOnSelect':false}" name="effectiveBase" ng-model="quoteDefn.effectiveBase" required="required" data-placeholder="Please select..." class="input-xxlarge">
+                <option value=""></option>
+                <option ng-repeat="field in quoteDefnEffectiveBase" value="{{field.n}}">{{field.n}}</option>
+              </select>
+              <label ng-show="form.effectiveBase.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.effectiveBase.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Description</label>
+            <div class="controls">
+              <textarea rows="3" name="description" ng-model="quoteDefn.description" placeholder="Short Description">                                       </textarea>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Workflow" style="overflow:hidden" class="tab">
+          <div class="form-group">
+            <label class="control-label">Workflow Definition</label>
+          </div>
+          <ng-form name="WorkflowDefinitionsForm" ng-repeat="row in workflowDefinitions">
+            <div class="form-group">
+              <label class="control-label"><span class="label label-large label-info arrowed-in">Level {{$index + 1}}</span><br/><span ng-show="workflow.definition[$index].length &gt; 1" id="workflowLevel{{$index}}">
+                  <div style="cursor: pointer;" onclick="toggle(this,{{$index}})" count="*" class="label label-success help-inline">All</div>
+                  <div ng-repeat="r in workflow.definition[$index] | limitTo:workflow.definition[$index].length-1" style="cursor: pointer;display: none;" onclick="toggle(this,{{$parent.$index}})" count="{{$index+1}}" class="label label-success help-inline">Any {{$index + 1}}</div></span></label>
+              <input ui-select2="userGroupBar" name="workflowDefinition" ng-click="workflowDefinitionsCallback($index)" ng-model="workflow.definition[$index]" id="workflowId{{$index+1}}" select-validate="select-validate" required="required" class="input-xxlarge"/>
+              <div class="help-inline"><a ng-hide="workflowDefinitions.length == 1" ng-click="removeFromWorkflowDefinitions($index)" class="close">&times;</a></div>
+              <label ng-show="WorkflowDefinitionsForm.workflowDefinition.$error.selectvalidate || WorkflowDefinitionsForm.workflowDefinition.$error.required" class="help-inline required">*</label>
+              <label ng-show="WorkflowDefinitionsForm.workflowDefinition.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </ng-form>
+        </tab>
+        <tab heading="Email" style="overflow:hidden" class="tab">
+          <div class="form-group">
+            <label class="control-label">To</label>
+            <div class="controls">
+              <input ui-select2="userBar" name="toUserBar" ng-model="quoteEmail.to" select-validate="select-validate" required="required" class="col-md-9"/>
+              <label ng-show="form.toUserBar.$error.selectvalidate || form.toUserBar.$error.required" class="help-inline required"> &nbsp;*</label>
+              <label ng-show="form.toUserBar.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Cc</label>
+            <div class="controls">
+              <input ui-select2="userBar" name="ccUserBar" ng-model="quoteEmail.cc" select-validate="select-validate" required="required" class="col-md-9"/>
+              <label ng-show="form.ccUserBar.$error.selectvalidate || form.ccUserBar.$error.required" class="help-inline required"> &nbsp;*</label>
+              <label ng-show="form.ccUserBar.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Subject</label>
+            <div class="controls">
+              <input type="text" name="Subject" ng-model="quoteEmail.subject" placeholder="Subject" required="required"/>
+              <label ng-show="form.Subject.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.Subject.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Signature</label>
+            <div class="controls">
+              <textarea rows="3" name="Signature" ng-model="quoteEmail.signature" placeholder="Signature" required="required"></textarea>
+              <label ng-show="form.Signature.$error.required" class="help-inline required">*</label>
+              <label ng-show="form.Signature.$valid" class="help-inline required validTick">&#10004;</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Message</label>
+            <div class="controls">
+              <textarea rows="3" name="Message" style="display:none" ng-model="quoteEmail.message" required="required"></textarea>
+              <div class="widget-box">
+                <div centerdata-target="#editor" id="editor-toolbar-1" class="wysiwyg-toolbar wysiwyg-style3 btn-toolbar">
+                  <div class="btn-group"><a title="" data-toggle="dropdown" data-original-title="Font" class="btn btn-sm dropdown-toggle"><i class="icon-font"></i><i class="icon-angle-down icon-on-right"></i></a>
+                    <ul class="dropdown-menu dropdown-light">
+                      <li> <a style="font-family:'Arial'" data-edit="fontName Arial">Arial</a></li>
+                      <li><a style="font-family:'Courier'" data-edit="fontName Courier">Courier</a></li>
+                      <li><a style="font-family:'Comic Sans MS'" data-edit="fontName Comic Sans MS">Comic Sans MS</a></li>
+                      <li><a style="font-family:'Helvetica'" data-edit="fontName Helvetica">Helvetica</a></li>
+                      <li><a style="font-family:'Open Sans'" data-edit="fontName Open Sans">Open Sans</a></li>
+                      <li><a style="font-family:'Tahoma'" data-edit="fontName Tahoma">Tahoma</a></li>
+                      <li><a style="font-family:'Verdana'" data-edit="fontName Verdana">Verdana</a></li>
+                    </ul>
+                  </div>
+                  <div class="btn-group"><a title="" data-toggle="dropdown" data-original-title="Font Size" class="btn btn-sm dropdown-toggle"><i class="icon-text-height"></i>&nbsp;<i class="icon-angle-down icon-on-right"></i></a>
+                    <ul class="dropdown-menu dropdown-light">
+                      <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                      <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                      <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                    </ul>
+                  </div>
+                  <div class="btn-group"><a data-original-title="Bold (Ctrl/Cmd+B)" data-edit="bold" title="" class="btn btn-sm btn-info"><i class="icon-bold"></i></a><a data-original-title="Italic (Ctrl/Cmd+I)" data-edit="italic" title="" class="btn btn-sm btn-info"><i class="icon-italic"></i></a><a data-original-title="Strikethrough" data-edit="strikethrough" title="" class="btn btn-sm btn-info"><i class="icon-strikethrough"></i></a><a data-original-title="Underline (Ctrl/Cmd+U)" data-edit="underline" title="" class="btn btn-sm btn-info"><i class="icon-underline"></i></a></div>
+                  <div class="btn-group"><a data-original-title="Bullet list" data-edit="insertunorderedlist" title="" class="btn btn-sm btn-success"><i class="icon-list-ul"></i></a><a data-original-title="Number list" data-edit="insertorderedlist" title="" class="btn btn-sm btn-success"><i class="icon-list-ol"></i></a><a data-original-title="Reduce indent (Shift+Tab)" data-edit="outdent" title="" class="btn btn-sm btn-purple"><i class="icon-indent-left"></i></a><a data-original-title="Indent (Tab)" data-edit="indent" title="" class="btn btn-sm btn-purple"><i class="icon-indent-right"></i></a></div>
+                  <div class="btn-group"><a data-original-title="Align Left (Ctrl/Cmd+L)" data-edit="justifyleft" title="" class="btn btn-sm btn-primary active"><i class="icon-align-left"></i></a><a data-original-title="Center (Ctrl/Cmd+E)" data-edit="justifycenter" title="" class="btn btn-sm btn-primary"><i class="icon-align-center"></i></a><a data-original-title="Align Right (Ctrl/Cmd+R)" data-edit="justifyright" title="" class="btn btn-sm btn-primary"><i class="icon-align-right"></i></a><a data-original-title="Justify (Ctrl/Cmd+J)" data-edit="justifyfull" title="" class="btn btn-sm btn-inverse"><i class="icon-align-justify"></i></a></div>
+                  <div class="btn-group"><a id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)" title="" class="btn btn-sm btn-success"><i class="icon-picture"></i></a>
+                    <input data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" type="file"/>
+                  </div>
+                  <div class="btn-group"><a title="" data-edit="undo" data-original-title="Undo (Ctrl/Cmd+Z)" class="btn btn-sm btn-grey"><i class="icon-undo"></i></a><a title="" data-edit="redo" data-original-title="Redo (Ctrl/Cmd+Y)" class="btn btn-sm btn-grey"><i class="icon-repeat"></i></a></div>
+                  <div class="btn-group">
+                    <input type="text" x-webkit-speech="" id="voiceBtn" data-edit="inserttext" style="display: none;" class="wysiwyg-speech-input"/>
+                  </div>
+                </div>
+                <div id="editor1" ng-model="quoteEmail.message" contenteditable="true" required="required" class="wysiwyg-editor"></div>
+                <label ng-show="form.Message.$error.required" class="help-inline required">*</label>
+                <label ng-show="form.Message.$valid" class="help-inline required validTick">&#10004;                                                                </label>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Template" class="tab">
+          <div class="form-group">                                           
+            <iframe id="ifrm" style="height:530px; border:none" src="/api/read/quoteHtml?quoteId=51e7c1ac1c80a8219c4a4840&amp;editFlag=1" class="col-md-12"></iframe>
+          </div>
+        </tab>
+      </tabset>
+    </fieldset>
+  </form>
+</div>

@@ -1,0 +1,7 @@
+.control-group(ng-repeat="row1 in system.fields")
+        ng-form(name="selectionForm")
+                label.control-label {{row1.label}}
+                .controls                                                                                                                                                
+                        //-input.input(type="text", name="{{row1.key}}", ng-model="row1.value")
+                        label : {{row1.value }}
+button.btn.btn-primary(type="submit",ng-click="backToView()") Back

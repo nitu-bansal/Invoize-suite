@@ -1,0 +1,47 @@
+
+<!--Created by kamalsingh.saini on 13/12/13.-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Add/Modify Invoice &nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body"><a ng-click="editTemplate();" href="javascript:void(0)" class="pull-right"><span class="in-add-sign">+</span><span class="in-add-txt">Edit Profile</span></a>
+        <div>
+          <div class="row">
+            <div class="col-xs-10 in-title">Clone Invoice Rules</div>
+            <div class="col-xs-10">
+              <div class="in-wiz-row">
+                <label class="control-label">Clone from Account No.:</label>
+                <div class="controls">
+                  <dynamic-Select name="name" ng-model="clone.accountid" ph="accountNumber" customobj="{&quot;templateId&quot;:&quot;{{$routeParams.templateId}}&quot;}" toolTip="Account Number" placeholder="Account Number"></dynamic-Select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 in-title">Create Invoice Rules : {{accountNos.toString()}}</div>
+            <div class="col-xs-12">
+              <div ng-repeat="item in invoiceProfile.fields" ng-form="subForm" ng-show="{{item.isActive}}" ng-switch="{{item.isActive}}" class="in-wiz-row col-md-6 row">
+                <label class="control-label">{{item.label}}</label>
+                <div ng-switch-when="true" ng-switch="item.type" class="controls">
+                  <input ng-switch-when="text" id="{{item.key}}" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <input ng-switch-when="date" id="{{item.key}}" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <input ng-switch-when="numeric" id="{{item.key}}" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <dynamic-Select ng-switch-when="multiselect" id="{{item.key}}" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+                  <dynamic-Select ng-switch-when="dropdown" id="{{item.key}}" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+                  <textarea ng-switch-when="multiline" id="{{item.key}}" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green">&#10004;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-class="{'disabled': form.$invalid }" ng-click="update()" ng-disabled="form.$invalid" class="inz-btn btn-sm btn-success">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

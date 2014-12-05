@@ -1,0 +1,70 @@
+
+<div set-width="set-width" style="background:#eee;padding-right: 20px;" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">Add new Teriff</div><i ng-show="Loader" class="icon-spinner icon-spin blue icon-large"></i>
+  </div>
+</div>
+<div class="row">
+  <div style="padding-top: 70px;" class="col-xs-12"></div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a ng-click="isOpen = !isOpen" ng-class="{ open: isOpen}" class="accordion-toggle"><span class="ico-container"><i class="fa fa-crosshairs"></i></span>&nbsp;<span toolTip="Identifiers" class="label">Identifiers :</span></a>
+        <!-- span.hdate  Created : {{obj.timestamp | date:fullDate}}-->
+      </div>
+      <div ng-show="isOpen" class="cpanel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="in-wiz-row">
+              <label>Selece Identifiers</label>
+              <select ui-select2="ui-select2" multiple="multiple" ng-model="select2" data-placeholder="Select identifiers" class="mw230">
+                <option value=""></option>
+                <option value="one">First</option>
+                <option value="two">Second</option>
+                <option value="three">Third</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Transport mode</label>
+              <input type="text" placeholder="Transport"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Business unit</label>
+              <input type="text" placeholder="Business"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Business unit</label>
+              <input type="text" placeholder="Transport"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Transport</label>
+              <input type="text" placeholder="Transport"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12"></div>
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a ng-click="isOpen = !isOpen" ng-class="{ open: isOpen}" class="accordion-toggle"><span class="ico-container"><i class="fa fa-check-square-o"></i></span>&nbsp;<span toolTip="Identifiers" class="label">Additional teriff info :</span></a>
+        <!-- span.hdate  Created : {{obj.timestamp | date:fullDate}}-->
+      </div>
+      <div ng-show="isOpen" class="cpanel-body">
+        <div class="row">
+          <div class="col-xs-12">Hello</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

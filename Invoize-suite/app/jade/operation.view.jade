@@ -1,0 +1,44 @@
+.row.in-wiz-ttl.fix-scroll(ng-init="getTemplates('')", ng-show="$state.current.name.split('.')[0]=='wizard'")
+        .col-md-7.col-sm-6
+                .in-wiz-info Welcome to operations configurations. You can add / configure / edit the operations that you perform. You can also create hierarchies of the operations. Creating operations profiles would give you an ease of managing these operations. 
+                        i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+        .col-md-5.col-sm-6.in-add
+                input.in-query(placeholder="Search operation Profile",ng-change="getTemplates(q)",ng-model="q")
+                button.in-query
+                        i.icon-search
+                //- a(href="#/wizard/operation/new", style="vertical-align: middle;")
+                a(style="vertical-align: middle;",ng-click="redirectTo('/operation/new')",style="cursor:pointer")
+                        span.in-add-sign +
+                        span.in-add-txt Add Profile
+
+.row.in-wiz-ttl.in-fix-scroll(ng-init="getTemplates('')",ng-hide="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12.in-add
+        .pull-left.in-wiz-info Operation
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+        input.in-query(placeholder="Search Operation",ng-change="getTemplates(q)",ng-model="q")
+        button.in-query
+            i.fa.fa-search
+        a(style="vertical-align: middle;",ng-click="redirectTo('/operation/new')",style="cursor:pointer")
+            span.in-add-sign +
+            span.in-add-txt Add Operation        
+.row
+        .col-sm-6.col-md-6.col-lg-4.inz-blk(ng-repeat="ListItem in templates | orderBy:title",ng-form="subForm", style="margin-bottom:30px;")                
+                .in-view-block
+                        .title {{ListItem.profileName}}
+                        .line
+                                .caption System
+                                .data {{ListItem.systemList| selectFormat}}                     
+                .in-btn-blk
+                        .in-btn-grp
+                                .in-btn-row
+                                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" , ng-click="confirmDeleteProfile(ListItem.id)")
+                                                i.fa.fa-trash-o
+                                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="editViewTemplete(ListItem)")
+                                                i.fa.fa-pencil                                        
+
+.in-wiz-footer
+        button.inz-btn.btn-sm.btn-danger(ng-click="prevStep()")
+                i.fa.fa-long-arrow-left    
+                |  Previous Step      
+        button.inz-btn.btn-sm.btn-success(ng-click="nextStep()") Next Step  
+                i.fa.fa-long-arrow-right

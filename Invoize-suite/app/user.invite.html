@@ -1,0 +1,35 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add"><i ng-show="inviteLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-click="editTemplate(true)" href="javascript:void(0)" ng-show="AddModify"><span class="in-add-sign">+</span><span class="in-add-txt">Add / modify fields</span></a></div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Invite Users</div>
+    </div>
+    <div class="pull-right"><i ng-show="companyCreateLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-click="editTemplate(true)" href="javascript:void(0)" ng-show="AddModify"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Modify Fields</span></a><a ng-click="redirectTo('/users/detail')" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button type="submit" ng-click="SendInvite(usersSI)" ng-show="invite" class="inz-btn btn-sm btn-success">Invite</button>
+      <button type="submit" ng-click="updateUsers(true)" ng-show="register" class="inz-btn btn-sm btn-success">Register</button>
+    </div>
+  </div>
+</div>
+<div ng-init="getTemplateSendInvitation();getTemplate(true)" class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <tabset>
+      <tab heading="Invite Users" ng-click="AddModify=false;register=false;invite=true" class="tab">
+        <div ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" height="hh" width="hw" afterRender="afterRender()" datarows="userSI in usersSI" manualColumnResize="true" columns="columnsSI" minsparerows="1" onBeforeChange="celChange"></div>
+      </tab>
+      <tab heading="Register Users" ng-click="AddModify=true;register=true;invite=false" class="tab">
+        <div ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" height="hh" width="hw" afterRender="afterRender()" datarows="user in users" manualColumnResize="true" columns="columns" minsparerows="1" onBeforeChange="celChange"></div>
+      </tab>
+    </tabset>
+  </div>
+  <div class="in-wiz-footer"><a href="#/wizard/users/detail" class="inz-btn btn-sm btn-default">Cancel</a>
+    <button type="submit" ng-click="SendInvite(usersSI)" ng-show="invite" class="inz-btn btn-sm btn-success">Invite</button>
+    <button type="submit" ng-click="updateUsers(true)" ng-show="register" class="inz-btn btn-sm btn-success">Register</button>
+  </div>
+</div>

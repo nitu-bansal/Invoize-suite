@@ -1,0 +1,32 @@
+
+<div class="row in-wiz-ttl">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add">
+  </div>
+</div>
+<div ng-init="initialize()">
+  <form name="mainForm2" ng-submit="submitAll()" novalidate="novalidate">	 
+    <div ng-form="subForm" class="in-wiz-row">
+      <label class="control-label">Profile Name		</label>
+      <div class="controls">
+        <input type="text" name="name" ng-trim="ng-trim" ng-required="ng-required"/><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+      </div>
+    </div>
+    <div ng-form="subForm" class="in-wiz-row">
+      <label class="control-label">Company		</label>
+      <div class="controls">
+        <input type="text" name="name" ng-trim="ng-trim" ng-required="ng-required"/><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+      </div>
+    </div>
+    <div ng-form="subForm" class="in-wiz-row">
+      <label class="control-label">System		</label>
+      <div class="controls">
+        <input type="text" name="name" ng-trim="ng-trim" ng-required="ng-required"/><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+      </div>
+    </div>
+    <div class="in-wiz-footer">		<a href="#/wizard/users/view" class="inz-btn btn-sm btn-default">Cancel</a><a href="#/wizard/users/invite" class="inz-btn btn-sm btn-success">Save Changes</a>
+    </div>
+  </form>
+</div>

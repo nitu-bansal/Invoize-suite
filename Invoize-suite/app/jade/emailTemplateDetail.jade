@@ -1,0 +1,64 @@
+.col-md-6.col-sm-12.col-xs-12
+    h3.header.smaller.lighter.red
+        i.icon-edit &nbsp;
+        | Compose
+    div
+        label.label-span Module
+        label.label-label.input-xlarge.margin-4px {{data.module}}
+        div(style="clear:both;")
+
+    div
+        label.label-span Event
+        label.label-label.input-xlarge.margin-4px {{data.event}}
+        div(style="clear:both;")
+
+    div
+        label.label-span From
+        label.label-label.input-xlarge.margin-4px {{data.notifications.from}}
+        div(style="clear:both;")
+
+    div
+        label.label-span To
+        label.label-label.input-xlarge.margin-4px {{data.notifications.to}}
+        div(style="clear:both;")
+
+    div
+        label.label-span CC
+        label.label-label.input-xlarge.margin-4px {{data.notifications.cc}}
+        div(style="clear:both;")
+
+    div
+        label.label-span Subject
+        label.label-label.input-xlarge.margin-4px {{data.notifications.subject}}
+        div(style="clear:both;")
+
+    div
+        label.label-span Reply to
+        label.label-label.input-xlarge.margin-4px {{data.notifications.replyto}}
+        div(style="clear:both;")
+
+    div
+        label.label-span(for="bool-attach") Attachment
+        label.label-label.input-xlarge.margin-4px {{data.notifications.attachment}}
+
+    rich-text(ng-model="data.body",name="name",id="txtBody")
+    div(style='display:none')
+        b#startIndex
+        | to
+        b#endIndex
+
+
+    label Signature
+    br
+    textarea(ng-model="data.notifications.signature",type='text',style="min-width:100%; max-width:100%;",ng-readonly="true")
+    div(style="clear:both;height:20px;")
+
+
+.col-md-6.col-sm-12.col-xs-12
+    h3.header.smaller.lighter.red
+        i.fa.fa-unlink &nbsp;
+        | Fields
+    include schedulingDetail
+
+
+

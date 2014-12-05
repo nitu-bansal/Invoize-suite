@@ -1,0 +1,44 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        .fieldset
+                                legend Workflow
+                                        .btn-group.pull-right
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="workflowDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                a.btn.btn-primary.btn-margin.btn-sm(permission="updateWorkflow.*.*", ng-hide="workflowDetailLoader", href="#/workflow/edit/{{$stateParams.workflowId}}", ng-click="editWorkflow()", style="cursor: pointer;", bs-tooltip="tooltip.edit")
+                                                        i.icon-pencil.icon-large
+                                                a.btn.btn-primary.btn-margin.btn-sm(permission="deleteWorkflow.*.*", ng-hide="workflowDetailLoader", ng-click="confirmDeleteWorkflow()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                        i.icon-trash.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="workflowDetailLoader")        
+                                .widget-box
+                                        .widget-header
+                                                h4 {{workflow.name}}
+                                        .widget-body
+                                                .widget-main    
+                                                        h5 Definition
+                                                                .form-group.well.well-small(ng-repeat="row in workflowDefinitions")
+                                                                        label.col-sm-3.control-label.no-padding-right
+                                                                                span.label.label-large.label-info.arrowed-in Level {{$index + 1}}
+                                                                                br
+                                                                                .label.label-success.help-inline(ng-switch="workflow.definitionCount[$index]")
+                                                                                        div(ng-switch-when="*") All
+                                                                                        div(ng-switch-default) Any {{workflow.definitionCount[$index]}}
+                                                                        .col-sm-9 
+                                                                                label {{workflow.definition[$index] | workflowArray2text}}
+                                                        .form-group
+                                                                span   
+                                                                        b Created By : 
+                                                                        |{{workflow.createdBy}}
+                                                                span(ng-show="workflow.createdOn")
+                                                                        b , &nbsp Created On : 
+                                                                        |{{workflow.createdOn}}
+                                                               
+                                                                span(ng-show="workflow.updatedBy") 
+                                                                        b , &nbsp Modified By :
+                                                                        |{{workflow.updatedBy}}
+
+                                                                span(ng-show="workflow.updatedOn") 
+                                                                        b , &nbsp Modified On : 
+                                                                        |{{workflow.updatedOn}}

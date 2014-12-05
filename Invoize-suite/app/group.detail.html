@@ -1,0 +1,93 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Welcome to Group creation. You can add groups here.</div>
+    </div>
+    <div class="pull-right"><i ng-show="groupCreateLoader" class="icon-spinner icon-spin blue icon-large"></i></div>
+  </div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Group Details</div>
+    </div>
+    <div class="pull-right"><i ng-show="groupCreateLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-href="/#/organizationSetup/group/view" ng-hide="$state.current.name.split('.')[0]=='wizard'" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button type="submit" ng-click="cloneGroup($routeParams.groupId)" class="inz-btn btn-sm btn-success">Clone Group</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div class="col-xs-12 col-md-12 col-xs-12 col-lg-12">
+  <div class="ds-tree">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
+        <label class="blue">Name :</label>
+        <label>{{group.name}}</label>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
+        <label class="blue">Company :</label>
+        <label>{{group.company | selectFormat}}</label>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
+        <label class="blue">System :</label>
+        <label>{{group.system | selectFormat}}</label>
+      </div>
+      <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
+        <label class="blue">Type :</label>
+        <label>{{group.type | selectFormat}}</label>
+      </div>
+      <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+        <label class="blue">Description :</label>
+        <label>{{group.description}}</label>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both">
+    <div class="ds-tree">
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-12">
+          <div ng-switch="group.type">
+            <div ng-switch-when="permission">
+              <ul class="nav nav-tabs">
+                <li ng-repeat="(key,product) in group.definition.products" ng-class="{'active':currentTab==$index}" ng-click="setCurrentTab($index)" class="tab"><a>{{key}}</a></li>
+              </ul>
+              <div style="height:5px;clear:both;"></div>
+              <div ng-repeat="(key,product) in group.definition.products" ng-show="currentTab==$index">
+                <div ng-repeat="module in product.modules track by $index" style="margin:8px 0;" class="row border-row1">
+                  <div class="col-sm-6 col-md-3 col-xs-12">
+                    <label class="blue">Module</label><br/>
+                    <label class="label-grp">{{module.module | selectFormat}}</label>
+                  </div>
+                  <div class="col-sm-6 col-md-2 col-xs-12">
+                    <label class="blue"> Default</label><br/>
+                    <label class="label-grp">{{product.isDefault}}</label>
+                  </div>
+                  <div class="col-sm-6 col-md-3 col-xs-12">
+                    <label class="blue">Actions</label><br/>
+                    <label>{{module.actionCodes | selectFormat}}</label>
+                  </div>
+                  <div class="col-sm-6 col-md-4 col-xs-12">
+                    <label class="blue">Permissions</label><br/>
+                    <label>
+                      <ul class="dd-list">
+                        <li ng-repeat="key in module.keys" style="margin-left:{{20*$index}}px;" class="dd-item-1 dd-handle-1">{{key.n}}</li>
+                      </ul>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-switch-default="ng-switch-default" class="col-md-12 col-sm-12 col-xs-12">
+              <label class="blue">Definition</label><br/>
+              <label class="label-grp">{{group.definition | selectFormat}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><br/>
+    <div class="in-wiz-footer"><a ng-href="/#/wizard/group/view" ng-show="$state.current.name.split('.')[0]=='wizard'" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button type="submit" ng-click="cloneGroup($routeParams.groupId)" class="inz-btn btn-sm btn-success">Clone</button>
+    </div>
+  </div>
+</div>

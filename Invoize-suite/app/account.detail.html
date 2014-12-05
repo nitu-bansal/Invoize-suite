@@ -1,0 +1,254 @@
+
+<div class="page-header">   </div>
+<div class="row">
+  <div class="col-xs-12">
+    <form class="form-horizontal">
+      <div class="fieldset">
+        <div class="row">
+          <div class="btn-group pull-right"><a ng-hide="accountDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary btn-margin"><i class="icon-mail-reply">                                       </i></a><a permission="updateAccount.*.*" ng-hide="accountDetailLoader || $state.includes('tms.list')" bs-tooltip="tooltip.edit" href="#/account/edit/{{$stateParams.accountId}}" ng-click="editAccount($stateParams.accountId)" class="btn btn-sm btn-primary"><i class="icon-pencil">                                      </i></a><a permission="deleteAccount.*.*" ng-hide="accountDetailLoader || $state.includes('tms.list')" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteAccount()" class="btn btn-sm btn-primary"><i class="icon-trash"></i></a><i ng-show="accountDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+        </div>
+        <tabset>
+          <tab heading="Profile" style="overflow:hidden" class="tab">
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Account Name</label>
+              <div class="col-sm-9">
+                <label>: {{account.accountName}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Account Codes</label>
+              <div class="col-sm-9">
+                <label>: {{account.accountCodes}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Account Type</label>
+              <div class="col-sm-9">
+                <label>: {{account.accountType}}</label>
+              </div>
+            </div>
+            <div ng-show="account.accountType=='INTERNATIONAL'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Shipment Modes</label>
+              <div class="col-sm-9">
+                <label>: {{account.shipmentModes | list2text}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Shipment Volume</label>
+              <div class="col-sm-9">
+                <label>: {{account.shipmentVolume}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> AR Booked in</label>
+              <div class="col-sm-9">
+                <label>: {{account.ARBookedIn}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Invoicing Type</label>
+              <div class="col-sm-9">
+                <label>: {{account.invoicingType}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Rating Type</label>
+              <div class="col-sm-9">
+                <label>: {{account.ratingType}}</label>
+              </div>
+            </div>
+            <div ng-show="account.ratingType=='TARIFF'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Currency Conversion Applicable</label>
+              <div class="col-sm-9">
+                <label>: {{account.currencyConversionApplicable}}</label>
+              </div>
+            </div>
+            <div ng-show="account.ratingType=='TARIFF'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Sources Of Currency Conversation</label>
+              <div class="col-sm-9">
+                <label>: {{account.sourcesOfCurrencyConversation | list2text}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Any Limitation On # Of Days To Invoice</label>
+              <div class="col-sm-9">
+                <label>: {{account.anyLimitationOnNoOfDaysToInvoice}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> criteria</label>
+              <div class="col-sm-9">
+                <label>: {{account.criteria}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> # Of Days</label>
+              <div class="col-sm-9">
+                <label>: {{account.noOfDaysToInvoice}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Workflow Mode</label>
+              <div class="col-sm-9">
+                <label>: {{workflowModeList[account.workflowMode-1].n}}</label>
+              </div>
+            </div>
+            <div ng-switch="account.workflowMode">
+              <div ng-switch-when="1" class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Select Workflow</label>
+                <div class="col-sm-9">
+                  <label>: {{account.workflow.v}}</label>
+                </div>
+              </div>
+              <div ng-switch-when="2" class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Select Tag</label>
+                <div class="col-sm-9">
+                  <label>: {{account.tag.v}}</label>
+                </div>
+              </div>
+              <div ng-switch-when="3" class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Add Condition</label>
+                <div class="col-sm-9">
+                  <label>: {{account.condition}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Created By</label>
+              <div class="col-sm-9">
+                <label>: {{account.createdBy}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Created On</label>
+              <div class="col-sm-9">
+                <label>: {{account.createdOn}}</label>
+              </div>
+            </div>
+            <div ng-show="account.updatedBy" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Updated By</label>
+              <div class="col-sm-9">
+                <label>: {{account.updatedBy}}</label>
+              </div>
+            </div>
+            <div ng-show="account.updatedOn" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Updated On</label>
+              <div class="col-sm-9">
+                <label>: {{account.updatedOn}}                                       </label>
+              </div>
+            </div>
+          </tab>
+          <tab heading="Invoice Delivery" style="overflow:hidden" class="tab">
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Invoice Delivery Mode</label>
+              <div class="col-sm-9">
+                <label>: {{account.invoiceDeliveryMode | list2text}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Invoice Delivery Frequency</label>
+              <div class="col-sm-9">
+                <label>: {{account.invoiceDeliveryFrequency}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Invoice Redelivery Mode</label>
+              <div class="col-sm-9">
+                <label>: {{account.invoiceRedeliveryMode | list2text}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Back-Up Document Requirements</label>
+              <div class="col-sm-9">
+                <label>: {{account.backUpDocumentRequirements | list2text}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Back-Up Data Requirements</label>
+              <div class="col-sm-9">
+                <label>: {{account.backUpDataRequirements | list2text}}</label>
+              </div>
+            </div>
+          </tab>
+          <tab heading="Collections" style="overflow:hidden" class="tab">
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Payment Mode</label>
+              <div class="col-sm-9">
+                <label>: {{account.paymentMode}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Payment Frequency</label>
+              <div class="col-sm-9">
+                <label>: {{account.paymentFrequency}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Is FPC Applicable?</label>
+              <div class="col-sm-9">
+                <label>: {{account.isFpcApplicable}}</label>
+              </div>
+            </div>
+            <div ng-show="account.isFpcApplicable=='YES'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Name of FPC</label>
+              <div class="col-sm-9">
+                <label>: {{account.fpcName}}</label>
+              </div>
+            </div>
+            <div ng-show="account.isFpcApplicable=='YES'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Website Link</label>
+              <div class="col-sm-9">
+                <label>: {{account.fpcWebsiteLink}}</label>
+              </div>
+            </div>
+            <div ng-show="account.isFpcApplicable=='YES'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Login ID (If applicable)</label>
+              <div class="col-sm-9">
+                <label>: {{account.fpcLoginId}}</label>
+              </div>
+            </div>
+            <div ng-show="account.isFpcApplicable=='YES'" class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Password (if applicable)</label>
+              <div class="col-sm-9">
+                <label>: {{account.fpcPassword}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Approval Notification Format</label>
+              <div class="col-sm-9">
+                <label>: {{account.approvalNotificationFormat}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Approval Notification Frequency</label>
+              <div class="col-sm-9">
+                <label>: {{account.approvalNotificationFrequency}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right"> Is remittance received</label>
+              <div class="col-sm-9">
+                <label>: {{account.isRemittanceReceived}}</label>
+              </div>
+            </div>
+          </tab>
+          <tab heading="Contacts" style="overflow:hidden" class="tab">
+            <div class="form-group">                                               
+              <div class="col-md-6"><strong>Role</strong></div>
+              <div class="col-md-6"> <strong>User</strong></div>
+            </div>
+            <ng-form name="permissionForm" ng-repeat="row in account.role">                                               
+              <div class="col-md-6">
+                <label>{{account.role[$index] | array2text}}</label>
+              </div>
+              <div class="col-md-6">
+                <label>{{account.user[$index] | array2text}}</label>
+              </div><br/>
+            </ng-form>
+          </tab>
+        </tabset>
+        <div class="btn-group pull-right"><a ng-hide="accountDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary btn-margin"><i class="icon-mail-reply">                               </i></a><a permission="updateAccount.*.*" ng-hide="accountDetailLoader || $state.includes('tms.list')" bs-tooltip="tooltip.edit" href="#/account/edit/{{$stateParams.accountId}}" ng-click="editAccount($stateParams.accountId)" class="btn btn-sm btn-primary"><i class="icon-pencil">                             </i></a><a permission="deleteAccount.*.*" ng-hide="accountDetailLoader || $state.includes('tms.list')" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteAccount()" class="btn btn-sm btn-primary"><i class="icon-trash"></i></a><i ng-show="accountDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+      </div>
+    </form>
+  </div>
+</div>

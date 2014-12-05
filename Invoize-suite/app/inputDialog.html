@@ -1,0 +1,34 @@
+ 
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form novalidate="novalidate" name="form1">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;                            </button>
+        <h4 class="modal-title">{{item.title}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="modal-msg">
+          <div class="row">
+            <div ng-switch="true" alt-render="alt-render" ng-form="subForm" hasParent="row" hasCount="2" class="col-md-6">
+              <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                <label class="control-label">{{item.label}} &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                <div ng-switch-when="true" ng-switch="item.type" class="controls">
+                  <input ng-switch-when="text" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <input ng-switch-when="numeric" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+                  <dynamic-Select ng-switch-when="dropdown" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+                  <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">                   
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-click="save()" class="inz-btn btn-sm btn-success">Send</button>
+      </div>
+    </form>
+  </div>
+</div>

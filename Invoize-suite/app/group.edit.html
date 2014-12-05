@@ -1,0 +1,90 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Welcome to Group creation. You can add groups here.</div>
+    </div>
+    <div class="pull-right"><i ng-show="groupCreateLoader" class="icon-spinner icon-spin blue icon-large"></i></div>
+  </div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12- col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Edit Group</div>
+    </div>
+    <div class="pull-right"><i ng-show="groupCreateLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-href="/#/organizationSetup/group/view" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button type="submit" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" ng-click="createGroup(group)" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<form name="form" novalidate="novalidate">
+  <div class="col-xs-12">
+    <div class="ds-tree">
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <label>Name : {{group.name}}</label>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <label>Company : {{group.company | selectFormat}}</label>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <label>System : {{group.system | selectFormat}}</label>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <label>Type : {{group.type}}</label>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <label>Description</label><br/>
+          <textarea name="groupDescription" ng-model="group.description" placeholder="Group Description" class="input-large"></textarea>
+        </div>
+      </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="ds-tree">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <div ng-switch="group.type">
+            <div ng-switch-when="permission">
+              <ul class="nav nav-tabs">
+                <li ng-repeat="(key,product) in group.definition.products" ng-class="{'active':currentTab===$index}" ng-click="setCurrentTab($index)" class="tab"><a>{{key}}</a></li>
+              </ul>
+              <div style="height:5px;clear:both;"></div>
+              <div ng-repeat="(key,product) in group.definition.products" ng-show="currentTab===$index">
+                <div ng-repeat="module in product.modules track by $index" ng-form="subForm" style="margin:8px 0;" class="row border-row1">
+                  <div class="{{$first?'col-sm-12':'col-sm-3'}}">
+                    <label class="blue">Module</label><span ng-show="subForm.name.$error.required" class="red">*</span><br/>
+                    <dynamic-Select ng-required="{{$index!=0}}" name="name" ng-model="module.module" customObj="{&quot;key&quot;:&quot;parentCode&quot;,&quot;parentModule&quot;:&quot;{{key}}&quot;,&quot;selected&quot;:&quot;{{getSelected(product.modules)}}&quot;}" ph="permissionModules" data-placeholder="Select Module" change="editModules(product.modules,$index)" tooltip="Module"></dynamic-Select>
+                  </div>
+                  <div ng-if="$index!=0" class="col-sm-1">
+                    <label class="blue">Default</label><br/>
+                    <input id="isDefault_{{$index}}" ng-model="product.isDefault" value="{{module.module[0].id}}" type="radio" name="isDefault" class="center"/>
+                  </div>
+                  <div ng-if="$index!=0" class="col-sm-4">
+                    <label tooltip="Leave blank to select all" class="blue">Actions</label><br/>
+                    <dynamic-Select name="code" multiselect="multiselect" ng-model="module.actionCodes" customobj="{&quot;key&quot;:&quot;actionCode&quot;,&quot;parentCode&quot;:&quot;{{module.module[0].id}}&quot;,&quot;product&quot;:&quot;{{key}}&quot;}" ph="permissionModules" data-placeholder="Actions"></dynamic-Select>
+                  </div>
+                  <div ng-if="$index!=0" class="col-sm-4">
+                    <label class="blue">Permissions &nbsp;</label><br/>
+                    <ul class="dd-list">
+                      <li ng-repeat="key in module.keys" style="margin-left:{{20*$index}}px;"><span class="dd-item-1 dd-handle-1">
+                          <div class="pull-left">{{key.n}}</div>
+                          <div class="pull-right"><i ng-click="module.keys.splice($index,1)" tooltip="Delete" class="fa fa-times redminus"></i></div></span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-switch-default="ng-switch-default" class="col-md-4">
+              <label>Definition</label><span ng-show="form.groupBar.$error.required" class="red">&nbsp; *</span><span ng-show="form.groupBar.$valid" class="green validTick">&nbsp; &#10004;</span>
+              <input id="bulkInput" type="checkbox" ng-model="bulkInput" ng-change="changeData(bulkInput)"/>
+              <label for="bulkInput">&nbsp; Bulk Input</label><span ng-show="bulkInput" class="orange">&nbsp;  Use " , " or new line sepration only.</span><br/>
+              <input ui-select2="getGroups" ng-if="!bulkInput" ng-disabled="group.system==null" name="groupBar" ng-model="group.definition" required="required" class="input-large"/>
+              <textarea ng-disabled="group.system==null" placeholder="Paste multiple values here" ng-if="bulkInput" name="groupBar" ng-model="group.definition" style="width:100%" required="required"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><br/>
+  </div>
+</form>

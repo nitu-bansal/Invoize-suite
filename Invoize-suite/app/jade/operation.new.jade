@@ -1,0 +1,39 @@
+.row.in-wiz-ttl(ng-show="$state.current.name.split('.')[0]=='wizard'")
+        .col-md-9.col-sm-8
+                .in-wiz-info Welcome to operations configurations. You can add / configure / edit the operations that you perform. You can also create hierarchies of the operations. Creating operations profiles would give you an ease of managing these operations.
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+        .col-md-3.col-sm-4.in-add
+
+.row.in-wiz-ttl.in-fix-scroll(style="background:#eee;",ng-hide="$state.current.name.split('.')[0]=='wizard'")
+        .col-xs-12.in-add
+                .pull-left.in-wiz-info New Operation
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+                a.inz-btn.btn-sm.btn-default(ng-click="redirectTo('/operation/view')") Cancel
+                //- button.inz-btn.btn-sm.btn-default() Cancel
+                button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="createOperation(operation)") Save Changes
+
+div
+        form(name="form",novalidate,ng-init="operation={}")
+                div.in-wiz-row
+                        label.control-label Operation Profile Name                   
+                        .controls
+                                        input(type="text", name="operationName", duplicate="operationProfile", ng-model="operation.profileName", placeholder="Operation Profile Name",required ,ng-pattern=/^[a-zA-Z0-9]+$/,ng-trim,ng-maxlength="256")
+                                        span.help-inline.required(ng-show="form.operationName.$error.required") *
+                                        span.validTick(ng-show="form.operationName.$valid") &#10004;
+                                        span(ng-show="form.operationName.$error.duplicate") Operation Profile exists.
+                                        span(ng-show="form.operationName.$error.maxlength") Maximum length 256.
+                                        span(ng-show="form.operationName.$error.pattern") only Alphanumeric characters.                                       
+                                        
+                div.in-wiz-row
+                        label.control-label Attach System
+                        .controls
+
+                                        dynamic-Select(required,multiselect,enterchoice,quickcreation,name="systemList",ng-model="operation.systemList",ph="unlinkedOperationSystem",data-placeholder="Enter System")                                       
+                                        span(ng-show="form.systemList.$error.required") *
+                                        span.validTick(ng-show="form.systemList.$valid") &#10004;
+                .in-wiz-footer    
+                        a.inz-btn.btn-sm.btn-danger(href="#/wizard/location/view")
+                                i.fa.fa-long-arrow-left     
+                                |  Previous Step
+                        a.inz-btn.btn-sm.btn-default(href="#/wizard/operation/view") Cancel    
+                        button.inz-btn.btn-sm.btn-success(type="submit",ng-disabled="form.$invalid",ng-class="{'disabled': form.$invalid}",ng-click="createOperation(operation)") Save Changes

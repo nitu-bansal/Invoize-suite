@@ -1,0 +1,79 @@
+
+<div ng-show="deliveryData.length&lt;=1" class="row">
+  <div class="in-gs-block">
+    <div ng-hide="showGoBtn" class="gs-sub-title">Choose Account & Hit Search&nbsp;<i class="fa fa-search"></i></div>
+    <div ng-show="showGoBtn" class="gs-sub-title">No Data available &nbsp;<span ng-show="form.companyType.$error.required" class="help-inline required">&nbsp;&nbsp;*</span></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div ng-show="showGrid" class="pull-right"><a ng-click="RenderHTW(false)" data-placement="bottom" data-toggle="tooltip" title="Extend" tooltip-placement="left" tooltip="Extend" type="button" class="btn-sm btn-split btn loadUI"><i class="fa fa-columns"></i></a></div>
+  </div>
+</div>
+<div style="clear:both;height:5px;"></div>
+<div ng-show="deliveryData.length&gt;1" class="row">
+  <div class="col-xs-12">
+    <div class="div-layout-ew">
+      <div ui-layout="" class="layout-mock">
+        <ui-layout options="{ flow : &quot;column&quot; }">
+          <sidebar style="margin-right:10px;" class="west-back div-west">
+            <div style="margin:10px 5px 20px;" class="overflow-auto">
+              <table class="inz-table inz-table1 inz-table3">
+                <thead>
+                  <tr>
+                    <th><span tooltip="Expand/Collapse" tooltip-placement="right"><i class="fa fa-align-justify"></i></span></th>
+                    <th><span>
+                        <input tooltip="Select All" type="checkbox" ng-click="checkAll($event)" tooltip-placement="right"/></span></th>
+                    <th ng-repeat="val in deliveryData[0]" ng-show="$index &gt;1"><span tooltip="{{val |toHumanReadable}}" tooltip-placement="right" class="trim-info-large">{{val | toHumanReadable}}</span></th>
+                    <th><span>Document</span></th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="row in deliveryData" ng-show="$index &gt; 0">
+                  <tr style="cursor: pointer;">
+                    <td ng-repeat="col in row track by $index" ng-show="$index==0" ng-click="getWebInvoiceHistory($parent.$index,row[3])">
+                      <div ng-hide="row.dataPresent"><i ng-show="row.doc" class="icon-reorder blue"></i><i ng-hide="row.doc" class="icon-reorder orange"></i></div><i ng-show="row.dataPresent" class="icon-spinner icon-spin blue icon small"></i>
+                    </td>
+                    <td ng-repeat="col in row track by $index" ng-show="$index==0">
+                      <input name="chk_{{$parent.$index}}" type="checkbox" ng-click="updateSelection($event,row[1],row[2],$parent.$index)"/>
+                    </td>
+                    <td ng-repeat="col in row track by $index" ng-show="$index&gt;1"><span tooltip="{{col}}" class="trim-info-large">{{col}}</span></td>
+                    <td><a type="button" ng-click="getDocument($index)" class="btn-sm btn-custom"><i class="fa fa-columns"></i></a>
+                      <tr ng-show="!isRowCollapsed[$index]">
+                        <td colspan="{{row.length+1}}" class="inset">
+                          <div class="col-md-12">
+                            <table ng-show="deliveryData[$index].doc.length" class="inz-table inz-table5">
+                              <thead>
+                                <tr>
+                                  <th ng-repeat="val1 in deliveryData[$index].doc[0]" ng-show="$index&gt;0"><span tooltip="{{val1 |toHumanReadable}}" class="trim-info-large">{{val1 | toHumanReadable}}</span></th>
+                                </tr>
+                              </thead>
+                              <tbody ng-repeat="rowInvoice in deliveryData[$index].doc" ng-show="$index &gt; 0">
+                                <tr>
+                                  <td ng-repeat="colInvoice in rowInvoice track by $index" ng-show="$index&gt;0"><span tooltip="{{colInvoice}}" class="trim-info-large">{{colInvoice}}</span></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </sidebar>
+          <sidebar style="padding:5px 10px 0;margin-left:20px;" class="east-back div-east">
+            <div>
+              <select placeholder="Select Document" ui-select2="ui-select2" ng-model="fileName" ng-change="loadFile(fileName)" class="input-large">
+                <option value=""></option>
+                <option ng-repeat="item in files" value="{{item}}">{{item}}</option>
+              </select>
+            </div>
+            <div style="clear:both !important;height:5px !important;"></div>
+            <iframe id="docFrame" style="border:1px solid #F6F6F6 !important;" frameborder="0" nice-scroll="nice-scroll"></iframe>
+          </sidebar>
+        </ui-layout>
+      </div>
+    </div>
+  </div>
+</div>

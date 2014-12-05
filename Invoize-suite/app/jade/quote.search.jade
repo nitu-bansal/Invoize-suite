@@ -1,0 +1,133 @@
+.col-md-10
+        h5(ng-show="quotesAvailable")
+                | Couldn't find quotes for this search 
+                i.icon-frown 
+
+        div(id="FixedRate", when-scrolled="loadMore($stateParams.accountId,$stateParams.templateId)")
+                
+                .widget-box(style="opacity: 1;")
+                        .widget-header.header-color-green
+                                h5.bigger.lighter
+                                        i.icon-table
+                                        | Available Quotes                              
+
+                        .widget-body
+                                .widget-main.no-padding
+                                        table.table.table-striped.table-bordered(ng-show="list.length")
+                                                thead
+                                                        tr
+                                                                th                                            
+                                                                th(ng-repeat="charge in list[0]",ng-show="$index > 1")  
+                                                                       span.trim-info-large(tooltip="{{charge |toHumanReadable}}") {{charge | toHumanReadable}}
+
+                                                tbody(ng-repeat="data in list",ng-show="$index > 0")
+                                                        tr(ng-click="isRowCollapsed=!isRowCollapsed",style="cursor: pointer;")
+                                                                td.center
+                                                                        i.icon-chevron-down.green(ng-show="isRowCollapsed")                                           
+                                                                        i.icon-chevron-up.green(ng-hide="isRowCollapsed")    
+                                                                td(ng-repeat="d in data" ,ng-show="$index > 1")
+                                                                    span.trim-info-large(ng-hide="$index==3",tooltip="{{d |toHumanReadable}}") {{d |toHumanReadable}} 
+                                                                    span.small.label.label-orange(ng-show="$index==3 && d=='0'") Inactive
+                                                                    span.small.label.label-success(ng-show="$index==3 && d=='1'") Active
+                                                        tr(ng-hide="isRowCollapsed")
+                                                                td.alert-block.alert-success(colspan="{{data.length}}")                                                                                                       
+                                                                                div(ng-repeat="row in data",ng-show="$index==6")
+                                                                                        //- center
+                                                                                        //-         .col-md-2(ng-repeat="chargeDetail in row")                                                      
+                                                                                        //-                 b {{chargeDetail[0]}} ({{chargeDetail[1]}})                                                                                 
+                                                                                        //-                 br                                                                                
+                                                                                        //-                 //- {{chargeDetail}}
+                                                                                        //-                 table.pure-table
+                                                                                        //-                                 thead
+                                                                                        //-                                         tr
+                                                                                        //-                                                 th From
+                                                                                        //-                                                 th To
+                                                                                        //-                                                 th                                                                                                                                                                                                                                                                                          
+                                                                                        //-                                 tbody(ng-repeat="weightBrackets in chargeDetail[2]")    
+                                                                                        //-                                         tr
+                                                                                        //-                                                 td.center
+                                                                                        //-                                                         {{weightBrackets[0]}}
+                                                                                        //-                                                 td.center
+                                                                                        //-                                                         {{weightBrackets[1]}}
+                                                                                        //-                                                 td.center
+                                                                                        //-                                                         {{weightBrackets[2]}} {{weightBrackets[3]}}
+                                                                                        .col-md-4
+                                                                                            .widget-box.transparent
+                                                                                                .widget-header.widget-header-flat
+                                                                                                  h5.smaller.lighter.grey
+                                                                                                    //- i.icon-list
+                                                                                                    | Charge Breakdown
+                                                                                                  .widget-toolbar
+                                                                                                    //- a(data-action='collapse')
+                                                                                                    //-   i.icon-chevron-up
+                                                                                                .widget-body
+                                                                                                  .widget-main.no-padding
+                                                                                                    table.table.table-striped.table-bordered.table-hoverd
+                                                                                                      //- thead
+                                                                                                      //-   tr
+                                                                                                      //-     th
+                                                                                                      //-       i.icon-caret-right.blue
+                                                                                                      //-       | name
+                                                                                                      //-     th.hidden-phone
+                                                                                                      //-       i.icon-caret-right.blue
+                                                                                                      //-       | unit
+                                                                                                      //-     th
+                                                                                                      //-       i.icon-caret-right.blue
+                                                                                                      //-       | price
+                                                                                                      
+                                                                                                      tbody(ng-repeat="chargeDetail in row")
+                                                                                                        tr(ng-repeat="weightBrackets in chargeDetail[2]") 
+                                                                                                          td {{chargeDetail[0]}}
+                                                                                                          td.hidden-phone
+                                                                                                            span.label.label-info.arrowed-right.arrowed-in {{chargeDetail[1]}}
+                                                                                                          td                                                                                                            
+                                                                                                            b.green {{weightBrackets[2]}} {{weightBrackets[3]}}
+                                                                                                          
+                                                                                                        //- tr
+                                                                                                        //-   td online.com
+                                                                                                        //-   td
+                                                                                                        //-     small
+                                                                                                        //-       s.red
+                                                                                                        //-     b.green $16.45
+                                                                                                        //-   td.hidden-phone
+                                                                                                        //-     span.label.label-success.arrowed-in.arrowed-in-right approved
+                                                                                                        //- tr
+                                                                                                        //-   td newnet.com
+                                                                                                        //-   td
+                                                                                                        //-     small
+                                                                                                        //-       s.red
+                                                                                                        //-     b.green $15.00
+                                                                                                        //-   td.hidden-phone
+                                                                                                        //-     span.label.label-important.arrowed pending
+                                                                                                        //- tr
+                                                                                                        //-   td web.com
+                                                                                                        //-   td
+                                                                                                        //-     small
+                                                                                                        //-       s.red $24.99
+                                                                                                        //-     b.green $19.95
+                                                                                                        //-   td.hidden-phone
+                                                                                                        //-     span.label.arrowed
+                                                                                                        //-       s out of stock
+                                                                                                        //- tr
+                                                                                                        //-   td domain.com
+                                                                                                        //-   td
+                                                                                                        //-     small
+                                                                                                        //-       s.red
+                                                                                                        //-     b.green $12.00
+                                                                                                        //-   td.hidden-phone
+                                                                                                        //-     span.label.label-warning.arrowed.arrowed-right SOLD
+                                                                                                  //
+                                                                                                    /widget-main
+                                                                                                //
+                                                                                                  /widget-body
+                                                                                              //
+                                                                                                /widget-box
+                                                       
+                                                                                                                        
+
+        .row
+                .offset5
+                         i.icon-spinner.icon-spin.icon-2x(ng-show="loadingQuotes")
+                 
+      
+            

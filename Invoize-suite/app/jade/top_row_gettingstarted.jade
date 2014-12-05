@@ -1,0 +1,155 @@
+//- .alert.alert-warning.col-md-1.offset8(ng-show="loading") Loading.....
+.navbar.navbar-default.navbar-fixed-top(id="navbar")
+        .navbar-container(id="navbar-container")
+
+                        .navbar-header.pull-left
+                                .navbar-brand
+                                  a.brand()
+                                    span.in-logo-bar.r
+                                    span.in-logo-bar.b
+                                    span.in-logo-bar.g
+                                    
+                        .navbar-header.pull-left              
+                                  ul.nav.ace-nav
+                                    //-   li(ng-class="{ active: $state.includes('route:/home')}")
+                                    //-                                       a(href="#/home") 
+                                    //-                                               i.icon-home
+                                    //-                                               span  Home
+
+                                    //-   li(permission="quoteNav.*.*",ng-class="{ active: $state.includes('payright')}")
+                                    //-                                       a(href="#/payright")
+                                    //-                                               i.icon-book
+                                    //-                                               span  Bill Right
+                                    //-   li(permission="quoteNav.*.*",ng-class="{ active: $state.includes('quote')}")
+                                    //-                                       a(href="#/quote")
+                                    //-                                               i.icon-file-text-alt
+                                    //-                                               span  Quote
+                                    //-   li(permission="rateNav.*.*",ng-class="{ active: $state.includes('rate')}")
+                                    //-                                       a(href="#/rate")
+                                    //-                                               i.icon-money
+                                    //-                                               span  Rate
+                                    //-   li(permission="requestNav.*.*",ng-class="{ active: $state.includes('request')}")
+                                    //-                                       a(href="#/request")
+                                    //-                                               i.icon-retweet
+                                    //-                                               span  Request
+                                    //-   li(permission="tmsNav.*.*",ng-class="{ active: $state.includes('tms')}")
+                                    //-                                       a(href="#/tms")
+                                    //-                                               i.icon-credit-card
+                                    //-                                               span  Tariff
+
+                                    li.active(permission="administrationNav.*.*",ng-hide="$route.current.name == 'main.invited' || loggedInUser.companyType!=''")
+                                                                      a(href="#/main/getstarted")
+                                                                          i.icon-cogs
+                                                                          span  Organization Setup
+                                    li.active(permission="administrationNav.*.*",ng-hide="$route.current.name == 'main.invited' || loggedInUser.companyType==''")
+                                                                      a(href="#/wizard/company/view")
+                                                                          i.icon-cogs
+                                                                          span  Organization Setup
+
+                        .navbar-header.pull-right   
+                                  ul.nav.ace-nav
+                                    //- li.label-warning(ng-show="pendingQuoteRequestCount || pendingRateRequestCount || pendingTmsRequestCount")
+                                    //-   a.dropdown-toggle(data-toggle='dropdown', href='#')
+                                    //-     i.icon-bell-alt.icon-only.icon-animated-bell
+                                    //-     span.badge.badge-important {{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}}
+                                    //-   ul.pull-right.dropdown-navbar.navbar-green.dropdown-menu.dropdown-caret.dropdown-closer
+                                    //-     li.nav-header
+                                    //-       i.icon-warning-sign
+                                    //-       | {{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}} Notifications
+                                    //-     li(ng-show="pendingQuoteRequestCount")
+                                    //-       a(href='#/request/quote/pending')
+                                    //-         .clearfix
+                                    //-           span.pull-left
+                                    //-             i.btn.btn-mini.no-hover.btn-pink.icon-envelope-alt
+                                    //-             | New Quotes
+                                    //-           span.pull-right.badge.badge-pink +{{pendingQuoteRequestCount}}
+                                    //-     li(ng-show="pendingRateRequestCount")
+                                    //-       a(href='#/request/rate/pending')
+                                    //-         .clearfix
+                                    //-           span.pull-left
+                                    //-             i.btn.btn-mini.no-hover.btn-success.icon-envelope-alt
+                                    //-             | New Rates
+                                    //-           span.pull-right.badge.badge-success +{{pendingRateRequestCount}}
+                                    //-     li(ng-show="pendingTmsRequestCount")
+                                    //-       a(href='#/request/tms/pending')
+                                    //-         .clearfix
+                                    //-           span.pull-left
+                                    //-             i.btn.btn-mini.no-hover.btn-info.icon-envelope-alt
+                                    //-             | New Tariffs
+                                    //-           span.pull-right.badge.badge-info +{{pendingTmsRequestCount}}
+                                    //-     li
+                                    //-       a(href='#/request')
+                                    //-         | See all requests 
+                                    //-         i.icon-arrow-right 
+                                    //- li
+                                    //-   a.in-alert.dropdown-toggle(data-toggle='dropdown', href='#')
+                                    //-     i.icon-envelope
+                                    //-     span.in-alert-cnt 3
+                                    //-   ul.pull-right.dropdown-menu.dropdown-caret.dropdown-close.in-dd-noti
+                                    //-     li.in-notiifier
+                                    //-       a.noti-img
+                                    //-         img(src='avatars/avatar8.jpg')
+                                    //-       .noti-con
+                                    //-         .noti-title Shanon Butler
+                                    //-         .noti-des Updated Pending bill request in abcd station.
+                                    //-     li.in-notiifier
+                                    //-       a.noti-img
+                                    //-         img(src='avatars/avatar10.jpg')
+                                    //-       .noti-con
+                                    //-         .noti-title Nikita Smith
+                                    //-         .noti-des Updated Pending bill request.
+                                    //-     li.in-notiifier
+                                    //-       a.noti-img
+                                    //-         img(src='avatars/avatar11.jpg')
+                                    //-       .noti-con
+                                    //-         .noti-title Kesha
+                                    //-         .noti-des Reported new bug.
+                                    //- li
+                                    //-   a.in-alert.dropdown-toggle(data-toggle='dropdown', href='#')
+                                    //-     i.icon-bell-alt
+                                    //-     span.in-alert-cnt 9+
+                                    //-   ul.pull-right.dropdown-menu.dropdown-caret.dropdown-close.in-dd-noti
+                                    //-     li.in-notiifier
+                                    //-       a.noti-img
+                                    //-         img(src='avatars/avatar8.jpg')
+                                    //-       .noti-con
+                                    //-         .noti-title Shanon Butler
+                                    //-         .noti-des Updated Pending bill request in abcd station.
+                                    //-     li.in-notiifier
+                                    //-       a.noti-img
+                                    //-         img(src='avatars/avatar10.jpg')
+                                    //-       .noti-con
+                                    //-         .noti-title Nikita Smith
+                                    //-         .noti-des Updated Pending bill request.
+                                    //-     li.in-notiifier
+                                    //-       a.noti-img
+                                    //-         img(src='avatars/avatar11.jpg')
+                                    //-       .noti-con
+                                    //-         .noti-title Kesha
+                                    //-         .noti-des Reported new bug.
+
+                                    li
+                                      a.user-menu.dropdown-toggle(data-toggle='dropdown', href='#')
+                                        img.nav-user-photo(src='avatars/avatar12.jpg', alt='Jason\'s Photo')
+                                        .user-info#user_info                                          
+                                          | {{loggedInUser.userName}}
+                                          //- | Katie
+                                        i.icon-angle-down
+                                      ul.user-menu.pull-right.dropdown-menu.dropdown-caret.dropdown-close.in-dd-pro
+                                        li(style="text-align: center;")
+                                          img.in-pro-img(src='avatars/avatar12.jpg')
+                                        li
+                                          .in-name {{loggedInUser.firstName}} {{loggedInUser.lastName}}
+                                          .in-desig {{loggedInUser.designation}}
+                                        li.li-bt
+                                          a.tab(href="#/main/users/{{userId}}")
+                                            i.icon-user
+                                            | Profile
+                                        li.li-bt(ng-class="{ active: $state.includes('changePassword')}")
+                                          a(href="#/changePassword") 
+                                            i.icon-edit
+                                            | Change Password                                                                                
+                                        li.li-bt
+                                          a.tab(ng-click="logout()") 
+                                            i.icon-signout
+                                            | Sign Out

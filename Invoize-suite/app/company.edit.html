@@ -1,0 +1,63 @@
+
+<div ng-init="companyEditView($routeParams.companyId)" ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Welcome to company configuration. You can add / configure / edit your companies here. You can also arrange the companies as per the company hierarchy in your organization.</div>
+    </div>
+    <div class="pull-right"><i ng-show="companyUpdateLoader" class="icon-spinner icon-spin blue icon-large"></i><a permission="editTemplateCompany" ng-click="openDialogUpdateTemplate(company,false)" href="javascript:void(0);" style="margin-right:15px"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Modify Fields</span></a></div>
+  </div>
+</div>
+<div ng-init="companyEditView($routeParams.companyId)" ng-hide="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Edit Company</div>
+    </div>
+    <div class="pull-right"><i ng-show="companyCreateLoader" class="icon-spinner icon-spin blue icon-large"></i><a permission="editTemplateCompany" ng-click="openDialogUpdateTemplate(company,false)" href="javascript:void(0);" style="margin-right:15px"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Modify Fields</span></a><a permission="listCompany" ng-click="redirectTo('/company/view')" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button permission="editCompany" type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="update()" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div>
+  <form name="mainForm2" novalidate="novalidate">
+    <div ng-repeat="item in company.fields | orderBy:'displayOrder'" ng-form="subForm" ng-show="{{item.isActive}}" ng-switch="{{item.isActive}}" class="in-wiz-row">
+      <label class="control-label">{{item.label}}</label>
+      <div ng-switch-when="true" ng-switch="item.type" class="controls">
+        <input ng-switch-when="text" unique="{{item.key}},{{item.isUniqueField}},company,{{$routeParams.companyId}}" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+        <!--input(ng-switch-when='date',datepicker-popup="{{format}}", min="'2013-12-16'", max="'2013-12-26'",datepicker-options="dateOptions",name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")-->
+        <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+        <input ng-switch-when="numeric" unique="{{item.key}},{{item.isUniqueField}},company,{{$routeParams.companyId}}" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+        <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+        <dynamic-Select ng-switch-when="dropdown" customobj="{&quot;childCompany&quot;:&quot;{{$routeParams.companyId}}&quot;}" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+        <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+      </div>
+    </div>
+    <div class="in-wiz-footer"><a permission="listCompany" ng-click="redirectTo('/company/view')" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button permission="editCompany" type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="update()" class="inz-btn btn-sm btn-success">Save</button>
+    </div>
+  </form>
+</div>
+<div permission="historyViewCompany" class="row in-wiz-ttl history">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">History</div>
+    </div>
+    <div class="pull-right"><i ng-show="historyLoader" class="icon-spinner icon-spin blue icon-small"></i></div>
+  </div>
+</div>
+<div permission="historyViewCompany" class="row history-block">
+  <div class="col-xs-12">
+    <div ng-hide="historyTemp.count">No history available</div>
+    <div ng-repeat="obj in historyTemp.history" data-accordion="" data-close-others="false" ng-show="historyTemp.count">
+      <div data-accordion-group="" data-heading="{{obj.emailID}}" data-date="{{obj.timestamp}}" ng-click="getHistory($index,obj)">
+        <div ng-repeat="row1 in obj.historyData.fields" class="line">
+          <div class="caption">{{row1.label}}</div>
+          <div class="data">{{row1.value | selectFormat}}</div>
+        </div>
+      </div>
+    </div>
+    <div style="clear:both;height:5px;"></div>
+    <div class="pull-right">
+      <button type="submit" ng-click="loadMoreHistory()" ng-show="historyTemp.count &amp;&amp; showLoadmore" ng-class="{'disabled': disableLoadmore}" ng-disabled="disableLoadmore" class="inz-btn btn-sm btn-success">Load More</button>
+    </div>
+  </div>
+</div>

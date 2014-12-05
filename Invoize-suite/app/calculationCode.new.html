@@ -1,0 +1,165 @@
+
+<div class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Calculation Code</div>
+    </div>
+    <div class="pull-right"><a ng-href="#/billright/calculationCode/view" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button permission="editCalculationCode.createCalculationCode" type="submit" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" ng-click="createCode(calculationCode)" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:70px;"></div>
+<form name="form" novalidate="novalidate">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="widget-box">
+        <div class="widget-header widget-header1">
+          <h4> Basic</h4>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main overflow-auto">
+            <div class="col-sm-4">
+              <label>Calculation Code</label><br/>
+              <input type="text" name="codeName" duplicate="calculationCode" ng-model="calculationCode.name" placeholder="Calculation Code" required="required" class="input-large"/><span ng-show="form.codeName.$error.required" class="red">*</span><span ng-show="form.codeName.$error.duplicate" class="red">Code exists.</span><span ng-show="form.codeName.$valid" class="green validTick">&#10004;</span>
+            </div>
+            <div class="col-sm-4">
+              <label>Calculation Text</label><br/>
+              <input type="text" name="codeDescription" ng-model="calculationCode.description" placeholder="Calculation Code" class="input-large"/>
+            </div>
+            <div class="col-sm-4">
+              <label>Calculation Format</label><br/>
+              <select ui-select2="ui-select2" name="codeFormat" ng-model="calculationCode.format" data-placeholder="Please select..." style="width:200px" required="required" class="input-large">
+                <option value=""></option>
+                <option ng-repeat="calculationFormat in calculationFormatList" value="{{calculationFormat.id}}">{{calculationFormat.n}}</option>
+              </select><span ng-show="form.codeFormat.$error.required" class="red">*</span><span ng-show="form.codeFormat.$valid" class="green validTick">&#10004;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:10px;"></div>
+  <div class="col-xs-12">
+    <div class="widget-box">
+      <div class="widget-header widget-header1">
+        <h4>Code Definition</h4>
+      </div>
+      <div class="widget-body overflow-auto">
+        <div class="widget-main">
+          <table ng-show="calculationCode.codeLevels.length" class="inz-table inz-table2">
+            <thead>
+              <tr>
+                <th rowspan="2" colspan="0" style="min-width:40px;" class="center borderleftB"><i class="icon-trash"></i></th>
+                <th colspan="3" class="center borderleftB">Level 1</th>
+                <th rowspan="2" colspan="0" style="min-width:130px;" class="center borderleftB">Operator</th>
+                <th colspan="3" class="center borderleftB">Level 2</th>
+                <th rowspan="2" colspan="0" style="min-width:130px;" class="center borderleftB">Operator</th>
+                <th colspan="3" class="center borderleftB">Level 3</th>
+                <th colspan="2" class="center borderleftB">Result</th>
+              </tr>
+              <tr>
+                <th style="min-width:130px;" class="borderleftB">Field/Value</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Factor</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Method</th>
+                <th style="min-width:130px;" class="borderleftB">field/Value</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Factor</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Method</th>
+                <th style="min-width:130px;" class="borderleftB">field/Value</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Factor</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Method</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Factor</th>
+                <th style="min-width:130px;" class="borderleftB">Rounding Method</th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="row in calculationCode.codeLevels">
+              <tr style="cursor: pointer;">
+                <td><span><a data-action="close" ng-click="removeLevel($index)" style="cursor: pointer;" ng-show="$index&gt;0" class="grey"><i class="icon-trash"></i></a></span></td>
+                <td><span>
+                    <input type="text" ng-model="row.l1Field" name="l1Field_{{$index}}" typeahead="suggestion for suggestion in fieldBarVal($viewValue,$index,'l1Field_'+$index)" typeahead-editable="true" toolTip="Field/Value" placeholder="Field/Value" ng-change="checkLength()" class="ruleTagName"/></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="l1RoundingFactor_{{$index}}" ng-model="row.l1RoundingFactor" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rf in roundingFactor" value="{{rf.id}}">{{rf.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="l1RoundingMethod_{{$index}}" ng-disabled="row.l1RoundingFactor==null" ng-model="row.l1RoundingMethod" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rm in roundingMethod" value="{{rm.id}}">{{rm.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="operator1_{{$index}}" ng-model="row.operator1" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="o in operators" value="{{o.id}}">{{o.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <input type="text" ng-model="row.l2Field" name="l2Field_{{$index}}" typeahead="suggestion for suggestion in fieldBarVal($viewValue,$index,'l2Field_'+$index)" typeahead-editable="true" toolTip="Field/Value" placeholder="Field/Value" class="ruleTagName"/></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="l2RoundingFactor_{{$index}}" ng-model="row.l2RoundingFactor" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rf in roundingFactor" value="{{rf.id}}">{{rf.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="l2RoundingMethod_{{$index}}" ng-model="row.l2RoundingMethod" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rm in roundingMethod" value="{{rm.id}}">{{rm.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="operator2_{{$index}}" ng-model="row.operator2" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="o in operators" value="{{o.id}}">{{o.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <input type="text" ng-model="row.l3Field" name="l3Field_{{$index}}" typeahead="suggestion for suggestion in fieldBarVal($viewValue,$index,'l3Field_'+$index)" typeahead-editable="true" toolTip="Field/Value" placeholder="Field/Value" class="ruleTagName"/></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="l3RoundingFactor_{{$index}}" ng-model="row.l3RoundingFactor" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rf in roundingFactor" value="{{rf.id}}">{{rf.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="l3RoundingMethod_{{$index}}" ng-model="row.l3RoundingMethod" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rm in roundingMethod" value="{{rm.id}}">{{rm.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="resultRoundingFactor_{{$index}}" ng-model="row.resultRoundingFactor" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rf in roundingFactor" value="{{rf.id}}">{{rf.n}}</option>
+                    </select></span></td>
+                <td><span>
+                    <select ui-select2="ui-select2" name="resultRoundingMethod_{{$index}}" ng-model="row.resultRoundingMethod" data-placeholder="Please select..." class="input-type-table">
+                      <option value=""></option>
+                      <option ng-repeat="rm in roundingMethod" value="{{rm.id}}">{{rm.n}}</option>
+                    </select></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="clear:both;height:10px;"></div><a name="btnAddTag" ng-click="addLevel()" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" toolTip="Add" tooltip-placement="top" style="cursor:pointer;"><span class="in-add-sign">+</span><span class="in-add-txt">Add</span></a>
+          <div style="clear:both;height:10px;"></div>
+          <div ng-if="isMultiple">
+            <label>Select Result Whichever is &nbsp;</label>
+            <select ui-select2="ui-select2" name="resultCriteria" ng-model="calculationCode.resultCriteria" data-placeholder="Please select..." required="required" class="input-large">
+              <option value=""></option>
+              <option value="Greater">Greater</option>
+              <option value="Lesser">Lesser</option>
+            </select><span ng-show="form.resultCriteria.$error.required">*</span><span ng-show="form.resultCriteria.$valid" class="green validTick">&#10004;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:10px;"></div>
+  <div class="col-xs-12">
+    <div class="widget-box">
+      <div class="widget-header widget-header1">
+        <h4>Action to Perform</h4>
+      </div>
+      <div class="widget-body overflow-auto">
+        <div class="widget-main">
+          <label>Pass Result To &nbsp;</label>
+          <dynamic-Select name="passToCode" ng-model="calculationCode.passToCode" customObj="{&quot;system&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;, &quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.calculationCode&quot;}" ph="calculationCode    " data-placeholder="Select Module"></dynamic-Select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

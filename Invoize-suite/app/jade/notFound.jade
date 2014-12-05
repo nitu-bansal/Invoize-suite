@@ -1,0 +1,33 @@
+//   Created by avinash.kumar on 6/6/14.
+
+include common_top_row
+
+
+div(style="clear:both;height:70px;")
+.div-error
+.div-error-text
+    h1
+        span.orange 404
+        | :
+        span Page Not Found
+    span
+        i.fa.fa-hand-o-right.blue
+        | &nbsp; Re-check the url
+
+style(type="text/css")
+    body {
+
+        /* IE10 Consumer Preview */
+        background-image: -ms-radial-gradient(center, ellipse farthest-corner, #0CECFF 0%, #0AC2D2 100%);
+        /* Mozilla Firefox */
+        background-image: -moz-radial-gradient(center, ellipse farthest-corner, #0CECFF 0%, #0AC2D2 100%);
+        /* Opera */
+        background-image: -o-radial-gradient(center, ellipse farthest-corner, #0CECFF 0%, #0AC2D2 100%);
+        /* Webkit (Safari/Chrome 10) */
+        background-image: -webkit-gradient(radial, center center, 0, center center, 506, color-stop(0, #0CECFF), color-stop(1, #0AC2D2));
+        /* Webkit (Chrome 11+) */
+        background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #0CECFF 0%, #0AC2D2 100%);
+        /* W3C Markup, IE10 Release Preview */
+        background-image: radial-gradient(ellipse farthest-corner at center, #0CECFF 0%, #0AC2D2 100%);
+    }
+

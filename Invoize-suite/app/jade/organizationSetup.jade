@@ -1,0 +1,132 @@
+//-  Created by kamalsingh.saini on 28/10/13.
+include common_top_row
+link(rel="stylesheet", type="text/css", href="/styles/org_setup.css")
+link(rel="stylesheet", type="text/css", href="/styles/inz-in.css")
+.main-container(id="main-container")
+    .main-container-inner
+        //a.menu-toggler(id="menu-toggler",href="#")
+            span.menu-text
+        .sidebar(id="sidebar")
+            .in-brand
+                a.navbar-brand(href='#') 
+                    span.in-logo-bar.r
+                    span.in-logo-bar.b
+                    span.in-logo-bar.g
+                    | invoize
+            .sidebar-shortcuts(id="sidebar-shortcuts")
+                .sidebar-shortcuts-mini(id="sidebar-shortcuts-mini")
+                    span.icon-cog
+            .sidebar-collapse(id="sidebar-collapse")
+                i.icon-chevron-left
+
+            ul.nav.nav-list(hide-pop)
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='company'}",permission='sideCompany',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/company/view')")
+                        i.icon-building
+                        span.menu-text.menu-text.trim-info-large Company
+                        i.arrow.icon-angle-right
+                    ul.submenu                        
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='system'}",permission='sideSystem',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/system/view')")
+                        i.icon-desktop
+                        span.menu-text.menu-text.trim-info-large System
+                        i.arrow.icon-angle-right
+                    ul.submenu 
+                //li(ng-class="{ active: $state.current.name.split('.')[1]=='location'}")
+                //    a(data-toggle="tab",ng-click="", href="#/organizationSetup/location/view")
+                //        i.icon-map-marker
+                //        span.menu-text.menu-text.trim-info-large Location
+                //        i.arrow.icon-angle-right
+                //    ul.submenu
+                //li(ng-class="{ active: $state.current.name.split('.')[1]=='operation'}")
+                //    a(data-toggle="tab",ng-click="", href="#/organizationSetup/operation/view")
+                //        i.icon-bar-chart
+                //        span.menu-text.menu-text.trim-info-large Operation
+                //        i.arrow.icon-angle-right
+                //    ul.submenu
+                //li(ng-class="{ active: $state.current.name.split('.')[1]=='accounts'}")
+                //    a(data-toggle="tab",ng-click="", href="#/organizationSetup/accounts/view")
+                //        i.icon-tags
+                //        span.menu-text.menu-text.trim-info-large Accounts
+                //        i.arrow.icon-angle-right
+                //    ul.submenu
+                //- li.active(ng-class="{ active: $state.current.name.contains('user')}")
+                //-     a(data-toggle="tab", href="#/user")
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='users'}",permission='sideUsers',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/users/detail')")
+                        i.icon-user
+                        span.menu-text.trim-info-large Users
+                        i.arrow.icon-angle-right
+                    ul.submenu
+                //- li(ng-class="{ active: $state.current.name.split('.')[1]=='permission'}")
+                //-     a(data-toggle="tab",ng-click="", href="#/organizationSetup/permission")
+                //-         i.icon-lock 
+                //-         span.menu-text.trim-info-large Permissions
+                //-         i.arrow.icon-angle-down
+                //-     ul.submenu
+
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='group'}",permission='sideGroup',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/group/view')")
+                        i.icon-group
+                        span.menu-text.trim-info-large Groups
+                        i.arrow.icon-angle-right
+                    ul.submenu
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='metadata'}",permission='sideMetadata',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/metadata/view')")
+                        i.icon-keyboard
+
+                        span.menu-text.trim-info-large Metadata
+                        i.arrow.icon-angle-right
+                    ul.submenu
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='notification'}",permission='sideCompany',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/notification/view')")
+                        i.icon-bullhorn
+
+                        span.menu-text.trim-info-large Notification
+                        i.arrow.icon-angle-right
+                    ul.submenu
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='approval'}",permission='sideApproval',style="cursor: pointer;")
+                    a(data-toggle="tab",ng-click="redirectTo('/organizationSetup/approval/view')")
+                        i.icon-check
+
+                        span.menu-text.trim-info-large Approval
+                        i.arrow.icon-angle-right
+                    ul.submenu
+
+                //- li
+                //-     a.dropdown-toggle(href="#",ng-click="listJc('');isJobCardCollapsed=!isJobCardCollapsed")
+                //-         i.icon-heart
+                //-         span.menu-text.trim-info-large Test
+                //-         i.arrow.icon-angle-down
+                //-     ul.submenu(ng-show="isJobCardCollapsed")
+                //-         li
+                //-             a.dropdown-toggle(href='#')
+                //-                 span.menu-text  Menu1
+                //-                 i.arrow.icon-angle-down
+                //-             ul.sub.submenu(style="display:block")
+                //-                 li
+                //-                     a(href='#') Simple & Dynamic
+                //-                 li
+                //-                     a(href='#') jqGrid plugin
+                //-         li
+                //-             a(href="#") Menu2
+                //-         li
+                //-             a(href="#") Menu3
+
+            //.fixed.breadcrumbs(id="breadcrumbs")
+            //    ul.breadcrumb
+            //        li
+            //            i.icon-home
+            //            a Home
+            //            span.divider
+            //                i.icon-angle-right
+            //            | Administration
+            //            span.divider
+            //                i.icon-angle-right
+            //        li.active Roles
+        .main-content(id="main-content")
+            .page-content(ui-view="contents", style="padding-top:50px;")
+                .row
+                        .in-gs-block
+                            h1 Welcome to Invoize Suite
+                            .gs-sub-title You can setup various Organzation related features..

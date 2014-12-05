@@ -1,0 +1,75 @@
+
+<div class="offset1 col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset>
+      <div class="fluid-row">
+        <div class="pull-right"><a ng-hide="organizationCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+          <button ng-hide="organizationCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="create(org)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary"><i class="icon-ok icon-large"></i></button><i ng-show="organizationCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+        <legend>Organization Details :</legend>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Organization</label>
+        <div class="controls">
+          <input type="text" name="organization" ng-model="org.organization" duplicate="organization" placeholder="Organization" required="required"/>
+          <label ng-show="form.organization.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.organization.$error.duplicate" class="help-inline required">Organization exists.</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Domain</label>
+        <div class="controls">
+          <div class="input-append">
+            <input type="text" placeholder="Domain" ng-model="register.subDomain" name="subDomain" required="required" duplicate="subDomain" class="col-md-6"/><span class="add-on">.invoize.com</span>
+            <label ng-show="form.subDomain.$error.required" class="help-inline required">*</label>
+          </div>
+          <label ng-show="form.subDomain.$error.duplicate" class="help-inline required">Domain exists.</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">First Name</label>
+        <div class="controls">
+          <input type="text" name="firstName" ng-model="org.firstName" placeholder="First Name" required="required"/>
+          <label ng-show="form.firstName.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Last Name</label>
+        <div class="controls">
+          <input type="text" name="lastName" ng-model="org.lastName" placeholder="Last Name" required="required"/>
+          <label ng-show="form.lastName.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Email</label>
+        <div class="controls">
+          <input type="email" name="email" ng-model="org.email" duplicate="email" placeholder="Email" required="required"/>
+          <label ng-show="form.email.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.email.$error.email" class="help-inline required">Invalid email...!</label>
+          <label ng-show="form.email.$error.duplicate" class="help-inline required">Email exists.</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Account Owner</label>
+        <div class="controls">
+          <input type="text" name="accountOwner" ng-model="org.accountOwner" placeholder="Account Owner" required="required"/>
+          <label ng-show="form.accountOwner.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Billing Owner</label>
+        <div class="controls">
+          <input type="text" name="billingOwner" ng-model="org.billingOwner" placeholder="Billing Owner" required="required"/>
+          <label ng-show="form.billingOwner.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Is Active</label>
+        <div class="controls">
+          <input type="text" name="isActive" ng-model="org.isActive" placeholder="Is Active" required="required"/>
+          <label ng-show="form.isActive.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

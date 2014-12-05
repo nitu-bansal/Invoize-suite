@@ -1,0 +1,234 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+include common_top_row
+.main-container(id="main-container")    
+        a(id="menu-toggler",href="#").menu-toggler
+                span.menu-text         
+        .page-header
+        .sidebar(id="sidebar")
+                .sidebar-shortcuts(id="sidebar-shortcuts")
+                        .sidebar-shortcuts(id="sidebar-shortcuts-large")
+                                a.btn.btn-xs.btn-success.btn-margin(ng-hide='isCollapsed',style="left: -155px;")
+                                a.btn.btn-xs.btn-success.btn-margin(ng-show='isCollapsed', data-placement="right", permission="createQuoteDefin.*.*", ng-disabled="$state.includes('quote.template')", href="#/quote/template/{{$routeParams.accountId}}", bs-tooltip="tooltip.new" , ng-click="newQuoteDefn()") 
+                                        i.icon-plus.icon-white
+                                //- a.btn.btn-xs.btn-success(data-placement="right",permission="createRole.*.*",ng-disabled="$state.includes('role.new')",href="#/role/new",bs-tooltip="tooltip.new" , ng-click="initializeRole()")
+                                //-         i.icon-plus 
+                                
+                                btn.pull-left
+                                        h4(ng-hide='isCollapsed') &nbsp; Accounts 
+                                        h5(ng-show='isCollapsed') &nbsp; Quote Definitions                                              
+                        .sidebar-shortcuts-xs(id="sidebar-shortcuts-mini")
+                                span.btn.btn-success
+                                span.btn.btn-info
+                                span.btn.btn-warning
+                                span.btn.btn-danger    
+
+                div(id="sidebar-collapse").sidebar-collapse
+                        i(data-icon2="icon-double-angle-right", data-icon1="icon-double-angle-left").icon-double-angle-left
+                div(id="sidebar-shortcuts").sidebar-shortcuts
+                        .sidebar-shortcuts-sm(id="sidebar-shortcuts-small")
+                                a.btn.btn-sm.btn-inverse(ng-show='isCollapsed',data-placement="right",bs-tooltip="tooltip.showMore" , ng-click="searchAccount();toggleCollapse(false);")
+                                        |Show Accounts List &nbsp
+                                        i.icon-eye-open
+                                span.input-icon(ng-hide='isCollapsed')
+                                        input.input-medium(id="nav-search-input",type="text",ng-change="searchAccount();toggleCollapse(false)", placeholder="Search ...",ng-model="search", autocomplete="off")
+                                        i.icon-spinner.icon-spin.blue.icon-lg(ng-show="accountListLoader")
+                                        i.icon-search.icon-lg(id="nav-search-icon",ng-hide="accountListLoader")
+                        div(id="sidebar-shortcuts-mini")
+                                i.icon-search.blue.icon-lg                 
+                div(id="sidebar-shortcuts",ng-show="showCreateAccountBtn")
+                        .sidebar-shortcuts-lg(id="sidebar-shortcuts-large")
+                                a.btn.btn-xs.btn-success(data-placement="right",bs-tooltip="tooltip.new" , ng-click="showDialog(search)")
+                                        |Create Account &nbsp
+                                        i.icon-plus                                
+                        div(id="sidebar-shortcuts-mini")
+                                i.icon-plus.blue.icon-lg    
+                ul.nav.nav-list(id='fixed-rate', when-scrolled="loadMoreAccounts()",ng-hide='isCollapsed')  
+                        li(ng-class="{active : $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")                                
+                                a.dropdown-toggle(href='#', data-toggle="tab",ng-click="selectAccount(l.v);toggleCollapse(true);getQuoteDefs(l.id);searchFor('Account',l.v,l.id,$stateParams.quoteTemplateId)")
+                                        i.icon-blank.green {{l.v|firstLetter}}
+                                        span.trim-info-lg {{l.v|toHumanReadable}} 
+                                        
+                ul.nav.nav-list(id='fixed-rate',ng-show='isCollapsed') 
+                        li.open.active     
+                                a                                       
+                                        i.icon-blank {{selectedAccount |firstLetter}}
+                                        span {{selectedAccount}}
+                                        i.arrow.icon-angle-down                                   
+                                ul.submenu(style="display: block;")
+                                        li(ng-class="{ active: $stateParams.quoteTemplateId == l.id}",ng-repeat="l in quoteDefinitions")
+                                                a.dropdown-toggle(href='#',ng-click="searchFor('quoteDefn',l.v,$stateParams.accountId,l.id);selectQuoteDefn(l.id)") 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-lg {{l.n | toHumanReadable}}  
+        .main-content(id="main-content")
+                .well.well-sm
+                        .col-md-offset-1
+                                .form-group
+                                        input.input-xxlarge.search-query(ui-select2="searchBar", ng-model="searchBarValue",ng-click="itemChanged($event)", ui-keypress="{enter: 'searchQuote(searchBarValue)'}")
+                                        button.btn.btn-primary.btn-sm(ng-disabled="!$routeParams.accountId",ng-click="searchQuote(searchBarValue,$stateParams.accountId,$stateParams.quoteTemplateId)",type="submit")&nbsp&nbsp&nbsp&nbsp
+                                                i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp
+                                        button.btn.btn-sm.btn-success.btnsm(ng-disabled="!$stateParams.quoteTemplateId",ng-click="getTemplate($stateParams.accountId,$stateParams.quoteTemplateId)",bs-tooltip="tooltip.rateRequestNew")
+                                                i.icon-plus.icon-white
+                                                |  Request Quote
+                .clearfix(id="page-content-PullUp")                        
+                        .col-sm-12<!--PAGE CONTENT BEGINS HERE-->                            
+                                div(ng-hide="$routeParams.accountId")                                  
+                                        .row                                
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Quote Status By Accounts
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6 
+                                                                                             div(by-Accounts='chartData') 
+
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Reasons For Rejection Of Quotes
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6                                                                                 
+                                                                                              div(rejection-Reason='chartData') 
+                                        .row                                
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Average Quote Lifetime
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-md-6 
+                                                                                             div(quote-life='chartData') 
+                                                .col-md-6
+                                                        .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-sm
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Employees With Maximum <i>'average days to approve'</i> Quote
+                                                                        .widget-toolbar.no-border
+                                                                .widget-body
+                                                                        .widget-main
+                                                                                .row
+                                                                                        .col-md-6
+                                                                                table.table.table-bordered.table-hover
+                                                                                        thead
+                                                                                                tr
+                                                                                                        th
+                                                                                                                i.icon-user
+                                                                                                        th
+                                                                                                                |Quote
+                                                                                                        th
+                                                                                                                |E-Mail ID
+                                                                                        tbody
+                                                                                                tr
+                                                                                                        td
+                                                                                                                |Jim
+                                                                                                        td
+                                                                                                                |19 Days
+                                                                                                        td
+                                                                                                                <a href="mailto:jim@cevalogistics.com "> Jim </a>
+                                                                                                tr
+                                                                                                        td
+                                                                                                                |Lynda
+                                                                                                        td
+                                                                                                                |15 Days
+                                                                                                        td
+                                                                                                                <a href="mailto:lynda@cevalogistics.com"> Lynda </a>
+                                                                                                tr
+                                                                                                        td
+                                                                                                                |Eric
+                                                                                                        td
+                                                                                                                |11 Days
+                                                                                                        td
+                                                                                                                <a href="mailto:eric@cevalogistics.com"> Eric </a>
+                                                                                                tr
+                                                                                                        td
+                                                                                                                |Rajesh
+                                                                                                        td
+                                                                                                                |6 Days
+                                                                                                        td
+                                                                                                                <a href="mailto:rajesh@cevalogistics.com"> Rajesh </a>
+                                                                                                tr
+                                                                                                        td
+                                                                                                                |Estella
+                                                                                                        td
+                                                                                                                |5 Days
+                                                                                                        td
+                                                                                                                <a href="mailto:estella@cevalogistics.com"> Estella </a>
+
+                                        
+                        .col-sm-10<!--PAGE CONTENT BEGINS HERE-->                                                      
+                                .row(ui-view="list")
+                                <!--PAGE CONTENT ENDS HERE-->
+                        <!--/row-->
+                <!--/#page-content-->
+//- .container-fluid.well
+//-                 .row
+//-                         .col-md-10.offset1
+//-                                 .row
+//-                                         input.col-md-9(ui-select2="searchBar", ng-model="searchBarValue",ng-click="itemChanged($event)", ui-keypress="{enter: 'searchQuote(searchBarValue)'}")
+//-                                         button.btn.btn-primary.btn-margin(ng-disabled="!$routeParams.accountId",ng-click="searchQuote(searchBarValue,$stateParams.accountId,$stateParams.quoteTemplateId)",type="submit")&nbsp&nbsp&nbsp&nbsp
+//-                                                 i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp                                        
+//-                                         button.pull-right.btn.btn-success.btn-margin(ng-disabled="!$stateParams.quoteTemplateId",ng-click="getTemplate($stateParams.accountId,$stateParams.quoteTemplateId)",href="#/quote/new/{{$routeParams.accountId}}/{{$routeParams.templateId}}",bs-tooltip="tooltip.rateRequestNew")
+//-                                                 i.icon-plus.icon-white
+//-                                                 |  Request Quote
+//- .container-fluid
+//-         .row
+//-                 .col-md-2.bs-docs-sidebar(style="cursor: pointer;")
+//-                         ul.nav.nav-list.bs-docs-sidenav
+//-                                 input(type="text",ng-change="searchAccount();toggleCollapse(false)", placeholder="Search", ng-model="search")
+//-                                 li.nav-header
+//-                                         h4 Accounts                                                
+//-                                         li.active(ng-show='isCollapsed')
+//-                                                 a(ng-click='toggleCollapse(false)',bs-tooltip="tooltip.showMore")
+//-                                                         i.icon-chevron-down.pull-right
+//-                                                         {{selectedAccount}}
+//-                                         div(collapse='isCollapsed')   
+//-                                                 .col-md-2.bs-docs-sidebar(style="cursor: pointer;")
+//-                                                         ul.nav.nav-list.bs-docs-sidenav(id="Fixed", when-scrolled="loadMoreAccounts()")                                    
+//-                                                                 li(ng-class="{ active: $stateParams.accountId == l.id}", ng-repeat="l in accountList | filter:search")
+//-                                                                         a(ng-click="selectAccount(l.v);toggleCollapse(true);getQuoteDefs(l.id);searchFor('Account',l.v,l.id,$stateParams.quoteTemplateId)")
+//-                                                                                 i.icon-chevron-right
+//-                                                                                 {{l.v|titlecase}}
+//-                                         i.icon-spinner.icon-spin.icon-4x(ng-show="accountListLoader")                                                        
+//-                         ul.nav.nav-list.bs-docs-sidenav(ng-show='isCollapsed')                      
+//-                                 li.nav-header
+//-                                         h4 Quote Definitions
+//-                                                 i.icon-spinner.icon-spin.icon-4x(ng-show="QuoteDefnListLoader")
+//-                                 li
+//-                                         span2
+//-                                                 a.btn.btn-xs.btn-success.btn-margin(permission="createQuoteDefin.*.*",ng-disabled="$state.includes('quote.template')",href="#/quote/template/{{$routeParams.accountId}}", bs-tooltip="tooltip.new" , ng-click="newQuoteDefn()") 
+//-                                                         i.icon-plus.icon-white
+//-                                         ul.nav.nav-list.bs-docs-sidenav(id="FixedQuote") 
+//-                                                 li(ng-class="{ active: $stateParams.quoteTemplateId == l.id}", ng-click="searchFor('quoteDefn',l.v,$stateParams.accountId,l.id);selectQuoteDefn(l.id)", ng-repeat="l in quoteDefinitions")
+//-                                                         a 
+//-                                                                 i.icon-chevron-right
+//-                                                                 {{l.n | inflector:humanize}}                        
+
+//-                 .col-md-10                        
+//-                         div(ng-show="accountList")
+//-                                 .container.offset1(ng-hide="$routeParams.accountId")
+//-                                         //- .row
+//-                                         //-                 .col-md-5
+//-                                         //-                         h4 Total Revenue per Lane
+//-                                         //-                         div(total-Revenue='chartData')
+//-                                         //-                 .col-md-5
+//-                                         //-                         h4 Top Quoted
+//-                                         //-                         div(top-Quoted='chartData')
+//-                                         //- hr
+//-                                         //- .row
+//-                                         //-                 .col-md-5
+//-                                         //-                         h4 Accounts
+//-                                         //-                         div(accounts='chartData')
+//-                                         //-                 .col-md-5
+//-                                         //-                         h4 Lane Expiry Status
+//-                                         //-                         div(lane-Expiry='chartData')
+//-                                 div(ui-view="list")             

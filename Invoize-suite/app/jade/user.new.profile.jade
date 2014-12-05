@@ -1,0 +1,69 @@
+.row.in-wiz-ttl
+	.col-md-9.col-sm-8
+		.in-wiz-info Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+	.col-md-3.col-sm-4.in-add
+		//- i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyCreateLoader")
+		//- a(ng-click="openDialog(companyData)", href="javascript:void(0)")
+			span.in-add-sign +
+			span.in-add-txt Add / modify fields
+
+div(ng-init="initialize()")
+	form(name="mainForm2",ng-submit="submitAll()",novalidate)	 
+		div.in-wiz-row(ng-form="subForm")
+			label.control-label Profile Name		
+			.controls
+				input(type="text",name="name",ng-trim,ng-required)		          				
+				//- input(ng-switch-when='date',type="date",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)		          				
+				//- input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close")
+				//- input(ng-switch-when='numeric',unique="{{item.key}},{{item.isUniqueField}},company",type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)		          				
+				//- dynamic-Select(ng-switch-when='multiselect',multiselect,enterchoice ,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}")
+				//- dynamic-Select(ng-switch-when='dropdown',enterchoice ,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}")				
+				//- textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)
+				span(ng-show="subForm.name.$error.required") *
+				span(ng-show="subForm.name.$error.unique") already Exists
+				span(ng-show="subForm.name.$error.number") only numbers
+				span(ng-show="subForm.name.$error.date") only date
+				span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+				span(ng-show="subForm.name.$error.pattern") Can contain only text
+				span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+		div.in-wiz-row(ng-form="subForm")
+			label.control-label Company		
+			.controls
+				input(type="text",name="name",ng-trim,ng-required)		          				
+				//- input(ng-switch-when='date',type="date",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)		          				
+				//- input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close")
+				//- input(ng-switch-when='numeric',unique="{{item.key}},{{item.isUniqueField}},company",type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)		          				
+				//- dynamic-Select(ng-switch-when='multiselect',multiselect,enterchoice ,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}")
+				//- dynamic-Select(ng-switch-when='dropdown',enterchoice ,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}")				
+				//- textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)
+				span(ng-show="subForm.name.$error.required") *
+				span(ng-show="subForm.name.$error.unique") already Exists
+				span(ng-show="subForm.name.$error.number") only numbers
+				span(ng-show="subForm.name.$error.date") only date
+				span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+				span(ng-show="subForm.name.$error.pattern") Can contain only text
+				span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+
+		div.in-wiz-row(ng-form="subForm")
+			label.control-label System		
+			.controls
+				input(type="text",name="name",ng-trim,ng-required)		          				
+				//- input(ng-switch-when='date',type="date",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)		          				
+				//- input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close")
+				//- input(ng-switch-when='numeric',unique="{{item.key}},{{item.isUniqueField}},company",type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)		          				
+				//- dynamic-Select(ng-switch-when='multiselect',multiselect,enterchoice ,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}")
+				//- dynamic-Select(ng-switch-when='dropdown',enterchoice ,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}")				
+				//- textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim)
+				span(ng-show="subForm.name.$error.required") *
+				span(ng-show="subForm.name.$error.unique") already Exists
+				span(ng-show="subForm.name.$error.number") only numbers
+				span(ng-show="subForm.name.$error.date") only date
+				span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+				span(ng-show="subForm.name.$error.pattern") Can contain only text
+				span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+
+		.in-wiz-footer		
+			a.inz-btn.btn-sm.btn-default(href="#/wizard/users/view") Cancel
+			//- button.inz-btn.btn-sm.btn-default() Cancel
+			a.inz-btn.btn-sm.btn-success(href="#/wizard/users/invite") Save Changes
+			//-button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="create(companyData)") Save Changes

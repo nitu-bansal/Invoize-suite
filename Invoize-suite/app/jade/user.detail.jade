@@ -1,0 +1,72 @@
+.row.in-wiz-ttl.fix-scroll(ng-show="$state.current.name.split('.')[0]=='wizard'")
+        .col-md-9.col-sm-8
+                .in-wiz-info Welcome to user configurations. You can configure / edit users/permissions to users here.
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="loader")
+        .col-md-3.col-sm-4.in-add
+                a(ng-click='editTemplate(false);',href="javascript:void(0)",permission='editTemplateUser')
+                        span.in-add-sign +
+                        span.in-add-txt Add / Edit Fields
+
+.row.in-wiz-ttl.in-fix-scroll(ng-hide="$state.current.name.split('.')[0]=='wizard'",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Users Details
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="loader")
+            a(ng-click='editTemplate(false);',href="javascript:void(0)",permission='editTemplateUser')
+                            span.in-add-sign +
+                            span.in-add-txt Add / Edit Fields
+            a.inz-btn.btn-sm.btn-default(ng-click="redirectTo('/users/invite')",permission='createUser') Invite Users
+            button.inz-btn.btn-sm.btn-default(ng-click="editPermissions()",permission='assignPermissionUser') Assign Permissions
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-click="updateUsers(false)",permission='editUser') Save Changes
+            .btn-group.filter-dd.rule-filter(style="vertical-align: inherit;")
+                button.btn-sm.btn-ico.btn-custom.dropdown-toggle.pad6-12(data-toggle='dropdown', type='button')
+                    i.fa.fa-filter
+                    |  Filter &nbsp;
+                    i.fa.fa-angle-down
+                .dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;white-space: nowrap;")
+                    div
+                        button.btn-sm.btn-ico.btn-custom.pull-right(ng-click="isAdvancedFilter=!isAdvancedFilter")
+                            span(ng-show="isAdvancedFilter") Easy Filter
+                            span(ng-show="!isAdvancedFilter") Flexi Filter
+                        br
+                    div.rule-filter1.showme.custom-filter-display.overflow-auto(ng-show="isAdvancedFilter")
+                        .row#rules
+                            .row
+                                .ds-tree(ng-form="rulesForm",rules,ng-init="getRuleFields()")
+                    div(ng-show="isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(ng-click="reset()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="getData(currentPage,true)") Apply
+                    div.showme.custom-filter-display.overflow-auto(ng-show="!isAdvancedFilter")
+                        div(ng-repeat="f in sortedFields",ng-switch="fields[f].type" )
+                            .opt-title {{fields[f].label}}
+                            input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="fields[f].val",close-text="Close",placeholder="{{fields[f].label}}", )
+                            dynamic-Select(ng-switch-default,multiselect,name="{{fields[f]}}",ng-model="fields[f].val",ph="user",customobj="{{custObj[fields[f].label]}}",placeholder="{{fields[f].label}}")
+
+                    div(ng-show="!isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetFilter()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply
+div(style="clear:both;")
+.col-xs-12.col-md-12.col-sm-12
+    div(ui-handsontable='{currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",height="hh",width='hw',beforeSet='multiselect',datarows='user in users',manualColumnResize='true',columns='columns',onBeforeChange='celChange',onChange='aftercellchange',afterRender='afterRender()',ng-init="getTemplate()")
+    pagination(total-items="totalItems",items-per-page="pageLimit", page="currentPage",max-size="paginationSize",rotate="true",ng-init="paginationSize=20", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+
+
+.in-wiz-footer
+    button.inz-btn.btn-sm.btn-danger(ng-click="prevStep()")
+        i.fa.fa-long-arrow-left
+        |   Previous Step
+    a.inz-btn.btn-sm.btn-default(href="#/wizard/users/invite",permission='createUser') Invite Users
+    button.inz-btn.btn-sm.btn-default(ng-click="editPermissions()",permission='assignPermissionUser') Assign Permissions
+    //button.inz-btn.btn-sm.btn-default(ng-click="activateUsers(true)") Activate users
+    //button.inz-btn.btn-sm.btn-default(ng-click="activateUsers(false)") Deactivate users
+    button.inz-btn.btn-sm.btn-success(type="submit",ng-click="updateUsers(false)",permission='editUser') Save Changes
+    a.inz-btn.btn-sm.btn-primary(ng-click="finishSetup()")
+        i.fa.fa-flag-checkered
+        |   Finish
+script(type='text/javascript')
+    $('.filter-ddm li').click(function(e) {
+    e.stopPropagation();
+    });

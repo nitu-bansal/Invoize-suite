@@ -1,0 +1,88 @@
+.col-md-6.col-sm-12.col-xs-12
+    form(novalidate,name="form")
+        h3.header.smaller.lighter.red
+            i.icon-edit &nbsp;
+            | Compose
+        label.input-xxlarge.label-noti From
+            span.red(ng-show="form.from.$error.required") &nbsp; *
+            span.green.validTick(ng-show="form.from.$valid") &nbsp; &#10004;
+            //- select.mw400(ui-select2='ui-select2',  data-placeholder='From', ng-model='data.from', ng-options='f.n for f in fromIDs')
+            //-     option(value="")
+        span.span-large
+            dynamic-Select(name="from",ng-model="data.notifications.from",ph="metadata_emailAccounts",placeholder="From",required)
+        button.command(toolTip="Configure Email",ng-click='toggleConfigureEmailBox()')
+            i.fa.fa-cog
+            // span(ng-hide='showConfigureEmailBox')
+            // include configureEmailBox
+        label.input-xxlarge.label-noti To
+            span.red(ng-show="form.to.$error.required") &nbsp; *
+            span.green.validTick(ng-show="form.to.$valid") &nbsp; &#10004;
+        input.input-xxlarge(name="to",placeholder="Enter comma(,) separated Email address for External Contacts", ng-model="data.notifications.to", type='text',required)
+
+
+        label.input-xxlarge.label-noti CC
+        input.input-xxlarge(name="cc",ng-model="data.notifications.cc",type='text', placeholder="Enter comma(,) separated Email address for Internal Contacts",ng-required="false")
+
+        label.input-xxlarge Subject
+            span.red(ng-show="form.subject.$error.required") &nbsp; *
+            span.green.validTick(ng-show="form.subject.$valid") &nbsp; &#10004;
+        input.input-xxlarge(name="subject",ng-model="data.notifications.subject",type='text', placeholder="Subject",required)
+
+
+        label.input-xxlarge.label-noti Reply to
+            span.red(ng-show="form.replyto.$error.required") &nbsp; *
+            span.green.validTick(ng-show="form.replyto.$valid") &nbsp; &#10004;
+        input.input-xxlarge(name="replyto",ng-model="data.notifications.replyto",type='text', placeholder="Enter your or Team group Email address",required)
+
+        div(style="clear:both;height:5px;")
+        label.input-medium.label-noti(for="bool-attach") Attachment
+        label
+            input( type="checkbox", class="ace ace-switch ace-switch-2", name="switch-field-1",ng-model="data.notifications.attachment",ng-required="false")
+            span.lbl
+
+
+        div(style="clear:both")
+        rich-text(ng-model="data.notifications.body",name="body",id="txtBody",ng-required="false")
+        div(style='display:none')
+            b#startIndex
+            | to
+            b#endIndex
+
+        div(style="clear:both;")
+        label.label-noti.input-xxlarge Signature
+        br
+        textarea.inz-txt(ng-model="data.notifications.signature",type='text',style="min-width:100%; max-width:100%;",ng-required="false")
+        div(style="clear:both;height:40px;")
+
+
+.col-md-6.col-sm-12.col-xs-12
+    h3.header.smaller.lighter.red
+        i.fa.fa-unlink &nbsp;
+        | Fields
+    .pull-left
+        label.blue(tooltip="if this need to be used in Email") Drag and Drop Variables
+    .pull-right
+        input.in-query1(type='text',ng-model='querySearch',ng-change="gridFilter(querySearch)", placeholder='Type here to search...')
+    div(style="clear:both;height:5px;")
+    .de-block(nice-scroll)
+        ul.in-fields
+            li(ui-draggable='true', drag='fields', ng-repeat='fields in fields track by $index')
+                | {{fields}}
+    div(style="clear:both;height:5px;")
+    h3.header.smaller.lighter.red
+        i.fa.fa-clock-o &nbsp;
+        | Scheduling
+    .row
+        .pull-right
+            label(style="margin-bottom:0;")
+                input( type="checkbox", class="ace ace-switch ace-switch-1", name="switch-field-1",ng-click='toggleScheduling()',ng-model="schedulingOnOff",ng-required="false")
+                span.lbl
+
+            //button.inz-btn.btn-default.btn-sm.btn-ico(ng-click='toggleScheduling()')
+            //    i.fa.fa-calendar
+    .row
+        div(ng-hide='showScheduling')
+            include scheduling
+    div(style="clear:both;height:220px")
+
+

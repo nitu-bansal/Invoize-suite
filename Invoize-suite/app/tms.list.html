@@ -1,0 +1,96 @@
+
+<div id="FixedRate" class="col-md-4">
+  <div class="col-md-12">
+    <h4 class="header smaller lighter gray">Tariffs  <i ng-show="tariffListLoader" class="icon-spinner icon-spin icon"></i>
+      <div class="btn-group pull-right"><a permission="createTariff.*.*" ng-disabled="$state.includes('tms.list.new')" href="#/tms/list/{{$stateParams.accountId}}/new" bs-tooltip="tooltip.new" data-placement="right" ng-click="new()" class="btn btn-sm btn-primary"><i class="icon-plus icon"></i></a><a ng-show="tariffList.length" permission="readTariff.*.*" ng-click="isFilterCollapsed = !isFilterCollapsed" class="btn btn-sm btn-primary"><i bs-tooltip="tooltip.clickToFilter" data-placement="top" class="icon-filter"></i></a><a permission="readAccount.*.*" href="#/tms/list/{{$stateParams.accountId}}/account/" bs-tooltip="tooltip.accountDetails" data-placement="top" ng-click="selectAccount($stateParams.accountId)" class="btn btn-sm btn-primary"><i class="icon-list-alt"></i></a></div>
+    </h4>
+  </div>
+  <div collapse="isFilterCollapsed">
+    <div class="alert alert-warning">
+      <div class="fieldset">
+        <div class="row">
+          <button type="button" ng-click="isFilterCollapsed = !isFilterCollapsed" class="close pull-right">×</button>
+        </div>
+      </div>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label">Effective on</label>
+          <div class="controls">
+            <input type="text" name="filterEffectiveDate" ng-model="searchFilter.effectiveDate" data-placement="right" placeholder="YYYY-MM-DD" bs-tooltip="tooltip.dateExample" class="input-sm"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Expiring on</label>
+          <div class="controls">
+            <input type="text" name="filterExpiryDate" ng-model="searchFilter.expiryDate" value="searchFilter.expiryDate" data-placement="right" placeholder="YYYY-MM-DD" bs-tooltip="tooltip.dateExample" class="input-sm"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Status</label>
+          <div class="controls">
+            <select ui-select2="ui-select2" name="filterActive" ng-model="searchFilter.isActive" data-placeholder="select" style="width:100px">
+              <option value="" selected="selected">Both</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive                                                        </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div permission="readTariff.*.*" ng-show="searchFilter.expiryDate || searchFilter.EffectiveDate || searchFilter.isActive"><strong ng-click="isFilterCollapsed = !isFilterCollapsed" style="cursor: pointer;" class="text-black linkGreen"> Showing filterd results..</strong><br/><small ng-show="searchFilter.isActive==1" class="muted">Status: Active</small><small ng-show="searchFilter.isActive==0" class="muted">Status: Inactive</small><small ng-show="searchFilter.effectiveDate" class="muted">,Effective: {{searchFilter.effectiveDate | date:'mediumDate'}}</small><small ng-show="searchFilter.expiryDate" class="muted">,Expiry: {{searchFilter.expiryDate | date:'mediumDate'}}</small></div>
+  <div ng-hide="tariffListLoader">
+    <h5 ng-hide="tariffList.length" class="offset1">Couldn't find tariffs for this account<i class="icon-frown"></i></h5>
+  </div>
+  <div ng-show="tariffList.length" class="widget-box transparent">               
+    <div class="widget-body">
+      <div class="widget-main no-padding">
+        <div class="col-md-12">
+          <table ng-show="tariffList.length" class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th><i class="icon-time black">&nbsp Effective                         </i></th>
+                <th><i class="icon-time black">&nbsp Expiry                            </i></th>
+                <th class="hidden-767"> <i class="icon-paper-clip black">&nbsp Docs.                                                </i></th>
+                <th class="hidden-767"> <i class="icon-flag black">&nbsp Holders  </i></th>
+                <th><i class="icon-flag black">&nbsp Status                         </i></th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="r in tariffList  | filter:searchFilter">
+              <tr data-placement="bottom" permission="readTariff.*.*" style="cursor: pointer;" bs-tooltip="tooltip.detail" href="#/tms/list/{{$stateParams.accountId}}/detail/{{r.id}}" ng-class="{'alert alert-info': ($state.includes('tms.list.detail') || $state.includes('tms.list.edit') ) &amp;&amp; $stateParams.tariffId == r.id}" ng-click="selectTariff(r.id)">
+                <td>{{r.effectiveDate  | date:'mediumDate'}}</td>
+                <td class="center">{{r.expiryDate  | date:'mediumDate'}}</td>
+                <td class="hidden-767">
+                  <div class="center">
+                    <div popover-placement="right" popover="{{quickViewAttachments[$index]}}" popover-trigger="mouseenter" class="col-md-">  {{r.docId.length}}</div>
+                  </div>
+                </td>
+                <td class="hidden-767">
+                  <div class="center">
+                    <div popover-placement="right" popover="{{CurrentStackHolder[$index]}}" popover-trigger="mouseenter" class="col-md-">  {{r.workflowUsers.length}}</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="center"><span ng-show="r.isActive==1" class="label label-success arrowed-in arrowed-in-right">Active</span><span ng-show="r.isActive==0" class="label label-important arrowed">Inactive             </span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-8">
+  <div ng-show="$state.current.name=='tms.list'" class="col-md-12">
+    <div class="col-md-6">
+      <h4>Tariff Expiring in Coming Months</h4>
+      <div tariff-Expired="chartData"></div>
+    </div>
+    <div class="col-md-6">
+      <h4>Tariff Expired Since</h4>
+      <div tariff-Expiry="chartData"></div>
+    </div>
+  </div>
+  <div ui-view="detail" class="col-md-12"></div>
+</div>

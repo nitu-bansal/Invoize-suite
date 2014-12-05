@@ -1,0 +1,38 @@
+
+<div set-width="set-width" ng-init="getMetadataList('')" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Metadata</div>
+    </div>
+    <div class="pull-right"><i ng-show="metadataLoader" class="icon-spinner icon-spin blue icon-large"></i>
+      <input placeholder="Search Metadata" ng-model="q" class="input-search-new"/>
+      <button class="input-search-new"><i class="fa fa-search"></i></button><a style="cursor:pointer" ng-href="/#/organizationSetup/metadata/new"><span class="in-add-sign">+</span><span class="in-add-txt">Add Metadata</span></a>
+    </div>
+  </div>
+</div>
+<div style="clear:both"></div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div ng-repeat="ListItem in metadataTypes | filter:{type:q} | orderBy:title" ng-form="subForm" style="margin-bottom:10px;" class="col-md-4 col-sm-6 col-xs-12 inz-blk">
+    <div class="in-view-block">
+      <div class="title"><i class="fa fa-tags small">&nbsp;</i>{{ListItem.type}}</div>
+      <div class="line">
+        <div class="caption">Count</div>
+        <div class="data">{{ListItem.count}}</div>
+      </div>
+      <div class="line">
+        <div class="caption">Create Date</div>
+        <div class="data">{{ListItem.createdDate | date:'medium'}}</div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Delete" ng-click="confirmDeleteProfile(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="editMetadataType(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Detail" ng-click="detailMetadataType(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-eye"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>

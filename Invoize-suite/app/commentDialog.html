@@ -1,0 +1,24 @@
+ 
+<div style="width:600px" class="modal-dialog">
+  <form name="form">  
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;                            </button>
+        <h4 class="modal-title">Comment</h4>
+      </div>
+      <div class="modal-body">
+        <div class="modal-msg">
+          <label class="control-label">Please enter comment : </label>
+          <div class="controls"> 
+            <input name="comment1" ng-model="comment1" type="text" placeholder="Enter Comment" ng-show="item.isReDelivery==true" required="required" class="mw320 inz-txt"/><span ng-show="form.comment1.$error.required &amp;&amp; item.isReDelivery==true">*</span><span ng-show="form.comment1.$valid &amp;&amp; item.isReDelivery==true" class="green">&#10004;</span>
+            <input name="comment2" ng-model="comment2" type="text" placeholder="Enter Comment" ng-show="item.isReDelivery==false" class="mw320 inz-txt"/>
+          </div>
+        </div>
+        <div class="modal-footer">                   </div>
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-click="save()" ng-class="{'disabled': form.$invalid}" ng-show="item.isReDelivery==true" class="inz-btn btn-sm btn-success">Send</button>
+        <button ng-click="save()" ng-show="item.isReDelivery==false" class="inz-btn btn-sm btn-success">Send</button>
+      </div>
+    </div>
+  </form>
+</div>

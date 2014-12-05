@@ -1,0 +1,52 @@
+.modal-dialog.container
+    .modal-content
+        form(name="form",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Configure Metadata
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body
+                .row(ng-init="getMetadataList()")
+                    .col-md-2
+                        .his-title
+                            i.fa.fa-file-text-o
+                            |   {{profile.Name}}
+                            button.pull-right.command.light(toolTip="Add New",ng-click="clearData()")
+                                i.fa.fa-plus
+                        ul.his-list.less(style="max-height:153px;")
+                            li(ng-repeat="m in selectMetadataList",ng-click="readMetadadata(m.id)")
+                                a( title="{{m.value}}") {{m.value}}
+                                i.fa.fa-chevron-right
+
+
+                    .col-md-10
+                        .col-sm-5.in-wiz-row( ng-repeat="row1 in profile.fields",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}", alt-render,hasParent='row',hasCount='2',ng-cloak='ng-cloak')
+                            form.form-horizontal(novalidate, name="subForm")
+                                label {{row1.label}}
+                                .controls(ng-switch-when="true",ng-switch='row1.type')
+                                    input(ng-switch-when='text',type="text",ng-if="row1.key!='script' && row1.key!='fromMessageType' && row1.key!='toMessageType' && row1.key!='fromEdiType' && row1.key!='toEdiType'",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                    input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                    input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                    dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                    dynamic-Select(ng-switch-when='dropdown',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                    textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                    input(style="width:130px;", ng-switch-when='text',type="text",ng-required="row1.isMandatory",ng-if="row1.key=='script' || row1.key=='fromMessageType' || row1.key=='toMessageType' || row1.key=='fromEdiType' || row1.key=='toEdiType'", ng-model="row1.value" ,id="{{row1.key}}",name="name",ng-readonly="{{row1.isReadonly}}",typeahead="suggestion for suggestion in scriptBar($viewValue,row1.suggestionsSource,row1.key)", typeahead-editable="false",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+
+
+                                    span(ng-show="subForm.name.$error.required") *
+                                    span(ng-show="subForm.{{row1.key}}.$error.required") *
+                                    span(ng-show="subForm.communicationscripts.$error.required") *
+                                    span(ng-show="subForm.name.$error.unique") already Exists
+                                    span(ng-show="subForm.name.$error.number") only numbers
+                                    span(ng-show="subForm.name.$error.date") only date
+                                    span(ng-show="subForm.name.$error.maxlength") max length is {{row1.length}}
+                                    span(ng-show="subForm.name.$error.pattern") Can contain only text
+                                    span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+
+            .modal-footer
+                button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", type="submit", ng-click="saveMetadata()",) Save
+
+
+
+

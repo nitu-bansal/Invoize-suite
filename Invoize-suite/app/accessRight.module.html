@@ -1,0 +1,16 @@
+
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">Permission</div><a ng-click="getTemplateAccessModule()" class="inz-btn btn-sm btn-default">Cancel</a>
+    <button type="submit" ng-click="save()" class="inz-btn btn-sm btn-success">Save</button>
+  </div>
+</div>
+<div ng-init="getTemplateAccessModule()" class="row">
+  <div class="col-xs-12">
+    <tabset>
+      <tab heading="Modules" ng-click="AddModify=false;register=false;invite=true" class="tab">
+        <div ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" height="hh" datarows="moduleSI in modulesSI" manualColumnResize="true" columns="columnsSI" minsparerows="1" onBeforeChange="celChange"></div>
+      </tab>
+    </tabset>
+  </div>
+</div>

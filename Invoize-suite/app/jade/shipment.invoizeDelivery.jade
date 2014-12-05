@@ -1,0 +1,67 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            //.in-wiz-info(ng-show="deliveryTab!='deliveredInvoice'") Invoices to be Delivered
+            //.in-wiz-info(ng-show="deliveryTab=='deliveredInvoice'") Delivered Invoices
+            .in-wiz-info(ng-show="$state.current.name!='billright.invoizeDelivery.deliveredInvoice'") Invoices to be Delivered
+            .in-wiz-info(ng-show="$state.current.name=='billright.invoizeDelivery.deliveredInvoice'") Delivered Invoices
+
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyListLoader")
+            //- input.input-search-new(placeholder="Search Invoices",ng-change="searchCompany(q)",ng-model="q")
+            //- button.input-search-new
+            //-     i.fa.fa-search
+            dynamic-Select(required,customobj='{"systemId":"{{loggedInUser.userSystem[0].id}}","currentContext":"{{$state.$current.context.product}}.invoiceDelivery"}',name="searchAccount",ng-model="global.account",ph="account",placeholder="Select Account",change="clearData();")
+            button.input-search-new1( ng-click="getDeliveryData()")
+                i.fa.fa-search
+            //button.btn-sm.btn-custom(type="button",tooltip="Export to Excel", tooltip-placement="bottom",ng-click="pullFile();")
+            //    i.fa.fa-download
+            .btn-group(style="vertical-align: inherit;")
+                button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button',permission='invoiceDelivery.download')
+                    i.fa.fa-download
+                    //- |    Download &nbsp;
+                    //- i.fa.fa-angle-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop2', role='menu',style="left: auto; right: 0;")
+                    li(ng-click="pullFile();")
+                        a(style="cursor:pointer") Excel
+                    li(ng-click="pullInvoicePacket();" , ng-show="deliveryTab=='deliveredInvoice'")
+                        a(style="cursor:pointer") Invoice Packet
+            .btn-group(style="vertical-align: inherit;")
+                button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button',permission='invoiceDelivery.action')
+                    |    Actions &nbsp;
+                    i.fa.fa-angle-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                    li(ng-click="",ng-show="$state.current.name!='billright.invoizeDelivery.webInvoice' && $state.current.name!='billright.invoizeDelivery.deliveredInvoice'")
+                        a(style="cursor:pointer") Add Invoice
+                    li(ng-click="",ng-click="invoiceDelivery('reDelivery')",ng-show="$state.current.name=='billright.invoizeDelivery.deliveredInvoice'")
+                        a(style="cursor:pointer") Resend
+                    li(ng-click="",ng-show="$state.current.name!='billright.invoizeDelivery.webInvoice' && $state.current.name!='billright.invoizeDelivery.deliveredInvoice'")
+                        a(style="cursor:pointer",ng-click="invoiceDelivery('Delivery')") Deliver
+                    li(ng-click="",ng-show="$route.current.url == '/deliveryQueue'")
+                        a(style="cursor:pointer") Cancel Delivery
+                    li(permission='invoiceDelivery.webApprove',ng-click='updateStatus("Approved",true,0)',ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'")
+                        a(style="cursor:pointer") Approve
+                    li(permission='invoiceDelivery.webReject',ng-click='updateStatus("Rejected",true,0)',ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'")
+                        a(style="cursor:pointer") Reject
+                    li(permission='invoiceDelivery.webPrint',ng-click='updateStatus("Printed",true,0)',ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'")
+                        a(style="cursor:pointer") Set as Printed
+                    li(ng-click="uploadNewInvoice()",ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice'")
+                        a(style="cursor:pointer") Upload New Invoice
+
+div(style="clear:both;height:47px;")
+.col-xs-12
+    div(ng-hide="$state.current.name.split('.')[2]=='webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'|| $state.current.name=='billright.invoizeDelivery.uploadNewInvoice'")
+        tabset
+            tab.tab(permission='invoiceDelivery.tabEdiInvoiceDelivery',heading="EDI", ng-click="deliveryTab='edi';redirectTo('/billright/invoizeDelivery/edi')")
+            tab.tab(permission='invoiceDelivery.tabEmailInvoiceDelivery',heading="Email", ng-click="deliveryTab='email';redirectTo('/billright/invoizeDelivery/email')")
+            tab.tab(permission='invoiceDelivery.tabPaperInvoiceDelivery',heading="Paper", ng-click="deliveryTab='paper';redirectTo('/billright/invoizeDelivery/paper')")
+            tab.tab(permission='invoiceDelivery.tabWebInvoiceDelivery',heading="Web", ng-click="deliveryTab='web';redirectTo('/billright/invoizeDelivery/web')")
+            tab.tab(permission='invoiceDelivery.tabUnDeliveredInvoice',heading="UnDelivered Invoice", ng-click="deliveryTab='unDeliveredInvoice';redirectTo('/billright/invoizeDelivery/unDeliveredInvoice')")
+            //tab.tab(permission='invoiceDelivery.tabDeliveredInvoice',heading="Delivered Invoice", ng-click="deliveryTab='deliveredInvoice';redirectTo('/billright/invoizeDelivery/deliveredInvoice')")
+
+    //- .pull-right
+    //-     dynamic-Select(required,multiselect,customobj='{"systemId":"{{userSystem[0].id}}","currentContext":"{{$state.$current.context.product}}.invoiceDelivery"}',name="searchAccount",ng-model="search.account",ph="account",placeholder="Select Account",change="clearData();")
+    //-     button.input-search-new1( ng-click="getDeliveryData()")
+    //-         i.fa.fa-search
+//div(style="clear:both;height:47px;")
+div(ui-view="childContents")

@@ -1,0 +1,72 @@
+<!--
+<Created>by pallavi.dandane on 9/25/2014.</Created>-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Add/Edit Groups &nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row in-wiz-ttl in-fix-scroll">
+          <div class="col-xs-12">
+            <div class="pull-left">
+              <div class="in-wiz-info">Group</div>
+            </div>
+            <div class="pull-right"><i ng-show="templateLoader" class="icon-spinner icon-spin blue icon-large"></i>
+              <input placeholder="Search Group" ng-change="getGroupList(q)" ng-model="q" class="input-search-new"/>
+              <button class="input-search-new"><i class="fa fa-search"></i></button><a style="vertical-align: middle;cursor:pointer" ng-href="/#/wizard/group/new" ng-click="initializeGroup()" ng-show="$state.current.name.split('.')[0]=='wizard'"></a><a style="cursor:pointer" ng-href="/#/organizationSetup/group/new" ng-click="initializeGroup()" ng-hide="$state.current.name.split('.')[0]=='wizard'"><span class="in-add-sign">+</span><span class="in-add-txt">Add Group</span></a>
+            </div>
+          </div>
+        </div>
+        <div style="clear:both" ng-init="getUserGroupList('user',loggedInUser.userSystem[0].id,'','')">
+          <div class="col-xs-12 col-md-3 col-sm-6">
+            <div class="div-rules">
+              <div style="height:284px;" class="ul-rules overflow-auto">
+                <li ng-repeat="listItem in groupList" ng-click="fillDetails($index)" ng-class="{'active':rule.indx==$index}">
+                  <!--label.fa.fa-hand-o-right(tooltip="Rule Name")-->
+                  <div class="in-side-ttl"><span>{{listItem.name}}</span></div><br/>
+                  <label tooltip="Company Name"></label><span>{{listItem.company| selectFormat}}</span><br/>
+                  <!--label.fa.fa-flag-o(tooltip="Status")-->
+                  <!--span.span-red(ng-if="!listItem.isActive") Inactive-->
+                  <!--span.span-green(ng-if="listItem.isActive") Active-->
+                </li>
+              </div>
+              <div ng-show="groupList.length==0 &amp;&amp; $parent.loader==false" class="ul-rules">
+                <h5 class="orange">No Group List Found :(</h5>
+              </div>
+            </div>
+            <!--.col-sm-6.col-md-4.col-xs-12.inz-blk(ng-repeat="listItem in groupList | orderBy:name",ng-form="subForm", style="margin-bottom:10px;")-->
+            <!--    .in-view-block-->
+            <!--        .title-->
+            <!--            i.fa.fa-tags.small &nbsp;-->
+            <!--            | {{listItem.name}}-->
+            <!--        .line-->
+            <!--            .caption Company-->
+            <!--            .data {{listItem.company| selectFormat}}-->
+            <!--        .line-->
+            <!--            .caption System-->
+            <!--            .data {{listItem.system| selectFormat}}-->
+            <!--        .line-->
+            <!--            .caption Type-->
+            <!--            .data {{listItem.type| selectFormat}}-->
+            <!--    .in-btn-blk-->
+            <!--        .in-btn-grp-->
+            <!--            .in-btn-row-->
+            <!--                //- button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" , ng-click="confirmDeleteGroup(listItem.id)")-->
+            <!--                //-         i.fa.fa-trash-o-->
+            <!--                button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Clone" , ng-click="cloneGroup(listItem.id)")-->
+            <!--                    i.fa.fa-copy-->
+            <!--                button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="View" , ng-click="readGroup(listItem.id,'/group/')")-->
+            <!--                    i.fa.fa-eye-->
+            <!--                button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="readGroup(listItem.id,'/group/edit/')")--><!--                    i.fa.fa-edit-->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-class="{'disabled': form.$invalid}" ng-click="SaveAccountDocsEdit()" ng-disabled="form.$invalid" class="inz-btn btn-sm btn-success">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

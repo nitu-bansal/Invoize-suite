@@ -1,0 +1,107 @@
+
+<form name="form" novalidate="novalidate" ng-init="getCategory()" class="form-horizontal">
+  <div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <div class="pull-left">
+        <div class="in-wiz-info"> Status Report</div>
+      </div>
+      <div class="pull-right nowrap">
+        <div style="vertical-align: inherit;" class="btn-group filter-dd rule-filter">
+          <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle"><i class="fa fa-filter"></i> Search By &nbsp;<i class="fa fa-angle-down"></i></button>
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+            <div class="showme overflow-auto">
+              <li>
+                <label>Show Data For</label><span ng-show="form.showDataFor.$error.required" class="red">&nbsp; *</span><br/>
+                <select ui-select2="ui-select2" ng-required="true" name="showDataFor" ng-model="showDataFor" data-placeholder="Show Data For" class="input-large">
+                  <option value=""></option>
+                  <option value="shipped">Shipped</option>
+                  <option value="invoiced">Invoiced</option>
+                  <option value="delivered">Delivered</option>
+                </select>
+                <label>From Date</label><span ng-show="form.FromDate.$error.required" class="red">&nbsp; *</span><br/>
+                <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" name="FromDate" type="text" ng-model="fromDate" close-text="Close" placeholder="From Date" ng-required="true" class="input-large"/>
+                <label>To Date</label><span ng-show="form.ToDate.$error.required" class="red">&nbsp; *</span>
+                <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" name="ToDate" type="text" ng-model="toDate" close-text="Close" placeholder="To Date" ng-required="true" class="input-large"/>
+                <ul style="list-style-type:none;margin:0;">
+                  <li ng-repeat="f in sortedFields" ng-switch="fields[f].type">
+                    <div class="opt-title">{{fields[f].label}}</div>
+                    <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="filter[f]" close-text="Close" placeholder="{{fields[f].label}}" class="input-large"/>
+                    <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" name="{{fields[f]}}" ng-model="filter[f]" ph="{{autosuggestSource=='location'?'Location':autosuggestSource}}" customobj="{{custObj[fields[f].label]}}" placeholder="{{fields[f].label}}"></dynamic-Select>
+                  </li>
+                </ul>
+              </li>
+            </div>
+            <div class="opt-cmd">
+              <button type="reset" ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button type="submit" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" ng-click="totalItems=0;applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </ul>
+        </div>
+        <div style="vertical-align: inherit;" class="btn-group filter-dd rule-filter">
+          <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle"><i class="fa fa-filter"></i> Direct Search &nbsp;<i class="fa fa-angle-down"></i></button>
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+            <form name="form2" novalidate="novalidate" class="form-horizontal">
+              <div class="showme overflow-auto">
+                <li>
+                  <ul style="list-style-type:none;margin:0;">
+                    <li ng-repeat="item in searcbyByOption">
+                      <input type="radio" ng-model="searchBy.option" value="{{item.key}}" name="searchBy.option"/>{{item.value}}
+                    </li>
+                  </ul>
+                  <textarea rows="3" name="searchBy.list" ng-model="searchBy.list" placeholder="List"></textarea>
+                </li>
+              </div>
+              <div class="opt-cmd">
+                <button type="reset" ng-click="resetDirectSearch()" class="inz-btn btn-xs btn-default">Reset</button>
+                <button type="submit" ng-click="totalItems=0;directSearch(1,true)" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" class="inz-btn btn-xs btn-success">Apply</button>
+              </div>
+            </form>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:47px;"></div>
+  <div class="col-md-12 col-xs-12 col-sm-12">
+    <div class="pull-right">
+      <div style="vertical-align: inherit;" class="btn-group">
+        <button data-toggle="dropdown" type="button" ng-show="items.length&gt;0" class="btn-sm btn-custom dropdown-toggle">Export &nbsp;<i class="fa fa-angle-down"></i></button>
+        <ul aria-labelledby="btnGroupVerticalDrop1" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <li><a href="" ng-click="pullFile(true)">Selected</a></li>
+          <li><a href="" ng-click="pullFile(false)">All</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:2px;"></div>
+  <div class="col-md-12 col-xs-12 col-sm-12">
+    <div ng-grid="gridOptions" height="GH" class="gridStyle"></div>
+    <pagination total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" max-size="paginationSize" class="pagination-small"></pagination>
+    <!--.div-hawbfull-->
+    <!--    .div-hawb.div-hawbfull-div.overflow-auto-->
+    <!--        table.table-hawb-->
+    <!--            thead-->
+    <!--                tr-->
+    <!---->
+    <!--                    th-->
+    <!--                        input(type='checkbox', ng-model='chkAllItems',id="chkAll",ng-click="handleChkAllClick()")-->
+    <!--                    th.sorting_asc(ng-repeat='item in  templateData.fields')-->
+    <!--                        | {{item.label}}-->
+    <!--                        //- a(ng-click="sort_by(item.key)")-->
+    <!--                        //-     i.icon-sort-->
+    <!---->
+    <!--            //tfoot-->
+    <!--            //    tr-->
+    <!--            //        td(colspan='12')-->
+    <!---->
+    <!---->
+    <!--            tbody-->
+    <!--                //- tr(ng-repeat='item in pagedItems[currentPage] | orderBy:sortingOrder:reverse')-->
+    <!--                tr(ng-repeat='item in items')-->
+    <!--                    td(style="text-align:center;")-->
+    <!--                        input(name="chk_{{$index}}", type='checkbox', ng-model='item.updateFields',ng-click="updateSelection($event,$index)")-->
+    <!--                    td(ng-repeat='col in  templateData.fields')-->
+    <!--                        | {{item[col.key]}}-->
+    <!--        div(style="clear:both;height:5px;")--><!--        pagination(total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true",max-size="paginationSize")-->
+  </div>
+</form>

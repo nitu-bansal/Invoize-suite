@@ -1,0 +1,36 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        .fieldset
+                                legend Workflow
+                                       .btn-group.pull-right
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="workflowUpdateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-primary.btn-sm(permission="createWorkflow.*.*", ng-hide="workflowUpdateLoader", ng-disabled="form.$invalid", type="submit",ng-click="create(workflow)",  style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                        i.icon-ok.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="workflowUpdateLoader")
+                                
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Name
+                                        .col-sm-9
+                                                input(type="text", name="workflowName", duplicate="workflow", ng-model="workflow.name", placeholder="Workflow Name", required)
+                                                label.help-inline.required(ng-show="form.workflowName.$error.required") *
+                                                label.help-inline.required(ng-show="form.workflowName.$error.duplicate") Workflow exists.
+                                                label.help-inline.required.validTick(ng-show="form.workflowName.$valid") &#10004;
+                                h5.header.smaller.lighter.gray                                  
+                                                        | Definition
+                                ng-form(name="WorkflowDefinitionsForm", ng-repeat="row in workflowDefinitions")
+                                        .form-group
+                                                label.col-sm-3.control-label.no-padding-right
+                                                        span.label.label-large.label-info.arrowed-in Level {{$index + 1}}
+                                                        br
+                                                        span(ng-show="workflow.definition[$index].length > 1",id="workflowLevel{{$index}}")
+                                                            .label.label-success.help-inline(style='cursor: pointer;', onclick='toggle(this,{{$index}})',count="*") All
+                                                            .label.label-success.help-inline(ng-repeat="r in workflow.definition[$index] | limitTo:workflow.definition[$index].length-1" , style='cursor: pointer;display: none;', onclick='toggle(this,{{$parent.$index}})',count="{{$index+1}}") Any {{$index + 1}}
+                                                
+                                                input.input-xxlarge(ui-select2="userGroupBar", name="workflowDefinition", ng-click="workflowDefinitionsCallback($index)", ng-model="workflow.definition[$index]",id="workflowId{{$index+1}}",  select-validate, required)
+                                                .help-inline
+                                                        a.close(ng-hide="workflowDefinitions.length == 1", ng-click="removeFromWorkflowDefinitions($index)") &times;
+                                                label.help-inline.required(ng-show="WorkflowDefinitionsForm.workflowDefinition.$error.selectvalidate || WorkflowDefinitionsForm.workflowDefinition.$error.required") *
+                                                label.help-inline.required.validTick(ng-show="WorkflowDefinitionsForm.$valid") &#10004;

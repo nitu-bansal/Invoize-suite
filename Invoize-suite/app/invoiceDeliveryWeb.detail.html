@@ -1,0 +1,49 @@
+
+<div ng-init="viewInvoiceDeliveryWeb()" class="row">
+  <div class="col-xs-12">
+    <div class="doc-block">
+      <div class="title strip">Delivery Details</div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="col-sm-3">
+      <div>
+        <label class="lb1a">Name</label>
+        <label type="text" class="lb2 control-label"> {{data.invoicedelivery.name}}</label>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div>
+        <label class="lb1a">Party</label>
+        <label type="text" class="lb2 control-label"> {{data.invoicedelivery.deliveryParty}}</label>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div>
+        <label class="lb1a">Party Name</label>
+        <label type="text" class="lb2 control-label"> {{data.invoicedelivery.deliveryPartyName}}</label>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="pull-right in-add">
+        <div style="vertical-align: inherit;" class="btn-group pull-right">
+          <button data-toggle="dropdown" type="button" tooltip="Configuration Mode" tooltip-placement="top" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-angle-down"></i>&nbsp; Mode</button>
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+            <li>
+              <table>
+                <tbody>
+                  <tr ng-repeat="type in data.profileBase">
+                    <td style="padding:0px 10px">{{type.label}}</td>
+                    <td>
+                      <dynamic-Select name="TypeValue_{{$index}}" ng-model="type.value" ph="{{type.suggestionsSource}}" placeholder="Please Select"></dynamic-Select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<!--
+<Created>by pallavi.dandane on 11/26/2014.</Created>-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form novalidate="novalidate" name="formreinitiate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">  &times;</button>
+        <h4 class="modal-title">Reinitiate Request &nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+        <div class="modal-body">
+          <div class="overflow-auto"><!--
+            <Created>by pallavi.dandane on 11/26/2014.</Created>-->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                <div class="cpanel">
+                  <div class="cpanel-heading cpanel-heading1"><span toolTip="Parameters" class="label white">Parameters</span></div>
+                  <div class="cpanel-body">
+                    <div class="row">
+                      <div ng-repeat="row1 in selectedLane.fields | orderBy:'displayOrder'" ng-if="(row1.uniqueCalculationParam==true || row1.uniqueCalculationParam==false ) &amp;&amp; row1.label!== 'effectiveDate' &amp;&amp; row1.label!== 'expiryDate' &amp;&amp; row1.label!== 'History'&amp;&amp; row1.label!== 'history'" class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{row1.label.replace("|", ".")}}</label>
+                        <div ng-switch="row1.type" style="display:inline-table;">
+                          <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="{{row1.isMandatory}}" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="numeric" type="text" ng-pattern="{{row1.regex}}" ng-required="{{row1.isMandatory}}" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="{{row1.isMandatory}}" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <dynamic-Select ng-switch-when="dropdown" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="{{row1.isMandatory}}" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="{{row1.isMandatory}}" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"></textarea><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cpanel">
+                  <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Charges</span></div>
+                  <div class="cpanel-body">
+                    <div class="row">
+                      <div ng-repeat="row1 in selectedLane.fields | orderBy:'displayOrder'" ng-if="row1.uniqueCalculationParam == undefined &amp;&amp; row1.label!== 'effectiveDate' &amp;&amp; row1.label!== 'expiryDate'" class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{row1.label.replace("|", ".")}}</label>
+                        <div ng-switch="row1.type" style="display:inline-table;">
+                          <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="numeric" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <dynamic-Select ng-switch-when="dropdown" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"></textarea><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cpanel">
+                  <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Other Information</span></div>
+                  <div class="cpanel-body">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{selectedLane.fields[effectiveDateIndexLane].label}}</label>
+                        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="selectedLane.fields[effectiveDateIndexLane].value" is-open="opened" ng-required="selectedLane.fields[effectiveDateIndexLane].isMandatory" close-text="Close" toolTip="{{selectedLane.fields[effectiveDateIndexLane].toolTip}}" ng-readonly="{{selectedLane.fields[effectiveDateIndexLane].isReadonly}}" class="input-medium"/><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                      </div>
+                      <div class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{selectedLane.fields[expiryDateIndexLane].label}}</label>
+                        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="selectedLane.fields[expiryDateIndexLane].value" is-open="opened" ng-required="selectedLane.fields[expiryDateIndexLane].isMandatory" close-text="Close" toolTip="{{selectedLane.fields[expiryDateIndexLane].toolTip}}" ng-readonly="{{selectedLane.fields[expiryDateIndexLane].isReadonly}}" class="input-medium"/><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="pull-right">
+                    <button ng-class="{'disabled': subForm.$invalid}" ng-disabled="subForm.$invalid" ng-click="updateLanebyFormView('close')" class="inz-btn btn-sm btn-split">Done</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!--.modal-footer-->
+        <!--    span Close-->
+      </div>
+    </form>
+  </div>
+</div>

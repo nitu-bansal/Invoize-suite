@@ -1,0 +1,102 @@
+//Created by kamalsingh.saini on 11/3/14.
+
+.row(ng-show="dialog")
+    .col-sm-12.col-md-12.col-xs-12
+            //div.modal.fade.in(style="overflow:auto;width:100%;opacity: 0.5;height:100%;background-color: gray;top: 0;top:0;left: 0;z-index: 1050;")
+            .modal-dialog.modal
+                .modal-content(style="margin: 0 auto;width: 80%;")
+                        .modal-header
+                            button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                            h4.modal-title(ng-show="modelType == 'summary'") Issue Summary &nbsp;
+                            h4.modal-title(ng-hide="modelType == 'summary'") Upload / Download documents &nbsp;
+                                i.icon-spinner.icon-spin.icon-large(ng-show="templateLoader")
+                        .modal-body
+                            div.overflow-auto(style="max-height:400px",ng-show="modelType == 'summary'")
+                                table.table-hawb
+                                    thead
+                                        tr
+                                            th(ng-repeat="(k,v) in summaryData[0]") {{v}}
+                                            th Files
+                                    tbody
+                                        tr(ng-repeat="row in summaryData[1]")
+                                            td(ng-repeat="(key,col) in summaryData[0]") {{row[key]}}
+                                            td
+
+                                                a.blue(href="/api/tms/download/file?id={{file.id}}",ng-repeat="file in row['IMSfiles']",target="_blank",style="cursor:pointer;")
+                                                    i.fa.fa-download &nbsp;
+                                                    | {{file.name}}
+                                                    br
+                            div(ng-hide="modelType == 'summary'")
+                                include upload
+                        .modal-footer
+                            //button.inz-btn.btn-sm.btn-success(ng-click="addKeys($event.currentTarget)") Add Keys
+                            //button.inz-btn.btn-sm.btn-default(ng-click="close();") Cancel
+div(style="clear:both;")
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-sm-12.col-md-12
+        .pull-left
+            .in-wiz-info Issue Management System
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="loader")
+            input.input-search-new(placeholder="Search Issue(s)",ng-model="q")
+            button.input-search-new
+                i.fa.fa-search
+            .btn-group.filter-dd.rule-filter(ng-show="templateData.fields.length")
+                button.command.dropdown-toggle
+                    i.fa.fa-caret-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret( aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                    div.showme.overflow-auto
+                        li
+                            div(ng-repeat="(k,obj) in fields",ng-switch="lb.type")
+                                .opt-title {{obj.label}}
+                                input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="obj.val",close-text="Close",placeholder="{{obj.label}}")
+                                dynamic-Select.input-large(ng-switch-default,multiselect,name="{{k}}",ng-model="obj.val",ph="ims",customobj='{"column":"{{k}}","module":"{{templateData.module.v}}","templateId":"{{templateData.templateId}}","currentContext":"{{$state.$current.context.product}}.ims"}',placeholder="{{obj.label}}")
+                    .opt-cmd
+                        div(style="padding:2px 0;")
+                            button.inz-btn.btn-xs.btn-default(ng-click="resetFilter()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply
+
+            .btn-group(style="vertical-align: inherit;")
+                button.btn-sm.dropdown-toggle.btn-custom(data-toggle='dropdown', type='button')
+                    //i.fa.fa-dashboard
+                    |    Choose Profile &nbsp;
+                    i.fa.fa-angle-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                    li
+                        .col-sm-12
+                            label.control-label Module :
+                                .controls
+                                    select.input-large.text-left(ui-select2='ui-select2',ng-required="true",name="Module", ng-model='templateData.module', data-placeholder='Module',ng-change="getTemplate()",ng-options="module.n for module in modules")
+                                        option(value="")
+                                        //option(value="{{module.id}}",ng-repeat="module in modules") {{module.n}}
+                        .col-sm-12
+                            label.control-label Process :
+                                .controls
+                                    select.input-large.text-left(ui-select2='ui-select2',ng-required="true",name="process", ng-model='templateData.process', data-placeholder='Process',ng-change="getTemplate()")
+                                        option(value="")
+                                        option(value="{{process.id}}",ng-repeat="process in processes") {{process.n}}
+                        .col-sm-12
+                            label.control-label Profile Type :
+                                .controls
+                                    select.input-large.text-left(ui-select2='ui-select2',ng-required="true",name="type", ng-model='templateData.docType', data-placeholder='Profile Type',ng-change="getTemplate()")
+                                        option(value="")
+                                        option(value="IMSRaiseProfile",permission="ims.RaiseIssueIMS") Raise
+                                        option(value="IMSResponseProfile",permission="ims.ResponseIssueIMS") Response
+
+            label(style="margin-bottom:0;",ng-if="templateData.docType == 'IMSRaiseProfile'",permission="ims.addIssueIMS")
+                input(type="checkbox", class="ace ace-switch ace-switch-addUpdate", name="switch-field-1",ng-click="switchMode($event)",ng-required="false",text-on="Add")
+                span.lbl
+            a(ng-click='editTemplate();',href="javascript:void(0)",permission="ims.EditTemplateIMS",ng-show="templateData.process && templateData.docType")
+                span.in-add-sign +
+                span.in-add-txt Add / Edit Fields
+            button.btn-sm.btn-success-1(type="submit",ng-click="saveIssues()",permission="ims.EditIssueIMS") Save Changes
+
+.row(ng-show="!templateLoader",style="padding-top:47px;")
+    .col-sm-12.col-xs-12.col-md-12(ng-show="templateData.fields.length>0")
+        div(ui-handsontable='{ currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",height='hh',width='hw',datarows='issue in issues',manualColumnResize='true', columns='columns',minsparerows='spareRow',afterRender='afterRender()',onBeforeChange='celChange',columnSorting='true')
+        pagination(total-items="totalItems",items-per-page="pageLimit",max-size="paginationSize",rotate="true",ng-init="paginationSize=20", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+    .col-sm-12.col-xs-12.col-md-12(ng-show="templateData.fields.length==0")
+        h4.orange Template Not Found :(
+
+
+

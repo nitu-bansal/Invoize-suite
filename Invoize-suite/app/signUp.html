@@ -1,0 +1,233 @@
+
+<link rel="stylesheet" type="text/css" href="/styles/home2.css"/>
+<div role="navigation" class="nav navbar navbar-invoize navbar-fixed-top">
+  <div id="in-head" class="container">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand"> <span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span>invoize</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Demo</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="javascript:void(0)" class="signin-modal">Sign In</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div style="padding-top:80px; min-height: 500px;" class="container in-login">
+  <div class="row">
+    <div class="col-lg-6 col-md-4"></div>
+    <div ng-show="showlogin" class="col-lg-6 col-md-8 in-reg">
+      <form novalidate="novalidate" name="form" ng-submit="signUp(organization)" class="text-center">   
+        <div class="row">
+          <div class="col-xs-4 in-title">Email ID</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err"><i ng-show="form.email.$error.required" class="icon-asterisk"></i>
+              <div ng-show="form.email.$error.pattern">Invalid email address                                                                </div>
+              <div ng-show="form.email.$error.duplicate">Email registered with other organization                                                                </div><i ng-show="form.email.$error.required" class="icon-asterisk">       </i>
+            </div>
+            <input type="text" placeholder="Your Email ID" ng-pattern="/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/" ng-model="organization.email" name="email" duplicate="email" required="required" ng-trim="ng-trim" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Company Name</div>
+          <div class="col-xs-8 in-txt-blk">                               
+            <div class="in-err"><i ng-show="form.organization.$error.required" class="icon-asterisk">                                                       </i>
+              <div ng-show="form.organization.$error.minlength">minimum length 2 </div>
+              <div ng-show="form.organization.$error.maxlength">maximum length 63</div>
+            </div>
+            <input type="text" placeholder="Company Name" ng-model="organization.organization" name="organization" required="required" ng-trim="ng-trim" ng-minlength="2" ng-maxlength="63" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title"></div>
+          <div class="col-xs-8 in-txt-blk">                               
+            <button type="submit" ng-hide="signUpLoader" ng-disabled="form.$invalid" ng-class="{'disabled': form.$invalid}" class="in-btn">Sign Up</button><i ng-show="signUpLoader" class="icon-spinner icon-spin icon-2x blue"></i>
+            <label ng-show="signUpSuccess" class="label label-lg label-info arrowed arrowed-right"> Almost there, check your email for next steps.</label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="carousel-example-generic" class="carousel slide">       
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div bg-col="#DD5F60" class="item active img1">
+      <div class="container"> 
+        <div class="row">
+          <div class="col-lg-6 col-md-8 in-logo-txt">ranaly<span style="color:#5cf979">z</span>e</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-12 in-des-txt">With configurable workflows RANALYZE gives the organization the freedom to define and associate workflows to their clients, account types and other configurable elements.!</div>
+        </div>
+      </div>
+    </div>
+    <div bg-col="#3193C6" class="item img2">
+      <div class="container"> 
+        <div class="row">
+          <div class="col-lg-6 col-md-8 in-logo-txt">rate<span style="color:#5cf979">Right</span></div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-12 in-des-txt">RateRight is the heart of Invoice-Suite and has the ability to pick rates from tariffs and apply it on your invoices, automating the entire billing process..</div>
+        </div>
+      </div>
+    </div>
+    <div bg-col="#88C53A" class="item img3">
+      <div class="container"> 
+        <div class="row">
+          <div class="col-lg-6 col-md-8 in-logo-txt">greenvoi<span style="color:#5cf979">z</span>e</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-12 in-des-txt">Holds a complete repository of your invoices and the documents attached to it.Greenvoize helps you manage your invoices and can generate and transform them to any format u want..</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Controls--><a href="#carousel-example-generic" data-slide="prev" class="left carousel-control"><i class="icon-chevron-left"></i></a><a href="#carousel-example-generic" data-slide="next" class="right carousel-control"><i class="icon-chevron-right"></i></a>
+</div>
+<div class="container">
+  <div style="margin-top: 40px;" class="row">
+    <div class="col-md-4">
+      <div class="in-info">
+        <div class="col-md-12 col-xs-4 block-infocon"><i class="icon-group in-infocon"></i>
+        </div>
+        <div class="col-md-12 col-sm-8 col-xs-8"> 
+          <div class="in-rhs-tt">Work with colleagues</div>
+          <div class="in-rhs-des">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="in-info">
+        <div class="col-md-12 col-xs-4 block-infocon"><i class="icon-search in-infocon"></i>
+        </div>
+        <div class="col-md-12 col-sm-8 col-xs-8"> 
+          <div class="in-rhs-tt">Inventory Tracking</div>
+          <div class="in-rhs-des">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="in-info">
+        <div class="col-md-12 col-xs-4 block-infocon"><i class="icon-map-marker in-infocon"></i>
+        </div>
+        <div class="col-md-12 col-sm-8 col-xs-8"> 
+          <div class="in-rhs-tt">Anywhere, Anytime</div>
+          <div class="in-rhs-des">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div class="pricing">
+  <div class="container">
+    <div class="row phead">
+      <h1 style="color: #269822;"><i class="fa fa-money"></i>  Pricing</h1>
+      <h3>Stay as long as you like. No commitment. Cancel anytime.</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="pblock">
+          <div class="ptitle"> Silver
+            <div class="subtitle">FREE</div>
+          </div>
+          <div class="ptext">
+            <div class="line"><b>2</b> products</div>
+            <div class="line"><b>1</b> image per product</div>
+            <div class="line"><b>Basic</b> stats</div>
+            <div class="line"><b>10</b> iPhone app orders</div>
+            <div class="line muted">No inventory tracking</div>
+            <div class="line muted">No discount codes</div>
+          </div>
+          <div class="pbutton">
+            <button type="button" class="btn inz-btn btn-success">Join now<i class="fa fa-chevron-circle-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="pblock">
+          <div style="color:#e4dc04" class="ptitle"> Gold
+            <div class="subtitle">$10 monthly</div>
+          </div>
+          <div class="ptext">
+            <div class="line"><b>25</b> products</div>
+            <div class="line"><b>3</b> image per product</div>
+            <div class="line"><b>Better</b> stats</div>
+            <div class="line"><b>50</b> iPhone app orders</div>
+            <div class="line">Inventory tracking</div>
+            <div class="line muted">No discount codes</div>
+          </div>
+          <div class="pbutton">
+            <button type="button" class="btn inz-btn btn-success">Join now<i class="fa fa-chevron-circle-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="pblock">
+          <div style="color:#04e4b2" class="ptitle"> Platinum
+            <div class="subtitle">$20 monthly</div>
+          </div>
+          <div class="ptext">
+            <div class="line"><b>5</b> products</div>
+            <div class="line"><b>10</b> image per product</div>
+            <div class="line"><b>Best</b> stats</div>
+            <div class="line"><b>Unlimited</b> iPhone app orders</div>
+            <div class="line">Inventory tracking</div>
+            <div class="line">Discount codes</div>
+          </div>
+          <div class="pbutton">
+            <button type="button" class="btn inz-btn btn-success">Join now<i class="fa fa-chevron-circle-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="pblock">
+          <div style="color:#e48804" class="ptitle"> Gold
+            <div class="subtitle">$29 monthly</div>
+          </div>
+          <div class="ptext">
+            <div class="line"><b>10</b> products</div>
+            <div class="line"><b>20</b> image per product</div>
+            <div class="line"><b>Best</b> stats</div>
+            <div class="line"><b>Unlimited</b> iPhone app orders</div>
+            <div class="line">Inventory tracking</div>
+            <div class="line">Discount codes</div>
+          </div>
+          <div class="pbutton">
+            <button type="button" class="btn inz-btn btn-success">Join now<i class="fa fa-chevron-circle-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" class="close">    &times;                            </button>
+        <h4 id="myModalLabel" class="modal-title">How to Sign In to invoize</h4>
+      </div>
+      <div class="modal-body">
+        <div style="font-weight:400; font-size: 13px; color: #666;">When you registered with invoize, we sent you an email with your Web Address. You can sign in from your Web Address, which looks like this:</div>
+        <div style="padding:10px 0; font-size:23px; color:#0073e5;">DOMAIN-NAME.invoize.com</div>
+        <div style=" font-size: 17px; color: #666;"> <a href="#">Forgot your web address                                </a></div>
+      </div>
+      <div class="modal-footer">                       
+        <button type="button" data-dismiss="modal" class="inz-btn btn-sm btn-success">OK, got it!</button>
+      </div>
+    </div>
+  </div>
+</div>

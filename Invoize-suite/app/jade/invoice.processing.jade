@@ -1,0 +1,128 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-sm-12.col-md-12
+        .pull-left
+            .in-wiz-info Invoice Processing
+        .pull-right
+            dynamic-Select(required,customobj='{"systemId":"{{loggedInUser.userSystem[0].id}}","currentContext":"{{$state.$current.context.product}}.invoiceProcessing"}',name="searchAccount",ng-model="global.account",ph="account",placeholder="Select Account")
+            button.input-search-new1(tooltip="Search Data",tooltip-placement="left",ng-show="global.account",ng-click="getData(1,true,selectedTab)")
+                i.fa.fa-search
+            .btn-group(style="vertical-align: inherit;")
+                button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+                    |    Actions &nbsp;
+                    i.fa.fa-angle-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                    li(ng-show="selectedTab=='pendingInvoicing'")
+                        a(href='', ng-click='openInvoiceCaptureDialog(true,0)',permission="invoiceProcessing.createInvoice") Invoice Billing
+                    //- li
+                    //-     a(href='', ng-click='',permission="invoiceProcessing.raiseIssueInvoiceProcessing") Raise Issue
+                    li(ng-show="selectedTab=='pendingDeliveryApproval'")
+                        a(href='', ng-click='updateStatus("Approve for Invoice Delivery",true,0)',permission="invoiceProcessing.approveForInvoiceDelivery") Approve for Invoice Delivery
+                    li(ng-show="selectedTab=='pendingDeliveryApproval'")
+                        a(href='', ng-click='saveInvoiceRemarks(true,$index)') Save Invoice Remarks
+                    li(ng-show="selectedTab=='pendingInvoicing'")
+                        a(href='', ng-click='updateStatus("Delete",true,0)',permission="invoiceProcessing.deleteInvoice") Delete
+div(style="clear:both;height:47px;")
+.col-xs-12.col-sm-12.col-md-12
+    form(name="invoiceProcessingForm",novalidate)
+        //- ,ng-init="getData(1,true,selectedTab)"
+        ul.nav.nav-tabs
+            li.tab(class="{{selectedTab=='pendingInvoicing'?'active':''}}",ng-click="getData(1,true,'pendingInvoicing')",permission="invoiceProcessing.tabPendingInvoicing")
+                    a
+                        i.fa.fa-file-text
+                        | &nbsp; Pending Invoicing
+            li.tab(class="{{selectedTab=='pendingDeliveryApproval'?'active':''}}", ng-click="getData(1,true,'pendingDeliveryApproval')",permission="invoiceProcessing.tabPendingDeliveryApproval")
+                    a
+                        i.fa.fa-truck
+                        | &nbsp; Pending Delivery Approval
+        div(style="clear:both;height:2px;")
+        .row
+            .pull-right(ng-show="showGrid && selectedTab=='pendingDeliveryApproval'")
+                a.btn-sm.btn-split.btn.loadUI(ng-click='RenderHTW(false)',data-placement="bottom", data-toggle="tooltip", title="Extend", tooltip-placement="left", tooltip="Extend" ,type="button" )
+                    i.fa.fa-columns
+        div(style="clear:both;height:2px;")
+        .col-xs-12.col-sm-12.col-md-12
+            .div-layout-ew()
+            //- ng-init="getDeliveryData()"
+            .layout-mock(ui-layout='')
+
+                ui-layout(options='{ flow : "column" }')
+                    sidebar.west-back.div-west(style="margin-right:10px;")
+                        div.overflow-auto(style="margin:10px 5px 20px;min-height:300px;")
+
+                            table.inz-table.inz-table1.table-bordered(ng-show="dataList.length",style="width:100%;max-width:100%;")
+                                thead
+                                    tr
+                                        th
+                                            span
+                                                input(tooltip="Select All",type='checkbox',ng-click="checkAll($event)",tooltip-placement="bottom")
+                                        th(ng-repeat="val in dataList[0]",,ng-show="($index>2 && selectedTab=='pendingInvoicing' )|| ($index>2 && selectedTab=='pendingDeliveryApproval')")
+                                            span(tooltip="{{val |toHumanReadable}}",tooltip-placement="bottom") {{val | toHumanReadable}}
+                                        th(ng-show="selectedTab=='pendingDeliveryApproval'")
+                                            span Document
+
+                                        th(style="width:150px;")
+                                            span Action
+
+                                tbody(ng-repeat="row in dataList",ng-show="$index > 0")
+                                    tr(ng-click="isRowCollapsed=!isRowCollapsed",style="cursor: pointer;")
+                                        td(ng-repeat="col in row track by $index",ng-show="$index==0")
+                                            input(name="chk_{{$parent.$index}}",type='checkbox',ng-click="updateSelection($event,$parent.$index)")
+                                        td(ng-repeat="col in row track by $index",ng-show="($index>2 && selectedTab=='pendingInvoicing' )|| ($index>2 && selectedTab=='pendingDeliveryApproval' )")
+                                            span(tooltip="{{col}}",ng-show="$index != idxInvoiceRemarks") {{col}}
+                                            input(type="text",name="name_{{$parent.$index}}",ng-model="invoiceRemarks[$parent.$index]",ng-trim,ng-show="$index == idxInvoiceRemarks")
+                                        td(ng-show="selectedTab=='pendingDeliveryApproval'")
+                                            span
+                                                a.btn-sm.btn-custom(type='button',ng-click="getDocument($index)")
+                                                    i.fa.fa-columns
+                                        td(style="width:200px !important;position: relative;")
+                                            span.command1.dropdown-toggle.p-side1
+                                                i.icon-angle-down &nbsp;
+                                                | Action
+                                            ul.dropdown-menu-c.dropdown-menu-c2.dropdown-caret-c
+                                                li(ng-show="selectedTab=='pendingDeliveryApproval'")
+                                                    a(href='', ng-click='openLinkDocumentDialog($index)',permission="invoiceProcessing.documentLlinkingInvoiceProcessing") Document Linking
+                                                li(ng-show="selectedTab=='pendingInvoicing'")
+                                                    a(href='', ng-click='openInvoiceCaptureDialog(false,$index)',permission="invoiceProcessing.createInvoice") Invoice Billing
+                                                li
+                                                    a(href='', ng-click='openIssueDialog($index)',permission="invoiceProcessing.raiseIssueInvoiceProcessing") Raise Issue
+                                                li(ng-show="selectedTab=='pendingDeliveryApproval'")
+                                                    a(href='', ng-click='updateStatus("Approve for Invoice Delivery",false,$index)',permission="invoiceProcessing.approveForInvoiceDelivery") Approve for Invoice Delivery
+
+                                                li
+                                                    a(href='')
+                                                        i.icon-caret-left
+                                                        | Add New Invoice
+                                                    ul
+                                                        li(ng-repeat="type in invoiceTypes")
+                                                            a(href='', ng-click='updateInvoice("new",type,false,$parent.$index)',permission="invoiceProcessing.addNewInvoice") {{type}}
+                                                    //- ul
+                                                    //-     li
+                                                    //-         a(href='', ng-click='updateInvoice("new","FREIGHT",false,$index)',permission="invoiceProcessing.addNewFreightInvoice") Freight Invoice
+                                                    //-     li
+                                                    //-         a(href='', ng-click='updateInvoice("new","BROKERAGE",false,$index)',permission="invoiceProcessing.addNewBrokerageInvoice") Brokerage Invoice
+                                                li(ng-show="selectedTab=='pendingDeliveryApproval'")
+                                                    a(href='', ng-click='saveInvoiceRemarks(false,$index)') Save Invoice Remark
+                                                li(ng-show="selectedTab=='pendingDeliveryApproval'")
+                                                    a(href='', ng-click='updateInvoice("correct","",false,$index)',permission="invoiceProcessing.replicateInvoice") Correct Invoice
+                                                li
+                                                    a(href='', ng-click='updateStatus("Delete",false,$index)',permission="invoiceProcessing.deleteInvoice") Delete
+
+                            div(style="clear:both;height:5px;")
+                            pagination(style="position:relative;",ng-show="dataList.length",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+                    sidebar.east-back.div-east(style="padding:5px 10px 0;margin-left:20px;")
+                        div
+                            select.input-large(placeholder='Select Document',ui-select2='ui-select2',ng-model="fileName",ng-change="viewDocument(fileName)")
+                                option(value='')
+                                option(ng-repeat="item in files", value="{{item}}") {{item}}
+                        div(style="clear:both !important;height:5px !important;")
+                        iframe(id="docFrame",style="border:1px solid #F6F6F6 !important;" , frameborder="0")
+            div(class="ng-hide",ng-show="showDialog==true",ng-if="showDialog==true")
+                .modal-dialog.modal
+                    .modal-content(style="margin: 0 auto;width: 80%;")
+                        form(name="form",novalidate)
+                            .modal-header
+                                button.close(aria-hidden='true', type='button', ng-click="closeDialog()")     &times;
+                                h4.modal-title Issue &nbsp;
+                            .modal-body
+                                include imsDialog
+                            .modal-footer

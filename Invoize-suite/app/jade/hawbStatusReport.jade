@@ -1,0 +1,132 @@
+form.form-horizontal( name="form",novalidate,ng-init="getCategory()")
+    .row.in-wiz-ttl.in-fix-scroll(set-width)
+        .col-xs-12.col-md-12.col-sm-12
+            .pull-left
+                .in-wiz-info  Status Report
+            .pull-right.nowrap
+                .btn-group.filter-dd.rule-filter(style="vertical-align: inherit;")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+                        i.fa.fa-filter
+                        |  Search By &nbsp;
+                        i.fa.fa-angle-down
+                    ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                        div.showme.overflow-auto
+                            li
+                                label Show Data For
+                                span.red(ng-show="form.showDataFor.$error.required") &nbsp; *
+                                br
+                                select.input-large(ui-select2='ui-select2',ng-required="true",name="showDataFor", ng-model='showDataFor', data-placeholder='Show Data For',ng-required="true")
+                                    option(value="")
+                                    option(value="shipped") Shipped
+                                    option(value="invoiced") Invoiced
+                                    option(value="delivered") Delivered
+
+                                label From Date
+                                span.red(ng-show="form.FromDate.$error.required") &nbsp; *
+                                br
+                                input.input-large(datepicker-popup="dd-MMMM-yyyy",datepicker-options="dateOptions",name="FromDate",type="text",ng-model="fromDate",close-text="Close",placeholder="From Date",ng-required="true")
+
+                                label To Date
+                                span.red(ng-show="form.ToDate.$error.required") &nbsp; *
+                                input.input-large(datepicker-popup="dd-MMMM-yyyy",datepicker-options="dateOptions",name="ToDate",type="text",ng-model="toDate",close-text="Close",placeholder="To Date",ng-required="true")
+
+
+                                ul(style="list-style-type:none;margin:0;")
+                                    li(ng-repeat="f in sortedFields" ,ng-switch="fields[f].type")
+                                        .opt-title {{fields[f].label}}
+                                        input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="filter[f]",close-text="Close",placeholder="{{fields[f].label}}", )
+                                        dynamic-Select(ng-switch-default,multiselect,name="{{fields[f]}}",ng-model="filter[f]",ph="{{autosuggestSource=='location'?'Location':autosuggestSource}}",customobj="{{custObj[fields[f].label]}}",placeholder="{{fields[f].label}}")
+                                    //- li(ng-repeat="(k,lb) in fields",ng-switch="lb.type" )
+                                    //-     label {{lb.label}}
+                                    //-     input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="filter[k]",close-text="Close",placeholder="{{lb.label}}", )
+                                    //-     dynamic-Select(ng-switch-default,multiselect,name="{{k}}",ng-model="filter[k]",ph="{{autosuggestSource}}",customobj='{{custObj[lb.label]}}',placeholder="{{lb.label}}")
+
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetFilter()") Reset
+                            button.inz-btn.btn-xs.btn-success(type="submit",ng-class="{'disabled': form.$invalid}",  ng-disabled="form.$invalid",ng-click="totalItems=0;applyFilter()") Apply
+                .btn-group.filter-dd.rule-filter(style="vertical-align: inherit;")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+                        i.fa.fa-filter
+                        |  Direct Search &nbsp;
+                        i.fa.fa-angle-down
+                    ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                        form.form-horizontal(name="form2",novalidate)
+                            div.showme.overflow-auto
+                                    li
+                                        //- input(type='radio', ng-model='searchBy.option', value='hawb')
+                                        //- | HAWB
+                                        //- br
+                                        //- input(type='radio', ng-model='searchBy.option', value='invoice')
+                                        //- | Invoice
+                                        //- br
+                                        ul(style="list-style-type:none;margin:0;")
+                                            li(ng-repeat="item in searcbyByOption" )
+                                                input(type='radio', ng-model='searchBy.option', value='{{item.key}}',name="searchBy.option") 
+                                                | {{item.value}}
+                                        textarea(rows=3, name="searchBy.list", ng-model="searchBy.list", placeholder="List")
+                                        
+                            .opt-cmd
+                                button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetDirectSearch()") Reset
+                                button.inz-btn.btn-xs.btn-success(type="submit",ng-click="totalItems=0;directSearch(1,true)",ng-class="{'disabled': form.$invalid}",  ng-disabled="form.$invalid") Apply
+                                
+    div(style="clear:both;height:47px;")
+    .col-md-12.col-xs-12.col-sm-12
+        //- div(id="dataGrid", ng-show="showGrid && !templateLoader",ui-handsontable='{ currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",height='hh',width='hw',datarows='shipment in shipments',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChange')
+        //- ng-change='search()',
+        //- input.input-search-new(type='text', ng-model='query',placeholder='Search')
+        //- button.input-search-new(ng-click='search()')
+        //-     i.fa.fa-search
+        //- btn-group(ng-show="items.length>0")
+        //-     button.btn-sm.btn-ico.btn-custom(ng-click="pullFile();",tool-tip,data-placement="bottom", data-toggle="tooltip", tooltip-placement="top", tooltip="Export",permission="shipmentEntry.exportToExcelShipmentEntry")
+        //-         i.fa.fa-download
+        .pull-right
+            .btn-group(style="vertical-align: inherit;")
+                button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button',ng-show="items.length>0")
+                    | Export &nbsp;
+                    i.fa.fa-angle-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1')
+                    li
+                        a(href='', ng-click='pullFile(true)') Selected
+                    li
+                        a(href='', ng-click='pullFile(false)') All
+    div(style="clear:both;height:2px;")
+    .col-md-12.col-xs-12.col-sm-12
+        div.gridStyle(ng-grid="gridOptions",height="GH")
+        pagination(total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true",max-size="paginationSize")
+
+        //.div-hawbfull
+        //    .div-hawb.div-hawbfull-div.overflow-auto
+        //        table.table-hawb
+        //            thead
+        //                tr
+        //
+        //                    th
+        //                        input(type='checkbox', ng-model='chkAllItems',id="chkAll",ng-click="handleChkAllClick()")
+        //                    th.sorting_asc(ng-repeat='item in  templateData.fields')
+        //                        | {{item.label}}
+        //                        //- a(ng-click="sort_by(item.key)")
+        //                        //-     i.icon-sort
+        //
+        //            //tfoot
+        //            //    tr
+        //            //        td(colspan='12')
+        //
+        //
+        //            tbody
+        //                //- tr(ng-repeat='item in pagedItems[currentPage] | orderBy:sortingOrder:reverse')
+        //                tr(ng-repeat='item in items')
+        //                    td(style="text-align:center;")
+        //                        input(name="chk_{{$index}}", type='checkbox', ng-model='item.updateFields',ng-click="updateSelection($event,$index)")
+        //                    td(ng-repeat='col in  templateData.fields')
+        //                        | {{item[col.key]}}
+        //        div(style="clear:both;height:5px;")
+        //        pagination(total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true",max-size="paginationSize")
+                //- pagination(total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true",max-size="paginationSize")
+                //- ul.pagination-h
+                //-     li(ng-class='{disabled: currentPage == 0}')
+                //-         a(href='', ng-click='prevPage()') « Prev
+                //-     li(ng-repeat='n in range(pagedItems.length)', ng-class='{active: n == currentPage}', ng-click='setPage()')
+                //-         a(href='', ng-bind='n + 1') 1
+                //-     li(ng-class='{disabled: currentPage == pagedItems.length - 1}')
+                //-         a(href='', ng-click='nextPage()') Next »
+

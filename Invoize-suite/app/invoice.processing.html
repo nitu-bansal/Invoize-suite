@@ -1,0 +1,240 @@
+
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Invoice Processing</div>
+    </div>
+    <div class="pull-right">
+      <dynamic-Select required="required" customobj="{&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;,&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.invoiceProcessing&quot;}" name="searchAccount" ng-model="global.account" ph="account" placeholder="Select Account"></dynamic-Select>
+      <button tooltip="Search Data" tooltip-placement="left" ng-show="global.account" ng-click="getData(1,true,selectedTab)" class="input-search-new1"><i class="fa fa-search"></i></button>
+      <div style="vertical-align: inherit;" class="btn-group">
+        <button data-toggle="dropdown" type="button" class="btn-sm btn-custom dropdown-toggle">   Actions &nbsp;<i class="fa fa-angle-down"></i></button>
+        <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <li ng-show="selectedTab=='pendingInvoicing'"><a href="" ng-click="openInvoiceCaptureDialog(true,0)" permission="invoiceProcessing.createInvoice">Invoice Billing</a></li>
+          <li ng-show="selectedTab=='pendingDeliveryApproval'"><a href="" ng-click="updateStatus(&quot;Approve for Invoice Delivery&quot;,true,0)" permission="invoiceProcessing.approveForInvoiceDelivery">Approve for Invoice Delivery</a></li>
+          <li ng-show="selectedTab=='pendingDeliveryApproval'"><a href="" ng-click="saveInvoiceRemarks(true,$index)">Save Invoice Remarks</a></li>
+          <li ng-show="selectedTab=='pendingInvoicing'"><a href="" ng-click="updateStatus(&quot;Delete&quot;,true,0)" permission="invoiceProcessing.deleteInvoice">Delete</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:47px;"></div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <form name="invoiceProcessingForm" novalidate="novalidate">
+    <ul class="nav nav-tabs">
+      <li ng-click="getData(1,true,'pendingInvoicing')" permission="invoiceProcessing.tabPendingInvoicing" class="tab {{selectedTab=='pendingInvoicing'?'active':''}}"><a><i class="fa fa-file-text"></i>&nbsp; Pending Invoicing</a></li>
+      <li ng-click="getData(1,true,'pendingDeliveryApproval')" permission="invoiceProcessing.tabPendingDeliveryApproval" class="tab {{selectedTab=='pendingDeliveryApproval'?'active':''}}"><a><i class="fa fa-truck"></i>&nbsp; Pending Delivery Approval</a></li>
+    </ul>
+    <div style="clear:both;height:2px;"></div>
+    <div class="row">
+      <div ng-show="showGrid &amp;&amp; selectedTab=='pendingDeliveryApproval'" class="pull-right"><a ng-click="RenderHTW(false)" data-placement="bottom" data-toggle="tooltip" title="Extend" tooltip-placement="left" tooltip="Extend" type="button" class="btn-sm btn-split btn loadUI"><i class="fa fa-columns"></i></a></div>
+    </div>
+    <div style="clear:both;height:2px;"></div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="div-layout-ew"></div>
+      <div ui-layout="" class="layout-mock">
+        <ui-layout options="{ flow : &quot;column&quot; }">
+          <sidebar style="margin-right:10px;" class="west-back div-west">
+            <div style="margin:10px 5px 20px;min-height:300px;" class="overflow-auto">
+              <table ng-show="dataList.length" style="width:100%;max-width:100%;" class="inz-table inz-table1 table-bordered">
+                <thead>
+                  <tr>
+                    <th><span>
+                        <input tooltip="Select All" type="checkbox" ng-click="checkAll($event)" tooltip-placement="bottom"/></span></th>
+                    <th ng-repeat="val in dataList[0]" ng-show="($index&gt;2 &amp;&amp; selectedTab=='pendingInvoicing' )|| ($index&gt;2 &amp;&amp; selectedTab=='pendingDeliveryApproval')"><span tooltip="{{val |toHumanReadable}}" tooltip-placement="bottom">{{val | toHumanReadable}}</span></th>
+                    <th ng-show="selectedTab=='pendingDeliveryApproval'"><span>Document</span></th>
+                    <th style="width:150px;"><span>Action</span></th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="row in dataList" ng-show="$index &gt; 0">
+                  <tr ng-click="isRowCollapsed=!isRowCollapsed" style="cursor: pointer;">
+                    <td ng-repeat="col in row track by $index" ng-show="$index==0">
+                      <input name="chk_{{$parent.$index}}" type="checkbox" ng-click="updateSelection($event,$parent.$index)"/>
+                    </td>
+                    <td ng-repeat="col in row track by $index" ng-show="($index&gt;2 &amp;&amp; selectedTab=='pendingInvoicing' )|| ($index&gt;2 &amp;&amp; selectedTab=='pendingDeliveryApproval' )"><span tooltip="{{col}}" ng-show="$index != idxInvoiceRemarks">{{col}}</span>
+                      <input type="text" name="name_{{$parent.$index}}" ng-model="invoiceRemarks[$parent.$index]" ng-trim="ng-trim" ng-show="$index == idxInvoiceRemarks"/>
+                    </td>
+                    <td ng-show="selectedTab=='pendingDeliveryApproval'"><span><a type="button" ng-click="getDocument($index)" class="btn-sm btn-custom"><i class="fa fa-columns"></i></a></span></td>
+                    <td style="width:200px !important;position: relative;"><span class="command1 dropdown-toggle p-side1"><i class="icon-angle-down">&nbsp;</i>Action</span>
+                      <ul class="dropdown-menu-c dropdown-menu-c2 dropdown-caret-c">
+                        <li ng-show="selectedTab=='pendingDeliveryApproval'"><a href="" ng-click="openLinkDocumentDialog($index)" permission="invoiceProcessing.documentLlinkingInvoiceProcessing">Document Linking</a></li>
+                        <li ng-show="selectedTab=='pendingInvoicing'"><a href="" ng-click="openInvoiceCaptureDialog(false,$index)" permission="invoiceProcessing.createInvoice">Invoice Billing</a></li>
+                        <li><a href="" ng-click="openIssueDialog($index)" permission="invoiceProcessing.raiseIssueInvoiceProcessing">Raise Issue</a></li>
+                        <li ng-show="selectedTab=='pendingDeliveryApproval'"><a href="" ng-click="updateStatus(&quot;Approve for Invoice Delivery&quot;,false,$index)" permission="invoiceProcessing.approveForInvoiceDelivery">Approve for Invoice Delivery</a></li>
+                        <li><a href=""><i class="icon-caret-left"></i>Add New Invoice</a>
+                          <ul>
+                            <li ng-repeat="type in invoiceTypes"><a href="" ng-click="updateInvoice(&quot;new&quot;,type,false,$parent.$index)" permission="invoiceProcessing.addNewInvoice">{{type}}</a></li>
+                          </ul>
+                        </li>
+                        <li ng-show="selectedTab=='pendingDeliveryApproval'"><a href="" ng-click="saveInvoiceRemarks(false,$index)">Save Invoice Remark</a></li>
+                        <li ng-show="selectedTab=='pendingDeliveryApproval'"><a href="" ng-click="updateInvoice(&quot;correct&quot;,&quot;&quot;,false,$index)" permission="invoiceProcessing.replicateInvoice">Correct Invoice</a></li>
+                        <li><a href="" ng-click="updateStatus(&quot;Delete&quot;,false,$index)" permission="invoiceProcessing.deleteInvoice">Delete</a></li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="clear:both;height:5px;"></div>
+              <pagination style="position:relative;" ng-show="dataList.length" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+            </div>
+          </sidebar>
+          <sidebar style="padding:5px 10px 0;margin-left:20px;" class="east-back div-east">
+            <div>
+              <select placeholder="Select Document" ui-select2="ui-select2" ng-model="fileName" ng-change="viewDocument(fileName)" class="input-large">
+                <option value=""></option>
+                <option ng-repeat="item in files" value="{{item}}">{{item}}</option>
+              </select>
+            </div>
+            <div style="clear:both !important;height:5px !important;"></div>
+            <iframe id="docFrame" style="border:1px solid #F6F6F6 !important;" frameborder="0"></iframe>
+          </sidebar>
+        </ui-layout>
+      </div>
+      <div ng-show="showDialog==true" ng-if="showDialog==true" class="ng-hide">
+        <div class="modal-dialog modal">
+          <div style="margin: 0 auto;width: 80%;" class="modal-content">
+            <form name="form" novalidate="novalidate">
+              <div class="modal-header">
+                <button aria-hidden="true" type="button" ng-click="closeDialog()" class="close">    &times;</button>
+                <h4 class="modal-title">Issue &nbsp;</h4>
+              </div>
+              <div class="modal-body">
+                <div ng-controller="imsCtrl" class="col">
+                  <div ng-show="dialog" class="row">
+                    <div class="col-sm-12">
+                      <div class="modal-dialog modal">
+                        <div style="margin: 0 auto;width: 80%;" class="modal-content">
+                          <form name="form" novalidate="novalidate">
+                            <div class="modal-header">
+                              <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+                              <h4 ng-show="modelType == 'summary'" class="modal-title">Issue Summary &nbsp;</h4>
+                              <h4 ng-hide="modelType == 'summary'" class="modal-title">Upload / Download documents &nbsp;<i ng-show="templateLoader" class="icon-spinner icon-spin icon-large"></i></h4>
+                            </div>
+                            <div class="modal-body">
+                              <div style="padding: 10px 0 15px;" ng-show="modelType == 'summary'" nice-scroll="nice-scroll">
+                                <table class="table-hawb">
+                                  <thead>
+                                    <tr>
+                                      <th ng-repeat="(k,v) in summaryData[0]">{{v}}</th>
+                                      <th>Files</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr ng-repeat="row in summaryData[1]">
+                                      <td ng-repeat="(key,col) in summaryData[0]">{{row[key]}}</td>
+                                      <td><a href="/api/tms/download/file?id={{file.id}}" ng-repeat="file in row['IMSfiles']" target="_blank">{{file.name}} &nbsp;</a></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div ng-hide="modelType == 'summary'">
+                                <div id="newFiles" ng-controller="FileUploadController" url="/api/tms/upload/file">
+                                  <form data-upload-template-id="template-upload-1" method="POST" action="/api/tms/upload/file" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+                                    <div bs-tooltip="tooltip.drop" id="drop-area">
+                                      <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+                                        <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+                                      </div>
+                                      <div class="drop-instructions">
+                                        <mute> Browse and upload multiple files or drag and drop files here</mute>
+                                      </div>
+                                      <div class="drop-over">Drop files here!</div>
+                                    </div>
+                                    <div ng-hide="proceedClicked" class="row uploaded">
+                                      <div data-ng-repeat="file in queue" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+                                      <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer"></div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="clear:both;"></div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="pull-right"><i ng-show="loader" class="icon-spinner icon-spin blue icon-large"></i>
+                        <input placeholder="Free Search" ng-model="q" class="input-search-new"/>
+                        <button class="input-search-new"><i class="fa fa-search"></i></button>
+                        <div class="btn-group filter-dd rule-filter">
+                          <button class="command dropdown-toggle"><i class="fa fa-caret-down"></i></button>
+                          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+                            <div style="margin:5px 0" nice-scroll="nice-scroll" class="showme">
+                              <li>
+                                <div ng-repeat="(k,obj) in fields" ng-switch="obj.type">
+                                  <div class="opt-title">{{obj.label}}</div>
+                                  <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="obj.val" close-text="Close" placeholder="{{obj.label}}"/>
+                                  <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" name="{{k}}" ng-model="obj.val" ph="ims" customobj="{&quot;column&quot;:&quot;{{k}}&quot;,&quot;module&quot;:&quot;{{templateData.module.v}}&quot;,&quot;templateId&quot;:&quot;{{templateData.templateId}}&quot;,&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.ims&quot;}" placeholder="{{obj.label}}"></dynamic-Select>
+                                </div>
+                              </li>
+                            </div>
+                            <div class="opt-cmd">
+                              <button ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+                              <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+                            </div>
+                          </ul>
+                        </div>
+                        <div style="vertical-align: inherit;" class="btn-group">
+                          <button data-toggle="dropdown" type="button" class="btn-sm btn-custom dropdown-toggle"><i class="fa fa-filter"></i>   Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+                          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+                            <li>
+                              <div class="col-sm-12">
+                                <label>Module :
+                                  <select ui-select2="ui-select2" ng-required="true" name="Module" ng-model="templateData.module" data-placeholder="Module" ng-change="getTemplate()" ng-options="module.n for module in modules" class="input-large">
+                                    <option value=""></option>
+                                  </select>
+                                </label>
+                              </div>
+                              <div class="col-sm-12">
+                                <label>Process :
+                                  <select ui-select2="ui-select2" ng-required="true" name="process" ng-model="templateData.process" data-placeholder="Process" ng-change="getTemplate()" class="input-large">
+                                    <option value=""></option>
+                                    <option value="{{process.id}}" ng-repeat="process in processes">{{process.n}}</option>
+                                  </select>
+                                </label>
+                              </div>
+                              <div class="col-sm-12">
+                                <label>Profile Type :
+                                  <select ui-select2="ui-select2" ng-required="true" name="type" ng-model="templateData.docType" data-placeholder="Profile Type" ng-change="getTemplate()" class="input-large">
+                                    <option value=""></option>
+                                    <option value="IMSRaiseProfile">Raise</option>
+                                    <option value="IMSResponseProfile">Response</option>
+                                  </select>
+                                </label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <label style="margin-bottom:0;" ng-if="templateData.docType == 'IMSRaiseProfile'">
+                          <input type="checkbox" name="switch-field-1" ng-click="switchMode($event)" ng-required="false" text-on="Add" class="ace ace-switch ace-switch-addUpdate"/><span class="lbl"></span>
+                        </label><a ng-click="editTemplate();" href="javascript:void(0)" ng-show="templateData.process &amp;&amp; templateData.docType"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Edit Fields</span></a>
+                        <button type="submit" ng-click="saveIssues()" class="btn-sm btn-success-1">Save Changes</button>
+                      </div>
+                    </div>
+                    <div style="clear:both;height:10px;"></div>
+                    <div class="col-sm-12">
+                      <div ng-show="!templateLoader">
+                        <div ng-show="templateData.fields.length&gt;0">
+                          <div ui-handsontable="{ currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" datarows="issue in issues" manualColumnResize="true" columns="columns" minsparerows="spareRow" afterRender="afterRender()" onBeforeChange="celChange"></div>
+                          <pagination total-items="totalItems" items-per-page="pageLimit" max-size="paginationSize" rotate="true" ng-init="paginationSize=20" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+                        </div>
+                        <div ng-show="templateData.fields.length==0">
+                          <h4 class="orange">Template Not Found :(</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

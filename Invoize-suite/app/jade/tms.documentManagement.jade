@@ -1,0 +1,84 @@
+
+//   Created by noopur.waghmare on 2/4/14.
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Document Repository
+        .pull-right
+            //a(ng-click='openUsersDialog();',href="javascript:void(0)")
+            //    span.in-add-sign +
+            //    span.in-add-txt Add / Edit User Groups
+            a(ng-click='editTemplate();',href="javascript:void(0)")
+                span.in-add-sign +
+                span.in-add-txt Add / Edit Fields
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="Loader")
+            dynamic-Select(name="account",ng-model="global.account",ph="account",change="setAccounts(global.account)",customobj='{"currentContext":"{{$state.$current.context.product}}.documentRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")
+            button.input-search-new1(ng-click="quickSearch(currentPage,true,'tariff')" ,ng-hide="global.account.length==0")
+                i.fa.fa-search
+            .btn-group.filter-dd.rule-filter
+                button.btn-sm.btn-custom.command.dropdown-toggle
+                    | Filter &nbsp;
+                    i.fa.fa-angle-down
+                div.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;white-space: nowrap;")
+                    div
+                        button.btn-sm.btn-ico.btn-custom.pull-right(ng-click="isAdvancedFilter=!isAdvancedFilter")
+                            span(ng-show="isAdvancedFilter") Easy Filter
+                            span(ng-show="!isAdvancedFilter") Flexi Filter
+                        br
+                    div.rule-filter1.showme.custom-filter-display.overflow-auto(ng-show="isAdvancedFilter")
+                        .row#rules
+                            .row
+                                .ds-tree(ng-form="rulesForm",rules,ng-init="getRuleFields()")
+                    div(ng-show="isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(ng-click="reset()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="getData(currentPage,true)") Apply
+                    div.showme.custom-filter-display.overflow-auto(ng-show="!isAdvancedFilter")
+                             div(ng-repeat="(k,lb) in fields",ng-switch="lb.type")
+                                .opt-title {{lb.label}}
+                                input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="filter[k]",close-text="Close",placeholder="{{lb.label}}" )
+                                dynamic-Select(ng-switch-default,multiselect,name="{{k}}",ng-model="filter[k]",ph="tms",customobj='{"column":"{{k}}"}',placeholder="{{lb.label}}")
+                    div(ng-show="!isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetFilter()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply
+
+            .btn-group(style="vertical-align: inherit;")
+                button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+                    |   Actions &nbsp;
+                    i.fa.fa-angle-down
+                ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                    li(permission="documentRepository.addDocument",ng-click="openDialog()")
+                        a(style="cursor:pointer") Add Document
+                    li(permission="documentRepository.bulkDownload",ng-click="BulkFileDownload()")
+                        a(style="cursor:pointer") Bulk File Download
+            .btn-group(ng-hide="list.length==0")
+                a.inz-btn.btn-sm.btn-ico.btn-default(permission="documentRepository.exportData",ng-click="pullFile()",data-placement="bottom", data-toggle="tooltip", tooltip="Export Data",tooltip-placement="bottom")
+                    i.fa.fa-download
+
+
+div(style="clear:both;height:47px;")
+.row(ng-show="list.length==0")
+    .in-gs-block
+            .gs-sub-title(ng-hide="showGoBtn") Choose Account & Hit Search&nbsp;
+                i.fa.fa-search
+            .gs-sub-title(ng-show="showGoBtn") No documents available, Do you want to add ? &nbsp;
+                span.help-inline.required(ng-show="form.companyType.$error.required") &nbsp;&nbsp;*
+            div(style="padding:8px 0px")
+                button.inz-btn.btn-sm.btn-success(permission="documentRepository.addDocument", ng-disabled="global.account.length==0",ng-class="{'disabled': global.account.length==0}",ng-show="showGoBtn",ng-click="openDialog(global.account)") Go &nbsp;&nbsp;
+                    i.fa.fa-long-arrow-right
+
+   .col-xs-12.col-md-12.col-sm-12
+        div(ng-show="list.length")
+            ul.nav.nav-tabs
+                li.tab(ng-class="{'active':selectedTab=='tariff'}",ng-click="quickSearch(currentPage,true,'tariff')")
+                    a
+                        i.fa.fa-file-text
+                        | &nbsp; Tariff
+                //li.tab(ng-class="{'active':selectedTab=='profitloss'}", ng-click="quickSearch(currentPage,true,'profitloss')")
+                //    a
+                //        i.fa.fa-truck
+                //        | &nbsp; P & L
+
+                div(style="clear:both;height:3px")
+                    include documentManagementgridView

@@ -1,0 +1,155 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        .fieldset
+                                .row
+                                        .btn-group.pull-right
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="userCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-primary.btn-sm(permission="createUser.*.*", ng-hide="userCreateLoader", ng-disabled="form.$invalid ", type="submit", ng-click="create(user)",style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                        i.icon-ok.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="userCreateLoader")
+                                tabset
+                                        tab.tab(heading="Profile")
+                                                ng-form(name="form9")
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right User Name
+                                                                .col-sm-9 
+                                                                        input(type="text", name="userName", duplicate="userName", ng-model="user.userName", placeholder="User Name", required)
+                                                                        label.help-inline.required(ng-show="form9.userName.$error.required") *
+                                                                        label.help-inline.required(ng-show="form9.userName.$error.duplicate") Username exists.
+                                                                        label.help-inline.required.validTick(ng-show="form9.userName.$valid") &#10004;
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Password
+                                                                .col-sm-9 
+                                                                        input(name="password", type="password", required, ng-model="user.password", ng-minlength="6", placeholder="Password")
+                                                                        label.help-inline.required(ng-show="form9.password.$error.required") *
+                                                                        label.help-inline.required(ng-show="form9.password.$error.minlength") The minimum length is 6.
+                                                                        label.help-inline.required.validTick(ng-show="form9.password.$valid") &#10004;
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Confirm Password
+                                                                .col-sm-9 
+                                                                        input(name="confirmPassword",type="password", required, ng-model="confirmPassword", ng-minlength="6", ui-validate="'$value==user.password'" , ui-validate-watch="'password'", placeholder="Confirm Password")
+                                                                        //- input(name="confirmPassword",type="password", required, ng-model="confirmPassword", passwordValidator="password", placeholder="Confirm Password")
+                                                                        label.help-inline.required(ng-show="form9.confirmPassword.$error.required") *
+                                                                        label.help-inline.required(ng-show="form9.confirmPassword.$error.minlength") The minimum length is 6.
+                                                                        label.help-inline.required(ng-show="form9.confirmPassword.$error.validator") Password's do not match.
+                                                                        label.help-inline.required.validTick(ng-show="form9.confirmPassword.$valid") &#10004;
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Email
+                                                                .col-sm-9 
+                                                                        input(type="email", name="email", duplicate="email", ng-model="user.email", placeholder="Email", required)
+                                                                        label.help-inline.required(ng-show="form9.email.$error.required") *
+                                                                        label.help-inline.required(ng-show="form9.email.$error.email") Invalid email...!
+                                                                        label.help-inline.required(ng-show="form9.email.$error.duplicate") Email exists.
+                                                                        label.help-inline.required.validTick(ng-show="form9.email.$valid") &#10004;
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right First Name
+                                                                .col-sm-9 
+                                                                        input(type="text", name="firstName", ng-model="user.firstName", placeholder="First Name", required)
+                                                                        label.help-inline.required(ng-show="form9.firstName.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="form9.firstName.$valid") &#10004;
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Last Name
+                                                                .col-sm-9 
+                                                                        input(type="text", name="lastName", ng-model="user.lastName", placeholder="Last Name", required)
+                                                                        label.help-inline.required(ng-show="form9.lastName.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="form9.lastName.$valid") &#10004;
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Department
+                                                                .col-sm-9 
+                                                                        select(ui-select2, name="department", ng-model="user.department", data-placeholder="Please select...", style="width:200px")
+                                                                                                option(value="")
+                                                                                                option(value="billing")  Billing
+                                                                                                option(value="rating")  Rating   
+                                                                                                option(value="pricing")  Pricing 
+                                                                                                option(value="delivery")  Delivery 
+                                                                                                option(value="management")  Management                                                 
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Type
+                                                                .col-sm-9                                                      
+                                                                        select(ui-select2, name="type", ng-model="user.type", data-placeholder="Please select...", style="width:200px")
+                                                                                                option(value="")
+                                                                                                option(value="internal")  Internal
+                                                                                                option(value="external")  External   
+                                                        h3.header.smaller.lighter.blue                                  
+                                                                |Location                                         
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Contact 1
+                                                                .col-sm-9 
+                                                                        input(type="text", name="contact1", ng-model="user.contact1", placeholder="Contact 1")                                                   
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Contact 2
+                                                                .col-sm-9 
+                                                                        input(type="text", name="contact2", ng-model="user.contact2", placeholder="Contact 2")                                                      
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Company
+                                                                .col-sm-9 
+                                                                        input(type="text", name="company", ng-model="user.company", placeholder="Company")                                                 
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Address 1
+                                                                .col-sm-9 
+                                                                        input(type="text", name="address1", ng-model="user.address1", placeholder="Address 1")
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Address 2
+                                                                .col-sm-9 
+                                                                        input(type="text", name="address2", ng-model="user.address2", placeholder="Address 2")  
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Country
+                                                                .col-sm-9 
+                                                                        input(type="text", name="country", ng-model="user.country", placeholder="Country")                                                        
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Station
+                                                                .col-sm-9 
+                                                                        input(type="text", name="station", ng-model="user.station", placeholder="Station") 
+
+                                        tab.tab(heading="Roles",style="overflow:hidden")
+                                                ng-form(name="roleForm")
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Roles
+                                                                .col-sm-9 
+                                                                        input.input-xxlarge(ui-select2="roleBar", name="roleBar", ng-model="user.role", ng-change="showDialog(user.role)",  select-validate, required)
+                                                                        .help-inline.required(ng-show="roleForm.roleBar.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="roleForm.roleBar.$valid") &#10004;
+
+                                        tab.tab(heading="Permissions",style="overflow:hidden")
+                                                .form-group
+                                                        a.btn.btn-success(ng-click="addPermissions()")
+                                                                i.icon-plus.icon-white  
+                                                                |  Permissions
+                                                .form-group                                                        
+                                                        .col-md-4 Permission
+                                                        .col-md-4 For
+                                                        .col-md-4 On
+                                                        ng-form(name="permissionForm", ng-repeat="row in user.permission")
+                                                                .col-md-4
+                                                                        input.col-md-10(ui-select2="permissionBar", name="permissionBar", ng-model="user.permission[$index]['permission']",  select-validate, required)      
+                                                                        .help-inline.required(ng-show="permissionForm.permissionBar.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="permissionForm.permissionBar.$valid", class="validTick") &#10004;
+                                                                .col-md-4 
+                                                                        select(ui-select2, name="forBar", ng-change="permissionforChanged($index)", ng-model="user.permission[$index]['for']", data-placeholder="Please select...", style="width:200px",  select-validate, required)
+                                                                                option(value="")
+                                                                                option(ng-repeat="for in permissionforList", value="{{for.n}}") {{for.v}}
+                                                                        .help-inline.required(ng-show="permissionForm.forBar.$error.required") *
+                                                                .col-md-4                                                                         
+                                                                        input.col-md-10(ui-select2="onBar", name="onBar",  ui-event="{ open : 'setfor($index)'}" ,ng-model="user.permission[$index]['on']",  select-validate, required)
+                                                                        .help-inline.required(ng-show="permissionForm.onBar.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="permissionForm.onBar.$valid") &#10004;
+                                                                        .help-inline
+                                                                                a.close(ng-hide="user.permission.length == 1", ng-click="removePermissions($index)") &times;
+                                                                br
+
+
+                                        tab.tab(heading="Groups")
+                                                .form-group
+                                                        label.col-sm-3.control-label.no-padding-right Groups
+                                                        .col-sm-9 
+                                                                input.input-xxlarge(ui-select2="groupBar", name="groupBar", ng-model="user.group")      
+
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+
+<!--   Created by noopur.waghmare on 3/14/14.-->
+<div ng-show="$state.current.name=='billright.tariffRepository' || $state.current.name=='billright.tariffRepository.listTariff'">
+  <div set-width="set-width" ng-init="initMetaInfo('tariffConfig')" class="row in-wiz-ttl in-fix-scroll">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <div class="pull-left">
+        <div class="in-wiz-info">Tariff Repository</div>
+      </div>
+      <div class="pull-right"><i ng-show="Loader" class="icon-spinner icon-spin blue icon-large"></i>
+        <!--dynamic-Select(name="accountGrouplist",ng-model="global.accountGroup",ph="accountGroup",change="setAccounts(global.accountGroup,true)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Group",placeholder="Search by Account Group")-->
+        <!--dynamic-Select(name="accountNumberlist",ng-model="global.account1",ng-disabled="isGroupSelected" ,ph="account",change="setAccounts(global.account1,false)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")-->
+        <dynamic-Select name="accountNumberlist" ng-model="global.account" ng-disabled="isGroupSelected" ph="account" change="setAccounts(global.account,false)" customobj="{&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.tariffRepository&quot;,&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;}" toolTip="Account Number" placeholder="Search by Account"></dynamic-Select>
+        <button ng-click="quickSearch(currentPage,true,'tariffConfig')" ng-hide="global.account1.length==0 &amp;&amp; global.accountGroup.length==0" class="input-search-new1"><i class="fa fa-search"></i></button>
+        <div ng-show="tariffList.length&gt;0" class="btn-group filter-dd rule-filter">
+          <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle"><i class="fa fa-filter"></i> Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+          <div aria-labelledby="btnGroupVerticalDrop1" role="menu" style="white-space: nowrap;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+            <div class="showme custom-filter-display overflow-auto">
+              <li ng-repeat="f in sortedFields" ng-switch="fields[f].type">
+                <div class="opt-title">{{fields[f].label}}</div>
+                <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="fields[f].val" close-text="Close" placeholder="{{fields[f].label}}" class="input-large"/>
+                <dynamic-Select ng-switch-default="ng-switch-default" name="{{fields[f]}}" ng-model="fields[f].val" customobj="{{custObj[fields[f].label]}}" ph="{{fields[f].autoSuggestSource}}" placeholder="{{fields[f].label}}"></dynamic-Select>
+              </li>
+            </div>
+            <div>
+              <div class="opt-cmd">
+                <button type="reset" ng-click="resetDataForTMS('tariffConfig')" class="inz-btn btn-xs btn-default">Reset</button>
+                <button ng-click="applyDataForTMS('tariffConfig')" class="inz-btn btn-xs btn-success">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button permission="tariffRepository.addTariff" ng-click="redirectToAddNewTariff()" ng-show="tariffList.length&gt;0" class="btn-sm btn-custom">Add New</button>
+        <button permission="tariffRepository.addTariff" ng-click="cloneAndAddNewTariff()" ng-show="tariffList.length&gt;0" class="btn-sm btn-custom">Clone selected to New</button>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:47px;"></div>
+  <div ng-if="tariffList.length==0">
+    <!--.col-sm-6.col-md-4.col-xs-12-->
+    <!--    .infobox.infobox1.infobox-green-->
+    <!--        .infobox-icon-->
+    <!--            i.icon-book-->
+    <!--        .infobox-data-->
+    <!--            span.infobox-data-number 3689-->
+    <!--            .infobox-content Overall Valid Tariffs-->
+    <!--        .stat.stat-important 3%-->
+    <!--        .info-footer-title.bg-green View Details-->
+    <!--            i.gly-icon.icon-arrow-right-->
+    <!--.col-sm-6.col-md-4.col-xs-12-->
+    <!--    .infobox.infobox1.infobox-red-->
+    <!--        .infobox-icon-->
+    <!--            i.icon-exclamation-sign-->
+    <!--        .infobox-data-->
+    <!--            span.infobox-data-number 3-->
+    <!--            .infobox-content Tariffs Expiring Today-->
+    <!--        .info-footer-title.bg-red View Details-->
+    <!--            i.gly-icon.icon-arrow-right-->
+    <!--.col-sm-6.col-md-4.col-xs-12-->
+    <!--    .infobox.infobox1.infobox-pink-->
+    <!--        .infobox-icon-->
+    <!--            i.icon-exclamation-sign-->
+    <!--        .infobox-data-->
+    <!--            span.infobox-data-number 16-->
+    <!--            .infobox-content Tariffs Expiring this Week-->
+    <!--        .stat.stat-warning 1%-->
+    <!--        .info-footer-title.bg-pink View Details-->
+    <!--            i.gly-icon.icon-arrow-right-->
+    <!--.col-sm-6.col-md-4.col-xs-12-->
+    <!--    .infobox.infobox1.infobox-orange-->
+    <!--        .infobox-icon-->
+    <!--            i.icon-exclamation-sign-->
+    <!--        .infobox-data-->
+    <!--            span.infobox-data-number 89-->
+    <!--            .infobox-content Tariffs Expiring this Month-->
+    <!--        .badge.badge-success-->
+    <!--            | +3%-->
+    <!--            i.icon-arrow-up-->
+    <!--        .info-footer-title.bg-orange View Details-->
+    <!--            i.gly-icon.icon-arrow-right-->
+    <!--.col-sm-6.col-md-4.col-xs-12-->
+    <!--    .infobox.infobox1.infobox-orange2-->
+    <!--        .infobox-chart-->
+    <!--            span.sparkline(spark,data-values="196,128,202,177,154,94,100,170,224")-->
+    <!--        .infobox-data-->
+    <!--            span.infobox-data-number 23-->
+    <!--            .infobox-content Unapproved Tariffs-->
+    <!--        .badge.badge-success-->
+    <!--            | +7.5%-->
+    <!--            i.icon-arrow-up-->
+    <!--        .info-footer-title.bg-blue-deep View Details-->
+    <!--            i.gly-icon.icon-arrow-right-->
+    <!--.col-sm-6.col-md-4.col-xs-12-->
+    <!--    .infobox.infobox1.infobox-green-->
+    <!--        .infobox-icon-->
+    <!--            i.icon-comments-->
+    <!--        .infobox-data-->
+    <!--            span.infobox-data-number 14-->
+    <!--            .infobox-content comments + 2 Issues-->
+    <!--        .info-footer-title.bg-green View Details-->
+    <!--            i.gly-icon.icon-arrow-right-->
+    <div style="clear:both;">
+      <div style="clear:both;height:350px;"></div>
+      <div class="row center">
+        <div ng-hide="showGoBtn" class="gs-sub-title">Choose Account & Hit Search&nbsp;<i class="fa fa-search"></i></div>
+        <div ng-show="showGoBtn" class="gs-sub-title">No tariff available, Do you want to add ? &nbsp;
+          <div style="padding:12px 0px">
+            <button permission="tariffRepository.addTariff" ng-click="redirectToAddNewTariff()" ng-show="showGoBtn" class="inz-btn btn-sm btn-success">Go &nbsp;&nbsp;<i class="fa fa-long-arrow-right"></i></button>
+          </div>
+        </div>
+        <!--.col-sm-4-->
+        <!-- .in-wiz-row.pull-left.pull-up(style="margin-top:-42px;", ng-hide="$state.current.name.split('.')[0]=='wizard'")-->
+        <!--     label.control-label Selected Accounts-->
+        <!--     .controls-->
+        <!--         dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",ng-readonly="true",ng-init="initAccount()")-->
+      </div>
+    </div>
+  </div>
+</div>
+<div ui-view="childContents"></div>

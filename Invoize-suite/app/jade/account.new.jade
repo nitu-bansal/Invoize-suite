@@ -1,0 +1,40 @@
+.row.in-wiz-ttl(ng-show="$state.current.name.split('.')[0]=='wizard'")
+        .col-md-9.col-sm-8
+                .in-wiz-info Welcome to Accounts configurations. You can add / configure / edit the accounts that you perform. Creating Accounts profiles would give you an ease of managing accounts with your system.
+                        i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+        .col-md-3.col-sm-4.in-add
+
+.row.in-wiz-ttl.in-fix-scroll(style="background:#eee;",ng-hide="$state.current.name.split('.')[0]=='wizard'")
+        .col-xs-12.in-add
+                .pull-left.in-wiz-info New Accounts
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+                a.inz-btn.btn-sm.btn-default(ng-click="redirectTo('/accounts/view')") Cancel
+                //- button.inz-btn.btn-sm.btn-default() Cancel
+                button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="createAccount(account)") Save Changes
+
+
+div
+        form(name="form",novalidate,ng-init="account={}")
+                div.in-wiz-row
+                        label.control-label Account Profile Name                   
+                        .controls
+                                        input(type="text", name="accountName", duplicate="accountProfile", ng-model="account.profileName", placeholder="Account Profile Name",required ,ng-pattern=/^[a-zA-Z0-9]+$/,ng-trim,ng-maxlength="256")
+                                        span.help-inline.required(ng-show="form.accountName.$error.required") *
+                                        span.green(ng-show="form.accountName.$valid") &#10004;
+                                        span(ng-show="form.accountName.$error.duplicate") Account Profile exists.
+                                        span(ng-show="form.accountName.$error.maxlength") Maximum length 256.
+                                        span(ng-show="form.accountName.$error.pattern") only Alphanumeric characters.                                       
+                                        
+                div.in-wiz-row
+                        label.control-label Attach System
+                        .controls
+
+                                        dynamic-Select(required,multiselect,enterchoice,quickcreation,name="systemList",ng-model="account.systemList",ph="unlinkedAccountSystem",data-placeholder="Enter System")                                       
+                                        span(ng-show="form.systemList.$error.required") *
+                                        span.green(ng-show="form.systemList.$valid") &#10004;
+                .in-wiz-footer    
+                        a.inz-btn.btn-sm.btn-danger(href="#/wizard/operation/view")
+                                i.fa.fa-long-arrow-left     
+                                |  Previous Step
+                        a.inz-btn.btn-sm.btn-default(href="#/wizard/accounts/view") Cancel    
+                        button.inz-btn.btn-sm.btn-success(type="submit",ng-disabled="form.$invalid",ng-class="{'disabled': form.$invalid}",ng-click="createAccount(account)") Save Changes

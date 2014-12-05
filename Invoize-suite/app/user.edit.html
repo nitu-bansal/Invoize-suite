@@ -1,0 +1,63 @@
+
+<link rel="stylesheet" type="text/css" href="/styles/org_setup.css"/>
+<div ng-init="getUserData()" class="container">
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div id="navbar-container" class="navbar-container">
+      <div class="navbar-header pull-left">
+        <div class="navbar-brand"><a class="brand"><span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span></a></div>
+      </div>
+      <div class="navbar-header pull-left">             
+        <ul class="nav ace-nav">
+          <li permission="administrationNav.*.*" ng-hide="$route.current.name == 'main.invited' || loggedInUser.companyType!=''" class="active"><a href="#/main/getstarted"><i class="icon-cogs"></i><span> Organization Setup</span></a></li>
+          <li permission="administrationNav.*.*" ng-hide="$route.current.name == 'main.invited' || loggedInUser.companyType==''" class="active"><a href="#/wizard/company/view"><i class="icon-cogs"></i><span> Organization Setup</span></a></li>
+        </ul>
+      </div>
+      <div class="navbar-header pull-right">  
+        <ul class="nav ace-nav">
+          <li><a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle"><img src="avatars/avatar12.jpg" class="nav-user-photo"/>
+              <div id="user_info" class="user-info">
+                                                         
+                {{loggedInUser.userName}}
+              </div><i class="icon-angle-down"></i></a>
+            <ul class="user-menu pull-right dropdown-menu dropdown-caret dropdown-close in-dd-pro">
+              <li style="text-align: center;"><img src="avatars/avatar12.jpg" class="in-pro-img"/></li>
+              <li>
+                <div class="in-name">{{loggedInUser.firstName}} {{loggedInUser.lastName}}</div>
+                <div class="in-desig">{{loggedInUser.designation}}</div>
+              </li>
+              <li class="li-bt"><a href="#/main/users/{{userId}}" class="tab"><i class="icon-user"></i>Profile</a></li>
+              <li ng-class="{ active: $state.includes('changePassword')}" class="li-bt"><a href="#/changePassword"> <i class="icon-edit"></i>Change Password                                                                                </a></li>
+              <li class="li-bt"><a ng-click="logout()" class="tab"> <i class="icon-signout"></i>Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div style="margin:20px 0 60px" class="row">
+    <div class="col-md-12">
+      <div class="row in-wiz-ttl">
+        <div class="col-md-9 col-sm-8">
+          <div class="in-wiz-info">Edit profile details.</div>
+        </div>
+      </div>
+      <form name="mainForm2" ng-submit="submitAll()" novalidate="novalidate">
+        <div ng-repeat="item in userData.fields" ng-form="subForm" ng-show="{{item.isActive}}" ng-switch="item.isActive" ng-if="item.key!=='reportsTo'" class="col-md-6 col-sm-6 col-xs-12">
+          <label class="label-user label-user-w">{{item.label}}</label>
+          <label ng-switch-when="true" ng-switch="item.type" class="label-user">
+            <input ng-switch-when="text" unique="{{item.key}},{{item.isUniqueField}},company" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" ng-disabled="item.key=='email'" class="input-large"/>
+            <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" class="input-large"/>
+            <input ng-switch-when="numeric" unique="{{item.key}},{{item.isUniqueField}},company" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" class="input-large"/>
+            <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}"></dynamic-Select>
+            <dynamic-Select ng-switch-when="dropdown" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}"></dynamic-Select>
+            <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" class="input-large"></textarea><span ng-show="subForm.name.$error.required" class="red">* &nbsp;</span><span ng-show="subForm.name.$error.unique" class="red">already Exists</span><span ng-show="subForm.name.$error.number" class="red">only numbers</span><span ng-show="subForm.name.$error.date" class="red">only date</span><span ng-show="subForm.name.$error.maxlength" class="red">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">Can contain only text</span><span ng-show="subForm.name.$valid &amp;&amp; item.value" class="green validTick">&#10004;</span>
+          </label>
+        </div>
+      </form>
+      <div class="in-wiz-footer">
+        <button type="button" onClick="window.history.back()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="updateUserData(userData)" class="inz-btn btn-sm btn-success">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

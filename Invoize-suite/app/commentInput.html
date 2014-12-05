@@ -1,0 +1,18 @@
+
+<div style="width:600px" class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;                            </button>
+      <h4 class="modal-title">Comment</h4>
+    </div>
+    <div class="modal-body">
+      <div class="modal-msg">{{item.msg?item.msg:'Are you sure?'}} 
+        <input name="comment" ng-model="item.comment" type="text" placeholder="Enter Comment" ng-required="item.isReDelivery" class="mw320 inz-txt"/>
+      </div>
+    </div>
+    <div class="modal-footer">                   
+      <button ng-click="close()" class="inz-btn btn-sm btn-default">Close</button>
+      <button ng-click="save()" class="inz-btn btn-sm btn-success">Save</button>
+    </div>
+  </div>
+</div>

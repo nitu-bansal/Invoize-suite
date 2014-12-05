@@ -1,0 +1,24 @@
+
+<!--Using fluid as the other has fixed pixels and doesnt extend the whole screen.-->
+<div id="main-content" class="main-content"><a id="menu-toggler" href="#" class="menu-toggler"><span class="menu-text"></span></a>
+  <div id="sidebar" class="sidebar">
+    <div id="sidebar-shortcuts" class="sidebar-shortcuts">
+      <div id="sidebar-shortcuts-large" class="sidebar-shortcuts-large"><a data-placement="right" permission="createRole.*.*" ng-disabled="$state.includes('organizationSetup.role.new')" href="#/organizationSetup/role/new" bs-tooltip="tooltip.new" ng-click="initializeRole()" class="btn btn-mini btn-success"><i class="icon-plus"></i></a>
+        <btn class="pull-left">
+          <h5>&nbsp; Roles</h5>
+        </btn>
+      </div>
+      <div id="sidebar-shortcuts-mini" class="sidebar-shortcuts-mini"><span class="btn btn-success"></span><span class="btn btn-info"></span><span class="btn btn-warning"></span><span class="btn btn-danger"></span></div>
+    </div>
+    <div id="sidebar-collapse" class="sidebar-collapse"><i class="icon-double-angle-left"></i></div>
+    <div id="sidebar-shortcuts-large" class="nav-search">
+      <form class="form-search"><span class="input-icon">
+          <input id="nav-search-input" type="text" ng-change="searchRole()" placeholder="Search ..." ng-model="search" autocomplete="off" class="nav-search-input"/><i ng-show="roleListLoader" class="icon-spinner icon-spin blue icon-large"></i><i ng-hide="roleListLoader" class="icon-search nav-search-icon"></i></span></form>
+    </div>
+    <div id="sidebar-shortcuts-mini"><i class="icon-search blue icon-large"></i></div>
+    <ul id="fixed-rate" when-scrolled="loadMore()" class="nav nav-list">
+      <li ng-class="{ active: $stateParams.roleId == l.id}" ng-repeat="l in roleList"><a data-toggle="tab" ng-click="selectRole(l.id)" href="#/organizationSetup/role/{{l.id}}"><i class="icon-blank">{{l.v|firstLetter}}</i><span class="trim-info-large">{{l.v|toHumanReadable}}</span></a></li>
+    </ul>
+    <div ui-view="list" class="page-content"></div>
+  </div>
+</div>

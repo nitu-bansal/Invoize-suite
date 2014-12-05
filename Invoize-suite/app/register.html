@@ -1,0 +1,61 @@
+
+<div class="container">       
+  <section></section>
+  <section></section>
+  <section>
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="row">
+          <div class="col-xs-12"><img src="img/invoize-logo-green.png"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="row">
+          <div class="col-xs-12">
+            <form novalidate="novalidate" name="form" ng-submit="signup(register)" class="form-horizontal">
+              <fieldset>
+                <div class="control-group">
+                  <input type="text" placeholder="Full Name" ng-model="register.fullName" name="fullName" required="required"/>
+                  <label ng-show="form.fullName.$error.required" class="help-inline required">*</label>
+                </div>
+                <div class="control-group">
+                  <input placeholder="Email" ng-model="register.email" name="userEmail" required="required" duplicate="email" type="email"/>
+                  <label ng-show="form.userEmail.$error.required" class="help-inline required">*</label>
+                  <label ng-show="form.userEmail.$error.email" class="required">Invalid email.</label>
+                  <label ng-show="form.userEmail.$error.duplicate" class="required">Email exists.</label>
+                </div>
+                <div class="control-group">
+                  <input type="text" placeholder="Company or Organization" ng-model="register.organization" name="organization" ng-change="change()" required="required" duplicate="organization"/>
+                  <label ng-show="form.organization.$error.required" class="help-inline required">*</label>
+                  <label ng-show="form.organization.$error.duplicate" class="required">Organization exists.</label>
+                </div>
+                <div class="control-group">
+                  <div class="input-append">
+                    <input type="text" placeholder="Domain" ng-model="register.subDomain" name="subDomain" required="required" duplicate="subDomain" class="col-xs-6"/><span class="add-on">.invoize.com</span>
+                    <label ng-show="form.subDomain.$error.required" class="help-inline required">*</label>
+                    <label ng-show="form.subDomain.$error.duplicate" class="required">Domain exists.</label>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <input ng-hide="registerLoader" ng-disabled="form.$invalid" type="submit" value="Sign up" class="btn btn-success"/><i ng-show="registerLoader" class="icon-spinner icon-spin icon-large"></i>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><img src="img/ra.png"/>
+        <p style="margin: -70px 40px 0;" class="logoGrey">With configurable workflows RANALYZE gives the organization the freedom to define and associate workflows to their clients, accountypes and other configurable elements.!</p>
+      </div>
+      <div class="col-xs-4"><img src="img/rr.png"/>
+        <p style="margin: -70px 40px 0;" class="logoGrey">RateRight is the heart of Invoice-Suite and has the ability to pick rates from tariffs and apply it on your invoices, automating the entire billing process..</p>
+      </div>
+      <div class="col-xs-4"><img src="img/gv.png"/>
+        <p style="margin: -70px 40px 0;" class="logoGrey">Holds a complete repository of your invoices and the documents attached to it.Greenvoize helps you manage your invoices and can generate and transform them to any format u want..</p>
+      </div>
+    </div>
+  </section>
+</div>

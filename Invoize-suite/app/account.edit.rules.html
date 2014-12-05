@@ -1,0 +1,177 @@
+
+<!--//Created by kamalsingh.saini on 13/12/13.-->
+<div ng-if="selectedAccounts.rulesFor=='Invoice'">
+  <form name="accountRule" validate-form="validate-form" novalidate="novalidate">
+    <div permission="accountConfig.cloneInvoiceRulesAccount">
+      <h3 class="header smaller lighter red"><i class="fa fa-search">&nbsp;</i>Clone Invoice Rules &nbsp;</h3>
+      <label>Clone from Account Number:
+        <dynamic-Select name="accountNumber" ng-model="clone.accountid" ph="accountNumber" customobj="{&quot;templateId&quot;:&quot;{{templateData.templateId}}&quot;}" toolTip="Account Number" placeholder="Account Number" change="getFields()"></dynamic-Select>
+      </label>
+      <div style="clear;both;height:5px"></div>
+      <label><span>Create Invoice Rules &nbsp; :</span><span class="red">&nbsp; {{selectedAccounts.accountNos.toString()}}</span></label>
+      <div style="clear;both;height:5px"></div>
+      <div ng-repeat="item in rulesProfile.fields" ng-form="field" ng-show="{{item.isActive}}" ng-switch="{{item.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 col-sm-12 col-xs-12">
+        <label class="input-medium">{{item.label}}</label>
+        <label ng-switch-when="true" ng-switch="item.type">
+          <input ng-switch-when="text" id="{{item.key}}" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"/>
+          <input ng-switch-when="date" id="{{item.key}}" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"/>
+          <input ng-switch-when="numeric" id="{{item.key}}" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"/>
+          <dynamic-Select ng-switch-when="multiselect" id="{{item.key}}" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+          <dynamic-Select ng-switch-when="dropdown" id="{{item.key}}" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+          <textarea ng-switch-when="multiline" id="{{item.key}}" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"></textarea><span ng-show="field.name.$error.required" class="red">*</span><span ng-show="field.name.$error.unique" class="red">already Exists</span><span ng-show="field.name.$error.number" class="red">only numbers</span><span ng-show="field.name.$error.date" class="red">only date</span><span ng-show="field.name.$error.maxlength" class="red">max length is {{item.length}}</span><span ng-show="field.name.$error.pattern" class="red">Can contain only text</span><span ng-show="field.name.$valid" class="green">&#10004;</span>
+        </label>
+      </div>
+      <div style="clear;both;height:250px"></div>
+    </div>
+  </form>
+</div>
+<div style="clear:both;"></div>
+<div ng-if="selectedAccounts.rulesFor=='Shipment' || $state.current.url=='/shipmentRules'">
+  <div ng-if="selectedAccounts.rulesFor=='Shipment'" permission="accountConfig.cloneShipmentRulesAccount">
+    <div ng-hide="isKeys">
+      <div class="pull-left">
+        <div style="vertical-align: inherit;" ng-show="profile.docType=='accountShipment'" class="btn-group">
+          <button data-toggle="dropdown" type="button" tooltip="Clone From" tooltip-placement="top" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-angle-down"></i>&nbsp; Clone<span style="color:yellow;" ng-show="clone.accountid">&nbsp;(selected)</span></button>
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu dropdown-caret">
+            <li>
+              <table>
+                <tbody>
+                  <tr>
+                    <td style="padding:0 5px;">Account</td>
+                    <td>
+                      <dynamic-Select name="accountNumber" ng-model="clone.accountid" ph="accountNumber" customobj="{&quot;templateId&quot;:&quot;{{templateData.templateId}}&quot;}" toolTip="Account Number" placeholder="Account Number" change="getFields()"></dynamic-Select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ul>
+        </div>
+        <div style="vertical-align: inherit;" ng-show="profile.docType=='accountShipment'" class="btn-group">
+          <button data-toggle="dropdown" type="button" tooltip="Configuration Mode" tooltip-placement="top" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-angle-down"></i>&nbsp; Mode</button>
+          <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu dropdown-caret">
+            <li>
+              <table>
+                <tbody>
+                  <tr ng-repeat="type in profile.template">
+                    <td style="padding:0 5px;min-width:130px;">{{type.label}}</td>
+                    <td>
+                      <dynamic-Select name="TypeValue_{{$index}}" ng-model="type.value" ph="{{type.suggestionsSource}}" placeholder="Please Select"></dynamic-Select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <div style="clear:both;height:5px;"></div>
+            <li>
+              <div class="opt-cmd">
+                <button ng-click="reset()" class="inz-btn btn-xs btn-default">Reset</button>
+                <button ng-click="getFields()" class="inz-btn btn-xs btn-success">Search</button>
+              </div>
+            </li>
+          </ul>
+        </div><span class="label label-info">Account : {{selectedAccounts.accountNos.toString() | capital}}</span><span ng-show="profile.docType=='accountShipment' &amp;&amp; isDefaultTemplate" class="green">(Default Template)</span>
+      </div>
+      <div class="pull-right">
+        <input type="text" ng-model="querySearch1" placeholder="Type here..." class="input-search-new"/>
+        <button ng-click="gridFilter(querySearch1)" class="input-search-new"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:5px;"></div>
+<div ng-hide="isKeys">
+  <div ng-if="$state.current.url=='/shipmentRules'" ng-init="getShipmentFieldTemplate()" permission="systemConfig.cloneProfileShipmentSystem" class="pull-left">
+    <div class="div-span1"><span class="red">Clone From System</span>
+      <dynamic-Select name="cloneSystem" ng-model="cloneSystem.id" ph="system" customobj="{&quot;removeSystem&quot;:&quot;{{$routeParams.systemId}}&quot;}" toolTip="System Name" placeholder="System Name" change="getTemplateSystemRules()"></dynamic-Select>
+    </div>
+  </div>
+  <div ng-if="$state.current.url=='/shipmentRules'" class="pull-right">
+    <div class="div-span1 align-right">
+      <input type="text" ng-model="querySearch" placeholder="Type here..." class="input-search-new"/>
+      <button ng-click="gridFilter(querySearch)" class="input-search-new"><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+  <div when-scrolled="loadMore()" class="de"></div>
+</div>
+<div style="clear:both;height:5px;"></div>
+<div id="keyHT" ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-show="isKeys" height="400" onBeforeChange="beforeKeyChange" datarows="key in keys" columns="keyColumns" minsparerows="1" contextMenu="false"></div>
+<div ng-hide="isKeys">
+  <div ui-handsontable="{rowHeaders: true, fixedColumnsLeft:2,currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-if="selectedTemplate==&quot;Charges&quot;" height="400" datarows="charge in charges" columns="chargeColumns" manualColumnResize="true" minsparerows="1" contextMenu="false" onBeforeChange="chargeCelChange"></div>
+  <div id="fch" ui-handsontable="{rowHeaders: true,fixedColumnsLeft:2, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-show="selectedTemplate==&quot;Shipment&quot;" height="400" onchange="afterChange" datarows="field in profile.fields" columns="columns" manualColumnResize="true" minsparerows="1" contextMenu="false" onBeforeChange="celChange"></div>
+</div>
+<div style="clear:both;height:15px;"></div>
+<div ng-show="dependentFields.length&gt;0 &amp;&amp; selectedTemplate=='Shipment'">
+  <h5 class="title red">Dependent Fields for {{selectedField.key}}</h5>
+  <div class="overflow-auto">
+    <table class="inz-table inz-table1 border1px">
+      <thead>
+        <th> Field</th>
+        <th> value</th>
+        <th>
+          <button ng-click="dependentFields.push({fieldKey:null,fieldValue:null});" data-placement="top" data-toggle="tooltip" toolTip="Add field" class="command light"><i class="fa fa-plus greenplus"></i></button>
+        </th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="df in dependentFields">
+          <td>
+            <dynamic-Select name="field_{{$index}}" customobj="{&quot;docType&quot;:&quot;{{profile.docType}}&quot;,&quot;selected&quot;:&quot;{{selectedFields.join();}}&quot;,&quot;{{profile.accountId?'accountId&quot;:&quot;'+profile.accountId : 'systemId&quot;:&quot;' + $routeParams.systemId}}&quot;}" ng-model="df.fieldKey" ph="columns" placeholder="Field Key" change="setSelected()"></dynamic-Select>
+          </td>
+          <td>
+            <input name="val_{{$index}}" ng-model="df.fieldValue" ph="metadata_globalFields" placeholder="Field Value" type="text" class="input-large"/>
+          </td>
+          <td>
+            <button ng-click="dependentFields.splice($index,1);" ng-hide="$index==0" data-placement="top" data-toggle="tooltip" toolTip="Remove Field" class="command"><i class="fa fa-minus redminus"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="clear:both;height:250px;"></div>
+</div>
+<div ng-if="selectedAccounts.rulesFor=='InvoiceDelivery' || $state.current.url=='/systemInvoiceDelivery'" class="row">
+  <div name="form" novalidate="novalidate" ng-init="getInvoiceDeliveryModeList()">
+    <!--.row.in-wiz-ttl.fix-scroll(style="background:#eee;", ng-init="getInvoiceDeliveryModeList()")-->
+    <!--.col-md-7.col-sm-6-->
+    <!---->
+    <!--.col-md-5.col-sm-6.in-add-->
+    <!--    //a(style="vertical-align: middle;",ng-click="setDeliveryState('new')",style="cursor:pointer")-->
+    <!--    a(style="vertical-align: middle;",ng-click="RulesState('invoiceDeliveryRuleNew')",style="cursor:pointer")-->
+    <!--                    span.in-add-sign +-->
+    <!--                    span.in-add-txt Add Mode-->
+  </div>
+  <div ng-show="deliveryState=='view'" style="padding-top:10px;" class="row">
+    <div style="margin-top:-35px;" ng-show="$state.current.name.split('.')[0]=='wizard'" class="in-wiz-row pull-left pull-up">
+      <button ng-click="RulesState('invoiceDeliveryRuleNew')" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Mode" ng-show="showBackBtn" class="inz-btn btn-sm btn-ico btn-default go-back"><i class="fa fa-plus"></i></button>
+    </div>
+    <div style="margin-top:-42px;" ng-hide="$state.current.name.split('.')[0]=='wizard'" class="in-wiz-row pull-left pull-up">
+      <button ng-click="RulesState('invoiceDeliveryRuleNew')" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Mode" ng-show="showBackBtn" class="inz-btn btn-sm btn-ico btn-default go-back"><i class="fa fa-plus"></i></button>
+    </div>
+    <div ng-repeat="ListItem in invoiceDeliveryModeList | orderBy:title" ng-form="subForm" style="margin-bottom:30px;" class="col-sm-6 col-md-6 col-lg-4 inz-blk">
+      <div class="in-view-block">
+        <div class="title">{{ListItem.mode}} - {{ListItem.profileName}}</div>
+        <div class="line">
+          <div class="caption">Party</div>
+          <div class="data">{{ListItem.deliveryParty}}</div>
+        </div>
+        <div class="line">
+          <div class="caption">Party Name</div>
+          <div class="data">{{ListItem.deliveryPartyName}}</div>
+        </div>
+      </div>
+      <div class="in-btn-blk">
+        <div class="in-btn-grp">
+          <div class="in-btn-row">
+            <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Delete" ng-click="" class="inz-btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
+            <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="currentTab='invoiceDeliveryModeEdit';invoiceDeliveryModeEdit(ListItem.id )" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+            <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="View" ng-click="invoiceDeliveryModeView(ListItem.id )" class="inz-btn btn-sm btn-danger"><i class="fa fa-eye"></i></button>
+            <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Default" ng-click="invoiceDeliveryModeDefault(ListItem.id )" class="inz-btn btn-sm btn-danger"><i class="fa fa-anchor"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="deliveryState=='new'" class="row">
+    <div ui-view="rulesContents"></div>
+  </div>
+</div>

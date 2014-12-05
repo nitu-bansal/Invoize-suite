@@ -1,0 +1,54 @@
+<!--
+<Created>by pallavi.dandane on 10/6/2014.</Created>-->
+<div ng-init="setPreData();editDocProfile();" class="col-xs-12 col-md-12 col-sm-12">
+  <label>Name &nbsp;</label>
+  <label>{{data.docProfile.name}} &nbsp;&nbsp;&nbsp;</label>
+  <!--span.red(ng-show="form.docProfileName.$error.required") &nbsp; * &nbsp;-->
+  <!--span.green.validTick(ng-show="form.docProfileName.$valid") &nbsp; &#10004; &nbsp;-->
+  <div style="vertical-align: inherit;" class="btn-group">
+    <button data-toggle="dropdown" type="button" tooltip="Configuration Mode" tooltip-placement="top" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-angle-down"></i>&nbsp; Mode</button>
+    <div aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+      <table>
+        <tbody>
+          <tr ng-repeat="type in data.profileBase">
+            <td style="padding:0px 10px;">{{type.label}}</td>
+            <td>{{type.value[0].n}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="clear:both;height:3px;"></div>
+  <!--.row-->
+  <!--    .col-xs-12.col-sm-12.col-md-12-->
+  <!--        button.btn.btn-sm.inz-btn.btn-success.btn-ico.btn-round(type='button',ng-click="addDocument()",tool-tip,data-placement="top", data-toggle="tooltip", title="Add Document")-->
+  <!--            i.fa.fa-plus-->
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <table class="inz-table inz-table1">
+      <thead>
+        <th>Document Name
+          <!--button.command.light(ng-click="documents.push({doc:null,isMandatory: false});",tool-tip,data-placement="top", data-toggle="tooltip", title="Add Document")-->
+          <!--    i.fa.fa-plus.greenplus-->
+          <!--| &nbsp;-->
+        </th>
+        <th> Is Mandatory</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="field in documents ">
+          <td>
+            <div ng-form="subForm3">
+              <!--button.command(ng-click="documents.splice($index,1);fieldKeyChangedDocuments();",tool-tip,data-placement="top", data-toggle="tooltip", title="Remove Document")-->
+              <!--    i.fa.fa-minus.redminus(ng-hide="field.readOnly")-->
+              <!--    i.fa.fa-minus.grey(ng-show="field.readOnly")--><span class="input-large1 form-section">
+                <lable>{{field.doc.n}}</lable></span>
+            </div>
+          </td>
+          <td><span ng-hide="field.isMandatory" class="red">X</span><span ng-show="field.isMandatory" class="green validTick">&nbsp; &#10004; &nbsp;</span>
+            <!--span.input-large100-->
+            <!--    input(id="chk",type='checkbox', checked="field.isMandatory", ng-readonly="true")-->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

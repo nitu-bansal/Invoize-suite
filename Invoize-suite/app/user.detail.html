@@ -1,0 +1,69 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Welcome to user configurations. You can configure / edit users/permissions to users here.</div><i ng-show="loader" class="icon-spinner icon-spin blue icon-large"></i>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add"><a ng-click="editTemplate(false);" href="javascript:void(0)" permission="editTemplateUser"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Edit Fields</span></a></div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Users Details</div>
+    </div>
+    <div class="pull-right"><i ng-show="loader" class="icon-spinner icon-spin blue icon-large"></i><a ng-click="editTemplate(false);" href="javascript:void(0)" permission="editTemplateUser"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Edit Fields</span></a><a ng-click="redirectTo('/users/invite')" permission="createUser" class="inz-btn btn-sm btn-default">Invite Users</a>
+      <button ng-click="editPermissions()" permission="assignPermissionUser" class="inz-btn btn-sm btn-default">Assign Permissions</button>
+      <button type="submit" ng-click="updateUsers(false)" permission="editUser" class="inz-btn btn-sm btn-success">Save Changes</button>
+      <div style="vertical-align: inherit;" class="btn-group filter-dd rule-filter">
+        <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle pad6-12"><i class="fa fa-filter"></i> Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+        <div aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;white-space: nowrap;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <div>
+            <button ng-click="isAdvancedFilter=!isAdvancedFilter" class="btn-sm btn-ico btn-custom pull-right"><span ng-show="isAdvancedFilter">Easy Filter</span><span ng-show="!isAdvancedFilter">Flexi Filter</span></button><br/>
+          </div>
+          <div ng-show="isAdvancedFilter" class="rule-filter1 showme custom-filter-display overflow-auto">
+            <div id="rules" class="row">
+              <div class="row">
+                <div ng-form="rulesForm" rules="rules" ng-init="getRuleFields()" class="ds-tree"></div>
+              </div>
+            </div>
+          </div>
+          <div ng-show="isAdvancedFilter">
+            <div class="opt-cmd">
+              <button ng-click="reset()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button ng-click="getData(currentPage,true)" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </div>
+          <div ng-show="!isAdvancedFilter" class="showme custom-filter-display overflow-auto">
+            <div ng-repeat="f in sortedFields" ng-switch="fields[f].type">
+              <div class="opt-title">{{fields[f].label}}</div>
+              <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="fields[f].val" close-text="Close" placeholder="{{fields[f].label}}" class="input-large"/>
+              <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" name="{{fields[f]}}" ng-model="fields[f].val" ph="user" customobj="{{custObj[fields[f].label]}}" placeholder="{{fields[f].label}}"></dynamic-Select>
+            </div>
+          </div>
+          <div ng-show="!isAdvancedFilter">
+            <div class="opt-cmd">
+              <button type="reset" ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" height="hh" width="hw" beforeSet="multiselect" datarows="user in users" manualColumnResize="true" columns="columns" onBeforeChange="celChange" onChange="aftercellchange" afterRender="afterRender()" ng-init="getTemplate()"></div>
+  <pagination total-items="totalItems" items-per-page="pageLimit" page="currentPage" max-size="paginationSize" rotate="true" ng-init="paginationSize=20" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+</div>
+<div class="in-wiz-footer">
+  <button ng-click="prevStep()" class="inz-btn btn-sm btn-danger"><i class="fa fa-long-arrow-left"></i>  Previous Step</button><a href="#/wizard/users/invite" permission="createUser" class="inz-btn btn-sm btn-default">Invite Users</a>
+  <button ng-click="editPermissions()" permission="assignPermissionUser" class="inz-btn btn-sm btn-default">Assign Permissions</button>
+  <!--button.inz-btn.btn-sm.btn-default(ng-click="activateUsers(true)") Activate users-->
+  <!--button.inz-btn.btn-sm.btn-default(ng-click="activateUsers(false)") Deactivate users-->
+  <button type="submit" ng-click="updateUsers(false)" permission="editUser" class="inz-btn btn-sm btn-success">Save Changes</button><a ng-click="finishSetup()" class="inz-btn btn-sm btn-primary"><i class="fa fa-flag-checkered"></i>  Finish</a>
+</div>
+<script type="text/javascript">
+  $('.filter-ddm li').click(function(e) {
+  e.stopPropagation();
+  });
+</script>

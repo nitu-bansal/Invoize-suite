@@ -1,0 +1,27 @@
+ 
+.modal-dialog.container
+           
+                .modal-content
+                    form(novalidate, name="form1")
+                        .modal-header
+                                button.close(aria-hidden='true', data-dismiss='modal', type='button',ng-click="close()")     &times;                            
+                                h4.modal-title {{item.title}}
+                        .modal-body
+                                .modal-msg
+                                                .row
+                                                        .col-md-6(ng-switch="true",alt-render,ng-form="subForm",hasParent='row',hasCount='2')
+                                                            form.form-horizontal(novalidate, name="subForm")
+                                                                    label.control-label {{item.label}} &nbsp; &nbsp; &nbsp; &nbsp;
+                                                                    .controls(ng-switch-when="true",ng-switch='item.type')
+                                                                        input(ng-switch-when='text',type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                                                                        input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                                                                        input(ng-switch-when='numeric',type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                                                                        dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                                                                        dynamic-Select(ng-switch-when='dropdown',ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                                                                        textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                                                                      
+                                                        
+                                                        
+                        .modal-footer                    
+                            button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                            button.inz-btn.btn-sm.btn-success(ng-click="save()") Send

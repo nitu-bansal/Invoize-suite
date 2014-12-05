@@ -1,0 +1,137 @@
+.col-md-8      
+        form.form-horizontal(novalidate, name="form",)
+                fieldset(ng-hide="tariffDetailLoader")
+                        .fluid-row
+                                h4.header.smaller.lighter.gray Invoice Detail
+                                        .pull-right.btn-group
+                                                a.btn.btn-small.btn-primary(ng-hide="tariffDetailLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                            i.icon-mail-reply.icon-large
+                                                //- a.btn.btn-primary.btn-margin(permission="editTariff.*.*", ng-hide="tariffDetailLoader", bs-tooltip="tooltip.revise",ng-click="initExistingDocs()", href="#/tms/list/{{$stateParams.accountId}}/edit/{{tariff.id}}")
+                                                //-             i.icon-pencil.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="tariffDetailLoader")                            
+                        .control-group
+                                label.control-label Invoice Number
+                                .controls
+                                    label : {{invoice.invoiceNumber}}
+                        .control-group
+                                label.control-label Invoice Date
+                                .controls
+                                        label : {{invoice.invoiceDate | date:'mediumDate'}}
+                        .control-group
+                                label.control-label Received Amount
+                                .controls
+                                        label : {{invoice.monetaryAmount}}
+                        .control-group
+                                label.control-label Allowance
+                                .controls
+                                        label : {{invoice.allowanceOrCharge}}
+                        .control-group
+                                label.control-label Charge Amount
+                                .controls
+                                        label : {{invoice.allowanceOrChargeAmount}}
+                fieldset
+                        .widget-box.transparent
+                                .widget-header
+                                        h5.lighter.smaller
+                                                i.icon-large.icon-paper-clip
+                                                | Linked Reports
+                                .widget-body
+                                        .widget-main.no-padding
+                                                .dialogss
+                                                        ul.item-list.ui-sortable
+                                                                li.item-green.clearfix
+                                                                        label.inline P. O. : 
+                                                                        a(ng-repeat="link in invoice._linkage.po")
+                                                                                | P.O. 
+                                                                                {{$index + 1}}
+                                                                li.item-green.clearfix
+                                                                        label.inline Payment :
+                                                                        a(ng-repeat="link in invoice._linkage.payment")
+                                                                                | Payment
+                                                                                {{$index + 1}}
+                                                                li.item-green.clearfix
+                                                                        label.inline Invoice : 
+                                                                        a(ng-repeat="link in invoice._linkage.invoice")
+                                                                                | Invoice
+                                                                                {{$index + 1}}
+                                                                li.item-green.clearfix
+                                                                        label.inline Shipments : 
+                                                                        a(ng-repeat="link in invoice._linkage.shipment")
+                                                                                | Shipment
+                                                                                {{$index + 1}}
+
+                fieldset
+                        .widget-box.transparent
+                                .widget-header
+                                        h5.lighter.smaller
+                                                i.icon-large.icon-paper-clip
+                                                | Attached Documents
+                                .widget-body
+                                        .widget-main.no-padding
+                                                .dialogss                                           
+                                                        ul.item-list.ui-sortable(data-ng-repeat='file in tariff.docId')
+                                                            li.item-green.clearfix
+                                                                label.inline                                                                
+                                                                  i.icon-large.icon-paper-clip &nbsp
+                                                                                                a.link(href='/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download")
+                                                                                                        strong|{{file.v}}
+                                                                                                strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                                                                    br
+                                                                                                    small.muted  You do not have download permissions
+                                                                .pull-right
+                                                                  span.label.label-warning {{file.t}}   
+                      
+                fieldset
+                                h5(ng-show="tariffHistoryLoader") Loading History
+                                        i.icon-spinner.icon-spin.icon.icon-large(ng-show="tariffHistoryLoader")                        
+                        .div(ng-show="tariffHistoryAvailable")
+                                br
+                                .widget-box.transparent
+                                        .widget-header
+                                                h5.lighter.smaller
+                                                        i.icon-comment.blue
+                                                        | History
+                                        .widget-body
+                                                .widget-main.no-padding
+                                                        .dialogs                                            
+                                                                .itemdiv.dialogdiv(ng-repeat="row in documentRequestHistory")
+                                                                        .user
+                                                                                img(alt="Avatar",src="avatars/user12.png") 
+                                                                        .body(ng-click='isCollapsed = !isCollapsed',style="cursor: pointer;")
+                                                                                .time
+                                                                                        span.small.label.label-success.pull-right(ng-show="row.action=='Approved'") Approved
+                                                                                        span.small.label.label-important.pull-right(ng-show="row.action=='Rejected'") Rejected
+                                                                                        span.small.label.label-info.pull-right(ng-show="row.action=='Created'") Created 
+                                                                                .name
+                                                                                        a {{row.un}}  
+                                                                                .text {{row.oldSnapshot.comment}}
+                                                                                        div(collapse='isCollapsed')
+                                                                                                .fluid-row                                                                        
+                                                                                                        small.muted 
+                                                                                                                i.icon-caret-right.green  Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} 
+                                                                                                        br
+                                                                                                        small.muted    
+                                                                                                                i.icon-caret-right.green  Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} 
+                                                                                                        br
+                                                                                                        small.muted     
+                                                                                                                i.icon-caret-right.green  Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}
+                                                                                                        br
+                                                                                                strong.text-black Attached Documents
+                                                                                                div(data-ng-repeat='file in row.oldSnapshot.docId')
+                                                                                                        div
+                                                                                                                div.pull-right
+                                                                                                                        &nbsp
+                                                                                                                        span.pull-right.small.label.label-info {{file.t}}
+
+                                                                                                                i.icon-large.icon-paper-clip &nbsp
+                                                                                                                a.link(href='/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download",data-placement="right")
+                                                                                                                        strong|{{file.v}}
+                                                                                                                strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                                                                                    br
+                                                                                                                    small.muted  You do not have download permissions
+                                                                                .tools
+                                                                                    a.btn.btn-minier.btn-info
+                                                                                        i.icon-only.icon-share-alt   
+                                .div(ng-hide="tariffHistoryAvailable || tariffHistoryLoader" )
+                                        h5 History not available for this tariff
+                                

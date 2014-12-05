@@ -1,0 +1,187 @@
+//- .alert.alert-warning.col-md-1.offset8(ng-show="loading") Loading.....
+.navbar.navbar-default.navbar-fixed-top(id="navbar")
+        .navbar-container(id="navbar-container")
+            .pull-left
+                .navbar-header.nav-menu-toggeler
+                    .navbar-brand
+                        a.brand
+                            span.in-logo-bar.r
+                            span.in-logo-bar.b
+                            span.in-logo-bar.g
+
+                .navbar-header.menu-toggle
+                    ul.nav.ace-nav
+                        li(ng-class="{ active: $state.includes('route:/home')}")
+                            a(href="#/home")
+                                i.icon-home
+                                span  Home
+
+                        li(permission=".navBillright",product="Bill Right",ng-class="{ active: $state.includes('billright')}")
+                            a(href="#/billright")
+                                i.icon-book
+                                span  Bill Right 
+                        //li(permission="Pay Right",ng-class="{ active: $state.includes('payright')}")
+                        //                                    a(href="#/payright")
+                        //                                            i.icon-book
+                        //                                            span  Pay Right
+                        //li(permission="Quote Right",ng-class="{ active: $state.includes('quote')}")
+                        //                                    a(href="#/quote")
+                        //                                            i.icon-file-text-alt
+                        //                                            span  Quote
+                        //li(permission="rateNav.*.*",ng-class="{ active: $state.includes('rate')}")
+                        //                                    a(href="#/rate")
+                        //                                            i.icon-money
+                        //                                            span  Rate
+                        //li(permission="requestNav.*.*",ng-class="{ active: $state.includes('request')}")
+                        //                                    a(href="#/request")
+                        //                                            i.icon-retweet
+                        //                                            span  Request
+                        //li(permission="tmsNav.*.*",ng-class="{ active: $state.includes('tms')}")
+                        //                                    a(href="#/tms")
+                        //                                            i.icon-credit-card
+                        //                                            span  Tariff
+                        li(permission=".navOrganization",product="Admin",ng-class="{ active: $state.includes('organizationSetup')}")
+                            a(href="#/organizationSetup")
+                                i.icon-cogs
+                                span  Organization Setup
+            .pull-right
+
+                .navbar-header
+                      ul.nav.ace-nav
+                        li.label-warning(ng-show="pendingQuoteRequestCount || pendingRateRequestCount || pendingTmsRequestCount")
+                          a.dropdown-toggle(data-toggle='dropdown', href='#')
+                            i.icon-bell-alt.icon-only.icon-animated-bell
+                            span.badge.badge-important(ng-cloak) {{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}}
+                          ul.pull-right.dropdown-navbar.navbar-green.dropdown-menu.dropdown-caret.dropdown-closer
+                            li.nav-header
+                              i.icon-warning-sign
+                              | {{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}} Notifications
+                            li(ng-show="pendingQuoteRequestCount")
+                              a(href='#/request/quote/pending')
+                                .clearfix
+                                  span.pull-left
+                                    i.btn.btn-mini.no-hover.btn-pink.icon-envelope-alt
+                                    | New Quotes
+                                  span.pull-right.badge.badge-pink(ng-cloak) +{{pendingQuoteRequestCount}}
+                            li(ng-show="pendingRateRequestCount")
+                              a(href='#/request/rate/pending')
+                                .clearfix
+                                  span.pull-left
+                                    i.btn.btn-mini.no-hover.btn-success.icon-envelope-alt
+                                    | New Rates
+                                  span.pull-right.badge.badge-success(ng-cloak) +{{pendingRateRequestCount}}
+                            li(ng-show="pendingTmsRequestCount")
+                              a(href='#/request/tms/pending')
+                                .clearfix
+                                  span.pull-left
+                                    i.btn.btn-mini.no-hover.btn-info.icon-envelope-alt
+                                    | New Tariffs
+                                  span.pull-right.badge.badge-info(ng-cloak) +{{pendingTmsRequestCount}}
+                            li
+                              a(href='#/request')
+                                | See all requests
+                                i.icon-arrow-right
+                          li.minfo(tootltip="Set your work environment")
+                            a.in-alert.dropdown-toggle(data-toggle='dropdown', href='#',tooltip-placement="bottom",tooltip="Your Work Environment")
+                                  i.icon-cog.icon-animated-vertical
+                                  span.in-alert-cnt(ng-hide="loggedInUser.userCompany && loggedInUser.userSystem") !
+                                  span.in-success-cnt(ng-show="loggedInUser.userCompany && loggedInUser.userSystem")
+                                     i.fa.fa-check
+                              ul.pull-right.dropdown-menu.filter-ddm.dropdown-caret.dropdown-close.in-dd-noti.inz-env
+                                  li.in-notiifier.in-notiifier1
+                                      .noti-con
+                                          .noti-title Company
+                                          dynamic-Select.ftext(required,name="searchCompany",ng-model="search.company",ph="userCompany",placeholder="Select Company",change="clearSystem()")
+                                  li.in-notiifier.in-notiifier1
+                                      .noti-con
+                                          .noti-title System
+                                          dynamic-Select.ftext(required,customobj='{"companyId":"{{search.company[0].id!=null ? search.company[0].id : userCompany[0].id}}"}',disabled="search.company==null || search.company.length==0",name="searchSystem",ng-model="search.system",ph="userSystem",placeholder="Select System")
+                                  li.in-notiifier.in-notiifier1
+                                      .noti-con.pull-right
+                                          button.pull-right.noti-title.inz-btn.btn-xs.btn-success(ng-click="setCompanySystemCookie()",ng-class="{'disabled': search.company==null || search.system==null}",ng-disabled="search.company==null || search.system==null") Apply
+                                      .clearfix
+                        li
+                          a.in-alert.dropdown-toggle(data-toggle='dropdown', href='#')
+                            i.icon-envelope.icon-animated-hand-pointer
+                            span.in-alert-cnt 3
+                          ul.pull-right.dropdown-menu.dropdown-caret.dropdown-close.in-dd-noti.filter-ddm
+                            li.in-notiifier
+                              a.noti-img
+                                img(src='avatars/avatar8.jpg')
+                              .noti-con
+                                .noti-title Shanon Butler
+                                .noti-des Updated Pending bill request in abcd station.
+                            li.in-notiifier
+                              a.noti-img
+                                img(src='avatars/avatar10.jpg')
+                              .noti-con
+                                .noti-title Nikita Smith
+                                .noti-des Updated Pending bill request.
+                            li.in-notiifier
+                              a.noti-img
+                                img(src='avatars/avatar11.jpg')
+                              .noti-con
+                                .noti-title Kesha
+                                .noti-des Reported new bug.
+                        li
+                          a.in-alert.dropdown-toggle(data-toggle='dropdown', href='#')
+                            i.icon-bell-alt.icon-animated-bell
+                            span.in-alert-cnt 9+
+                          ul.pull-right.dropdown-menu.dropdown-caret.dropdown-close.in-dd-noti.filter-ddm
+                            li.in-notiifier
+                              a.noti-img
+                                img(src='avatars/avatar8.jpg')
+                              .noti-con
+                                .noti-title Shanon Butler
+                                .noti-des Updated Pending bill request in abcd station.
+                            li.in-notiifier
+                              a.noti-img
+                                img(src='avatars/avatar10.jpg')
+                              .noti-con
+                                .noti-title Nikita Smith
+                                .noti-des Updated Pending bill request.
+                            li.in-notiifier
+                              a.noti-img
+                                img(src='avatars/avatar11.jpg')
+                              .noti-con
+                                .noti-title Kesha
+                                .noti-des Reported new bug.
+
+                        li
+                          a.user-menu.dropdown-toggle(data-toggle='dropdown', href='#')
+                            img.nav-user-photo(src='avatars/avatar2.png', alt='Jason\'s Photo')
+                            .user-info(id="user_info")
+                              | {{loggedInUser.email}}
+                              //- | Katie
+                            i.icon-angle-down
+                          ul.user-menu.pull-right.dropdown-menu.dropdown-caret.dropdown-close.in-dd-pro
+                            li(style="text-align: center;")
+                              img.in-pro-img(src='avatars/avatar31.png')
+                            li
+                              .in-name {{loggedInUser.firstName}}
+                              .in-desig {{loggedInUser.designation}}
+                            li.li-bt
+                              a.tab(href="#/main/users/{{userId}}")
+                                i.icon-user
+                                | Profile
+                            li.li-bt(ng-class="{ active: $state.includes('changePassword')}")
+                              a(href="#/changePassword",ng-hide="isCevaUser")
+                                i.icon-edit
+                                | Change Password
+                              a(href="https://helpdesk.invoize.com/recovery.php?changepassword=true",ng-show="isCevaUser")
+                                i.icon-edit
+                                | Change Password
+                            li.li-bt
+                              a.tab(ng-click="logout()")
+                                i.icon-signout
+                                | Sign Out
+            div(style="clear:both;")
+
+
+
+.modal-backdrop.modal-info(click-hide-show,clickHide='btnEnvWarning',style="display:none;")
+    .info-block
+        img.img(src="../styles/images/hd-arrow.png",height="70" )
+        .msg Please choose your work environment first!
+            button#btnEnvWarning.inz-btn.btn-sm.btn-success got it!
+

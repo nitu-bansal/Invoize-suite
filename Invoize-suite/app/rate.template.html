@@ -1,0 +1,63 @@
+
+<div class="col-md-7">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">                      
+      <legend>New Rate Definition
+        <div class="pull-right btn-group"><a ng-hide="chargeDefnCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin btn-sm"><i class="icon-mail-reply icon-large"></i></a>
+          <button ng-hide="chargeDefnCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="createChargeDefn(chargeDefn,$routeParams.accountId)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary btn-sm"><i class="icon-ok icon-large"></i></button><i ng-show="chargeDefnCreateLoader" class="icon-spinner icon-spin icon-2x">                                    </i>
+        </div>
+      </legend>
+      <div class="form-group">
+        <label class="control-label">Name</label>
+        <div class="col-sm-9">
+          <input type="text" name="name" ng-model="chargeDefn.name" placeholder="Name" required="required"/>
+          <label ng-show="form.name.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.name.$valid" class="help-inline required validTick">&#10004;  </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Group</label>
+        <div class="col-sm-9">
+          <select ui-select2="ui-select2" multiple="true" name="group" ng-model="chargeDefn.group" required="required" data-placeholder="Please select..." style="width:200px">
+            <option ng-repeat="field in chargeDefnGroup" value="{{field.n}}">{{field.n}}                                                        </option>
+          </select>
+          <label ng-show="form.group.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.group.$valid" class="help-inline required validTick">&#10004;  </label>
+        </div>
+      </div>
+      <div class="form-group">                      
+        <label class="control-label">Charge Type                                </label>
+        <div class="col-sm-9">
+          <input ui-select2="chargeTypeBar" name="chargeType" ng-model="chargeDefn.chargeType" style="width:200px" required="required"/>
+          <label ng-show="form.chargeType.$error.required" class="help-inline required">*</label>
+          <label ng-show="form.chargeType.$valid" class="help-inline required validTick">&#10004;  </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Lane Parameters</label>
+        <div class="col-sm-9">
+          <input ui-select2="laneParameterBar" multiple="true" name="laneParam" ng-model="chargeDefn.laneParam" required="required" data-placeholder="Please select..." style="width:200px"/>
+          <label ng-show="form.laneParam.$error.required" class="help-inline required">* </label>
+          <label ng-show="form.laneParam.$valid" class="help-inline required validTick">&#10004;                                 </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Effective Base</label>
+        <div class="col-sm-9">
+          <select ui-select2="{'closeOnSelect':false}" name="effectiveBase" ng-model="chargeDefn.effectiveBase" required="required" data-placeholder="Please select..." style="width:200px">
+            <option value=""></option>
+            <option ng-repeat="field in chargeDefnEffectiveBase" value="{{field.n}}">{{field.n}}                                                        </option>
+          </select>
+          <label ng-show="form.effectiveBase.$error.required" class="help-inline required">* </label>
+          <label ng-show="form.effectiveBase.$valid" class="help-inline required validTick">&#10004;                        </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Description</label>
+        <div class="col-sm-9">
+          <textarea rows="3" name="description" ng-model="chargeDefn.description" placeholder="Short Description"></textarea>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

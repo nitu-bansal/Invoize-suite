@@ -1,0 +1,134 @@
+////Created by kamalsingh.saini on 13/12/13.
+div(ng-if="selectedAccounts.rulesFor=='Invoice'")
+    form(name="accountRule",validate-form,novalidate)
+        div(permission='accountConfig.cloneInvoiceRulesAccount')
+            h3.header.smaller.lighter.red
+                i.fa.fa-search &nbsp;
+                | Clone Invoice Rules &nbsp;
+            label Clone from Account Number:
+                dynamic-Select(name="accountNumber",ng-model="clone.accountid",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",change="getFields()")
+            div(style="clear;both;height:5px")
+            label
+                span Create Invoice Rules &nbsp; :
+                span.red &nbsp; {{selectedAccounts.accountNos.toString()}}
+            div(style="clear;both;height:5px")
+            .col-md-6.col-sm-12.col-xs-12(ng-repeat="item in rulesProfile.fields",ng-form="field",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}",alt-render,hasParent='row',hasCount='2')
+                label.input-medium {{item.label}}
+                label(ng-switch-when="true",ng-switch='item.type')
+                    input.input-large(ng-switch-when='text',id='{{item.key}}',type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                    input.input-large(ng-switch-when='date',id='{{item.key}}',datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                    input.input-large(ng-switch-when='numeric',id='{{item.key}}',type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                    dynamic-Select(ng-switch-when='multiselect',id='{{item.key}}',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                    dynamic-Select(ng-switch-when='dropdown',id='{{item.key}}',ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                    textarea(ng-switch-when='multiline',id='{{item.key}}',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                    span.red(ng-show="field.name.$error.required") *
+                    span.red(ng-show="field.name.$error.unique") already Exists
+                    span.red(ng-show="field.name.$error.number") only numbers
+                    span.red(ng-show="field.name.$error.date") only date
+                    span.red(ng-show="field.name.$error.maxlength") max length is {{item.length}}
+                    span.red(ng-show="field.name.$error.pattern") Can contain only text
+                    span.green(ng-show="field.name.$valid") &#10004;
+            div(style="clear;both;height:250px")
+div(style="clear:both;")
+div(ng-if="selectedAccounts.rulesFor=='Shipment' || $state.current.url=='/shipmentRules'")
+    div(ng-if="selectedAccounts.rulesFor=='Shipment'",permission='accountConfig.cloneShipmentRulesAccount')
+        div(ng-hide='isKeys')
+            .pull-left
+                .btn-group(style="vertical-align: inherit;",ng-show="profile.docType=='accountShipment'")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right(data-toggle='dropdown', type='button' ,tooltip="Clone From",tooltip-placement="top")
+                        i.fa.fa-angle-down
+                        | &nbsp; Clone
+                        span(style="color:yellow;",ng-show="clone.accountid") &nbsp;(selected)
+                    ul.dropdown-menu.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                        li
+                            table
+                                tbody
+                                    tr
+                                        td( style="padding:0 5px;") Account
+                                        td
+                                            dynamic-Select(name="accountNumber",ng-model="clone.accountid",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",change="getFields()")
+                .btn-group(style="vertical-align: inherit;",ng-show="profile.docType=='accountShipment'")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right(data-toggle='dropdown', type='button' ,tooltip="Configuration Mode",tooltip-placement="top")
+                        i.fa.fa-angle-down
+                        |&nbsp; Mode
+                    ul.dropdown-menu.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                        li
+                            table
+                                tbody
+                                    tr(ng-repeat="type in profile.template")
+                                        td( style="padding:0 5px;min-width:130px;") {{type.label}}
+                                        td
+                                            dynamic-Select(name="TypeValue_{{$index}}",ng-model="type.value",ph="{{type.suggestionsSource}}",placeholder="Please Select")
+                        div(style="clear:both;height:5px;")
+                        li
+                            .opt-cmd
+                                button.inz-btn.btn-xs.btn-default(ng-click="reset()") Reset
+                                button.inz-btn.btn-xs.btn-success(ng-click="getFields()") Search
+
+                    //- .btn-group(style="vertical-align: inherit;",menu-group,ng-show="profile.docType=='accountShipment'")
+                    //-     button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right(data-toggle='dropdown', type='button' ,tooltip="Shipment",tooltip-placement="top")
+                    //-         i.fa.fa-angle-down
+                    //-         |&nbsp; Shipment
+                    //-     ul.dropdown-menu.arrow-left.dropdown-caret.multi-level(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                    //-         li(ng-click="changeTemplate('Charges')")
+                    //-             a(style="cursor:pointer") Charges
+                    //-         li(ng-click="changeTemplate('Shipment')")
+                    //-             a(style="cursor:pointer") Shipment
+
+
+                span.label.label-info Account : {{selectedAccounts.accountNos.toString() | capital}}
+                span.green(ng-show="profile.docType=='accountShipment' && isDefaultTemplate") (Default Template)
+
+            .pull-right
+                input.input-search-new(type='text',ng-model='querySearch1', placeholder='Type here...')
+                button.input-search-new(ng-click="gridFilter(querySearch1)")
+                    i.fa.fa-search
+
+div(style="clear:both;height:5px;")
+div(ng-hide='isKeys')
+    .pull-left(ng-if="$state.current.url=='/shipmentRules'",ng-init="getShipmentFieldTemplate()",permission='systemConfig.cloneProfileShipmentSystem')
+        .div-span1
+            span.red Clone From System
+            dynamic-Select(name="cloneSystem",ng-model="cloneSystem.id",ph="system",customobj='{"removeSystem":"{{$routeParams.systemId}}"}',toolTip="System Name",placeholder="System Name",change="getTemplateSystemRules()")
+
+    .pull-right(ng-if="$state.current.url=='/shipmentRules'")
+        .div-span1.align-right
+            input.input-search-new(type='text',ng-model='querySearch', placeholder='Type here...')
+            button.input-search-new(ng-click="gridFilter(querySearch)")
+                i.fa.fa-search
+    .de(when-scrolled="loadMore()")
+
+div(style="clear:both;height:5px;")
+div#keyHT(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-show='isKeys',height='400',onBeforeChange="beforeKeyChange",datarows='key in keys', columns='keyColumns',minsparerows='1',contextMenu='false')
+
+div(ng-hide='isKeys')
+    div(ui-handsontable='{rowHeaders: true, fixedColumnsLeft:2,currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-if='selectedTemplate=="Charges"',height='400',datarows='charge in charges', columns='chargeColumns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='chargeCelChange')
+    div#fch(ui-handsontable='{rowHeaders: true,fixedColumnsLeft:2, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-show='selectedTemplate=="Shipment"',height='400',onchange="afterChange",datarows='field in profile.fields', columns='columns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='celChange')
+div(style="clear:both;height:15px;")
+div(ng-show="dependentFields.length>0 && selectedTemplate=='Shipment'")
+    h5.title.red Dependent Fields for {{selectedField.key}}
+    .overflow-auto
+        table.inz-table.inz-table1.border1px
+            thead
+                th  Field
+                th  value
+                th
+                    button.command.light(ng-click="dependentFields.push({fieldKey:null,fieldValue:null});",data-placement="top", data-toggle="tooltip", toolTip="Add field")
+                        i.fa.fa-plus.greenplus
+            tbody
+                tr(ng-repeat="df in dependentFields")
+                    td
+                        dynamic-Select(name="field_{{$index}}",customobj='{"docType":"{{profile.docType}}","selected":"{{selectedFields.join();}}","{{profile.accountId?\'accountId":"\'+profile.accountId : \'systemId":"\' + $routeParams.systemId}}"}',ng-model="df.fieldKey",ph="columns",placeholder="Field Key",change="setSelected()")
+                    td
+                        input.input-large(name="val_{{$index}}",ng-model="df.fieldValue",ph="metadata_globalFields",placeholder="Field Value",type="text")
+                    td
+                        button.command(ng-click="dependentFields.splice($index,1);",ng-hide="$index==0",data-placement="top", data-toggle="tooltip", toolTip="Remove Field")
+                            i.fa.fa-minus.redminus
+    div(style="clear:both;height:250px;")
+.row(ng-if="selectedAccounts.rulesFor=='InvoiceDelivery' || $state.current.url=='/systemInvoiceDelivery'")
+    include invoiceDeliveryRule
+
+
+
+
+

@@ -1,0 +1,4 @@
+div(style="clear:both; height:10px;")
+.col-xs-12
+    div(ui-handsontable='{ currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",ng-show="!templateLoader",height='hh',width='hw',datarows='location in locations',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChange',afterRender='afterRender()',ng-init="getTemplate()")
+    pagination(total-items="totalItems",items-per-page="pageLimit",max-size="paginationSize",rotate="true",ng-init="paginationSize=20", page="currentPage",ng-show="!templateLoader",ng-show="!templateLoader", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

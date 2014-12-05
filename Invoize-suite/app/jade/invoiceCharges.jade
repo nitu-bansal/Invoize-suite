@@ -1,0 +1,10 @@
+.col-md-8
+    table.inz-table.inz-table5(ng-show="invoiceCaptureData[$index].doc.length")
+        thead
+            tr
+                th(ng-repeat="val1 in invoiceCaptureData[$index].doc[0]" ,ng-show="$index>1")
+                    span(tooltip="{{val1 |toHumanReadable}}") {{val1 | toHumanReadable}}
+        tbody(ng-repeat="rowCharge in invoiceCaptureData[$index].doc",ng-show="$index > 0")
+            tr
+                td(ng-repeat="colCharge in rowCharge track by $index",ng-show="$index>1")
+                    span(tooltip="{{colCharge}}") {{colCharge}}

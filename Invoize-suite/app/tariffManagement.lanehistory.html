@@ -1,0 +1,137 @@
+<!--
+<Created>by pallavi.dandane on 10/28/2014.</Created>--><!--
+<Created>by pallavi.dandane on 10/2/2014.</Created>-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form novalidate="novalidate" name="formlaneHistory">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Lane History &nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+        <div class="modal-body">
+          <div class="overflow-auto">
+            <table class="inz-table inz-table1 border1px">
+              <thead>
+                <tr>
+                  <th><span tooltip="Expand/Collapse"><i class="fa fa-align-justify"></i></span></th>
+                  <th ng-repeat="title in laneHistoryData[0]" ng-show="$index &gt; 0 &amp;&amp; $index &lt;6 "><span tooltip="{{title |toHumanReadable}}" class="trim-info-large">{{title | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody ng-repeat="data in laneHistoryData" ng-show="$index &gt; 0">
+                <tr style="cursor: pointer;">
+                  <td ng-repeat="d in data track by $index" ng-show="$index==0" ng-click="getlaneHistoryInfo($parent.$index,data[6])">
+                    <div ng-hide="data.dataPresent"><i ng-show="data.doc" class="icon-reorder blue"></i><i ng-hide="data.doc" class="icon-reorder orange"></i></div><i ng-show="data.dataPresent" class="icon-spinner icon-spin blue icon small"></i>
+                  </td>
+                  <td ng-repeat="d in data track by $index" ng-show="$index&gt;0 &amp;&amp; $index &lt;6" ng-switch="$index"><span tooltip="{{d}}" ng-switch-when="2" class="trim-info-large">{{d | date:fullDate}}</span>
+                    <!--span.trim-info-large(tooltip="{{d}}",ng-switch-when="8") {{d | date:fullDate}}-->
+                    <!--//span.trim-info-large(tooltip="{{d}}",ng-switch-when="9", ng-hide="true") {{d }}-->
+                    <!--//span.trim-info-large(tooltip="{{d}}",ng-switch-when="10", ng-hide="true") {{d }}-->
+                    <!--span.trim-info-large(tooltip="{{d[0].n}}",ng-switch-when="5") {{d[0].n}}-->
+                    <!--span.trim-info-large(tooltip="{{d[0].n}}",ng-switch-when="6") {{d[0].n}}--><span tooltip="{{d}}" ng-switch-default="ng-switch-default" class="trim-info-large">{{d}}</span>
+                    <tr ng-show="!isRowCollapsed[$index] ">
+                      <td colspan="{{data.length+1}}" class="inset">
+                        <div style="clear:both;height:3px"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="row">
+                            <div class="col-xs-12 col-md-6 col-sm-12">
+                              <label ng-show="data.laneData.new" class="input-medium bolder blue">New &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-sm-12">
+                              <label ng-show="data.laneData.old" class="input-medium bolder blue">Previous</label>
+                            </div>
+                          </div>
+                          <div class="cpanel">
+                            <div class="cpanel-heading cpanel-heading1"><span toolTip="Parameters" class="label white">Parameters</span></div>
+                            <div class="cpanel-body">
+                              <div class="row">
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <div ng-repeat="row1 in data.laneData.new.parameters | orderBy:'displayName'" ng-if=" row1.displayName!== 'effectiveDate'&amp;&amp; row1.displayName!== 'expiryDate' &amp;&amp; row1.displayName!== 'Effective Date'&amp;&amp; row1.displayName!== 'Expiry Date'" class="row">
+                                    <label style="display:inline-table;" ng-class="{'red':row1.notFound == true}" class="input-large ellipsis-large">{{row1.displayName.replace("|", ".")}}</label>
+                                    <label style="display:inline-table;" ng-class="{'red':row1.notFound == true}" toolTip="{{row1.toolTip}}" class="input-medium">{{row1.value}}</label>
+                                  </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <div ng-repeat="row2 in data.laneData.old.parameters | orderBy:'displayName'" ng-if=" row2.displayName!== 'effectiveDate'&amp;&amp; row2.displayName!== 'expiryDate' &amp;&amp; row2.displayName!== 'Effective Date'&amp;&amp; row2.displayName!== 'Expiry Date'" class="row">
+                                    <label style="display:inline-table;" class="input-large ellipsis-large">{{row2.displayName.replace("|", ".")}}</label>
+                                    <label style="display:inline-table;" toolTip="{{row2.toolTip}}" ng-class="{'red':row2.diff !== true}" class="input-medium">{{row2.value}}</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="cpanel">
+                            <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Charges</span></div>
+                            <div class="cpanel-body">
+                              <div class="row">
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <div ng-repeat="row1 in data.laneData.new.charges | orderBy:'displayOrder'" class="row">
+                                    <label style="display:inline-table;" class="input-large ellipsis-large">{{row1.displayName.replace("|", ".")}}</label>
+                                    <label style="display:inline-table;" toolTip="{{row1.toolTip}}" class="input-medium">{{row1.value}}</label>
+                                  </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <div ng-repeat="row2 in data.laneData.old.charges | orderBy:'displayOrder'" class="row">
+                                    <label style="display:inline-table;" class="input-large ellipsis-large">{{row2.displayName.replace("|", ".")}}</label>
+                                    <label style="display:inline-table;" toolTip="{{row2.toolTip}}" ng-class="{'red':row2.diff !== true}" class="input-medium">{{row2.value}}</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="cpanel">
+                            <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Other Information</span></div>
+                            <div class="cpanel-body">
+                              <div class="row">
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <label style="display:inline-table;" class="input-medium">Effective Date</label>
+                                  <label style="display:inline-table;" class="input-medium">{{data.laneData.new.parameters[effIndex1].value}}</label>
+                                </div>
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <label style="display:inline-table;" ng-show="data.laneData.old" class="input-medium">Effective Date</label>
+                                  <label style="display:inline-table;" ng-class="{'red':data.laneData.old.parameters.effdiff == true}" class="input-medium">{{data.laneData.old.parameters[effIndex2].value}}</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <label style="display:inline-table;" class="input-medium">Expiry Date</label>
+                                  <label style="display:inline-table;" class="input-medium">{{data.laneData.new.parameters[expIndex1].value}}</label>
+                                </div>
+                                <div class="col-xs-12 col-md-6 col-sm-12">
+                                  <label style="display:inline-table;" ng-show="data.laneData.old" class="input-medium">Expiry Date</label>
+                                  <label style="display:inline-table;" ng-class="{'red':data.laneData.old.parameters.expdiff == true}" class="input-medium">{{data.laneData.old.parameters[expIndex2].value}}</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="cpanel">
+                            <div class="cpanel-heading cpanel-heading1"><span toolTip="History" class="label white">History</span></div>
+                            <div class="cpanel-body">
+                              <div class="row">
+                                <table class="inz-table inz-table1 border1px">
+                                  <thead>
+                                    <tr>
+                                      <th ng-repeat="title1 in data.laneData.history[0]"><span tooltip="{{title1 |toHumanReadable}}" class="trim-info-large">{{title1 | toHumanReadable}}</span></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody ng-repeat="data1 in data.laneData.history" ng-show="$index &gt; 0">
+                                    <tr style="cursor: pointer;">
+                                      <td ng-repeat="d1 in data1 track by $index" ng-switch="$index"><span tooltip="{{d1}}" ng-switch-default="ng-switch-default" class="trim-info-large">{{d1}}</span></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination id="" ng-hide="laneHistoryData.length==0" total-items="totalItemslaneHistory" items-per-page="pageLimitlaneHistory" page="currentPagelaneHistory" on-select-page="setPagelaneHistory($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

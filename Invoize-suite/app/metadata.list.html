@@ -1,0 +1,27 @@
+
+<div class="page-header">   </div>
+<div class="row">
+  <div class="col-md-3">
+    <div class="fieldset">                     
+      <div class="fluid-row">                                                                 
+        <div class="btn-group pull-right"><a ng-show="metadataList.length" permission="readMetadata.*.*" ng-click="isFilterCollapsed = !isFilterCollapsed" class="btn btn-sm btn-warning"><i bs-tooltip="tooltip.clickToFilter" data-placement="left" class="icon-filter"></i></a><a permission="createMetadata.*.*" bs-tooltip="tooltip.new" style="cursor: pointer;" href="#/metadata/{{$stateParams.metadataType}}/new" ng-click="getMetadataFields($stateParams.metadataType)" class="btn btn-primary btn-margin btn-sm"> <i class="icon-plus icon-white">                       </i></a><a permission="uploadMetadata.*.*" bs-tooltip="tooltip.upload" style="cursor: pointer;" href="#/metadata/{{$stateParams.metadataType}}/fileUpload" class="btn btn-primary btn-margin btn-sm"><i class="icon-upload-alt icon-white"></i></a><a bs-tooltip="tooltip.download" style="cursor: pointer;" ng-click="downloadMetadata()" class="btn btn-primary btn-margin btn-sm"><i class="icon-download-alt icon-white"> </i></a><i ng-show="userUpdateLoader" class="icon-spinner icon-spin icon-large"> </i><i ng-show="metadataListLoader" class="icon-spinner icon-spin icon-large"> </i></div>
+      </div>
+    </div>
+    <div collapse="isFilterCollapsed">
+      <input type="search" placeholder="Search" ng-model="searchMetadata" class="input-medium search-query"/>
+    </div>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th> <i class="icon-flag">&nbsp  {{$stateParams.metadataType}}                                                  </i><a permission="updateRole.*.*" ng-hide="roleDetailLoader" bs-tooltip="tooltip.edit" href="#/metadata/{{$stateParams.metadataType}}/metadataTypeEdit" ng-click="selectMetadataTypeEdit($stateParams.metadataType)" class="btn-margin pull-right"><i class="icon-pencil icon-small"></i></a></th>
+        </tr>
+      </thead>
+    </table>
+    <ul id="fixed-rate" when-scrolled="loadMoreAccounts()" class="nav nav-list"> 
+      <li ng-class="{ active: $stateParams.workflowId == r.id}" ng-repeat="r in metadataList  | filter:search "><a ng-click="selectMetadata(r.id)" data-toggle="tab" style="cursor: pointer;">{{r.v}} </a></li>
+    </ul>
+  </div>
+  <div class="col-md-8 pull-right">
+    <div ui-view="detail" class="row"></div>
+  </div>
+</div>

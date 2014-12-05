@@ -1,0 +1,36 @@
+
+<div class="page-header">   </div>
+<div class="row">
+  <div class="col-xs-12">
+    <form novalidate="novalidate" name="form" class="form-horizontal">
+      <div class="fieldset">
+        <legend>Workflow
+          <div class="btn-group pull-right"><a ng-hide="workflowDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin btn-sm"><i class="icon-mail-reply icon-large"></i></a><a permission="updateWorkflow.*.*" ng-hide="workflowDetailLoader" href="#/workflow/edit/{{$stateParams.workflowId}}" ng-click="editWorkflow()" style="cursor: pointer;" bs-tooltip="tooltip.edit" class="btn btn-primary btn-margin btn-sm"><i class="icon-pencil icon-large"></i></a><a permission="deleteWorkflow.*.*" ng-hide="workflowDetailLoader" ng-click="confirmDeleteWorkflow()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-primary btn-margin btn-sm"><i class="icon-trash icon-large"></i></a><i ng-show="workflowDetailLoader" class="icon-spinner icon-spin icon-2x">       </i></div>
+        </legend>
+        <div class="widget-box">
+          <div class="widget-header">
+            <h4>{{workflow.name}}</h4>
+          </div>
+          <div class="widget-body">
+            <div class="widget-main">   
+              <h5>Definition
+                <div ng-repeat="row in workflowDefinitions" class="form-group well well-small">
+                  <label class="col-sm-3 control-label no-padding-right"><span class="label label-large label-info arrowed-in">Level {{$index + 1}}</span><br/>
+                    <div ng-switch="workflow.definitionCount[$index]" class="label label-success help-inline">
+                      <div ng-switch-when="*">All</div>
+                      <div ng-switch-default="ng-switch-default">Any {{workflow.definitionCount[$index]}}</div>
+                    </div>
+                  </label>
+                  <div class="col-sm-9"> 
+                    <label>{{workflow.definition[$index] | workflowArray2text}}</label>
+                  </div>
+                </div>
+              </h5>
+              <div class="form-group"><span>  <b>Created By : </b>{{workflow.createdBy}}</span><span ng-show="workflow.createdOn"><b>, &nbsp Created On : </b>{{workflow.createdOn}}</span><span ng-show="workflow.updatedBy"> <b>, &nbsp Modified By :</b>{{workflow.updatedBy}}</span><span ng-show="workflow.updatedOn"> <b>, &nbsp Modified On : </b>{{workflow.updatedOn}}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

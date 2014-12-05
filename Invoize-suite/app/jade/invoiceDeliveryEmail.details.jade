@@ -1,0 +1,52 @@
+.row(ng-init="invoiceDeliveryModeView($stateParams.invoiceDeliveryModeID)")
+	.in-center-block
+		| Mode : {{invoiceDeliveryRuleProfile.mode}}
+		.de(when-scrolled="loadMore()")
+			.col-lg-3.col-sm-6.col-xs-12(style="margin-bottom:20px",ng-repeat="(k,Groups) in invoiceDeliveryRuleData",alt-render,hasParent='row',hasCount='4')
+					.in-view-block
+						div(ng-if="Groups[0].key == null")
+							.in-title {{k}}
+							.de-block(nice-scroll)
+								div(ng-repeat="subGroup in Groups")
+									div(ng-repeat="(fk,fields) in subGroup")
+										.in-sub-title {{fk}}
+										.in-wiz-row.sm(ng-repeat="item in fields",ng-form="subForm",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+											div
+												label.control-label {{item.label}}
+												span(ng-show="subForm.name.$error.required") *
+												span(ng-show="subForm.name.$error.unique") already Exists
+												span(ng-show="subForm.name.$error.number") only numbers
+												span(ng-show="subForm.name.$error.date") only date
+												span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+												span(ng-show="subForm.name.$error.pattern") Can contain only text
+												span.green(ng-show="subForm.name.$valid") &#10004;
+											.controls(ng-switch-when="true",ng-switch='item.type')
+												label.control-label(ng-switch-when="text") {{item.value}}
+												label.control-label(ng-switch-when="date") {{item.value}}
+												label.control-label(ng-switch-when="numeric") {{item.value}}
+												label.control-label(ng-switch-when="multiselect") {{item.value}}
+												label.control-label(ng-switch-when="dropdown",id="{{item.key}}") {{item.value}}
+												label.control-label(ng-switch-when="multiline") {{item.value}}
+												rich-text(ng-switch-when="html",name="name",id="{{item.key}}",ng-model="item.value") {{item.value}}
+						div(ng-if="Groups[0].key")													
+							.in-title {{Groups[0].group}}
+								.de-block(nice-scroll)
+									.in-wiz-row.sm(ng-repeat="item in Groups",ng-form="subForm",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+										div
+											label.control-label {{item.label}}
+											span(ng-show="subForm.name.$error.required") *
+											span(ng-show="subForm.name.$error.unique") already Exists
+											span(ng-show="subForm.name.$error.number") only numbers
+											span(ng-show="subForm.name.$error.date") only date
+											span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+											span(ng-show="subForm.name.$error.pattern") Can contain only text
+											span.green(ng-show="subForm.name.$valid") &#10004;
+										.controls(ng-switch-when="true",ng-switch='item.type')
+											label.control-label(ng-switch-when="text") {{item.value}}
+											label.control-label(ng-switch-when="date") {{item.value}}
+											label.control-label(ng-switch-when="numeric") {{item.value}}
+											label.control-label(ng-switch-when="multiselect") {{item.value}}
+											label.control-label(ng-switch-when="dropdown",id="{{item.key}}") {{item.value}}
+											label.control-label(ng-switch-when="multiline") {{item.value}}
+											rich-text(ng-switch-when="html",name="name",id="{{item.key}}",ng-model="item.value") 
+											

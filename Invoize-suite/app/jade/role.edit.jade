@@ -1,0 +1,33 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        fieldset
+                                .fluid-row
+                                        legend Role
+                                                .btn-group.pull-right
+                                                        a.btn.btn-small.btn-primary.btn-margin(ng-hide="roleUpdateLoader", ng-click="backToDetails()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                                i.icon-mail-reply.icon-large
+                                                        button.btn.btn-small.btn-primary.btn-margin(permission="updateRole.*.*", ng-hide="roleUpdateLoader", ng-disabled="form.$invalid", ng-click="updateRole(role)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                                i.icon-ok.icon-large                                                
+                                                        a.btn.btn-small.btn-primary.btn-margin(permission="deleteRole.*.*", ng-hide="roleUpdateLoader" , ng-click="confirmDeleteRole()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                                i.icon-trash.icon-large
+                                                        i.icon-spinner.icon-spin.icon-2x(ng-show="roleUpdateLoader")
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Name
+                                        .col-sm-9 
+                                                input(type="text",  id="roleBar", name="roleName", ng-model="role.name", placeholder="Role Name", required)
+                                                label.help-inline.required(ng-show="form.roleName.$error.required") *
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Description
+                                        .col-sm-9 
+                                                textarea(rows=3, name="roleDescription", ng-model="role.description", placeholder="Role Description", required)
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Permissions
+                                        .col-sm-9 
+                                                input.input-xxlarge.roleBarselect(ui-select2="roleBar", name="roleBar", ng-model="role.definition",ng-change="showDialog(role.definition)",  select-validate,required)
+                                                .help-inline.required(ng-show="form.roleBar.$error.selectvalidate || form.roleBar.$error.required") *
+                                //- .form-actions
+                                //-         button.btn.btn-primary(ng-disabled="form.$invalid", type="submit",ng-click="updateRole(role)") Save
+                                //-         button.btn.btn-inverse(type="submit") Cancel
+                                //- {{role}}

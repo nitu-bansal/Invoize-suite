@@ -1,0 +1,183 @@
+
+<!--.row.in-wiz-ttl(set-width, id= "googlechartcontroller",ng-controller="coffeeController")-->
+<!--    .col-xs-12.in-add-->
+<!--        .pull-left.in-wiz-info-->
+<!--            //- tabset#dashboardTabs-->
+<!--            //-     tab#dashboardtb.tab(heading="Dashboard",ng-click="currentTab='dashboardtb';")-->
+<!--                    //- div(ui-view="shipmentRulesContents")-->
+<!--        .pull-left.in-wiz-info Dashboard-->
+<!--        .btn-group.filter-dd(style="vertical-align: inherit;")-->
+<!--            button.inz-btn.btn-sm.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')-->
+<!--                i.fa.fa-filter-->
+<!--                |   Filter &nbsp;-->
+<!--                i.fa.fa-angle-down-->
+<!--            ul.dropdown-menu.filter-ddm(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")-->
+<!--                li-->
+<!--                    .opt-title By Time-->
+<!--                    .opt-group(ng-init="displaydt=false")-->
+<!--                        .opt-->
+<!--                            input(type="radio",id="dtyear", name="daterange",ng-click="displaydt=false",value="year",ng-model="FilterCondition.Date")-->
+<!--                            label.w60(for="dtyear") Year-->
+<!---->
+<!--                            input(type="radio",id="dtmonth", name="daterange",ng-click="displaydt=false",value="month",ng-model="FilterCondition.Date")-->
+<!--                            label.w60(for="dtmonth") Month-->
+<!---->
+<!--                            input(type="radio",id="dtweek", name="daterange",ng-click="displaydt=false",value="week",ng-model="FilterCondition.Date")-->
+<!--                            label.w60(for="dtweek") Week-->
+<!---->
+<!--                        .opt-->
+<!--                            input(type="radio",id="dtfrto", name="daterange",ng-click="displaydt=true",value="dtrange",ng-model="FilterCondition.Date")-->
+<!--                            label.w240(for="dtfrto") Date Range-->
+<!---->
+<!--                        .opt(ng-show="displaydt")-->
+<!--                            input.inz-txt.w120(name="dtrng1",id="dtrng1",datepicker-popup="{{format}}",datepicker-options="dateOptions",type="text",value="this.value",ng-model="FilterCondition.strtdate",ng-required="true",close-text="Close",placeholder="Start Date")-->
+<!--                            input.inz-txt.w120(name="dtrng2",id="dtrng2",datepicker-popup="{{format}}",datepicker-options="dateOptions",type="text",value="this.value",ng-model="FilterCondition.enddate",ng-required="true",close-text="Close",placeholder="End Date")-->
+<!--                li-->
+<!--                    .opt-title By Location-->
+<!--                    .opt-group-->
+<!--                        .opt-->
+<!--                            dynamic-Select(multiselect,name="dbcountry",ng-model="FilterCondition.Country",ph="metadata_country",toolTip="Country",placeholder="Select Country")-->
+<!--                            //- select.input-large.text-left(ui-select2='ui-select2', ng-model='CountryList',name="countryvalues", data-placeholder='Select Country')-->
+<!--                            //-     option(value="")-->
+<!--                            //-     option(ng-repeat="c in countries", value="{{c.id}}") {{c.n}}-->
+<!--                        .opt-->
+<!--                            dynamic-Select(multiselect,name="dbstation",ng-model="FilterCondition.Station",ph="metadata_stationMaster",toolTip="Station",placeholder="Select Station")-->
+<!--                            //- select.input-large.text-left(ui-select2='ui-select2', ng-model='StationList',name="stationsvalues", data-placeholder='Select Station')-->
+<!--                            //-     option(value="")-->
+<!--                            //-     option(ng-repeat="s in stationsval", value="{{s.id}}") {{s.n}}-->
+<!---->
+<!--                li-->
+<!--                    .opt-title By Account-->
+<!--                    .opt-group-->
+<!--                        .opt-->
+<!--                            dynamic-Select(multiselect,name="dbaccountNumber",ng-model="FilterCondition.Account",ph="accountNumber",toolTip="Account Number",placeholder="Select Account")-->
+<!---->
+<!--                li-->
+<!--                    .opt-title Billing Ownership-->
+<!--                    select.filter-input(ui-select2='ui-select2',multiple="multiple", ng-model='Ownership', data-placeholder='Select Ownership')-->
+<!--                        option CEVA-->
+<!--                        option HCL Pune-->
+<!--                        option HCL Chennai-->
+<!---->
+<!--                li-->
+<!--                    .opt-title By Status-->
+<!--                    .opt-group-->
+<!--                        .opt-->
+<!--                            div.col-lg-4(ng-repeat="st in StatusesList")-->
+<!--                                input(type="checkbox",id="Status_{{$index}}",ng-click="SaveToArr($index);",value="{{st}}")-->
+<!--                                label(for="Status_{{$index}}"){{st}}-->
+<!---->
+<!--                            //- dynamic-Select(multiselect,name="dbstatus",ng-model="accountGlobal",ph="metadata_Status",toolTip="Status",placeholder="Select Status")-->
+<!---->
+<!--                li-->
+<!--                    .opt-title By Issue Categories-->
+<!--                    .opt-group-->
+<!--                        .opt-->
+<!--                            dynamic-Select(multiselect,name="dbissuecat",ng-model="FilterCondition.IssueCategories",ph="metadata_issueCategories",toolTip="Issue Categories",placeholder="Select Category")-->
+<!---->
+<!---->
+<!--                li-->
+<!--                    .opt-title Group By-->
+<!--                        .opt-->
+<!--                            input(type="radio", id="gp1",name="Groupbyfilter",ng-model="FilterCondition.Groupby",value="country")-->
+<!--                            label.w120(for="gp1") Country-->
+<!---->
+<!--                            input(type="radio", id="gp2",name="Groupbyfilter",ng-model="FilterCondition.Groupby",value="selection")-->
+<!--                            label.w120(for="gp2") Selection-->
+<!--                        .opt-->
+<!--                            input(type="radio", id="gp3",name="Groupbyfilter",ng-model="FilterCondition.Groupby",value="account")-->
+<!--                            label.w120(for="gp3") Account-->
+<!---->
+<!--                            input(type="radio", id="gp4",name="Groupbyfilter",ng-model="FilterCondition.Groupby",value="issuecat")-->
+<!--                            label.w120(for="gp4") Issue Category-->
+<!--                        .opt-->
+<!--                            input(type="radio", id="gp5",name="Groupbyfilter",ng-model="FilterCondition.Groupby",value="status")-->
+<!--                            label.w120(for="gp5") Status-->
+<!---->
+<!--                            input(type="radio", id="gp6",name="Groupbyfilter",ng-model="FilterCondition.Groupby",value="owner")-->
+<!--                            label.w120(for="gp6") Owner-->
+<!--                li-->
+<!--                    .opt-cmd-->
+<!--                        button.inz-btn.btn-xs.btn-default() Reset-->
+<!--                        button.inz-btn.btn-xs.btn-success(ng-click="applyDBFilter()") Apply-->
+<!---->
+<!--    .col-md-12-->
+<!--        .report-details-->
+<!--                table.inz-table(border="0",style="border-collapse:collapse;")-->
+<!--                    thead-->
+<!--                        th(rowspan="2", class="center") Country-->
+<!--                        th(colspan="1", class="center") Station-->
+<!--                        th(colspan="1", class="center") Accounts Group-->
+<!--                        th(colspan="1", class="center") Account-->
+<!--                        th(colspan="1", class="center") Categories-->
+<!--                        th(colspan="1", class="center") Sub Categories-->
+<!--                        th(colspan="1", class="center") 0-2 Shipments-->
+<!--                        th(colspan="1", class="center") 3-5 Shipments-->
+<!--                        th(colspan="1", class="center") 6-10 Shipments-->
+<!--                        th(colspan="1", class="center") >10 Shipments-->
+<!--                        th(colspan="1", class="center") Total Shipments-->
+<!---->
+<!--                    tbody(ng-repeat="val in DashBoardData")-->
+<!--                        tr-->
+<!--                            td(align="center") {{val.Country}}-->
+<!---->
+<!--                            td(ng-init="toggle=false", ng-click="getSubDBData($index,val.Country);toggle=!toggle",align="center")-->
+<!--                                a(href="#", ng-click="displayDBData(val.ClientID,'0-2',val.Count0To2);") {{val.Station[0]}}-->
+<!--                                i.fa.fa-minus(ng-show="toggle")-->
+<!--                                i.fa.fa-plus(ng-show="toggle==false")-->
+<!--                            td(align="center")-->
+<!--                                a(href="#") {{val.Group[0]}}-->
+<!--                            td(align="center")-->
+<!--                                a(href="#") {{val.Account[0]}}-->
+<!--                            td(align="center")-->
+<!--                                label {{val.Categories[0]}}-->
+<!--                            td(align="center")-->
+<!--                                label {{val.SubCat[0]}}-->
+<!--                            td(align="center")-->
+<!--                                label {{val.Count0To2}}-->
+<!--                            td(align="center")-->
+<!--                                label {{val.Count3To5}}-->
+<!--                            td(align="center")-->
+<!--                                label {{val.Count6To10}}-->
+<!--                            td(align="center")-->
+<!--                                a(href="#", ng-click="displayDBData(val.ClientID,'>10',val.CountMoreThan10);") {{val.CountMoreThan10}}-->
+<!--                            td(align="center")-->
+<!--                                a(href="#", ng-click="displayDBData(val.ClientID,'all',val.Total);") {{val.Total}}-->
+<!--                                span-->
+<!--                                    tr(ng-show="toggle",ng-repeat="st in SubData.Stations")-->
+<!--                                        td-->
+<!--                                        td.inset-->
+<!--                                            label {{st.n}}-->
+<!--                                        td(ng-init="toggle1=false", ng-click="toggle1=!toggle1;",align="center")-->
+<!--                                            label All {{toggle1}}-->
+<!--                                            i.fa.fa-minus(ng-show="toggle1")-->
+<!--                                            i.fa.fa-plus(ng-show="toggle1==false")-->
+<!--                                        td.inset-->
+<!--                                            label All-->
+<!--                                        td.inset-->
+<!--                                            label All-->
+<!--                                        td.inset-->
+<!--                                            label All-->
+<!--                                        td.inset-->
+<!--                                            label 11-->
+<!--                                        td.inset-->
+<!--                                            label 11-->
+<!--                                        td.inset-->
+<!--                                            label 11-->
+<!--                                        td.inset-->
+<!--                                            label 11-->
+<!--                                            span-->
+<!--                                                tr(ng-show="toggle1")-->
+<!--                                                    td(colspan="11")-->
+<!--                                                        label expand-->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!--                                            //- span-->
+<!--                                            //-     tr(ng-show="toggle")-->
+<!--                                            //-         td(colspan="11")-->
+<!--                                            //-             label expand-->

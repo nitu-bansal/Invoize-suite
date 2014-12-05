@@ -1,0 +1,26 @@
+
+<div class="modal hide fade">    </div>
+<div class="modal-header">
+  <h3>Upload File    </h3>
+  <div ng-controller="FileUploadController">     
+    <form id="fileupload" action="/api/tms/upload/file" method="POST" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" data-ng-class="{true: 'fileupload-processing'}[!!processing() || loadingFiles]">
+      <div class="row-fluid"> 
+        <div bs-tooltip="tooltip.attach" class="btn btn-success fileinput-button pull-left"><i class="icon-paper-clip icon-white icon-2x">Browse</i>
+          <input type="file" id="files-upload" name="files[]"/>
+        </div>
+      </div>
+      <div data-ng-repeat="file in queue">
+        <div ng-class="file.$viewStyle()" class="well well-small alert">
+          <button type="button" data-dismiss="alert" ng-click="removeAttachment(file.id)" bs-tooltip="tooltip.delete" class="close">×</button>
+          <div class="col-md-6">
+            <div> <i ng-class="file.$iconStyle()" class="icon-large">                               </i><strong>&nbsp {{file.name}} &nbsp &nbsp </strong>({{file.size | formatFileSize}})</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer"> 
+  <button ng-disabled="form.$invalid" type="submit" data-dismiss="modal" ng-click="save()" class="btn btn-primary">Save</button>
+  <button ng-click="close()" class="btn btn-inverse">Cancel                                        </button>
+</div>

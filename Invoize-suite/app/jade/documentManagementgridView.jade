@@ -1,0 +1,45 @@
+//
+   Created by pallavi.dandane on 10/2/2014.
+form(novalidate, name="formDocView", ng-init="quickSearch(currentPage,true,'tariff')")
+    div.overflow-auto
+        table.inz-table.inz-table1.border1px
+            thead
+                tr
+                    th
+                        span(tooltip="Expand/Collapse")
+                            i.fa.fa-align-justify
+                    th
+                        span
+                            input(tooltip="Select All",type='checkbox',ng-click="checkAll($event)")
+                    th(ng-repeat="charge in list[0]",ng-show="$index > '2' && $index < '9' ")
+                        span.trim-info-large(tooltip="{{charge |toHumanReadable}}") {{charge | toHumanReadable}}
+                    th
+                        span Download
+            tbody(ng-repeat="data in list",ng-show="$index > 0")
+                tr(style="cursor: pointer;")
+                    td(ng-repeat="d in data track by $index",ng-show="$index==0",ng-click="getTariffInfo($parent.$index,data[1])")
+                        div(ng-hide="data.dataPresent")
+                            i.icon-reorder.blue(ng-show="data.doc")
+                            i.icon-reorder.orange(ng-hide="data.doc")
+                        i.icon-spinner.icon-spin.blue.icon.small(ng-show="data.dataPresent")
+                    td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                        input(name="chk_{{$parent.$index}}",type='checkbox',ng-click="updateSelection($event,data[1],data[2],$parent.$index)")
+                        //-i.fa-check-square-o
+                    td(ng-repeat="d in data track by $index",ng-show="$index>'2' && $index < '9'",ng-switch="$index")
+                        span.trim-info-large(tooltip="{{d}}",ng-switch-when="7") {{d | date:fullDate}}
+                        span.trim-info-large(tooltip="{{d}}",ng-switch-when="8") {{d | date:fullDate}}
+                        //span.trim-info-large(tooltip="{{d}}",ng-switch-when="9", ng-hide="true") {{d }}
+                        //span.trim-info-large(tooltip="{{d}}",ng-switch-when="10", ng-hide="true") {{d }}
+                        span.trim-info-large(tooltip="{{d[0].n}}",ng-switch-when="5") {{d[0].n}}
+                        span.trim-info-large(tooltip="{{d[0].n}}",ng-switch-when="6") {{d[0].n}}
+                        span.trim-info-large(tooltip="{{d}}",ng-switch-default) {{d}}
+                            //- span.small.label.label-orange(ng-show="$index==3 && d=='0'") Inactive
+                            //- span.small.label.label-success(ng-show="$index==3 && d=='1'") Active
+                    td
+                        a.btn-sm.btn-custom(type='button',ng-click="downloadDocument($index)")
+                            i.fa.fa-columns
+                            tr(ng-show="!isRowCollapsed[$index] && data.doc"  )
+                                td.inset(colspan="{{data.length+1}}")
+                                    include tmsExistingDoc
+
+    pagination(id="",ng-hide="list.length==0",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

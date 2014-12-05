@@ -1,0 +1,23 @@
+//
+   Created by nishith.modi on 16/10/14.
+.modal-dialog.container
+    .modal-content
+        form(name="form",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Shipment Re-Allocation
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body(style="max-height:400px;overflow:auto;")
+                div(style="clear:both;height:10px;")
+                .col-sm-12
+                    .input-group
+                        span.input-group-addon
+                            i.fa.fa-user
+                        dynamic-single-select(name="allocatedUsers",required,ng-model="data.user",ph="reportingUsers",toolTip="Choose Team Member",placeholder="Choose Team Member")
+                        span.red(ng-show="form.allocatedUsers.$error.required") *
+                        span.green.validTick(ng-show="form.allocatedUsers.$valid") &#10004;
+            div(style="clear:both;height:5px;")
+            .modal-footer
+                .col-sm-12
+                    button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                    button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", type="submit", ng-click="shipmentReAllocation()") Re-Allocate

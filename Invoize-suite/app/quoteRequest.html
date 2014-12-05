@@ -1,0 +1,180 @@
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+  <div id="navbar-container" class="navbar-container">
+    <div class="pull-left">
+      <div class="navbar-header nav-menu-toggeler">
+        <div class="navbar-brand"><a class="brand"><span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span></a></div>
+      </div>
+      <div class="navbar-header menu-toggle">
+        <ul class="nav ace-nav">
+          <li ng-class="{ active: $state.includes('route:/home')}"><a href="#/home"><i class="icon-home"></i><span> Home</span></a></li>
+          <li permission=".navBillright" product="Bill Right" ng-class="{ active: $state.includes('billright')}"><a href="#/billright"><i class="icon-book"></i><span> Bill Right </span></a></li>
+          <!--li(permission="Pay Right",ng-class="{ active: $state.includes('payright')}")-->
+          <!--                                    a(href="#/payright")-->
+          <!--                                            i.icon-book-->
+          <!--                                            span  Pay Right-->
+          <!--li(permission="Quote Right",ng-class="{ active: $state.includes('quote')}")-->
+          <!--                                    a(href="#/quote")-->
+          <!--                                            i.icon-file-text-alt-->
+          <!--                                            span  Quote-->
+          <!--li(permission="rateNav.*.*",ng-class="{ active: $state.includes('rate')}")-->
+          <!--                                    a(href="#/rate")-->
+          <!--                                            i.icon-money-->
+          <!--                                            span  Rate-->
+          <!--li(permission="requestNav.*.*",ng-class="{ active: $state.includes('request')}")-->
+          <!--                                    a(href="#/request")-->
+          <!--                                            i.icon-retweet-->
+          <!--                                            span  Request-->
+          <!--li(permission="tmsNav.*.*",ng-class="{ active: $state.includes('tms')}")-->
+          <!--                                    a(href="#/tms")-->
+          <!--                                            i.icon-credit-card-->
+          <!--                                            span  Tariff-->
+          <li permission=".navOrganization" product="Admin" ng-class="{ active: $state.includes('organizationSetup')}"><a href="#/organizationSetup"><i class="icon-cogs"></i><span> Organization Setup</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pull-right">
+      <div class="navbar-header">
+        <ul class="nav ace-nav">
+          <li ng-show="pendingQuoteRequestCount || pendingRateRequestCount || pendingTmsRequestCount" class="label-warning"><a data-toggle="dropdown" href="#" class="dropdown-toggle"><i class="icon-bell-alt icon-only icon-animated-bell"></i><span ng-cloak="ng-cloak" class="badge badge-important">{{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}}</span></a>
+            <ul class="pull-right dropdown-navbar navbar-green dropdown-menu dropdown-caret dropdown-closer">
+              <li class="nav-header"><i class="icon-warning-sign"></i>{{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}} Notifications</li>
+              <li ng-show="pendingQuoteRequestCount"><a href="#/request/quote/pending">
+                  <div class="clearfix"><span class="pull-left"><i class="btn btn-mini no-hover btn-pink icon-envelope-alt"></i>New Quotes</span><span ng-cloak="ng-cloak" class="pull-right badge badge-pink">+{{pendingQuoteRequestCount}}</span></div></a></li>
+              <li ng-show="pendingRateRequestCount"><a href="#/request/rate/pending">
+                  <div class="clearfix"><span class="pull-left"><i class="btn btn-mini no-hover btn-success icon-envelope-alt"></i>New Rates</span><span ng-cloak="ng-cloak" class="pull-right badge badge-success">+{{pendingRateRequestCount}}</span></div></a></li>
+              <li ng-show="pendingTmsRequestCount"><a href="#/request/tms/pending">
+                  <div class="clearfix"><span class="pull-left"><i class="btn btn-mini no-hover btn-info icon-envelope-alt"></i>New Tariffs</span><span ng-cloak="ng-cloak" class="pull-right badge badge-info">+{{pendingTmsRequestCount}}</span></div></a></li>
+              <li><a href="#/request">See all requests<i class="icon-arrow-right"></i></a></li>
+            </ul>
+            <li tootltip="Set your work environment" class="minfo"><a data-toggle="dropdown" href="#" tooltip-placement="bottom" tooltip="Your Work Environment" class="in-alert dropdown-toggle"><i class="icon-cog icon-animated-vertical"></i><span ng-hide="loggedInUser.userCompany &amp;&amp; loggedInUser.userSystem" class="in-alert-cnt">!</span><span ng-show="loggedInUser.userCompany &amp;&amp; loggedInUser.userSystem" class="in-success-cnt"><i class="fa fa-check"></i></span></a>
+              <ul class="pull-right dropdown-menu filter-ddm dropdown-caret dropdown-close in-dd-noti inz-env">
+                <li class="in-notiifier in-notiifier1">
+                  <div class="noti-con">
+                    <div class="noti-title">Company</div>
+                    <dynamic-Select required="required" name="searchCompany" ng-model="search.company" ph="userCompany" placeholder="Select Company" change="clearSystem()" class="ftext"></dynamic-Select>
+                  </div>
+                </li>
+                <li class="in-notiifier in-notiifier1">
+                  <div class="noti-con">
+                    <div class="noti-title">System</div>
+                    <dynamic-Select required="required" customobj="{&quot;companyId&quot;:&quot;{{search.company[0].id!=null ? search.company[0].id : userCompany[0].id}}&quot;}" disabled="search.company==null || search.company.length==0" name="searchSystem" ng-model="search.system" ph="userSystem" placeholder="Select System" class="ftext"></dynamic-Select>
+                  </div>
+                </li>
+                <li class="in-notiifier in-notiifier1">
+                  <div class="noti-con pull-right">
+                    <button ng-click="setCompanySystemCookie()" ng-class="{'disabled': search.company==null || search.system==null}" ng-disabled="search.company==null || search.system==null" class="pull-right noti-title inz-btn btn-xs btn-success">Apply</button>
+                  </div>
+                  <div class="clearfix"></div>
+                </li>
+              </ul>
+            </li>
+          </li>
+          <li><a data-toggle="dropdown" href="#" class="in-alert dropdown-toggle"><i class="icon-envelope icon-animated-hand-pointer"></i><span class="in-alert-cnt">3</span></a>
+            <ul class="pull-right dropdown-menu dropdown-caret dropdown-close in-dd-noti filter-ddm">
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar8.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Shanon Butler</div>
+                  <div class="noti-des">Updated Pending bill request in abcd station.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar10.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Nikita Smith</div>
+                  <div class="noti-des">Updated Pending bill request.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar11.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Kesha</div>
+                  <div class="noti-des">Reported new bug.</div>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li><a data-toggle="dropdown" href="#" class="in-alert dropdown-toggle"><i class="icon-bell-alt icon-animated-bell"></i><span class="in-alert-cnt">9+</span></a>
+            <ul class="pull-right dropdown-menu dropdown-caret dropdown-close in-dd-noti filter-ddm">
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar8.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Shanon Butler</div>
+                  <div class="noti-des">Updated Pending bill request in abcd station.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar10.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Nikita Smith</div>
+                  <div class="noti-des">Updated Pending bill request.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar11.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Kesha</div>
+                  <div class="noti-des">Reported new bug.</div>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li><a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle"><img src="avatars/avatar2.png" class="nav-user-photo"/>
+              <div id="user_info" class="user-info">{{loggedInUser.email}}
+              </div><i class="icon-angle-down"></i></a>
+            <ul class="user-menu pull-right dropdown-menu dropdown-caret dropdown-close in-dd-pro">
+              <li style="text-align: center;"><img src="avatars/avatar31.png" class="in-pro-img"/></li>
+              <li>
+                <div class="in-name">{{loggedInUser.firstName}}</div>
+                <div class="in-desig">{{loggedInUser.designation}}</div>
+              </li>
+              <li class="li-bt"><a href="#/main/users/{{userId}}" class="tab"><i class="icon-user"></i>Profile</a></li>
+              <li ng-class="{ active: $state.includes('changePassword')}" class="li-bt"><a href="#/changePassword" ng-hide="isCevaUser"><i class="icon-edit"></i>Change Password</a><a href="https://helpdesk.invoize.com/recovery.php?changepassword=true" ng-show="isCevaUser"><i class="icon-edit"></i>Change Password</a></li>
+              <li class="li-bt"><a ng-click="logout()" class="tab"><i class="icon-signout"></i>Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+</div>
+<div click-hide-show="click-hide-show" clickHide="btnEnvWarning" style="display:none;" class="modal-backdrop modal-info">
+  <div class="info-block"><img src="../styles/images/hd-arrow.png" height="70" class="img"/>
+    <div class="msg">Please choose your work environment first!
+      <button id="btnEnvWarning" class="inz-btn btn-sm btn-success">got it!</button>
+    </div>
+  </div>
+</div>
+<section>
+  <div class="container-fluid">       
+    <div class="row">
+      <div style="cursor: pointer;" class="col-md-3 bs-docs-sidebar">                               
+        <ul class="nav nav-list bs-docs-sidenav affix">                                    
+          <li class="nav-header">
+            <h4 rel="tooltip">Quotes                                                </h4>
+            <li ng-class="{ active: $state.includes('rateRequest.list') &amp;&amp; $stateParams.requestType == 'pending'}"><a data-toggle="tab" href="#/rate/request/pending" ng-click="getRateRequestList('pending')">Pending <span ng-show="pendingRateRequestCount" class="badge badge-warning pull-right">{{pendingRateRequestCount}}</span></a></li>
+            <li ng-class="{ active: $state.includes('rateRequest.list') &amp;&amp; $stateParams.requestType == 'inprocess'}"><a data-toggle="tab" href="#/rate/request/inprocess" ng-click="getRateRequestList('inprocess')">Inprocess <span ng-show="inProcessRateRequestCount" class="badge badge-warning pull-right">{{inProcessRateRequestCount}}                       </span></a></li>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-9">
+        <div ng-hide="$routeParams.requestType" class="container">
+          <div class="row">
+            <div class="col-md-5">
+              <h4>Quote Approval Status </h4>
+              <div quote-Approval-Status="chartData"> </div>
+            </div>
+            <div class="col-md-5"> 
+              <h4>Successful Quotes Comparison  </h4>
+              <div quote-Success-Compare="chartData">    </div>
+            </div>
+          </div>
+          <hr/>
+          <div class="row">
+            <div class="col-md-5"> 
+              <h4>Not Addressed     </h4>
+              <div not-Addressed="chartData">                                                                                                    </div>
+            </div>
+          </div>
+        </div>
+        <div ui-view="list"></div>
+      </div>
+    </div>
+  </div>
+</section>

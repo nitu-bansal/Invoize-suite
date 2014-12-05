@@ -1,0 +1,121 @@
+
+<div style="margin: 60px 0 12px;" class="page-header">  
+  <div class="row">
+    <div class="col-xs-12">
+      <form novalidate="novalidate" name="form" class="form-horizontal">
+        <div class="row-fluid">
+          <label>Filter</label>
+          <select ui-select2="ui-select2" ng-model="assignmentTypes" data-placeholder="Please select..." style="width:200px">
+            <option value="N">Select</option>
+            <option value="R">Roles</option>
+            <option value="P">Permissions</option>
+            <option value="G">Groups</option>
+          </select>{{searchRoleValue}}
+          <div ng-show="assignmentTypes=='R'">
+            <input ui-select2="searchRole" name="searchRole" type="text" ng-model="searchRoleValue" placeholder="Search By Roles" style="width:200px;" ui-keypress="{enter: 'searchUserByRole(searchRoleValue)'}" class="input-sm search-query"/>
+            <button ng-click="loadPeople()" type="submit" ng-disabled="searchRoleValue.length&lt;1" class="btn btn-primary btn-xs">&nbsp&nbsp&nbsp&nbsp<i class="icon-search icon-white">&nbsp&nbsp&nbsp&nbsp</i></button>
+          </div>
+          <div ng-show="assignmentTypes=='P'">                                       
+            <input ui-select2="searchPermission" name="searchPermission" ng-model="searchPerValue" placeholder="Search By Permission" style="width:200px;" ui-keypress="{enter: 'searchUserByPer(searchPerValue)'}" class="input-sm search-query"/>
+            <button ng-click="loadPeople()" type="submit" ng-disabled="searchPerValue.length&lt;1" class="btn btn-primary btn-xs">&nbsp&nbsp&nbsp&nbsp<i class="icon-search icon-white">&nbsp&nbsp&nbsp&nbsp</i></button>
+          </div>
+          <div ng-show="assignmentTypes=='G'">
+            <input ui-select2="searchGrp" name="searchGrp" ng-model="searchGrpValue" placeholder="Search By Groups" style="width:200px;" ui-keypress="{enter: 'searchUserByGrp(searchGrpValue)'}" class="input-sm search-query"/>
+            <button ng-click="loadPeople()" type="submit" ng-disabled="searchGrpValue.length&lt;1" class="btn btn-primary btn-xs">&nbsp&nbsp&nbsp&nbsp<i class="icon-search icon-white">&nbsp&nbsp&nbsp&nbsp</i></button>
+          </div>
+        </div>
+        <div class="fieldset">{{selected}}
+          <table class="table table-bordered table-striped table-hover">
+            <tr>
+              <th>
+                <input type="checkbox" ng-click="selectAll($event)" ng-checked="isSelectedAll()"/>
+              </th>
+              <th>User</th>
+              <th>Id</th>
+              <th>User Name</th>
+              <th>Role</th>
+              <th>Permission</th>
+              <th>Group</th>
+            </tr>
+            <tr ng-repeat="user in UsersDummy" ng-class="getSelectedClass(user)">
+              <td>
+                <input type="checkbox" name="selected" ng-checked="isSelected(user)" ng-click="updateSelection($event, user)"/>
+              </td>
+              <td><i class="icon-user"></i></td>
+              <td>{{user.id}}</td>
+              <td>{{user.Name}}</td>
+              <td> 
+                <label ng-repeat="r in user.Role">{{r.Name}},</label>
+              </td>
+              <td> 
+                <label ng-repeat="p in user.Permission">{{p.Name}},</label>
+              </td>
+              <td> 
+                <label ng-repeat="g in user.Group">{{g.Name}},</label>
+              </td>
+              <td><a style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteRecord()" class="btn btn-sm btn-primary"><i class="icon-trash"></i></a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div ng-show="selected.length">
+          <div class="row">
+            <div class="btn-group pull-right"><a ng-hide="userCreateLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin btn-sm"><i class="icon-mail-reply icon-large"></i></a>
+              <button permission="createUser.*.*" ng-hide="userCreateLoader" ng-disabled="form.$invalid " type="submit" ng-click="create(user)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary btn-sm"><i class="icon-ok icon-large"></i></button><i ng-show="userCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+            </div>
+          </div>
+          <tabset>
+            <tab heading="Assign Roles" style="overflow:hidden" class="tab">
+              <ng-form name="roleForm">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right">Assign Roles</label>
+                  <div class="col-sm-9"> 
+                    <input ui-select2="roleBar" name="roleBar" ng-model="user.role" ng-change="showDialog(user.role)" select-validate="select-validate" required="required" class="input-xxlarge"/>
+                    <div ng-show="roleForm.roleBar.$error.required" class="help-inline required">*</div>
+                    <label ng-show="roleForm.roleBar.$valid" class="help-inline required validTick">&#10004;</label>
+                  </div>
+                </div>
+              </ng-form>
+            </tab>
+            <tab heading="Assign Permissions" style="overflow:hidden" class="tab">
+              <div class="form-group"><a ng-click="addPermissions()" class="btn btn-success"><i class="icon-plus icon-white"> </i> Assign Permissions</a></div>
+              <div class="form-group">                                                       
+                <div class="col-md-4">Permission</div>
+                <div class="col-md-4">For</div>
+                <div class="col-md-4">On</div>
+                <ng-form name="permissionForm" ng-repeat="row in user.permission">
+                  <div class="col-md-4">
+                    <input ui-select2="permissionBar" name="permissionBar" ng-model="user.permission[$index]['permission']" select-validate="select-validate" required="required" class="col-md-10"/>
+                    <div ng-show="permissionForm.permissionBar.$error.required" class="help-inline required">*</div>
+                    <label ng-show="permissionForm.permissionBar.$valid" class="help-inline required validTick validTick">&#10004;</label>
+                  </div>
+                  <div class="col-md-4"> 
+                    <select ui-select2="ui-select2" name="forBar" ng-change="permissionforChanged($index)" ng-model="user.permission[$index]['for']" data-placeholder="Please select..." style="width:200px" select-validate="select-validate" required="required">
+                      <option value=""></option>
+                      <option ng-repeat="for in permissionforList" value="{{for.n}}">{{for.v}}</option>
+                    </select>
+                    <div ng-show="permissionForm.forBar.$error.required" class="help-inline required">*</div>
+                  </div>
+                  <div class="col-md-4">                                                                        
+                    <input ui-select2="onBar" name="onBar" ui-event="{ open : 'setfor($index)'}" ng-model="user.permission[$index]['on']" select-validate="select-validate" required="required" class="col-md-10"/>
+                    <div ng-show="permissionForm.onBar.$error.required" class="help-inline required">*</div>
+                    <label ng-show="permissionForm.onBar.$valid" class="help-inline required validTick">&#10004;</label>
+                    <div class="help-inline"><a ng-hide="user.permission.length == 1" ng-click="removePermissions($index)" class="close">&times;</a></div>
+                  </div><br/>
+                </ng-form>
+              </div>
+            </tab>
+            <tab heading="Assign Groups" class="tab">
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Assign Groups</label>
+                <div class="col-sm-9"> 
+                  <input ui-select2="groupBar" name="groupBar" ng-model="user.group" class="input-xxlarge"/>
+                </div>
+              </div>
+            </tab>
+          </tabset>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

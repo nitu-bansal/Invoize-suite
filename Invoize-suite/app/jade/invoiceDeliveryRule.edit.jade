@@ -1,0 +1,52 @@
+.row(ng-init="invoiceDeliveryModeEdit($stateParams.invoiceDeliveryModeID)")
+	.in-center-block
+		| Mode : {{invoiceDeliveryRulesProfile.mode}}
+		.de(when-scrolled="loadMore()")
+			.col-lg-3.col-sm-6.col-xs-12(style="margin-bottom:20px",ng-repeat="(k,Groups) in invoiceDeliveryRuleData",alt-render,hasParent='row',hasCount='4')
+					.in-view-block
+						div(ng-if="Groups[0].key == null")
+							.in-title {{k}}
+							.de-block(nice-scroll)
+								div(ng-repeat="subGroup in Groups")
+									div(ng-repeat="(fk,fields) in subGroup")
+										.in-sub-title {{fk}}
+										.in-wiz-row.sm(ng-repeat="item in fields",ng-form="subForm",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+											div
+												label.control-label {{item.label}}
+												span(ng-show="subForm.name.$error.required") *
+												span(ng-show="subForm.name.$error.unique") already Exists
+												span(ng-show="subForm.name.$error.number") only numbers
+												span(ng-show="subForm.name.$error.date") only date
+												span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+												span(ng-show="subForm.name.$error.pattern") Can contain only text
+												span.green(ng-show="subForm.name.$valid") &#10004;
+											.controls(ng-switch-when="true",ng-switch='item.type')
+												input(ng-switch-when='text',id='{{item.key}}',type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+												input(ng-switch-when='date',id='{{item.key}}',datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+												input(ng-switch-when='numeric',id='{{item.key}}',type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+												dynamic-Select(ng-switch-when='multiselect',id='{{item.key}}',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+												dynamic-Select(ng-switch-when='dropdown',id='{{item.key}}',change="setData(item.label,item.value)",ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+												rich-text(ng-switch-when="html",name="name",id="{{item.key}}",ng-model="item.value") 
+												textarea(ng-switch-when='multiline',id='{{item.key}}',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+						div(ng-if="Groups[0].key")													
+							.in-title {{Groups[0].group}}
+								.de-block(nice-scroll)
+									.in-wiz-row.sm(ng-repeat="item in Groups",ng-form="subForm",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+										div
+												label.control-label {{item.label}}
+												span(ng-show="subForm.name.$error.required") *
+												span(ng-show="subForm.name.$error.unique") already Exists
+												span(ng-show="subForm.name.$error.number") only numbers
+												span(ng-show="subForm.name.$error.date") only date
+												span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+												span(ng-show="subForm.name.$error.pattern") Can contain only text
+												span.green(ng-show="subForm.name.$valid") &#10004;
+											.controls(ng-switch-when="true",ng-switch='item.type')
+												input(ng-switch-when='text',id='{{item.key}}',type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+												input(ng-switch-when='date',id='{{item.key}}',datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+												input(ng-switch-when='numeric',id='{{item.key}}',type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+												dynamic-Select(ng-switch-when='multiselect',id='{{item.key}}',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+												dynamic-Select(ng-switch-when='dropdown',id='{{item.key}}',change="setData(item.label,item.value)",ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+												rich-text(ng-switch-when="html",name="name",id="{{item.key}}",ng-model="item.value") 
+												textarea(ng-switch-when='multiline',id='{{item.key}}',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+											

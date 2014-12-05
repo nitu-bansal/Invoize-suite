@@ -1,0 +1,52 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Welcome to group. You can add / clone groups that you operate in.<i ng-show="templateLoader" class="icon-spinner icon-spin blue icon-large"></i></div>
+    </div>
+    <div class="pull-right">
+      <input placeholder="Search Group" ng-change="getGroupList(q)" ng-model="q" class="input-search-new"/>
+      <button class="input-search-new"><i class="fa fa-search"></i></button><a style="vertical-align: top;cursor:pointer" ng-href="/#/wizard/group/new" ng-click="initializeGroup()"><span class="in-add-sign">+</span><span class="in-add-txt">Add Group</span></a>&nbsp; &nbsp;
+    </div>
+  </div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Group</div>
+    </div>
+    <div class="pull-right"><i ng-show="templateLoader" class="icon-spinner icon-spin blue icon-large"></i>
+      <input placeholder="Search Group" ng-change="getGroupList(q)" ng-model="q" class="input-search-new"/>
+      <button class="input-search-new"><i class="fa fa-search"></i></button><a style="vertical-align: middle;cursor:pointer" ng-href="/#/wizard/group/new" ng-click="initializeGroup()" ng-show="$state.current.name.split('.')[0]=='wizard'"></a><a style="cursor:pointer" ng-href="/#/organizationSetup/group/new" ng-click="initializeGroup()" ng-hide="$state.current.name.split('.')[0]=='wizard'"><span class="in-add-sign">+</span><span class="in-add-txt">Add Group </span></a>
+    </div>
+  </div>
+</div>
+<div style="clear:both" ng-init="getGroupList('')"></div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div ng-repeat="listItem in groupList | orderBy:name" ng-form="subForm" style="margin-bottom:10px;" class="col-sm-6 col-md-4 col-xs-12 inz-blk">
+    <div class="in-view-block">
+      <div class="title"><i class="fa fa-tags small">&nbsp;</i>{{listItem.name}}</div>
+      <div class="line">
+        <div class="caption">Company</div>
+        <div class="data">{{listItem.company| selectFormat}}</div>
+      </div>
+      <div class="line">
+        <div class="caption">System</div>
+        <div class="data">{{listItem.system| selectFormat}}</div>
+      </div>
+      <div class="line">
+        <div class="caption">Type</div>
+        <div class="data">{{listItem.type| selectFormat}}</div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Clone" ng-click="cloneGroup(listItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-copy"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="View" ng-click="readGroup(listItem.id,'/group/')" class="inz-btn btn-sm btn-danger"><i class="fa fa-eye"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="readGroup(listItem.id,'/group/edit/')" class="inz-btn btn-sm btn-danger"><i class="fa fa-edit"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

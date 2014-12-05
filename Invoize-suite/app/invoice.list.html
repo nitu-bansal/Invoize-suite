@@ -1,0 +1,36 @@
+
+<div id="FixedRate" class="col-md-4">
+  <fluid-row>
+    <h4 class="header smaller lighter gray">Invoices   <i ng-show="rateRequestListLoader" class="icon-spinner icon-spin icon">          </i></h4>
+  </fluid-row>
+  <div ng-hide="categorizedLists.length || rateRequestListLoader">
+    <h4>No invoices available under this category.<i class="icon-frown"></i></h4>
+  </div>
+  <div ng-show="categorizedLists.length" class="widget-box transparent">             
+    <div class="widget-body">
+      <div class="widget-main no-padding">
+        <table ng-hide="!categorizedLists.length || rateRequestListLoader" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th><i class="icon-flag black">&nbsp Invoice#</i></th>
+              <th> <i class="icon-time black">&nbsp Date                                                                                                        </i></th>
+              <th class="hidden-767"> <i class="icon-group black">&nbsp Amount  </i></th>
+            </tr>
+          </thead>
+          <tbody ng-repeat="r in categorizedLists  | filter:searchFilter">
+            <tr data-placement="bottom" permission="readInvoice.*.*" style="cursor: pointer;" bs-tooltip="tooltip.detail" ng-class="{'alert-custom': $state.includes('payright.invoiceList.detail') &amp;&amp; $stateParams.invoiceId == r.id}" ng-click="readInvoice(r.id)">
+              <td>{{r.invoiceNumber}}</td>
+              <td>{{r.invoiceDate |  date:'mediumDate'}}</td>
+              <td class="hidden-767">
+                <div class="center">{{r.monetaryAmount}}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-8">
+  <div ui-view="detail"></div>
+</div>

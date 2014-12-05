@@ -1,0 +1,177 @@
+
+<link rel="stylesheet" type="text/css" href="/styles/home2.css"/>
+<style>body{background: url('styles/images/b3.jpg') no-repeat #fff;}</style>
+<div role="navigation" class="nav navbar navbar-invoize navbar-fixed-top">
+  <div id="in-head" class="container">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand"> <span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span>invoize</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Demo</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#myModal" data-toggle="modal">Sign In</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div ng-init="message='Please wait we are confirming your registration.'; confirm()" style="padding-top:80px;  " class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-4"></div>
+    <div ng-show="showlogin" class="col-lg-6 col-md-8 in-reg">
+      <form novalidate="novalidate" name="form" class="text-center">   
+        <div class="row">
+          <div class="col-xs-4 in-title">Sub Domain</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err"><i ng-show="form.subDomain.$error.required" class="icon-asterisk"></i>
+              <div ng-show="form.subDomain.$error.duplicate">Sub Domain not availaible</div>
+              <div ng-show="form.subDomain.$error.pattern">only Alphanumeric characters  </div>
+              <div ng-show="form.subDomain.$error.minlength">Minimum length 2 </div>
+              <div ng-show="form.subDomain.$error.maxlength">Maximum length 10              </div>
+            </div>
+            <input type="text" placeholder="Sub Domain" ng-model="organization.subDomain" name="subDomain" duplicate="subDomain" required="required" ng-pattern="/^[a-zA-Z0-9]+$/" ng-trim="ng-trim" ng-minlength="2" ng-maxlength="10" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">First Name</div>
+          <div class="col-xs-8 in-txt-blk">                               
+            <div class="in-err"><i ng-show="form.firstName.$error.required" class="icon-asterisk">                                                       </i>
+              <div ng-show="form.firstName.$error.maxlength">Maximum length 15</div>
+              <div ng-show="form.firstName.$error.pattern">Only Alphabets</div>
+            </div>
+            <input type="text" placeholder="First Name" ng-model="organization.firstName" name="firstName" required="required" ng-pattern="/^[a-zA-Z ]+$/" ng-maxlength="15" ng-trim="ng-trim" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Last Name</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err"><i ng-show="form.lastName.$error.required" class="icon-asterisk">                                                       </i>
+              <div ng-show="form.lastName.$error.maxlength">Maximum length 30</div>
+              <div ng-show="form.lastName.$error.pattern">Only Alphabets</div>
+            </div>
+            <input type="text" placeholder="Last Name" ng-model="organization.lastName" name="lastName" required="required" ng-pattern="/^[a-zA-Z ]+$/" ng-maxlength="30" ng-trim="ng-trim" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Password</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err"><i ng-show="form.password.$error.required" class="icon-asterisk"> </i>
+              <div ng-show="form.password.$error.minlength">Password must be greater than 6 characters without spaces</div>
+            </div>
+            <input type="password" placeholder="Password" id="password" ng-model="organization.password" ng-minlength="7" name="password" required="required" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Confirm Password</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err">                                                     
+              <div ng-show="form.confirmPassword.$error.pwmatch">Password do not match or Contains Spaces                                                                </div>
+            </div>
+            <input type="password" placeholder="Confirm Password" ng-model="confirmPassword" name="confirmPassword" pw-check="password" required="required" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Company Website</div>
+          <div class="col-xs-8 in-txt-blk">               
+            <div class="in-err">
+              <div ng-show="form.website.$error.pattern">Invalid Website address</div>
+            </div>
+            <div style="padding:0" class="col-xs-2">
+              <input type="text" value="http://" ng-disabled="true" class="in-txt"/>
+            </div>
+            <div style="padding-right:0" class="col-xs-10">
+              <input type="text" placeholder="Company Website" ng-model="organization.website" name="website" ng-pattern="/^(www\.)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,4}$/" ng-trim="ng-trim" class="in-txt"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Phone</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err"> <i ng-show="form.phoneNumber.$error.required" class="icon-asterisk"> </i>
+              <div ng-show="form.phoneNumber.$error.pattern">Invalid Phone number</div>
+              <div ng-show="form.phoneNumber.$error.minlength">Minimum length 10</div>
+              <div ng-show="form.phoneNumber.$error.maxlength">Maximum length 10                                                       </div>
+            </div>
+            <div style="padding:0" class="col-xs-4">
+              <select ui-select2="{placeholder:'Country'}" name="countryCode" ng-model="organization.countryCode" style="width:80px;" data-placeholder="Country" class="in-txt in-s2">                                                                                                                                        
+                <option value="(+01) USA" selected="selected"> (+01) USA </option>
+                <option value="(+91) India">(+91) India   </option>
+                <option value="(+61) Canada">(+61) Canada </option>
+              </select>
+            </div>
+            <div style="padding-right:0" class="col-xs-8">                                                      
+              <input type="text" placeholder="Phone Number" required="required" ng-model="organization.phoneNumber" name="phoneNumber" ng-pattern="/^[0-9]+$/" ng-trim="ng-trim" ng-minlength="10" ng-maxlength="10" class="in-txt"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">No. of Employees</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err">
+            </div>
+            <select ui-select2="{placeholder:'No. of Employee'}" name="noOfEmployee" ng-model="organization.noOfEmployee" data-placeholder="No. of Employees" select-validate="select-validate" class="in-txt in-s2">
+              <option value=""></option>
+              <option value="1"> 0-50</option>
+              <option value="2"> 50-100</option>
+              <option value="3"> 100-200 </option>
+              <option value="4"> 200-300</option>
+              <option value="5"> above 300 </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Designation</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err">                                                       
+              <div ng-show="form.designation.$error.pattern">Can contain Alphabets </div>
+              <div ng-show="form.designation.$error.minlength">minimum length 2 </div>
+              <div ng-show="form.designation.$error.maxlength">maximum length 10</div>
+            </div>
+            <input type="text" placeholder="Designation" ng-model="organization.designation" name="designation" ng-pattern="/^[a-zA-Z]+$/" ng-trim="ng-trim" ng-minlength="2" ng-maxlength="10" class="in-txt"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title">Products</div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err"><i ng-show="form.products.$error.selectvalidate || form.products.$error.required" class="icon-asterisk">                                    </i></div>
+            <input ui-select2="moduleBar" multiple="true" name="products" ng-model="organization.products" placeholder="Choose products" required="required" select-validate="select-validate" class="in-txt in-s2"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title"> </div>
+          <div class="col-xs-8 in-txt-blk">
+            <button type="submit" ng-hide="registrationLoader" ng-disabled="form.$invalid" ng-class="{'disabled': form.$invalid}" ng-click="register(organization)" class="in-btn">Register </button><i ng-show="registrationLoader" class="icon-spinner icon-spin icon-2x blue"></i>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 in-title"> </div>
+          <div class="col-xs-8 in-txt-blk">
+            <div class="in-err">                                                       
+            </div>
+            <div style="text-align:right">            <a ng-click="reset()" class="forgot-password-link"> <i class="icon-refresh"> </i>Reset</a></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" class="close">    &times;                            </button>
+        <h4 id="myModalLabel" class="modal-title">How to Sign In to invoize</h4>
+      </div>
+      <div class="modal-body">
+        <div style="font-weight:400; font-size: 13px; color: #666;">When you registered with invoize, we sent you an email with your Web Address. You can sign in from your Web Address, which looks like this:</div>
+        <div style="padding:10px 0; font-size:23px; color:#0073e5;">DOMAIN-NAME.invoize.com</div>
+        <div style=" font-size: 17px; color: #666;"> <a href="#">Forgot your web address                                </a></div>
+      </div>
+      <div class="modal-footer">                       
+        <button type="button" data-dismiss="modal" class="btn btn-sm btn-primary">OK, got it!</button>
+      </div>
+    </div>
+  </div>
+</div>

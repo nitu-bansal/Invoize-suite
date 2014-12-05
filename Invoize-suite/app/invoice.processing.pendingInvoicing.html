@@ -1,0 +1,12 @@
+
+<div class="row">
+  <div style="margin-bottom:20px;" class="col-md-6">
+    <button ng-click="" class="inz-btn btn-xs btn-default">Auto Invoicing</button>
+    <button ng-click="" class="inz-btn btn-xs btn-default">Raise Issue</button>
+    <button ng-click="" class="inz-btn btn-xs btn-default">Delete Shipment Entry</button>
+    <div style="padding-right: 12px;" max-height="max-height" class="row">
+      <div id="dataGrid" ng-show="showGrid &amp;&amp; !templateLoader" ui-handsontable="{ currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" height="hh" width="hw" datarows="shipment in datas" manualColumnResize="true" columns="columns" minsparerows="1" onBeforeChange="celChange"></div>
+      <pagination ng-show="showGrid &amp;&amp; !templateLoader" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+    </div>
+  </div>
+</div>

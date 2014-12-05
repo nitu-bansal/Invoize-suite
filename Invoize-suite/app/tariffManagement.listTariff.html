@@ -1,0 +1,29 @@
+
+<!--   Created by noopur.waghmare on 3/19/14.-->
+<div style="clear:both;height:2px;"></div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <div class="overflow-auto">
+    <table ng-show="tariffList.length" class="inz-table inz-table1 border1px">
+      <thead>
+        <tr>
+          <th><span>
+              <input tooltip="Select All" type="checkbox" ng-click=""/></span></th>
+          <th ng-repeat="charge in tariffList[0]" ng-show="$index &gt; 2 &amp;&amp; $index !== 4"><span tooltip="{{charge |toHumanReadable}}" class="trim-info-large">{{charge | toHumanReadable}}</span></th>
+          <th><span tooltip="Edit" class="trim-info-large">Edit Tariff</span></th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="data in tariffList" ng-show="$index">
+        <tr style="cursor: pointer;">
+          <td ng-repeat="d in data track by $index" ng-show="$index==0">
+            <input id="chk" type="checkbox" ng-click="changeSelectedIndex($parent.$index)" ng-class="{'checked': d === true? true : false }"/>
+          </td>
+          <td ng-repeat="d in data track by $index" ng-show="$index &gt; 2 &amp;&amp; $index !== 4" ng-switch="$index"><span tooltip="{{d}}" ng-switch-when="8" class="trim-info-large">{{d | date:fullDate}}</span><span tooltip="{{d}}" ng-switch-when="9" class="trim-info-large">{{d | date:fullDate}}</span>
+            <!--span.trim-info-large(tooltip="{{d}}",ng-switch-when="4", ng-hide="isGroupSelected") {{d}}--><span tooltip="{{d}}" ng-switch-default="ng-switch-default" class="trim-info-large">{{d}}</span>
+          </td>
+          <td ng-repeat="d in data track by $index" ng-show="$index==0"><a href="#/billright/tariffManagement/viewTariff/{{data[2]}}/{{data[1]}}" permission="tariffRepository.editTariff"><span class="in-add-txt">Edit/View</span></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination ng-hide="tariffList.length==0" total-items="totalItemsListTariff" items-per-page="pageLimitListTariff" page="currentPageListTariff" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+</div>

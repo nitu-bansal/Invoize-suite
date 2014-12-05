@@ -1,0 +1,114 @@
+<!--
+<Created>by shridhar.punalkar on 2/27/14.</Created>-->
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">Link Document</div>
+  </div>
+</div>
+<div class="row">
+  <div style="padding-top: 70px;" class="col-xs-12"></div>
+</div>
+<div class="row">
+  <div class="col-xs-12 doc-block">
+    <div style="margin-top:0" class="title"><i class="fa fa-file-text-o"></i> Existing Document</div>
+  </div>
+  <div class="col-xs-12">
+    <select ui-select2="ui-select2" ng-model="select2" data-placeholder="Select document" class="mw230">
+      <option value=""></option>
+      <option value="one">document 1</option>
+      <option value="two">document 2</option>
+      <option value="three">document 3</option>
+    </select>
+    <button type="submit" class="inz-btn btn-sm btn-success">Link</button>
+  </div>
+</div>
+<div style="margin:20px 0 0 0; border-top:1px solid #e5e5e5;" class="divider"></div>
+<div class="row">
+  <div class="col-xs-12 doc-block">
+    <div class="title"><i class="fa fa-file-o"></i> New Document</div>
+  </div>
+  <div class="col-xs-12">
+    <div class="in-wiz-row">
+      <label>Select Document</label>
+      <input type="file"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Document name</label>
+      <input type="text" placeholder="Document name" class="inz-txt"/>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Account code</label>
+      <input type="text" placeholder="Account code" class="inz-txt"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Transport Mode</label>
+      <input type="text" placeholder="Transport Mode" class="inz-txt"/>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Product</label>
+      <input type="text" placeholder="Product" class="inz-txt"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Shipment Type</label>
+      <input type="text" placeholder="Shipment Type" class="inz-txt"/>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Document Type</label>
+      <input type="text" placeholder="Document Type" class="inz-txt"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Expiry Date</label>
+      <input type="text" placeholder="Expiry Date" class="inz-txt"/>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Account code</label>
+      <input type="text" placeholder="Account code" class="inz-txt"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Version</label>
+      <input type="text" placeholder="Version" class="inz-txt"/>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="in-wiz-row">
+      <label>Status</label>
+      <input type="text" placeholder="Status" class="inz-txt"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="in-wiz-row">
+      <button class="inz-btn btn-sm btn-default">Reset</button>
+      <button type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="create(systemData)" class="inz-btn btn-sm btn-success">Save Document</button>
+    </div>
+  </div>
+</div>

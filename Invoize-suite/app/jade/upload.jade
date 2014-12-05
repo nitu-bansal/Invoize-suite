@@ -1,0 +1,18 @@
+div(id="newFiles",ng-controller="FileUploadController",url="/api/tms/upload/file")
+   form.fileupload.fileUps(data-upload-template-id="template-upload-1",method='POST',action="/api/tms/upload/file", enctype='multipart/form-data',data-ng-app="angularApp", data-file-upload='options')
+        div(bs-tooltip="tooltip.drop")#drop-area
+                .fileinput-button.btn-file(bs-tooltip="tooltip.attach")
+                        input(type='file',id="files-upload", name='file', multiple='multiple')
+                        i.icon-cloud-upload
+
+                .drop-instructions
+                        mute  Browse and upload multiple files or drag and drop files here
+                .drop-over Drop files here!
+        .row.uploaded(ng-hide="proceedClicked")
+            .file(data-ng-repeat='file in queue')
+                    span.file-name(ng-class='file.class')
+                        //- a(style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', ng-href='http://api/tms/download/file?id={{file.id}}', download='{{file.name}}' ) {{file.name}} &nbsp
+                        a(style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='{{$location.host()}}/api/tms/download/file?id={{file.id}}', download='{{file.name}}' ) {{file.name}} &nbsp
+                        i.fa.fa-times-circle.ico-dismis(data-dismiss='alert',ng-click="callRemoveNewDocumentId(file.id)", bs-tooltip="tooltip.delete",style="cursor: pointer;")
+            button.inz-btn.btn-sm.btn-success.pull-right(type="submit",ng-click="proceed()",ng-show="docExist") Proceed &nbsp;
+                i.fa.fa-long-arrow-right

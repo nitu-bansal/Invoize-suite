@@ -1,0 +1,63 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>Editor</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" href="favicon.ico?id=1" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico?id=1" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles/ace.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles/ace-skins.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles/fonts.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">               </script>
+    <script src="/scripts/vendor/bootstrap.min.js"> </script>
+    <script src="https://mindmup.s3.amazonaws.com/lib/jquery.hotkeys.js"></script>
+    <script src="/scripts/vendor/markdown/markdown.js">;</script>
+    <script src="/scripts/vendor/markdown/bootstrap-markdown.js">; </script>
+    <script src="/scripts/vendor/bootstrap-wysiwyg.js">; </script>
+    <script src="/scripts/vendor/ace-elements.js">;</script>
+    <script src="/scripts/vendor/ace.js">;    </script>
+    <script src="/scripts/vendor/prettify.js">;  </script>
+    <script src="/scripts/vendor/bootstrap-colorpicker.js">;</script>
+    <script src="/scripts/editor.js">;                         </script>
+  </head>
+  <body><br/>
+    <div class="widget-box">
+      <div centerdata-target="#editor" id="editor-toolbar-1" class="wysiwyg-toolbar wysiwyg-style3 btn-toolbar">
+        <div class="btn-group"><a title="" data-toggle="dropdown" data-original-title="Font" class="btn btn-small dropdown-toggle"><i class="icon-font"></i><i class="icon-angle-down icon-on-right"></i></a>
+          <ul class="dropdown-menu dropdown-light">
+            <li> <a style="font-family:'Arial'" data-edit="fontName Arial">Arial</a></li>
+            <li><a style="font-family:'Courier'" data-edit="fontName Courier">Courier</a></li>
+            <li><a style="font-family:'Comic Sans MS'" data-edit="fontName Comic Sans MS">Comic Sans MS</a></li>
+            <li><a style="font-family:'Helvetica'" data-edit="fontName Helvetica">Helvetica</a></li>
+            <li><a style="font-family:'Open Sans'" data-edit="fontName Open Sans">Open Sans</a></li>
+            <li><a style="font-family:'Tahoma'" data-edit="fontName Tahoma">Tahoma</a></li>
+            <li><a style="font-family:'Verdana'" data-edit="fontName Verdana">Verdana</a></li>
+          </ul>
+        </div>
+        <div class="btn-group"><a title="" data-toggle="dropdown" data-original-title="Font Size" class="btn btn-small dropdown-toggle"><i class="icon-text-height">                                               </i><i class="icon-angle-down icon-on-right"></i></a>
+          <ul class="dropdown-menu dropdown-light">
+            <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+            <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+            <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+          </ul>
+        </div>
+        <div class="btn-group"><a data-original-title="Bold (Ctrl/Cmd+B)" data-edit="bold" title="" class="btn btn-small btn-info"><i class="icon-bold"></i></a><a data-original-title="Italic (Ctrl/Cmd+I)" data-edit="italic" title="" class="btn btn-small btn-info"><i class="icon-italic"></i></a><a data-original-title="Strikethrough" data-edit="strikethrough" title="" class="btn btn-small btn-info"><i class="icon-strikethrough"></i></a><a data-original-title="Underline (Ctrl/Cmd+U)" data-edit="underline" title="" class="btn btn-small btn-info"><i class="icon-underline"></i></a></div>
+        <div class="btn-group"><a data-original-title="Bullet list" data-edit="insertunorderedlist" title="" class="btn btn-small btn-success"><i class="icon-list-ul"></i></a><a data-original-title="Number list" data-edit="insertorderedlist" title="" class="btn btn-small btn-success"><i class="icon-list-ol"></i></a><a data-original-title="Reduce indent (Shift+Tab)" data-edit="outdent" title="" class="btn btn-small btn-purple"><i class="icon-indent-left"></i></a><a data-original-title="Indent (Tab)" data-edit="indent" title="" class="btn btn-small btn-purple"><i class="icon-indent-right"></i></a></div>
+        <div class="btn-group"><a data-original-title="Align Left (Ctrl/Cmd+L)" data-edit="justifyleft" title="" class="btn btn-small btn-primary active"><i class="icon-align-left"></i></a><a data-original-title="Center (Ctrl/Cmd+E)" data-edit="justifycenter" title="" class="btn btn-small btn-primary"><i class="icon-align-center"></i></a><a data-original-title="Align Right (Ctrl/Cmd+R)" data-edit="justifyright" title="" class="btn btn-small btn-primary"><i class="icon-align-right"></i></a><a data-original-title="Justify (Ctrl/Cmd+J)" data-edit="justifyfull" title="" class="btn btn-small btn-inverse"><i class="icon-align-justify">                                                                     </i></a></div>
+        <div class="btn-group"><a id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)" title="" class="btn btn-small btn-success"><i class="icon-picture"></i></a>
+          <input data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" type="file"/>
+        </div>
+        <div class="btn-group"><a title="" data-edit="undo" data-original-title="Undo (Ctrl/Cmd+Z)" class="btn btn-small btn-grey"><i class="icon-undo"></i></a><a title="" data-edit="redo" data-original-title="Redo (Ctrl/Cmd+Y)" class="btn btn-small btn-grey"><i class="icon-repeat"></i></a></div>
+        <div class="btn-group">
+          <input type="text" x-webkit-speech="" id="voiceBtn" data-edit="inserttext" style="display: none;" class="wysiwyg-speech-input"/>
+        </div>
+      </div>
+      <div id="editor1" style="height:440px;max-height:500px" contenteditable="true" required="required" class="wysiwyg-editor"> </div>
+    </div>
+  </body>
+</html>

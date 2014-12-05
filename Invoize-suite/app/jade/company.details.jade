@@ -1,0 +1,30 @@
+.row.in-wiz-ttl.fix-scroll(ng-init="companyView($routeParams.companyId)", ng-show="$state.current.name.split('.')[0]=='wizard'")
+    .col-md-9.col-sm-8
+        .in-wiz-info Welcome to company configuration. You can add / configure / edit your companies here. You can also arrange the companies as per the company hierarchy in your organization.
+    .col-md-3.col-sm-4.in-add
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyDetailLoader")
+        a(permission="editTemplateCompany",ng-click="openDialogUpdateTemplate(company,true)", href="javascript:void(0);", style="margin-right:15px")
+            span.in-add-sign +
+            span.in-add-txt Add / modify fields
+
+.row.in-wiz-ttl.in-fix-scroll(ng-init="companyView($routeParams.companyId)",ng-hide="$state.current.name.split('.')[0]=='wizard'",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Company Details
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyCreateLoader")
+            a(ng-click="openDialogUpdateTemplate(company,true)", href="javascript:void(0);", style="margin-right:10px")
+                span.in-add-sign +
+                span.in-add-txt Add / Modify Fields
+            a.inz-btn.btn-sm.btn-default(ng-click="redirectTo('/company/view')") Back
+
+div(style="clear:both;")
+.col-md-6.col-sm-12.col-xs-12
+    .in-center-block
+        div.line(ng-repeat="row1 in company.fields")
+            .caption {{row1.label}}
+            .data {{row1.value | selectFormat}}
+    .in-wiz-footer
+        button.inz-btn.btn-sm.btn-success(ng-click="backToView()")
+            i.fa.fa-long-arrow-left
+            |  Back

@@ -1,0 +1,10 @@
+.col-md-12
+    table.inz-table.inz-table5(ng-show="deliveryData[$index].doc.length")
+        thead
+            tr
+                th(ng-repeat="val1 in deliveryData[$index].doc[0]" ,ng-show="$index>0")
+                    span.trim-info-large(tooltip="{{val1 |toHumanReadable}}") {{val1 | toHumanReadable}}
+        tbody(ng-repeat="rowInvoice in deliveryData[$index].doc",ng-show="$index > 0")
+            tr
+                td(ng-repeat="colInvoice in rowInvoice track by $index",ng-show="$index>0")
+                    span.trim-info-large(tooltip="{{colInvoice}}") {{colInvoice}}

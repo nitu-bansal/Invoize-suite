@@ -1,0 +1,41 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+//- .row.top-outline
+.row
+    include common_top_row
+    .space
+    .space
+    section
+        .row
+            ul.nav.nav-pills
+                li(ng-class="{ active: $state.current.name.contains('company')}")
+                    a(href="#/wizard/company")
+                        span(ng-show="$state.current.name.contains('company')") 1  Company
+                        span(ng-hide="$state.current.name.contains('company')")
+                            span.badge 1
+                li(ng-class="{ active: $state.current.name.contains('system')}")
+                    a(href="#/wizard/system")
+                        span(ng-show="$state.current.name.contains('system')") 2  System
+                        span(ng-hide="$state.current.name.contains('system')")
+                            span.badge 2
+                li(ng-class="{ active: $state.current.name.contains('location')}")
+                    a(href="#/wizard/location/new")
+                        span(ng-show="$state.current.name.contains('location')") 3  Location
+                        span(ng-hide="$state.current.name.contains('location')")
+                            span.badge 3
+                li(ng-class="{ active: $state.current.name.contains('operation')}")
+                    a(href="#/wizard/operation")
+                        span(ng-show="$state.current.name.contains('operation')") 4  Operation
+                        span(ng-hide="$state.current.name.contains('operation')")
+                            span.badge 4
+                li(ng-class="{ active: $state.current.name.contains('accounts')}")
+                    a(href="#/wizard/accounts")
+                        span(ng-show="$state.current.name.contains('accounts')") 5  Accounts
+                        span(ng-hide="$state.current.name.contains('accounts')")
+                                span.badge 5
+                li(ng-class="{ active: $state.current.name.contains('users')}")
+                    a(href="#/wizard/users")
+                        span(ng-show="$state.current.name.contains('users')") 6  Users
+                        span(ng-hide="$state.current.name.contains('users')")
+                            span.badge 6
+            .main-content(id="main-content")
+                .page-content(ui-view="contents")

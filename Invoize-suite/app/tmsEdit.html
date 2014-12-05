@@ -1,0 +1,199 @@
+
+<div style="margin-top:-20px;" ng-init="init()" class="row">
+  <div class="col-xs-12">
+    <fieldset ng-hide="isInProcess">
+      <div class="widget-box transparent">
+        <div class="doc-block">
+          <div class="title">Upload new document </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <dialogss>
+              <div class="form-group">
+                <div id="newFiles" ng-controller="FileUploadController" url="/api/tms/upload/file">
+                  <form data-upload-template-id="template-upload-1" method="POST" action="/api/tms/upload/file" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+                    <div bs-tooltip="tooltip.drop" id="drop-area">
+                      <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+                        <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+                      </div>
+                      <div class="drop-instructions">
+                        <mute> Browse and upload multiple files or drag and drop files here</mute>
+                      </div>
+                      <div class="drop-over">Drop files here!</div>
+                    </div>
+                    <div ng-hide="proceedClicked" class="row uploaded">
+                      <div data-ng-repeat="file in queue" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+                      <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </dialogss>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<form novalidate="novalidate" name="tmsForm" class="form-horizontal">
+  <fieldset>
+    <h5 ng-show="tariffHistoryLoader">Loading History<i ng-show="tariffHistoryLoader" class="icon-spinner icon-spin icon icon-large"></i></h5>
+    <div ng-show="tariffHistoryAvailable"><br/>
+      <div class="widget-box transparent">
+        <div class="widget-header">
+          <h5 class="lighter smaller"><i class="icon-comment blue"></i>History</h5>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div class="dialogs">
+              <div ng-repeat="row in documentRequestHistory" class="itemdiv dialogdiv">
+                <div class="user"><img alt="Avatar" src="avatars/user12.png"/></div>
+                <div ng-click="isCollapsed = !isCollapsed" style="cursor: pointer;" class="body">
+                  <div class="time"><span ng-show="row.action=='Approved'" class="small label label-success pull-right">Approved</span><span ng-show="row.action=='Rejected'" class="small label label-important pull-right">Rejected</span><span ng-show="row.action=='Created'" class="small label label-info pull-right">Created</span></div>
+                  <div class="name"><a>{{row.un}}</a></div>
+                  <div class="text">{{row.oldSnapshot.comment}}
+                    <div collapse="isCollapsed">
+                      <div class="row"><small class="muted"><i class="icon-caret-right green"> Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}}</i></small><br/><small class="muted"><i class="icon-caret-right green"> Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}}</i></small><br/><small class="muted"><i class="icon-caret-right green"> Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}</i></small><br/></div><strong class="text-black">Attached Documents</strong>
+                      <div data-ng-repeat="file in row.oldSnapshot.docId">
+                        <div>
+                          <div class="pull-right"> &nbsp;<span class="pull-right small label label-info">{{file.t}}</span></div><i class="icon-large icon-paper-clip">&nbsp</i><a href="/api/tms/download/file?id={{file.id}}" download="{{file.name}}" style="cursor: pointer;" bs-tooltip="tooltip.download" data-placement="right" class="link"><strong>{{file.v}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{file.v}}<br/><small class="muted"> You do not have download permissions</small></strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tools"><a class="btn btn-minier btn-info"><i class="icon-only icon-share-alt"></i></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div ng-show="tariffNewFile.length" class="row">
+    <div class="col-xs-12">
+      <div class="doc-block">
+        <div class="title">New documents</div>
+        <div ng-repeat="r in tariffNewFile track by $index" id="File{{$index+1}}" ng-init="sectionIndex = $index">
+          <div class="cpanel">
+            <div class="cpanel-heading"><a class="accordion-toggle open"><i class="fa fa-circle"></i>   {{obj.docType}}</a>
+              <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Close" ng-click="closeObjEdit($index)" type="button" class="command pull-right"><i class="icon-remove"></i></button>
+            </div>
+            <div class="cpanel-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="doc-block">
+                    <ul>
+                      <li><a href="{{$location.host()}}/api/tms/download/file?id={{r.presentDocId.id}}" class="doc-title"><i class="fa fa-paperclip"></i>  {{r.presentDocId.v}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-12">
+                  <div style="margin-bottom:10px;" class="doc-block">
+                    <div class="title">Document Details</div>
+                  </div>
+                </div>
+                <div class="col-xs-12">
+                  <div ng-repeat="row1 in r.fields | orderBy:'displayOrder'" ng-form="subForm1" ng-show="{{row1.isActive}}" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 in-wiz-row">
+                    <form novalidate="novalidate" name="subForm1" class="form-horizontal">
+                      <label class="control-label">{{row1.label}}</label>
+                      <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                        <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                        <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                        <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                        <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" change="changeData(row1.key,row1.value,$index, sectionIndex)" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                        <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" change="changeData(row1.key,row1.value,$index, sectionIndex)" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                        <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm1.name.$error.required" class="red">*</span><span ng-show="subForm1.name.$error.unique" class="red">already Exists</span><span ng-show="subForm1.name.$error.number" class="red">only numbers</span><span ng-show="subForm1.name.$error.date" class="red">only date</span><span ng-show="subForm1.name.$error.maxlength" class="red">max length is {{row1.length}}</span><span ng-show="subForm1.name.$error.pattern" class="red">Can contain only text</span><span ng-show="subForm1.name.$valid" class="green validTick">&#10004;</span>
+                      </div>
+                    </form>
+                  </div>
+                  <div style="margin-bottom:20px;" class="col-xs-12 doc-block">
+                    <div class="title">Shared With</div>
+                  </div>
+                  <div class="col-md-12 in-wiz-row">
+                    <label class="control-label">Can Edit</label>
+                    <dynamic-Select multiselect="multiselect" ng-model="r.sharedWithEdit.Groups" ph="userGroup" placeholder="Select Group(s)" change="addUsersinView('group', $index)" toolTip="Select Group(s)"></dynamic-Select>
+                    <dynamic-Select multiselect="multiselect" ng-model="r.sharedWithEdit.Users" ph="user" placeholder="Select User(s)" toolTip="Select User(s)"></dynamic-Select>
+                  </div>
+                  <div class="col-md-12 in-wiz-row">
+                    <label class="control-label">Can View</label>
+                    <dynamic-Select multiselect="multiselect" ng-model="r.sharedWithView.Groups" ph="userGroup" placeholder="Select Group(s)" toolTip="Select Group(s)"></dynamic-Select>
+                    <dynamic-Select multiselect="multiselect" ng-model="r.sharedWithView.Users" ph="user" placeholder="Select User(s)" toolTip="Select User(s)"></dynamic-Select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div style="margin-bottom:10px;" class="doc-block">
+        <div class="title">Existing documents</div><i ng-show="dataLoader" class="icon-spinner icon-spin blue icon-large"></i>
+      </div>
+      <form novalidate="novalidate" name="tmsForm2" class="form-horizontal">
+        <!--div(ng-init="getTemplateTariffCode($parent.accountNumber[0].id)")-->
+        <div ng-repeat="obj in TariffTemp.fields track by $index" ng-cloak="ng-cloak" ng-init="sectionIndex = $index">
+          <div class="cpanel">
+            <div ng-click="getTariffInfo($index,obj.id);" class="cpanel-heading"><a ng-click="isOpen = !isOpen" ng-class="{ open: isOpen}" class="accordion-toggle"><i class="fa fa-plus-circle"></i> &nbsp;<span toolTip="{{obj.file}}" class="label">Tariff Code :</span>{{obj.tariffCode}}<span class="label label-warning">Expiring on :</span>{{obj.expiry | date:fullDate}}</a><span class="hdate"> Created : {{obj.timestamp | date:fullDate}}</span></div>
+            <div ng-show="isOpen" class="cpanel-body">
+              <div class="row">
+                <div class="col-xs-12 doc-block">
+                  <ul>
+                    <li ng-hide="obj.showRevision"><a href="{{$location.host()}}/api/tms/download/file?id={{obj.tariffData.presentDocId.id}}" class="doc-title"><i class="fa fa-paperclip"></i>  {{obj.tariffData.presentDocId.v}}</a>
+                      <div class="command-grp">
+                        <input type="file" name="files[]" ng-file-select="onFileSelect($files,$index)" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Revision"/>
+                        <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Revision" class="command revise"><i class="fa fa-upload"></i></button>
+                      </div>
+                    </li>
+                    <li ng-show="obj.showRevision"><a href="{{$location.host()}}/api/tms/download/file?id={{obj.tariffData.revisionDocId.id}}" class="doc-title"><i class="fa fa-paperclip"></i>  {{obj.tariffData.revisionDocId.v}}</a>
+                      <div class="command-grp">
+                        <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Undo" ng-click="undoFileUpload($index);obj.tariffData.revisionDocId={};" class="command revise"><i class="fa fa-undo"></i></button>
+                      </div><a href="{{$location.host()}}/api/tms/download/file?id={{obj.tariffData.presentDocId.id}}" class="doc-expired"><i class="fa fa-paperclip"></i>  {{obj.tariffData.presentDocId.v}}</a>
+                    </li>
+                  </ul>
+                </div>
+                <div style="margin-bottom:20px;" class="col-xs-12 doc-block">
+                  <div class="title">Document Details</div>
+                </div>
+                <div class="col-xs-12">
+                  <div ng-repeat="row1 in obj.tariffData.fields | orderBy:'displayOrder'" ng-form="subForm" ng-show="{{row1.isActive}}" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" ng-cloak="ng-cloak" class="col-md-6 in-wiz-row">
+                    <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                      <label class="control-label">{{row1.label}}</label>
+                      <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                        <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                        <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                        <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                        <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" change="changeData(row1.key,row1.value,$index, sectionIndex)" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                        <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" change="changeData(row1.key,row1.value,$index, sectionIndex)" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                        <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" title="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required" class="red">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div style="margin-bottom:20px;" class="col-xs-12 doc-block">
+                  <div class="title">Shared With</div>
+                </div>
+                <div class="col-xs-12">
+                  <div class="col-md-12 in-wiz-row">
+                    <label class="control-label">Can Edit</label>
+                    <dynamic-Select multiselect="multiselect" ng-model="TariffTemp.fields[$index].tariffData.sharedWithEdit.Groups" ph="userGroup" placeholder="Select Group(s)" change="addUsersinView('group', $index)" toolTip="Select Group(s)"></dynamic-Select>
+                    <dynamic-Select multiselect="multiselect" ng-model="TariffTemp.fields[$index].tariffData.sharedWithEdit.Users" ph="user" placeholder="Select User(s)" toolTip="Select User(s)"></dynamic-Select>
+                  </div>
+                  <div class="col-md-12 in-wiz-row">
+                    <label class="control-label">Can View</label>
+                    <dynamic-Select multiselect="multiselect" ng-model="TariffTemp.fields[$index].tariffData.sharedWithView.Groups" ph="userGroup" placeholder="Select Group(s)" toolTip="Select Group(s)"></dynamic-Select>
+                    <dynamic-Select multiselect="multiselect" ng-model="TariffTemp.fields[$index].tariffData.sharedWithView.Users" ph="user" placeholder="Select User(s)" toolTip="Select User(s)"></dynamic-Select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</form>

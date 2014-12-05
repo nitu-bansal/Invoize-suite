@@ -1,0 +1,36 @@
+
+<form name="form" novalidate="novalidate">
+  <div id="chargeTable" ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" height="hh" width="hw" datarows="metadata in metadatas" manualColumnResize="true" columns="chargeColumns" minsparerows="1" onBeforeChange="celChangeMetadata" ng-init="getChargeTemplate()" afterRender="afterRender()"></div>
+  <pagination id="chargePaginations" ng-show="!metadataLoader" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" max-size="paginationSize" class="pagination-small"></pagination>
+  <div class="doc-block">
+    <div class="title">Currency and Rounding Methods</div>
+  </div>
+  <form novalidate="novalidate" name="frm1" class="form-horizontal">
+    <div style="margin:10px 0; padding-top: 5px; border-top:1px solid #ddd;" class="row in-wiz-ttl in-filter">
+      <div class="col-xs-12 in-add">
+        <div class="in-wiz-row pull-left">
+          <label class="control-label">Charge codes</label>
+          <div class="controls">
+            <dynamic-Select required="required" customobj="{&quot;systemId&quot;:&quot;{{$routeParams.systemId}}&quot;}" multiselect-false="multiselect-false" name="chargeCodeList" ng-model="chargeCodeSelect" ph="systemChargeCode" placeholder="Select Charge" change="getAccountChargeRules(chargeCodeSelect)"></dynamic-Select>
+          </div>
+        </div>
+        <div class="pull-right nowrap"><a ng-click="openDialog()" href="javascript:void(0)" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit fields" class="inz-btn btn-sm btn-ico btn-default"><i class="fa fa-pencil"></i></a><a ng-class="{'disabled': frm1.$invalid}" ng-disabled="frm1.$invalid" ng-click="saveAccountChargeRule()" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Save" class="inz-btn btn-sm btn-ico btn-default"><i class="fa fa-check"></i></a></div>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-repeat="row1 in chargeRules.fields | orderBy:'displayOrder'" ng-form="subForm" ng-show="{{row1.isActive}}" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 in-wiz-row">
+        <form novalidate="novalidate" name="subForm" class="form-horizontal">
+          <label class="control-label">{{row1.label}}</label>
+          <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+            <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+            <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+            <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+            <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+            <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+            <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </form>
+</form>

@@ -1,0 +1,81 @@
+.col-md-8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .btn-group.pull-right
+                                        a.btn.btn-sm.btn-primary.btn-margin(ng-hide="profileDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply                                        
+                                        a.btn.btn-sm.btn-primary(permission="updateProfile.*.*", ng-hide="profileDetailLoader", bs-tooltip="tooltip.edit", href="#/payright/vendor/edit/{{$stateParams.profileId}}", ng-click="editProfile($stateParams.profileId)")
+                                                i.icon-pencil                                       
+                                        a.btn.btn-sm.btn-primary(permission="deleteProfile.*.*", ng-hide="profileDetailLoader", style="cursor: pointer;", bs-tooltip="tooltip.delete" , ng-click="confirmDeleteProfile()")
+                                                i.icon-trash
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="profileDetailLoader")
+                        tabset
+                                tab(heading="Profile",style="overflow:hidden")
+                                        ng-form(name="form2")
+                                                .form-group
+                                                        label.control-label Company Name
+                                                        .col-sm-9 
+                                                                label {{profile.companyName}}
+                                                .form-group
+                                                        label.control-label Company Headquarters City
+                                                        .col-sm-9 
+                                                                label {{profile.companyHeadquartersCity}}
+                                                .form-group
+                                                        label.control-label Name
+                                                        .col-sm-9 
+                                                                label {{profile.name}}
+                                                .form-group
+                                                        label.control-label Vender #
+                                                        .col-sm-9 
+                                                                label {{profile.venderNo}}
+                                                .form-group
+                                                        label.control-label Pay to
+                                                        .col-sm-9 
+                                                                label {{profile.payTo}}
+                                                .form-group
+                                                        label.control-label Payment Mode
+                                                        .col-sm-9 
+                                                                label {{profile.paymentMode}}
+                                                .form-group
+                                                        label.control-label Department
+                                                        .col-sm-9 
+                                                                label {{profile.department}}
+                                tab(heading="Contact Info",style="overflow:hidden")
+                                        ng-form(name="form3")
+                                                .form-group
+                                                        label.control-label Phone
+                                                        .col-sm-9 
+                                                                label {{profile.phone}}
+                                                .form-group
+                                                        label.control-label Mobile
+                                                        .col-sm-9 
+                                                                label {{profile.mobile}}
+                                                .form-group
+                                                        label.control-label Fax
+                                                        .col-sm-9 
+                                                                label {{profile.fax}}
+                                                .form-group
+                                                        label.control-label Email
+                                                        .col-sm-9 
+                                                                label {{profile.email}}
+                                                .form-group
+                                                        label.control-label Address 1
+                                                        .col-sm-9 
+                                                                label {{profile.address1}}
+                                                .form-group
+                                                        label.control-label Address 2
+                                                        .col-sm-9 
+                                                                label {{profile.address2}}
+                                                .form-group
+                                                        label.control-label Location
+                                                        .col-sm-9 
+                                                                label {{profile.location}}
+                                                .form-group
+                                                        label.control-label State
+                                                        .col-sm-9 
+                                                                label {{profile.state}}
+                                                .form-group
+                                                        label.control-label Zipcode 
+                                                        .col-sm-9 
+                                                                label {{profile.zipcode}}

@@ -1,0 +1,43 @@
+
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Configure Metadata<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div ng-init="getMetadataList()" class="row">
+          <div class="col-md-2">
+            <div class="his-title"><i class="fa fa-file-text-o"></i>  {{profile.Name}}
+              <button toolTip="Add New" ng-click="clearData()" class="pull-right command light"><i class="fa fa-plus"></i></button>
+            </div>
+            <ul style="max-height:153px;" class="his-list less">
+              <li ng-repeat="m in selectMetadataList" ng-click="readMetadadata(m.id)"><a title="{{m.value}}">{{m.value}}</a><i class="fa fa-chevron-right"></i></li>
+            </ul>
+          </div>
+          <div class="col-md-10">
+            <div ng-repeat="row1 in profile.fields" ng-form="subForm" ng-show="{{row1.isActive}}" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" ng-cloak="ng-cloak" class="col-sm-5 in-wiz-row">
+              <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                <label>{{row1.label}}</label>
+                <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                  <input ng-switch-when="text" type="text" ng-if="row1.key!='script' &amp;&amp; row1.key!='fromMessageType' &amp;&amp; row1.key!='toMessageType' &amp;&amp; row1.key!='fromEdiType' &amp;&amp; row1.key!='toEdiType'" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                  <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                  <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                  <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                  <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                  <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea>
+                  <input style="width:130px;" ng-switch-when="text" type="text" ng-required="row1.isMandatory" ng-if="row1.key=='script' || row1.key=='fromMessageType' || row1.key=='toMessageType' || row1.key=='fromEdiType' || row1.key=='toEdiType'" ng-model="row1.value" id="{{row1.key}}" name="name" ng-readonly="{{row1.isReadonly}}" typeahead="suggestion for suggestion in scriptBar($viewValue,row1.suggestionsSource,row1.key)" typeahead-editable="false" toolTip="{{row1.toolTip}}"/><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.{{row1.key}}.$error.required">*</span><span ng-show="subForm.communicationscripts.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" type="submit" ng-click="saveMetadata()" class="inz-btn btn-sm btn-success">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+form(name="form",novalidate)
+   
+    div#chargeTable(ui-handsontable='{currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",height='hh',width='hw',datarows='metadata in metadatas',manualColumnResize='true', columns='chargeColumns',minsparerows='1',onBeforeChange='celChangeMetadata',ng-init="getChargeTemplate()",afterRender='afterRender()')
+    pagination#chargePaginations(ng-show="!metadataLoader",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true",max-size="paginationSize")
+
+    .doc-block
+        .title Currency and Rounding Methods
+
+    form.form-horizontal(novalidate, name="frm1")
+        .row.in-wiz-ttl.in-filter(style="margin:10px 0; padding-top: 5px; border-top:1px solid #ddd;")
+            .col-xs-12.in-add
+                .in-wiz-row.pull-left
+                    label.control-label Charge codes
+                    .controls
+                        dynamic-Select(required,customobj='{"systemId":"{{$routeParams.systemId}}"}', multiselect-"false",name="chargeCodeList",ng-model="chargeCodeSelect",ph="systemChargeCode",placeholder="Select Charge",change="getAccountChargeRules(chargeCodeSelect)")
+                .pull-right.nowrap
+                    a.inz-btn.btn-sm.btn-ico.btn-default(ng-click="openDialog()", href="javascript:void(0)", tool-tip,data-placement="top", data-toggle="tooltip", title="Edit fields")
+                        i.fa.fa-pencil
+                    a.inz-btn.btn-sm.btn-ico.btn-default(ng-class="{'disabled': frm1.$invalid}",ng-disabled="frm1.$invalid",ng-click="saveAccountChargeRule()" ,tool-tip,data-placement="top", data-toggle="tooltip", title="Save")
+                        i.fa.fa-check
+        .row
+            .col-md-6.in-wiz-row(ng-repeat="row1 in chargeRules.fields | orderBy:'displayOrder'",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}",alt-render,hasParent='row',hasCount='2')
+                form.form-horizontal(novalidate, name="subForm")
+                    label.control-label {{row1.label}}
+                    .controls(ng-switch-when="true",ng-switch='row1.type')
+                        input(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                        dynamic-Select(ng-switch-when='dropdown',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                        textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                        span(ng-show="subForm.name.$error.required") *
+                        span(ng-show="subForm.name.$error.unique") already Exists
+                        span(ng-show="subForm.name.$error.number") only numbers
+                        span(ng-show="subForm.name.$error.date") only date
+                        span(ng-show="subForm.name.$error.maxlength") max length is {{row1.length}}
+                        span(ng-show="subForm.name.$error.pattern") Can contain only text
+                        span.green.validTick(ng-show="subForm.name.$valid") &#10004;

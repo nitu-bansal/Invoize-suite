@@ -1,0 +1,209 @@
+div(id= "tmsEdit",ng-controller="billRightTmsCtrl")
+            .in-wiz-row.pull-left.pull-up(style="margin-top:-35px;", ng-show="$state.current.name.split('.')[0]=='wizard'")
+                label.control-label Selected Accounts
+                .controls
+                    dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",ng-readonly="true")
+                    //-above should be readonly
+            .in-wiz-row.pull-left.pull-up(style="margin-top:-42px;", ng-hide="$state.current.name.split('.')[0]=='wizard'")
+                label.control-label Selected Accounts
+                .controls
+                    dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",ng-readonly="true",ng-init="initAccount()")
+                    //-above should be readonly
+    .row(style="margin-top:-20px;",ng-init="init()")
+        .col-xs-12
+            fieldset(ng-hide="isInProcess")
+                .widget-box.transparent
+                    .doc-block
+                        .title Upload new document 
+                    .widget-body
+                        .widget-main.no-padding
+                            dialogss
+                                .form-group
+                                    include upload
+        
+
+        fieldset
+            h5(ng-show="tariffHistoryLoader") Loading History
+                i.icon-spinner.icon-spin.icon.icon-large(ng-show="tariffHistoryLoader")
+            div(ng-show="tariffHistoryAvailable")
+                br
+                .widget-box.transparent
+                    .widget-header
+                        h5.lighter.smaller
+                            i.icon-comment.blue
+                            | History
+                    .widget-body
+                        .widget-main.no-padding
+                            .dialogs
+                                .itemdiv.dialogdiv(ng-repeat="row in documentRequestHistory")
+                                    .user
+                                        img(alt="Avatar",src="avatars/user12.png")
+                                    .body(ng-click='isCollapsed = !isCollapsed',style="cursor: pointer;")
+                                        .time
+                                            span.small.label.label-success.pull-right(ng-show="row.action=='Approved'") Approved
+                                            span.small.label.label-important.pull-right(ng-show="row.action=='Rejected'") Rejected
+                                            span.small.label.label-info.pull-right(ng-show="row.action=='Created'") Created
+                                        .name
+                                            a {{row.un}}
+                                        .text {{row.oldSnapshot.comment}}
+                                            div(collapse='isCollapsed')
+                                                .row
+                                                    small.muted
+                                                        i.icon-caret-right.green  Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}}
+                                                    br
+                                                    small.muted
+                                                        i.icon-caret-right.green  Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}}
+                                                    br
+                                                    small.muted
+                                                        i.icon-caret-right.green  Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}
+                                                    br
+                                                strong.text-black Attached Documents
+                                                div(data-ng-repeat='file in row.oldSnapshot.docId')
+                                                    div
+                                                        div.pull-right  &nbsp;
+                                                            span.pull-right.small.label.label-info {{file.t}}
+
+                                                        i.icon-large.icon-paper-clip &nbsp
+                                                        a.link(href='/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download",data-placement="right")
+                                                            strong {{file.v}}
+                                                        strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                            br
+                                                            small.muted  You do not have download permissions
+                                        .tools
+                                            a.btn.btn-minier.btn-info
+                                                i.icon-only.icon-share-alt
+
+
+    .row(ng-show="tariffNewFile.length")
+        .col-xs-12
+            .doc-block()
+                .title New documents
+                //- dynamic-Select(multiselect,ng-readonly="true",name="accountNumber",ng-model="accountNumbers",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number")
+            form.form-horizontal(novalidate, name="tmsFrom")
+                div(ng-repeat="r in tariffNewFile track by $index",id="File{{$index+1}}")
+                    .cpanel
+                        .cpanel-heading()
+                            a.accordion-toggle.open
+                                i.fa.fa-circle
+                                |    {{obj.docType}}
+
+                            button.command.pull-right(tool-tip,data-placement="top", data-toggle="tooltip", title="Close", ng-click='closeObjEdit($index)',type='button')
+                                i.icon-remove
+                        .cpanel-body()
+                            .row
+                                .col-xs-12.doc-block
+                                    //- .title Attached Documents ({{tariff.docId.length}})
+                                    ul
+                                        li
+                                            a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{r.presentDocId.id}}')
+                                                i.fa.fa-paperclip
+                                                |   {{r.presentDocId.v}}
+                                            .command-grp
+                                                button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit", type='file', ng-click='onFileSelect($files)')
+                                                    i.fa.fa-pencil
+                                                button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Revision")
+                                                    i.fa.fa-reply
+                                                button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete")
+                                                    i.fa.fa-times
+
+
+                                .col-xs-12.doc-block(style="margin-bottom:10px;")
+                                    .title Document Details
+
+                                .col-xs-12
+                                    .col-md-6.in-wiz-row(ng-repeat="row1 in r.fields | orderBy:'displayOrder'",ng-form="subForm1",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}", alt-render,hasParent='row',hasCount='2')
+                                        form.form-horizontal(novalidate, name="subForm1")
+
+                                            label.control-label {{row1.label}}
+                                            .controls(ng-switch-when="true",ng-switch='row1.type')
+                                                input(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                                dynamic-Select(ng-switch-when='dropdown',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                                textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                span(ng-show="subForm1.name.$error.required") *
+                                                span(ng-show="subForm1.name.$error.unique") already Exists
+                                                span(ng-show="subForm1.name.$error.number") only numbers
+                                                span(ng-show="subForm1.name.$error.date") only date
+                                                span(ng-show="subForm1.name.$error.maxlength") max length is {{row1.length}}
+                                                span(ng-show="subForm1.name.$error.pattern") Can contain only text
+                                                span.green.validTick(ng-show="subForm1.name.$valid") &#10004;
+
+    .row
+        .col-xs-12
+            .doc-block(style="margin-bottom:10px;")
+                .title Existing documents
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="dataLoader")
+                //- dynamic-Select(multiselect,ng-readonly="true",name="accountNumber",ng-model="accountNumbers",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number")
+            form.form-horizontal(novalidate, name="form",ng-init="getTemplateTariffCode($parent.accountNumber[0].id)")
+                div(ng-repeat="obj in TariffTemp.fields track by $index",ng-cloak='ng-cloak')
+                    .cpanel
+                        .cpanel-heading(ng-click="getTariffInfo($index,obj.id);")
+                            a.accordion-toggle( ng-click='isOpen = !isOpen', ng-class='{ open: isOpen}')
+                                i.fa.fa-plus-circle
+                                |  &nbsp; 
+                                span.label(toolTip="{{obj.file}}") Tariff Code : {{obj.tariffCode}}
+                                span.label.label-warning Expiring on :  {{obj.expiry | date:'fullDate'}}
+
+                                //- |   {{obj.tariffCode}}
+
+                            span.hdate  Created : {{obj.timestamp | date:'fullDate'}}
+                        .cpanel-body(ng-show="isOpen")
+                            .row
+                                .col-xs-12.doc-block()
+                                    //- .title Attached Documents ({{tariff.docId.length}})
+                                    ul
+                                        li(ng-hide='obj.showRevision')
+                                            a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{obj.tariffData.presentDocId.id}}')
+                                                i.fa.fa-paperclip
+                                                |   {{obj.tariffData.presentDocId.v}}
+                                            .command-grp
+                                                input(type='file',name='files[]', ng-file-select='onFileSelect($files,$index)', tool-tip,data-placement="top", data-toggle="tooltip", title="Revision")
+                                                //- button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit")
+                                                //-     i.fa.fa-pencil
+                                                button.command.revise(tool-tip,data-placement="top", data-toggle="tooltip", title="Revision")
+                                                    i.fa.fa-upload
+                                                //- button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete")
+                                                //-     i.fa.fa-times
+                                            button.inz-btn.btn-xs.btn-success.pull-right History
+
+                                        li(ng-show="obj.showRevision")
+                                            a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{obj.tariffData.revisionDocId.id}}')
+                                                i.fa.fa-paperclip
+                                                |   {{obj.tariffData.revisionDocId.v}}
+                                            .command-grp
+                                                //- button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit")
+                                                //-     i.fa.fa-pencil
+                                                button.command.revise(tool-tip,data-placement="top", data-toggle="tooltip", title="Undo",ng-click="undoFileUpload($index);obj.tariffData.revisionDocId={};")
+                                                    i.fa.fa-undo
+                                                //- button.command(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete")
+                                                //-     i.fa.fa-times
+                                            a.doc-expired(href='{{$location.host()}}/api/tms/download/file?id={{obj.tariffData.presentDocId.id}}')
+                                                i.fa.fa-paperclip
+                                                |   {{obj.tariffData.presentDocId.v}}
+                                            button.inz-btn.btn-xs.btn-success.pull-right History
+
+                                        
+                                .col-xs-12.doc-block(style="margin-bottom:20px;")
+                                    .title Document Details
+                                .col-xs-12
+                                    .col-md-6.in-wiz-row(ng-repeat="row1 in obj.tariffData.fields | orderBy:'displayOrder'",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}", alt-render,hasParent='row',hasCount='2',ng-cloak='ng-cloak')
+                                        form.form-horizontal(novalidate, name="subForm")
+
+                                            label.control-label {{row1.label}}
+                                            .controls(ng-switch-when="true",ng-switch='row1.type')
+                                                input(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                                dynamic-Select(ng-switch-when='dropdown',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")              
+                                                textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                                span(ng-show="subForm.name.$error.required") *
+                                                span(ng-show="subForm.name.$error.unique") already Exists
+                                                span(ng-show="subForm.name.$error.number") only numbers
+                                                span(ng-show="subForm.name.$error.date") only date
+                                                span(ng-show="subForm.name.$error.maxlength") max length is {{row1.length}}
+                                                span(ng-show="subForm.name.$error.pattern") Can contain only text
+                                                span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+

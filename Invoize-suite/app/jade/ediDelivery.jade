@@ -1,0 +1,36 @@
+.row(ng-show="deliveryData.length==0")
+    .in-gs-block
+        .gs-sub-title(ng-hide="showGoBtn") Choose Account & Hit Search&nbsp;
+            i.fa.fa-search
+        .gs-sub-title(ng-show="showGoBtn") No Data available &nbsp;
+            span.help-inline.required(ng-show="form.companyType.$error.required") &nbsp;&nbsp;*
+.row
+    .col-xs-12
+        div.overflow-auto(style="padding:2px 2px;" )
+            //- , ng-init="getDeliveryData()"
+            table.inz-table.inz-table2(ng-show="deliveryData.length")
+                thead
+                    tr
+                        th
+                            span(tooltip="Expand/Collapse")
+                                i.fa.fa-align-justify
+                        th
+                            span
+                                input(tooltip="Select All",type='checkbox',ng-click="checkAll($event)")
+                        th(ng-repeat="val in deliveryData[0]",ng-show="$index >1")
+                            span.trim-info-large(tooltip="{{val |toHumanReadable}}") {{val | toHumanReadable}}
+                tbody(ng-repeat="row in deliveryData",ng-show="$index > 0")
+                    tr(ng-click="isRowCollapsed[$index]=!isRowCollapsed[$index]",style="cursor: pointer;")
+                        td(ng-repeat="col in row track by $index",ng-show="$index==0",ng-click="getEDIInvoiceInfo($parent.$index,row[1])")
+                            div(ng-hide="row.dataPresent")
+                                i.icon-reorder.blue(ng-show="row.doc")
+                                i.icon-reorder.orange(ng-hide="row.doc")
+                            i.icon-spinner.icon-spin.blue.icon.small(ng-show="row.dataPresent")
+                        td(ng-repeat="col in row track by $index",ng-show="$index==0")
+                            input(name="chk_{{$parent.$index}}",type='checkbox',ng-click="updateSelection($event,row[1],row[2],$parent.$index)")
+                        td(ng-repeat="col in row track by $index",ng-show="$index>1")
+                            span.trim-info-large(tooltip="{{col}}") {{col}}
+                                tr(ng-show="!isRowCollapsed")
+                                    td.inset(colspan="{{row.length}}")
+                                        include ediInvoices
+            pagination(ng-hide="deliveryData.length==0",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

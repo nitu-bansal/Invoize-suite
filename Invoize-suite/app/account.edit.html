@@ -1,0 +1,20 @@
+
+<div style="padding: 2px 0; margin-top:0px; margin-bottom: 0;" class="row in-filter">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left nowrap">
+      <div ng-show="$state.current.url=='/accountMetadata'" class="in-wiz-row pull-right">
+        <label class="control-label">Type</label>
+        <div class="controls">
+          <dynamic-Select ng-required="false" name="metadataTypeName" ng-model="MetadataName" ph="suggestion" toolTip="select metadata" ng-readonly="false" placeholder="select metadata" change="getMetadataType(MetadataName)"></dynamic-Select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-show="$state.current.url=='/account'">
+  <div id="accountHT" ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,fixedColumnsLeft:2,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" height="hh" width="hw" datarows="account in accounts" afterRender="afterRender()" manualColumnResize="true" columns="columns" minsparerows="1" onBeforeChange="celChange" ng-init="getTemplate()"></div>
+  <pagination total-items="totalItems" items-per-page="pageLimit" max-size="paginationSize" rotate="true" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+</div>
+<div ui-view="rulesContents"></div>
+<div ui-view="invoiceDeliveryRulesContents"></div>
+<div ui-view="rulesContentsUploadDoc"></div>

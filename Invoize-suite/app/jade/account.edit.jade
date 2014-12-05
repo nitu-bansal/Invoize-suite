@@ -1,0 +1,15 @@
+.row.in-filter(style="padding: 2px 0; margin-top:0px; margin-bottom: 0;")
+    .col-xs-12.in-add
+        .pull-left.nowrap
+            .in-wiz-row.pull-right(ng-show="$state.current.url=='/accountMetadata'")
+                label.control-label Type
+                .controls
+                    dynamic-Select(ng-required="false",name="metadataTypeName",ng-model="MetadataName",ph="suggestion",toolTip="select metadata",ng-readonly="false",placeholder="select metadata",change="getMetadataType(MetadataName)")
+div(ng-show="$state.current.url=='/account'")
+    div#accountHT(ui-handsontable='{currentRowClassName: "currentRow",fixedColumnsLeft:2,currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",height='hh',width='hw',datarows='account in accounts',afterRender='',manualColumnResize='true',columns='columns',minsparerows='1',onBeforeChange='celChange',afterRender='afterRender()',ng-init="getTemplate()")
+    pagination(total-items="totalItems",items-per-page="pageLimit",max-size="paginationSize",rotate="true", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+div(ui-view="rulesContents")
+div(ui-view="invoiceDeliveryRulesContents")
+div(ui-view="rulesContentsUploadDoc" )
+
+

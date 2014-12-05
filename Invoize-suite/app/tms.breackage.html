@@ -1,0 +1,116 @@
+
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Breakages Configuration &nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="pull-left">
+              <label class="label-multi blue">Breakages :</label>
+              <multiselect name="breakages" multiple="true" ng-model="breakage.break" modelIdentity="key" options="break.label for break in breakage.breaks"></multiselect>
+              <!--span.label-multi.red(ng-show="form.breakages.$error.required") *-->
+              <!--span.label-multi.green.validTick(ng-show="form.breakages.$valid") &#10004;-->
+              <!--select.input-xxxlarge(ui-select2,multiple,ng-model="breakage.break",ng-change="categoryChange(break.category)",ng-options="break.label for break in breakage.breaks")-->
+            </div>
+            <div ng-form="consfrm" ng-show="breakage.break" class="pull-right">
+              <label class="label-multi blue">Consider :</label>
+              <multiselect name="consider" required="required" ng-model="breakage.consider" modelIdentity="key" options="break.label for break in breakage.break"></multiselect><span ng-show="consfrm.consider.$error.required" class="label-multi red">*</span><span ng-show="consfrm.consider.$valid" class="label-multi green validTick">&#10004;
+                <!--select.input-large(ui-select2,required,ng-model="breakage.consider",ng-options="break.label for break in breakage.break")-->
+                <!--    option(value="") --Please Select---->
+                <!--span.red(ng-show="breakage.selected==null") &nbsp; *--></span>
+            </div>
+            <!--button.inz-btn.btn-sm.btn-default() Cancel-->
+            <!--button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="create(systemData)") Save Document-->
+          </div>
+        </div>
+        <!--.row-->
+        <!--    .col-xs-12(style="padding-top: 50px;")-->
+        <div ng-repeat="break in breakage.break" class="row">
+          <div class="col-xs-12 doc-block">
+            <div class="title"><span><i class="fa fa-tasks blue"></i> {{break.label}}<span>
+                  <input type="checkbox" ng-model="break.condition" ng-if="$index!=0" class="ace ace-switch ace-switch-3"/><span class="lbl"></span></span><i ng-if="break.category==null" ng-click="break.fields=[{&quot;from&quot;:0,&quot;to&quot;:null,&quot;method&quot;:&quot;&quot;}]" tool-tip="tool-tip" tooltip="Reset" data-placement="top" data-toggle="tooltip" style="cursor: pointer;" class="fa fa-refresh pull-right icon-font"></i><span ng-if="break.category"><span>&nbsp; {{break.category.$label}}</span><span class="non-valid form-section"> &nbsp;
+                    <select ui-select2="ui-select2" required="required" multiple="multiple" ng-model="break.category.value" ng-change="categoryChange(break.category)" ng-options="f.label for f in break.category.$fields" class="input-large">
+                      <option value="">--Please Select--</option>
+                    </select></span></span>
+                <!--span.red(ng-show="break.category.value==null || break.category.value.length==0") &nbsp; *--></span></div>
+          </div>
+          <div ng-if="break.category==null" class="col-xs-12">
+            <table class="inz-table inz-table1">
+              <colgroup>
+                <div class="col-sm-4"></div>
+              </colgroup>
+              <thead>
+                <th> From</th>
+                <th> To</th>
+                <th> Calculation Code</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="field in break.fields">
+                  <td>
+                    <input readonly="readonly" ng-model="field.from" type="text"/>
+                  </td>
+                  <td>
+                    <input ng-model="field.to" ng-blur="AddBreakage(break.fields,$index)" placeholder="Above" type="text"/>
+                  </td>
+                  <td>
+                    <!--span.non-valid.form-section()-->
+                    <div ng-form="ccCodeSForm"><span ng-if="break.label==breakage.consider.label">
+                        <multiselect name="ccCode" required="required" ng-model="field.method" modelIdentity="n" options="method.n for method in breakage.methods"></multiselect><span ng-show="ccCodeSForm.ccCode.$error.required" class="label-multi red">*</span><span ng-show="ccCodeSForm.ccCode.$valid" class="label-multi green validTick">&#10004;</span></span>
+                      <!--select(ui-select2,required,ng-model="field.method",ng-init="field.method=null")-->
+                      <!--    option(value="") --Please Select---->
+                      <!--    option(value="{{method.id}}",ng-repeat="method in breakage.methods") {{method.n}}-->
+                      <!--span.red(ng-hide="field.method") *-->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div ng-if="break.category" ng-repeat="field in break.category.value" class="row">
+            <div class="col-xs-12 doc-block">
+              <div class="title"><span><i class="fa fa-clock-o blue"></i> {{field.label}}<i ng-click="field.fields=[{&quot;from&quot;:0,&quot;to&quot;:null,&quot;method&quot;:&quot;&quot;}]" tool-tip="tool-tip" tooltip="Reset" data-placement="top" data-toggle="tooltip" style="cursor: pointer;" class="fa fa-refresh pull-right icon-font"></i></span></div>
+            </div>
+            <div class="col-xs-12">
+              <table class="inz-table inz-table1">
+                <colgroup>
+                  <div class="col-sm-4"></div>
+                </colgroup>
+                <thead>
+                  <th> From</th>
+                  <th> To</th>
+                  <th> Calculation Codes</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="f in field.fields">
+                    <td>
+                      <input readonly="readonly" ng-model="f.from" type="text"/>
+                    </td>
+                    <td>
+                      <input ng-model="f.to" ng-blur="AddBreakage(field.fields,$index)" placeholder="Above" type="text"/>
+                    </td>
+                    <td><span ng-if="break.label==breakage.consider.label" class="non-valid form-section">
+                        <select ui-select2="ui-select2" required="required" ng-model="f.method">
+                          <option value="{{method.id}}" ng-repeat="method in breakage.methods">{{method.n}}</option>
+                          <option value="">--Please Select--</option>
+                        </select>
+                        <!--span.red(ng-hide="f.method") &nbsp; *--></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <button ng-click="close()" class="inz-btn btn-sm btn-default pull-right">Cancel</button>
+          <button ng-class="{'disabled': form.$invalid}" ng-click="updateBreakages()" ng-disabled="form.$invalid" class="inz-btn btn-sm btn-success pull-right">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

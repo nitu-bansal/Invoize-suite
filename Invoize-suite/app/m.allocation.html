@@ -1,0 +1,46 @@
+
+<div ng-init="getData(currentPage);" class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Shipment Allocation<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div style="max-height:400px;overflow:auto;" class="modal-body">
+        <div style="clear:both;height:10px;"></div>
+        <div class="col-sm-12">
+          <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <dynamic-single-select name="allocatedUsers" required="required" ng-model="data.user" ph="reportingUsers" toolTip="Choose Team Member" placeholder="Choose Team Member"></dynamic-single-select><span ng-show="form.allocatedUsers.$error.required" class="red">*</span><span ng-show="form.allocatedUsers.$valid" class="green validTick">&#10004;</span>
+          </div><span>Account# : {{data.items['Account Number']}}, Account : {{data.items['Account Name']}}, Allocated To : {{data.items['User ID']}}</span>
+        </div>
+        <div style="clear:both;height:10px;"></div>
+        <div ng-hide="dataList.length" class="col-sm-12"><span ng-hide="dataList.length" class="trim-info-large">No Data Found</span></div>
+        <div ng-show="dataList.length" class="col-sm-12"><span>You have selected {{data.globalSelect === "Consider all"?data.selectedDocs.length:data.items.Count}} record(s) out of {{data.items.Count}}<a ng-click="selectUnselectAll()" style="cursor: pointer;" ng-show="data.items.Count&gt;pageLimit">&nbsp; {{data.globalSelect}}</a></span>
+          <table class="inz-table inz-table1 table-bordered">
+            <thead>
+              <th><span>
+                  <input tooltip="Select All" type="checkbox" ng-model="data.selectAll" name="chkAll" ng-change="updateSelection()"/></span></th>
+              <th ng-repeat="val in dataList[0]" ng-hide="$first"><span title="{{val}}" class="trim-info-large">{{val}}</span></th>
+            </thead>
+            <tbody ng-repeat="row in dataList track by $index" ng-hide="$first">
+              <tr>
+                <td>
+                  <input type="checkbox" ng-checked="data.selectAll" ng-click="updateSelection($event.target,row[0])"/>
+                </td>
+                <td ng-repeat="col in row track by $index" ng-hide="$first"><span title="{{col}}" class="trim-info-large">{{col}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination ng-show="dataList.length" total-items="data.items.Count" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+        </div>
+      </div>
+      <div style="clear:both;height:5px;"></div>
+      <div class="modal-footer">
+        <div class="col-sm-12">
+          <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+          <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" type="submit" ng-click="allocateData()" ng-show="dataList.length&gt;1" class="inz-btn btn-sm btn-success">Allocate</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+.page-header(style="margin: 60px 0 12px;")   
+        .row
+                .col-xs-12
+
+                        //- .col-md-offset-1
+                        //-         br
+                        //-         br
+                                
+                                
+
+                        form.form-horizontal(novalidate, name="form")
+
+                                .row-fluid
+                                        label Filter
+                                        select(ui-select2, ng-model="assignmentTypes", data-placeholder="Please select...", style="width:200px")
+                                                option(value="N") Select
+                                                option(value="R") Roles
+                                                option(value="P") Permissions
+                                                option(value="G") Groups
+                                        {{searchRoleValue}}
+                                        div(ng-show="assignmentTypes=='R'")
+                                                input.input-sm.search-query(ui-select2="searchRole",name="searchRole", type="text", ng-model="searchRoleValue", placeholder="Search By Roles", style="width:200px;", ui-keypress="{enter: 'searchUserByRole(searchRoleValue)'}" )
+                                                //- button.btn.btn-primary.btn-xs(ng-click="searchUserByRole(searchRoleValue)",type="submit", ng-disabled="searchRoleValue.length<1")&nbsp&nbsp&nbsp&nbsp
+                                                button.btn.btn-primary.btn-xs(ng-click="loadPeople()",type="submit", ng-disabled="searchRoleValue.length<1")&nbsp&nbsp&nbsp&nbsp
+                                                        i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp
+
+                                        div(ng-show="assignmentTypes=='P'")                                        
+                                                input.input-sm.search-query(ui-select2="searchPermission", name="searchPermission", ng-model="searchPerValue", placeholder="Search By Permission", style="width:200px;", ui-keypress="{enter: 'searchUserByPer(searchPerValue)'}")
+                                                //- button.btn.btn-primary.btn-xs(ng-click="searchUserByPer(searchPerValue)", type="submit", ng-disabled="searchPerValue.length<1")&nbsp&nbsp&nbsp&nbsp
+                                                button.btn.btn-primary.btn-xs(ng-click="loadPeople()",type="submit", ng-disabled="searchPerValue.length<1")&nbsp&nbsp&nbsp&nbsp
+                                                        i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp
+                                        div(ng-show="assignmentTypes=='G'")
+                                                input.input-sm.search-query(ui-select2="searchGrp", name="searchGrp", ng-model="searchGrpValue", placeholder="Search By Groups", style="width:200px;", ui-keypress="{enter: 'searchUserByGrp(searchGrpValue)'}")
+                                                //- button.btn.btn-primary.btn-xs(ng-click="searchUserByGrp(searchGrpValue)",type="submit", ng-disabled="searchGrpValue.length<1")&nbsp&nbsp&nbsp&nbsp
+                                                button.btn.btn-primary.btn-xs(ng-click="loadPeople()",type="submit", ng-disabled="searchGrpValue.length<1")&nbsp&nbsp&nbsp&nbsp
+                                                        i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp
+                                .fieldset
+                                        //- br
+                                        //- br
+
+                                        //- p
+                                        //-         | Click 
+                                        //-         a(ng-click='loadPeople()') here 
+                                        //-         | to load data
+                                        {{selected}}
+                                        
+                                        table.table.table-bordered.table-striped.table-hover
+                                                tr
+                                                        //- th
+                                                        //-     input#selectall1.selectAll(type='checkbox')
+                                                        //-     | Admin
+                                                        th
+                                                                input(type='checkbox', ng-click='selectAll($event)', ng-checked='isSelectedAll()')
+                                                            //- input(type='checkbox', ng-model='master', ng-change="onMasterChange(master)")
+
+                                                        th User
+                                                        th Id
+                                                        th User Name
+                                                        th Role
+                                                        th Permission
+                                                        th Group
+                                                //- tr(ng-repeat='person in People')
+                                                //-         td
+                                                //-             input(type='checkbox', ng-model='person.checked', ng-checked="master")
+                                                //-         td
+                                                //-             i.icon-user
+                                                //-         td {{person.id}}
+                                                //-         td {{person.firstName}}
+                                                //-         td {{person.lastName}}
+                                                //-         td
+                                                //-             button.btn.btn-primary.btn-sm(ng-click="deleteRow($index)") Delete
+                                                        
+                                                tr(ng-repeat='user in UsersDummy', ng-class='getSelectedClass(user)')
+                                                        td
+                                                            input(type='checkbox', name='selected', ng-checked='isSelected(user)', ng-click='updateSelection($event, user)')
+                                                            //- input(type='checkbox', ng-model='user.checked', ng-checked="master")
+                                                            //-{{person.checked}}
+                                                        td
+                                                            i.icon-user
+                                                        td {{user.id}}
+                                                        td {{user.Name}}
+                                                        td  
+                                                                label(ng-repeat='r in user.Role')
+                                                                        {{r.Name}},
+                                                        td  
+                                                                label(ng-repeat='p in user.Permission')
+                                                                        {{p.Name}},
+                                                        td  
+                                                                label(ng-repeat='g in user.Group')
+                                                                        {{g.Name}},
+                                                        td
+                                                                //- button.btn.btn-primary.btn-sm(ng-click="deleteRow($index)") Delete
+                                                                a.btn.btn-sm.btn-primary(style="cursor: pointer;", bs-tooltip="tooltip.delete"  , ng-click="confirmDeleteRecord()")
+                                                                        i.icon-trash
+
+                                div(ng-show="selected.length")
+                                        .row
+                                                .btn-group.pull-right
+                                                        a.btn.btn-primary.btn-margin.btn-sm(ng-hide="userCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                                i.icon-mail-reply.icon-large
+                                                        button.btn.btn-primary.btn-sm(permission="createUser.*.*", ng-hide="userCreateLoader", ng-disabled="form.$invalid ", type="submit", ng-click="create(user)",style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                                i.icon-ok.icon-large
+                                                        i.icon-spinner.icon-spin.icon-2x(ng-show="userCreateLoader")
+                                        tabset
+                                                tab.tab(heading="Assign Roles",style="overflow:hidden")
+                                                        ng-form(name="roleForm")
+                                                                .form-group
+                                                                        label.col-sm-3.control-label.no-padding-right Assign Roles
+                                                                        .col-sm-9 
+                                                                                input.input-xxlarge(ui-select2="roleBar", name="roleBar", ng-model="user.role", ng-change="showDialog(user.role)",  select-validate, required)
+                                                                                .help-inline.required(ng-show="roleForm.roleBar.$error.required") *
+                                                                                label.help-inline.required.validTick(ng-show="roleForm.roleBar.$valid") &#10004;
+
+                                                tab.tab(heading="Assign Permissions",style="overflow:hidden")
+                                                        .form-group
+                                                                a.btn.btn-success(ng-click="addPermissions()")
+                                                                        i.icon-plus.icon-white  
+                                                                        |  Assign Permissions
+                                                        .form-group                                                        
+                                                                .col-md-4 Permission
+                                                                .col-md-4 For
+                                                                .col-md-4 On
+                                                                ng-form(name="permissionForm", ng-repeat="row in user.permission")
+                                                                        .col-md-4
+                                                                                input.col-md-10(ui-select2="permissionBar", name="permissionBar", ng-model="user.permission[$index]['permission']",  select-validate, required)      
+                                                                                .help-inline.required(ng-show="permissionForm.permissionBar.$error.required") *
+                                                                                label.help-inline.required.validTick(ng-show="permissionForm.permissionBar.$valid", class="validTick") &#10004;
+                                                                        .col-md-4 
+                                                                                select(ui-select2, name="forBar", ng-change="permissionforChanged($index)", ng-model="user.permission[$index]['for']", data-placeholder="Please select...", style="width:200px",  select-validate, required)
+                                                                                        option(value="")
+                                                                                        option(ng-repeat="for in permissionforList", value="{{for.n}}") {{for.v}}
+                                                                                .help-inline.required(ng-show="permissionForm.forBar.$error.required") *
+                                                                        .col-md-4                                                                         
+                                                                                input.col-md-10(ui-select2="onBar", name="onBar",  ui-event="{ open : 'setfor($index)'}" ,ng-model="user.permission[$index]['on']",  select-validate, required)
+                                                                                .help-inline.required(ng-show="permissionForm.onBar.$error.required") *
+                                                                                label.help-inline.required.validTick(ng-show="permissionForm.onBar.$valid") &#10004;
+                                                                                .help-inline
+                                                                                        a.close(ng-hide="user.permission.length == 1", ng-click="removePermissions($index)") &times;
+                                                                        br
+
+
+                                                tab.tab(heading="Assign Groups")
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Assign Groups
+                                                                .col-sm-9 
+                                                                        input.input-xxlarge(ui-select2="groupBar", name="groupBar", ng-model="user.group")      
+
+
+
+
+
+
+

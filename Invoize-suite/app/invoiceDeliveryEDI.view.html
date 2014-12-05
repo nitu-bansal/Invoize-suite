@@ -1,0 +1,20 @@
+
+<div style="padding: 5px 0; margin-top:-15px;" ng-init="getSystemAccountMetadataList('')" class="row in-wiz-ttl in-filter"><i ng-show="metadataLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+<div class="row">
+  <div ng-repeat="listItem in metadataList" ng-form="subForm" style="margin-bottom:30px;" class="col-sm-6 col-md-6 col-lg-4 inz-blk">
+    <div class="in-view-block">
+      <div class="title"><i class="fa fa-tags small">&nbsp;</i>{{listItem.value}}</div>
+      <div ng-repeat="(key,value) in listItem.fields" ng-show="$index&lt;3" class="line">
+        <div class="caption">{{key}}</div>
+        <div class="data">{{value | selectFormat}}</div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="setMetadata(listItem)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        .fieldset
+                                .row
+                                        .btn-group.pull-right
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="userCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-primary.btn-sm(permission="createUser.*.*", ng-hide="userCreateLoader", ng-disabled="form.$invalid ", type="submit", ng-click="create(user)",style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                        i.icon-ok.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="userCreateLoader")
+                                tabset
+                                        tab.tab(heading="Assign Roles",style="overflow:hidden")
+                                                ng-form(name="roleForm")
+                                                        .form-group
+                                                                label.col-sm-3.control-label.no-padding-right Assign Roles
+                                                                .col-sm-9 
+                                                                        input.input-xxlarge(ui-select2="roleBar", name="roleBar", ng-model="user.role", ng-change="showDialog(user.role)",  select-validate, required)
+                                                                        .help-inline.required(ng-show="roleForm.roleBar.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="roleForm.roleBar.$valid") &#10004;
+
+                                        tab.tab(heading="Assign Permissions",style="overflow:hidden")
+                                                .form-group
+                                                        a.btn.btn-success(ng-click="addPermissions()")
+                                                                i.icon-plus.icon-white  
+                                                                |  Assign Permissions
+                                                .form-group                                                        
+                                                        .col-md-4 Permission
+                                                        .col-md-4 For
+                                                        .col-md-4 On
+                                                        ng-form(name="permissionForm", ng-repeat="row in user.permission")
+                                                                .col-md-4
+                                                                        input.col-md-10(ui-select2="permissionBar", name="permissionBar", ng-model="user.permission[$index]['permission']",  select-validate, required)      
+                                                                        .help-inline.required(ng-show="permissionForm.permissionBar.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="permissionForm.permissionBar.$valid", class="validTick") &#10004;
+                                                                .col-md-4 
+                                                                        select(ui-select2, name="forBar", ng-change="permissionforChanged($index)", ng-model="user.permission[$index]['for']", data-placeholder="Please select...", style="width:200px",  select-validate, required)
+                                                                                option(value="")
+                                                                                option(ng-repeat="for in permissionforList", value="{{for.n}}") {{for.v}}
+                                                                        .help-inline.required(ng-show="permissionForm.forBar.$error.required") *
+                                                                .col-md-4                                                                         
+                                                                        input.col-md-10(ui-select2="onBar", name="onBar",  ui-event="{ open : 'setfor($index)'}" ,ng-model="user.permission[$index]['on']",  select-validate, required)
+                                                                        .help-inline.required(ng-show="permissionForm.onBar.$error.required") *
+                                                                        label.help-inline.required.validTick(ng-show="permissionForm.onBar.$valid") &#10004;
+                                                                        .help-inline
+                                                                                a.close(ng-hide="user.permission.length == 1", ng-click="removePermissions($index)") &times;
+                                                                br
+
+
+                                        tab.tab(heading="Assign Groups")
+                                                .form-group
+                                                        label.col-sm-3.control-label.no-padding-right Assign Groups
+                                                        .col-sm-9 
+                                                                input.input-xxlarge(ui-select2="groupBar", name="groupBar", ng-model="user.group")      
+
+
+
+
+
+
+

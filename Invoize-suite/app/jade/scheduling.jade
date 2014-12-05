@@ -1,0 +1,44 @@
+.col-xs-12.col-md-8.col-sm-7
+    div(style="margin-top:28px")
+        label Start date &nbsp;
+        //- input.inz-txt.w150(datepicker-popup="dd-MMMM-yyyy",datepicker-options="dateOptions",type="text",ng-model="data.schedulingStartDate",ng-required="true",close-text="Close",placeholder="Start On Date")
+        input(datepicker-popup="dd-MMMM-yyyy",datepicker-options="dateOptions",name="SchedulingStartDate",type="text",ng-model="data.scheduling.schedulingStartDate",close-text="Close",placeholder="Start On Date",ng-required="false")
+
+.col-xs-12.col-md-4.col-sm-5
+    .inz-time-picker(ng-model='data.scheduling.schedulingStartTime',  style='display:inline-block;',ng-required="false")
+        timepicker(hour-step='hstep', minute-step='mstep', show-meridian='ismeridianStart')
+.clearfix
+.col-xs-12.col-md-6.col-sm-7
+    label End On &nbsp;
+    select.w150(ui-select2='ui-select2',  data-placeholder='Select',ng-model='data.scheduling.schedulingEndOn',ng-required="false")
+        option(value="{{key}}",ng-repeat="(key,val) in endOnOption") {{val}}
+
+        //- dynamic-Select(name="name",ng-model="data.schedulingOn",ph="modules",placeholder="Select")
+.col-xs-12.col-md-6.col-sm-5
+    label(ng-show="data.scheduling.schedulingEndOn=='ondate'")
+        input.input-medium(datepicker-popup="dd-MMMM-yyyy",datepicker-options="dateOptions",type="text",ng-model="data.scheduling.schedulingEndOnDate",ng-required="true",close-text="Close",placeholder="End On Date",ng-required="false")
+.clearfix
+.col-xs-12.col-md-8.col-sm-7
+    div(style="margin-top:28px")
+        select(ui-select2='ui-select2', data-placeholder='Select',ng-model='data.scheduling.schedulingOn',ng-required="false")
+            option(value="{{key}}",ng-repeat="(key,val) in schedulingOnOption") {{val}}
+        //-dynamic-Select(name="name",ng-model="data.schedulingOn",ph="modules",placeholder="Select")
+        label &nbsp; at &nbsp;
+        select(ui-select2='ui-select2', ng-model='data.scheduling.schedulingOption',ng-required="false")
+            option(value="{{key}}",ng-repeat="(key,val) in schedulingOption") {{val}}
+        //- dynamic-Select(name="name",ng-model="data.schedulingOption",ph="modules",placeholder="Select")
+.col-xs-12.col-md-4.col-sm-5
+    div(ng-show="data.scheduling.schedulingOption=='interval'")
+        .inz-time-picker(ng-model='data.scheduling.schedulingIntervalTime', style='display:inline-block;',ng-required="false")
+            timepicker(hour-step='hstep', minute-step='mstep', show-meridian='ismeridianInterval')
+        span.hrs(style="vertical-align:middle;") hrs
+            // input.inz-txt.w60(type="text", placeholder="Hours")
+.clearfix
+.col-xs-12.col-sm-12.col-md-12
+    label(ng-show="data.scheduling.schedulingOn=='weekly'")
+        dynamic-Select(multiselect,name="name",ng-model="data.scheduling.schedulingDayList",ph="metadata_weekDay",placeholder="Select",ng-required="false")
+
+
+    label(ng-show="data.scheduling.schedulingOn=='monthly'")
+        dynamic-Select(multiselect,name="name",ng-model="data.scheduling.schedulingMonthList",ph="metadata_monthDays",placeholder="Select",ng-required="false")
+

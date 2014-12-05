@@ -1,0 +1,18 @@
+
+<form name="form" novalidate="novalidate"></form>
+<div set-width="set-width" ng-init="getMetadataType(false)" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left in-wiz-info">Metadata Type :<span class="red">&nbsp;  {{metadataType.Name}}</span></div>
+    <div class="pull-right">
+      <input type="text" ng-model="querySearch" placeholder="Type here..." class="input-search-new"/>
+      <button ng-click="gridFilter(querySearch)" class="input-search-new"><i class="fa fa-search"></i></button><i ng-show="metadataLoader" class="icon-spinner icon-spin icon-2x"></i><a ng-hide="metadataLoader" ng-href="/#/organizationSetup/metadata/view" class="inz-btn btn-sm btn-default">Back</a>
+      <button ng-click="addKeys($event.currentTarget)" class="inz-btn btn-sm btn-default">Add Keys</button>
+      <button ng-hide="metadataLoader" ng-disabled="form.$invalid" type="submit" ng-click="validateFields()" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div id="keyHT" ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-show="isKeys" height="400" onBeforeChange="beforeKeyChange" datarows="key in keys" columns="keyColumns" minsparerows="1" contextMenu="false"></div>
+  <div id="fch" ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-hide="isKeys" height="hh_metadataType" onchange="afterChange" width="hw_metadataType" datarows="field in metadataType.fields" columns="templateColumns" manualColumnResize="true" minsparerows="1" contextMenu="false" onBeforeChange="celChangeMetadataType" afterRender="afterRender_metadataType()"></div>
+</div>

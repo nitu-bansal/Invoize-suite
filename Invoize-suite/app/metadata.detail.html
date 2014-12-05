@@ -1,0 +1,29 @@
+
+<div class="page-header">   </div>
+<div class="row">
+  <div class="col-xs-12">
+    <form novalidate="novalidate" name="form" class="form-horizontal">
+      <fieldset>                       
+        <div class="row"></div>
+        <legend>Metadata       
+          <div class="btn-group pull-right"> <a ng-hide="metadataDetailLoader" ng-click="backToListMetadata()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin btn-sm"><i class="icon-mail-reply icon-large"></i></a><a permission="editMetadata.*.*" ng-hide="userDetailLoader" bs-tooltip="tooltip.edit" href="#/metadata/{{$stateParams.metadataType}}/edit/{{$stateParams.metadataId}}" class="btn btn-primary btn-margin btn-sm"><i class="icon-pencil icon-large"></i></a><a permission="deleteMetadata.*.*" ng-hide="metadataDetailLoader" ng-click="confirmDeleteMetadata()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-primary btn-margin btn-sm"><i class="icon-trash icon-large"></i></a><i ng-show="metadataDetailLoader" class="icon-spinner icon-spin icon-2x">                                       </i></div>
+        </legend>
+        <div class="form-group">
+          <label class="col-sm-3 control-label no-padding-right">Value</label>
+          <div class="col-sm-9">                                       
+            <label>: {{selectedMetadata.value}}    </label>
+          </div>
+        </div>
+        <div ng-repeat="row in selectedMetadataFields" ng-switch="row.t" class="form-group">
+          <label class="col-sm-3 control-label no-padding-right">{{row.v}}</label>
+          <div ng-switch-when="date" class="col-sm-9">
+            <label>: {{selectedMetadata[row.v] | date:'mediumDate'}}</label>
+          </div>
+          <div ng-switch-default="ng-switch-default" class="col-sm-9">
+            <label>: {{selectedMetadata[row.v]}}</label>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

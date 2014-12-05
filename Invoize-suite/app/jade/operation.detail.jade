@@ -1,0 +1,28 @@
+.row.in-wiz-ttl.fix-scroll(ng-show="$state.current.name.split('.')[0]=='wizard'")
+        .col-md-9.col-sm-8
+                .in-wiz-info You can add / configure / edit the operations that you perform.
+                        i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+        .col-md-3.col-sm-4.in-add
+                a(ng-click='editTemplate();',href="javascript:void(0)")
+                        span.in-add-sign +
+                        span.in-add-txt Edit Profile
+
+.row.in-wiz-ttl.in-fix-scroll(style="background:#eee;",ng-hide="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12.in-add
+        .pull-left.in-wiz-info Edit Operation
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+        a(ng-click='editTemplate();',href="javascript:void(0)")
+                        span.in-add-sign +
+                        span.in-add-txt Edit Profile
+        a.inz-btn.btn-sm.btn-default(ng-click="redirectTo('/operation/view')") Cancel
+        //- button.inz-btn.btn-sm.btn-default() Cancel
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-click="saveOperations()") Save Changes
+
+
+div(ui-handsontable='{currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",ng-show="!templateLoader",height='hh',width='hw',datarows='operation in operations',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChange',ng-init="getTemplate()")
+pagination(total-items="totalItems",items-per-page="pageLimit", page="currentPage",ng-show="!templateLoader", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+.in-wiz-footer
+    button.inz-btn.btn-sm.btn-danger(ng-click="nextStep()") Skip This Step   
+        i.fa.fa-long-arrow-right
+    a.inz-btn.btn-sm.btn-default(href="#/wizard/operation/view") Cancel
+    button.inz-btn.btn-sm.btn-success(type="submit",ng-click="saveOperations()") Save Changes

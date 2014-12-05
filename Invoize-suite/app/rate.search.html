@@ -1,0 +1,36 @@
+
+<div class="col-sm-12">
+  <h5 ng-show="ratesAvailable">Couldn't find rates for this search <i class="icon-frown">   </i></h5>
+  <div id="FixedRate" when-scrolled="loadMore($stateParams.accountId,$stateParams.templateId)">
+    <div style="opacity: 1;" class="widget-box">
+      <div class="widget-header header-color-green">
+        <h5 class="bigger lighter"><i class="icon-table"></i>Available Rates                             </h5>
+      </div>
+      <div class="widget-body">
+        <div class="widget-main no-padding">               
+          <table ng-show="list.length" class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th></th>
+                <th ng-repeat="charge in list[0]" ng-show="!$first"> <span tooltip="{{charge |toHumanReadable}}" class="trim-info-large">{{charge | toHumanReadable}}</span></th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="data in list" ng-show="!$first">
+              <tr ng-click="isRowCollapsed=!isRowCollapsed" style="cursor: pointer;">
+                <td><i ng-show="isRowCollapsed" class="icon-chevron-down green">                                          </i><i ng-hide="isRowCollapsed" class="icon-chevron-up green">   </i></td>
+                <td ng-repeat="d in data" ng-show="!$first"><span tooltip="{{d |toHumanReadable}}" class="trim-info-large">{{d |toHumanReadable}}</span></td>
+              </tr>
+              <tr ng-hide="isRowCollapsed">
+                <td colspan="{{data.length}}" class="alert-block alert-success">                                                                                                      
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="offset5"><i ng-show="loadingRates" class="icon-spinner icon-spin icon-2x"></i></div>
+  </div>
+</div>

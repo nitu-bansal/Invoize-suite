@@ -1,0 +1,39 @@
+
+<div class="page-header">   </div>
+<div class="row">
+  <div class="col-xs-12">
+    <form novalidate="novalidate" name="form" class="form-horizontal">
+      <div class="fieldset">
+        <legend>Workflow
+          <div class="btn-group pull-right"><a ng-hide="workflowUpdateLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-primary btn-margin btn-sm"><i class="icon-mail-reply icon-large"></i></a>
+            <button permission="createWorkflow.*.*" ng-hide="workflowUpdateLoader" ng-disabled="form.$invalid" type="submit" ng-click="create(workflow)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-primary btn-sm"><i class="icon-ok icon-large"></i></button><i ng-show="workflowUpdateLoader" class="icon-spinner icon-spin icon-2x"></i>
+          </div>
+        </legend>
+        <div class="form-group">
+          <label class="col-sm-3 control-label no-padding-right">Name</label>
+          <div class="col-sm-9">
+            <input type="text" name="workflowName" duplicate="workflow" ng-model="workflow.name" placeholder="Workflow Name" required="required"/>
+            <label ng-show="form.workflowName.$error.required" class="help-inline required">*</label>
+            <label ng-show="form.workflowName.$error.duplicate" class="help-inline required">Workflow exists.</label>
+            <label ng-show="form.workflowName.$valid" class="help-inline required validTick">&#10004;</label>
+          </div>
+        </div>
+        <h5 class="header smaller lighter gray">
+                                           
+          Definition
+        </h5>
+        <ng-form name="WorkflowDefinitionsForm" ng-repeat="row in workflowDefinitions">
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right"><span class="label label-large label-info arrowed-in">Level {{$index + 1}}</span><br/><span ng-show="workflow.definition[$index].length &gt; 1" id="workflowLevel{{$index}}">
+                <div style="cursor: pointer;" onclick="toggle(this,{{$index}})" count="*" class="label label-success help-inline">All</div>
+                <div ng-repeat="r in workflow.definition[$index] | limitTo:workflow.definition[$index].length-1" style="cursor: pointer;display: none;" onclick="toggle(this,{{$parent.$index}})" count="{{$index+1}}" class="label label-success help-inline">Any {{$index + 1}}</div></span></label>
+            <input ui-select2="userGroupBar" name="workflowDefinition" ng-click="workflowDefinitionsCallback($index)" ng-model="workflow.definition[$index]" id="workflowId{{$index+1}}" select-validate="select-validate" required="required" class="input-xxlarge"/>
+            <div class="help-inline"><a ng-hide="workflowDefinitions.length == 1" ng-click="removeFromWorkflowDefinitions($index)" class="close">&times;</a></div>
+            <label ng-show="WorkflowDefinitionsForm.workflowDefinition.$error.selectvalidate || WorkflowDefinitionsForm.workflowDefinition.$error.required" class="help-inline required">*</label>
+            <label ng-show="WorkflowDefinitionsForm.$valid" class="help-inline required validTick">&#10004;</label>
+          </div>
+        </ng-form>
+      </div>
+    </form>
+  </div>
+</div>

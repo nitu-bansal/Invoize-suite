@@ -1,0 +1,18 @@
+include top_row_gettingstarted
+link(rel="stylesheet", type="text/css", href="/styles/org_setup.css")
+.container()
+        .row
+                .in-gs-block
+                        form(name="form",novalidate)
+                                h1 Welcome to invoize
+                                .gs-sub-title Which type of organization are you?&nbsp;
+                                        select.in-txt.in-s2(ui-select2, name="companyType",required, ng-model="companyType", data-placeholder="Please select...", style="width:200px")
+                                                option(value="")
+                                                option(value="Multiple")  Multiple Companies
+                                                option(value="Single")  Single Company
+                                        //- div(style="padding:8px 0px")
+                                        //- span.validTick(ng-show="form.companyType.$valid") &#10004;
+                                        span.help-inline.required(ng-show="form.companyType.$error.required")&nbsp;&nbsp;*
+                                div(style="padding:8px 0px")
+                                        button.in-btn(ng-disabled="form.$invalid",ng-class="{'disabled': form.$invalid}",ng-click="saveCompanyType(companyType)") Get Started
+                                                i.fa.fa-long-arrow-right

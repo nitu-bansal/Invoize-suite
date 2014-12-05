@@ -1,0 +1,11 @@
+.modal-dialog(style="width:600px")
+        .modal-content
+                .modal-header
+                        button.close(aria-hidden='true', data-dismiss='modal', type='button',ng-click="close()")     &times;                            
+                        h4.modal-title Select single account
+                .modal-body
+                        .modal-msg
+                                | {{item.msg?item.msg:'Are you sure?'}}
+                .modal-footer                       
+                        button.inz-btn.btn-sm.btn-default(ng-click="close()") OK
+                        

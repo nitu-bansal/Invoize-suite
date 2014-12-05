@@ -1,0 +1,51 @@
+.col-md-9
+        form.form-horizontal(novalidate, name="form3")                
+                .row                        
+                         h4.header.smaller.lighter New Tariff
+                                .pull-right.btn-group
+                                        a.btn.btn-sm.btn-primary(onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply
+                                        button.btn.btn-sm.btn-primary(ng-class="{'disabled': form3.$invalid}",ng-disabled="form3.$invalid", type="submit", ng-click="create(tariff)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok
+                                        //-i.icon-spinner.icon-spin.icon-2x(ng-show="tariffCreateLoader")   
+                div.in-wiz-row
+                    label.control-label Effective Date
+                    .controls
+                            //-input(type="text", name="effectiveDate", ng-model="tariff.effectiveDate", placeholder="Effective Date", b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                            input(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="effectiveDate",type="text",ng-model="tariff.effectiveDate", placeholder="Effective Date",required)
+                            //- label.help-inline.required(ng-show="form.effectiveDate.$error.required") *
+                            //- label.help-inline.required.validTick(ng-show="form.effectiveDate.$valid") &#10004;
+                            span(ng-show="form3.effectiveDate.$error.required") *
+                            span.green.validTick(ng-show="form3.effectiveDate.$valid") &#10004;  
+                div.in-wiz-row
+                    label.control-label Expiry Date
+                    .controls
+                            //-input(type="text", name="expiryDate", ng-model="tariff.expiryDate", placeholder="Expiry Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                            input(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="expiryDate",type="text",ng-model="tariff.expiryDate", placeholder="Expiry Date",required)
+                            //- label.help-inline.required(ng-show="form.expiryDate.$error.required") *
+                            //- label.help-inline.required.validTick(ng-show="form.expiryDate.$valid") &#10004;
+                            span(ng-show="form3.expiryDate.$error.required") *
+                            span.green.validTick(ng-show="form3.expiryDate.$valid") &#10004;  
+                div.in-wiz-row
+                    label.control-label Received Date
+                    .controls
+                            //-input(type="text", name="receivedDate", ng-model="tariff.receivedDate", placeholder="Received Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker')
+                            input(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="receivedDate",type="text",ng-model="tariff.receivedDate", placeholder="Received Date",required)
+                            span(ng-show="form3.receivedDate.$error.required") *
+                            span.green.validTick(ng-show="form3.receivedDate.$valid") &#10004;
+                div.in-wiz-row
+                    label.control-label Received From
+                    .controls
+                            //-input(type="text", name="receivedFrom", ng-model="tariff.receivedFrom", placeholder="Received From", required)
+                            input(placeholder="Email", ng-model="tariff.receivedFrom", name="receivedFrom", required, type="email")
+                            //- label.help-inline.required(ng-show="form.receivedFrom.$error.required") *
+                            //- label.help-inline.required.validTick(ng-show="form.receivedFrom.$valid") &#10004;
+                            span(ng-show="form3.receivedFrom.$error.required") *
+                            span(ng-show="form3.receivedFrom.$error.email") Invalid email.
+                            span.green.validTick(ng-show="form3.receivedFrom.$valid") &#10004;  
+                div.in-wiz-row
+                    label.control-label Comments
+                    .controls
+                            textarea(rows=3, name="tariffComments", ng-model="tariff.comment", placeholder="Comments")
+.col-md-9
+        include upload

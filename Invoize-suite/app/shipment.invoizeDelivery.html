@@ -1,0 +1,53 @@
+
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <!--.in-wiz-info(ng-show="deliveryTab!='deliveredInvoice'") Invoices to be Delivered-->
+      <!--.in-wiz-info(ng-show="deliveryTab=='deliveredInvoice'") Delivered Invoices-->
+      <div ng-show="$state.current.name!='billright.invoizeDelivery.deliveredInvoice'" class="in-wiz-info">Invoices to be Delivered</div>
+      <div ng-show="$state.current.name=='billright.invoizeDelivery.deliveredInvoice'" class="in-wiz-info">Delivered Invoices</div>
+    </div>
+    <div class="pull-right"><i ng-show="companyListLoader" class="icon-spinner icon-spin blue icon-large"></i>
+      <dynamic-Select required="required" customobj="{&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;,&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.invoiceDelivery&quot;}" name="searchAccount" ng-model="global.account" ph="account" placeholder="Select Account" change="clearData();"></dynamic-Select>
+      <button ng-click="getDeliveryData()" class="input-search-new1"><i class="fa fa-search"></i></button>
+      <!--button.btn-sm.btn-custom(type="button",tooltip="Export to Excel", tooltip-placement="bottom",ng-click="pullFile();")-->
+      <!--    i.fa.fa-download-->
+      <div style="vertical-align: inherit;" class="btn-group">
+        <button data-toggle="dropdown" type="button" permission="invoiceDelivery.download" class="btn-sm btn-custom dropdown-toggle"><i class="fa fa-download"></i>
+        </button>
+        <ul aria-labelledby="btnGroupVerticalDrop2" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <li ng-click="pullFile();"><a style="cursor:pointer">Excel</a></li>
+          <li ng-click="pullInvoicePacket();" ng-show="deliveryTab=='deliveredInvoice'"><a style="cursor:pointer">Invoice Packet</a></li>
+        </ul>
+      </div>
+      <div style="vertical-align: inherit;" class="btn-group">
+        <button data-toggle="dropdown" type="button" permission="invoiceDelivery.action" class="btn-sm btn-custom dropdown-toggle">   Actions &nbsp;<i class="fa fa-angle-down"></i></button>
+        <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <li ng-click="" ng-show="$state.current.name!='billright.invoizeDelivery.webInvoice' &amp;&amp; $state.current.name!='billright.invoizeDelivery.deliveredInvoice'"><a style="cursor:pointer">Add Invoice</a></li>
+          <li ng-click="invoiceDelivery('reDelivery')" ng-show="$state.current.name=='billright.invoizeDelivery.deliveredInvoice'"><a style="cursor:pointer">Resend</a></li>
+          <li ng-click="" ng-show="$state.current.name!='billright.invoizeDelivery.webInvoice' &amp;&amp; $state.current.name!='billright.invoizeDelivery.deliveredInvoice'"><a style="cursor:pointer" ng-click="invoiceDelivery('Delivery')">Deliver</a></li>
+          <li ng-click="" ng-show="$route.current.url == '/deliveryQueue'"><a style="cursor:pointer">Cancel Delivery</a></li>
+          <li permission="invoiceDelivery.webApprove" ng-click="updateStatus(&quot;Approved&quot;,true,0)" ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'"><a style="cursor:pointer">Approve</a></li>
+          <li permission="invoiceDelivery.webReject" ng-click="updateStatus(&quot;Rejected&quot;,true,0)" ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'"><a style="cursor:pointer">Reject</a></li>
+          <li permission="invoiceDelivery.webPrint" ng-click="updateStatus(&quot;Printed&quot;,true,0)" ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'"><a style="cursor:pointer">Set as Printed</a></li>
+          <li ng-click="uploadNewInvoice()" ng-show="$state.current.name=='billright.invoizeDelivery.webInvoice'"><a style="cursor:pointer">Upload New Invoice</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:47px;"></div>
+<div class="col-xs-12">
+  <div ng-hide="$state.current.name.split('.')[2]=='webInvoice' || $state.current.name=='billright.invoizeDelivery.deliveredInvoice'|| $state.current.name=='billright.invoizeDelivery.uploadNewInvoice'">
+    <tabset>
+      <tab permission="invoiceDelivery.tabEdiInvoiceDelivery" heading="EDI" ng-click="deliveryTab='edi';redirectTo('/billright/invoizeDelivery/edi')" class="tab"></tab>
+      <tab permission="invoiceDelivery.tabEmailInvoiceDelivery" heading="Email" ng-click="deliveryTab='email';redirectTo('/billright/invoizeDelivery/email')" class="tab"></tab>
+      <tab permission="invoiceDelivery.tabPaperInvoiceDelivery" heading="Paper" ng-click="deliveryTab='paper';redirectTo('/billright/invoizeDelivery/paper')" class="tab"></tab>
+      <tab permission="invoiceDelivery.tabWebInvoiceDelivery" heading="Web" ng-click="deliveryTab='web';redirectTo('/billright/invoizeDelivery/web')" class="tab"></tab>
+      <tab permission="invoiceDelivery.tabUnDeliveredInvoice" heading="UnDelivered Invoice" ng-click="deliveryTab='unDeliveredInvoice';redirectTo('/billright/invoizeDelivery/unDeliveredInvoice')" class="tab"></tab>
+      <!--tab.tab(permission='invoiceDelivery.tabDeliveredInvoice',heading="Delivered Invoice", ng-click="deliveryTab='deliveredInvoice';redirectTo('/billright/invoizeDelivery/deliveredInvoice')")-->
+    </tabset>
+  </div>
+</div>
+<!--div(style="clear:both;height:47px;")-->
+<div ui-view="childContents"></div>

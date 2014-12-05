@@ -1,0 +1,48 @@
+
+<div class="col-xs-12">
+  <div class="modal-dialog container">
+    <div class="modal-content">
+      <form name="form" novalidate="novalidate">
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+          <h4 class="modal-title">Invoice Details<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+        </div>
+        <div ng-init="getTemplate()" class="modal-body">
+          <tabset>
+            <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
+              <label class="blue">Invoice Type</label>
+              <label>: {{datas.Invoices[$index].invoiceType}} &nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <label class="blue">Status :</label>
+              <select ui-select2="ui-select2" ng-required="true" name="datas.Invoices[$index].status" ng-model="datas.Invoices[$index].status" data-placeholder="Status" class="input-large">
+                <option value=""></option>
+                <option value="{{status.n}}" ng-repeat="status in invoiceStatuses">{{status.n}}</option>
+              </select>
+              <button ng-show="isCorrectInvoice[$index]==true" ng-click="correctInvoice(datas.Invoices[$index].invoiceNumber)" class="btn-sm btn-custom dropdown-toggle">Correct Invoice</button>
+              <div style="clear:both;height:5px"></div>
+              <div ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" datarows="data in datas.Invoices[$index].charges" columns="dlgColumns" manualColumnResize="true" minsparerows="1" contextMenu="false" onBeforeChange="celChange" id="invoice_{{$index}}" beforeKeyDown="beforeKeydown" afterSelection="afterSelection"></div>
+              <div style="clear:both;padding-top:12px"></div>
+              <label style="width:590px"><strong>Total                                 </strong></label>
+              <label style="width:120px" class="center"> <strong>{{totalTariffValue[$index]}}</strong></label>
+              <label style="width:150px" class="center"> <strong>{{totalInvoiceValue[$index]}}</strong></label>
+            </tab>
+          </tabset>
+        </div>
+        <div class="modal-footer">
+          <div class="pull-left">
+            <div class="btn-group text-left">
+              <button ng-show="(($state.current.url=='/shipmentEntry' || $state.current.url=='/pending/:account/:accountID/:emailID') &amp;&amp; isNewInvoiceActive == true)==true " class="btn-sm btn-custom dropdown-toggle"><i class="icon-angle-down">&nbsp;</i>Add New Invoice</button>
+              <ul ng-show="(($state.current.url=='/shipmentEntry' || $state.current.url=='/pending/:account/:accountID/:emailID')  &amp;&amp; isNewInvoiceActive == true)==true" class="dropdown-menu filter-ddm arrow-left dropdown-caret">
+                <li ng-repeat="type in invoiceTypes"><a href="" ng-click="addNewInvoice(type)">{{type}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="pull-right">
+            <button ng-click="calculateTariff()" class="inz-btn3 btn-sm btn-default">Calculate Charges</button>
+            <button ng-click="close()" class="inz-btn3 btn-sm btn-default">Cancel</button>
+            <button ng-click="saveData()" class="inz-btn3 btn-sm btn-success">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

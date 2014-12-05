@@ -1,0 +1,63 @@
+
+<div class="row">
+  <div class="col-xs-12 in-title">Create Invoice Delivery Rules : {{selectedAccounts.accountNos.toString()}}</div>
+  <div class="col-xs-12 in-title">Mode {{deliveryMode}}</div>
+  <div class="col-xs-12">
+    <input type="radio" ng-model="deliveryMode" value="EDI" name="rdoDeliveryMode"/>EDI 
+    <input type="radio" ng-model="deliveryMode" value="Paper" name="rdoDeliveryMode"/>Paper 
+    <input type="radio" ng-model="deliveryMode" value="Email" name="rdoDeliveryMode"/>Email 
+    <input type="radio" ng-model="deliveryMode" value="Web" name="rdoDeliveryMode"/>Web  
+  </div>
+  <div class="col-xs-12"></div>
+  <div class="col-xs-12"></div>
+  <div class="row de">
+    <div style="margin-bottom:20px" ng-show="deliveryMode=='Email'" class="col-lg-10 col-sm-16 col-xs-22">
+      <div class="in-view-block">
+        <div class="in-title"> 
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Mode Name          </label>
+            <input id="txtModeName" type="text" name="txtModeName"/>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Delivery Party          </label>
+            <select ng-model="selectDeliveryParty">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+            </select>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Party Name          </label>
+            <input id="txtPartyName" type="text" name="txtPartyName"/>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">To          </label>
+            <input id="txtTo" type="text" name="txtTo"/>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">CC          </label>
+            <input id="txtCC" type="text" name="txtCC"/>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Subject          </label>
+            <input id="txtSubject" type="text" name="txtSubject"/>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Signature          </label>
+            <input id="txtSignature" type="text" name="txtSignature"/>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Attachment Type          </label>
+            <select ng-model="selectAttachmentType">
+              <option value="1">Paper Document</option>
+              <option value="2">Excel Statement</option>
+            </select>
+          </div>
+          <div class="in-wiz-row col-md-6 row">
+            <label class="control-label">Email Content          </label>
+            <textarea id="txtEmailContent" columns="5" rows="5" name="txtEmailContent">  </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

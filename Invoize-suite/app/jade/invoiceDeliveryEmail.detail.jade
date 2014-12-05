@@ -1,0 +1,34 @@
+.row(ng-init="viewInvoiceDeliveryEmail()")
+    .col-xs-12
+        .doc-block
+            .title.strip Delivery Details
+    .col-xs-12
+        .col-sm-3
+            div
+                label.lb1a Name
+                label.lb2.control-label(type="text")  {{data.invoicedelivery.name}}
+        .col-sm-3
+            div
+                label.lb1a Party
+                label.lb2.control-label(type="text")  {{data.invoicedelivery.deliveryParty}}
+        .col-sm-4
+            div
+                label.lb1a Party Name
+                label.lb2.control-label(type="text")  {{data.invoicedelivery.deliveryPartyName}}
+        .col-sm-2
+            .pull-right.in-add
+                .btn-group.pull-right(style="vertical-align: inherit;")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right(data-toggle='dropdown', type='button' ,tooltip="Configuration Mode",tooltip-placement="top")
+                        i.fa.fa-angle-down
+                        |&nbsp; Mode
+                    ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                        li
+                            table
+                                tbody
+                                    tr(ng-repeat="type in data.profileBase")
+                                        td( style="padding:0px 10px") {{type.label}}
+                                        td
+                                            dynamic-Select(name="TypeValue_{{$index}}",ng-model="type.value",ph="{{type.suggestionsSource}}",placeholder="Please Select")
+
+div(style="clear:both;height:15px;")
+include emailTemplateDetail

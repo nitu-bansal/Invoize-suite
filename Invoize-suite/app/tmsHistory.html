@@ -1,0 +1,22 @@
+
+<div>
+  <div permission="historyViewTms" class="row in-wiz-ttl history">
+    <div class="col-xs-12 in-add">
+      <div class="pull-left in-wiz-info">History<i ng-show="historyLoader" class="icon-spinner icon-spin blue icon-small"></i></div>
+    </div>
+  </div>
+  <div permission="historyViewTms" class="row history-block">
+    <div class="col-xs-12">
+      <div ng-show="historyTemp.count&lt;=0">No history available</div>
+      <div ng-repeat="obj in historyTemp.history" data-accordion="" data-close-others="false" ng-show="historyTemp.count&gt;0">
+        <div data-accordion-group="" data-heading="{{obj.emailID}}" data-date="{{obj.timestamp}}" ng-click="getHistory($index,obj)">
+          <div ng-repeat="row1 in obj.historyData.fields" class="line">
+            <div class="caption">{{row1.label}}                 </div>
+            <div class="data">{{row1.value | selectFormat}}</div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" ng-click="loadMoreHistory()" ng-show="historyTemp.count&gt;0 &amp;&amp; showLoadmore" ng-class="{'disabled': disableLoadmore}" ng-disabled="disableLoadmore" class="pull-right inz-btn btn-sm btn-success">Load More</button>
+    </div>
+  </div>
+</div>

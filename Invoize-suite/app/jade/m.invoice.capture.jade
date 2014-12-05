@@ -1,0 +1,48 @@
+.modal-dialog.container
+    .modal-content
+        form(name="form",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Invoice Capture
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body
+                .col-sm-12
+                    div.overflow-auto(style="padding:2px 2px;")
+
+                        table.inz-table.inz-table2(id="invoiceCaptureData", ng-show="invoiceCaptureData.length")
+                            thead
+                                tr
+                                    th
+                                        span(tooltip="Expand/Collapse")
+                                            i.fa.fa-align-justify
+                                    th(ng-repeat="val in invoiceCaptureData[0]",ng-show="$index>1")
+                                        span.trim-info-large(tooltip="{{val.n |toHumanReadable}}") {{val.n | toHumanReadable}}
+                            tbody(ng-repeat="row in invoiceCaptureData")
+                                tr.invoice(style="cursor: pointer;",ng-form="subForm")
+                                    td(ng-repeat="col in row track by $index",ng-show="$index==0",ng-click="getInvoiceChargesInfo($parent.$index,row[0].v,row[1].v)")
+                                        div(ng-hide="row.dataPresent")
+                                            i.icon-reorder.blue(ng-show="row.doc")
+                                            i.icon-reorder.orange(ng-hide="row.doc")
+                                        i.icon-spinner.icon-spin.blue.icon.small(ng-show="row.dataPresent")
+                                    td(ng-repeat="col in row track by $index",ng-switch="{{col.isEditable}}",ng-show="$index>1", style="line-height:30px;")
+                                        span.trim-info-large(ng-switch-when="false",tooltip="{{col.v}}") {{col.v}}
+                                        input.customerIDCell(ng-switch-when="true",duplicate="invoiceNumber",name="invoiceNumber",type="text", ng-model="col.v",placeholder="{{col.n}}",ng-pattern="/^[0-9]{0,8}$/" ,ng-if="col.id=='invoice.invoiceNumber'",ng-required="col.isMandatory")
+                                        input(ng-switch-when="true",name="rigNumber",type="text", ng-model="col.v",placeholder="{{col.n}}",ng-if="col.id=='invoice.rigNumber'",ng-required="col.isMandatory")
+                                        input(ng-switch-when="true",name="invoiceDate", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-if="col.id=='invoice.invoiceDate'",ng-model="col.v",close-text="Close",placeholder="{{col.n}}", ng-required="col.isMandatory")
+                                        
+                                        input(ng-switch-when="true",name="nameElement",type="text", ng-model="col.v",placeholder="{{col.n}}",ng-if="col.id!='invoice.invoiceNumber' && col.id!='invoice.rigNumber' && col.id!='invoice.invoiceDate'",ng-required="col.isMandatory")
+
+                                        span.red(ng-if="subForm.invoiceNumber.$error.pattern && col.id=='invoice.invoiceNumber'") &nbsp; Invalid Format
+                                        span(ng-show="subForm.invoiceNumber.$error.duplicate && col.id=='invoice.invoiceNumber'") already Exists
+                                        span.red(ng-if="subForm.invoiceNumber.$error.required && col.id=='invoice.invoiceNumber'") *
+                                        span.red(ng-if="subForm.rigNumber.$error.required && col.id=='invoice.rigNumber'") *
+                                        span.red(ng-if="subForm.invoiceDate.$error.required && col.id=='invoice.invoiceDate'") *
+                                            tr(ng-show="!isRowCollapsed")
+                                                td.inset(colspan="{{row.length}}")
+                                                    include invoiceCharges
+                    pagination(ng-hide="invoiceCaptureData.length==0",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+            div(style="clear:both;")
+            .modal-footer
+                .col-sm-12
+                    button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                    button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", type="submit", ng-click="saveInvoiceCaptureData()",) Capture

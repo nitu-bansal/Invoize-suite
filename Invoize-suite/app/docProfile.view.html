@@ -1,0 +1,26 @@
+<!--
+<Created>by pallavi.dandane on 9/24/2014.</Created>-->
+<div set-width="set-width" ng-init="getList('')" class="row">
+  <div ng-repeat="ListItem in invoiceDocTypes | orderBy:accountName" style="margin-bottom:5px;border-bottom:1px solid #DDDDDD;" class="col-sm-12 col-md-12">
+    <div class="col-md-12 col-xs-12 col-sm-12">
+      <h5>Account Number :<span class="h6 orange3">&nbsp; {{ListItem.accountName}}</span></h5>
+    </div>
+    <div ng-repeat="ListItem2 in ListItem.data " ng-form="subForm" style="margin-bottom:5px;" class="col-sm-12 col-md-4 col-xs-12 inz-blk">
+      <div class="in-view-block">
+        <div class="title"><i class="fa fa-tags small">&nbsp;</i>Name : {{ListItem2.name| selectFormat}}</div>
+        <div class="line">
+          <!--.caption Party Name-->
+          <!--.data {{ListItem2.deliveryPartyName| selectFormat}}-->
+        </div>
+      </div>
+      <div class="in-btn-blk">
+        <div class="in-btn-grp">
+          <div class="in-btn-row">
+            <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="editTemplate(ListItem2.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+            <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="View" ng-click="viewTemplate(ListItem2.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

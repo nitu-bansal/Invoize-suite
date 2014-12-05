@@ -1,0 +1,38 @@
+//   Created by noopur.waghmare on 3/19/14.
+div(style="clear:both;height:2px;")
+.col-xs-12.col-sm-12.col-md-12
+    div.overflow-auto
+        table.inz-table.inz-table1.border1px(ng-show="tariffList.length")
+                thead
+                        tr
+                                //- th
+                                //-     span(tooltip="Expand/Collapse")
+                                //-         i.fa.fa-align-justify
+                                th
+                                    span
+                                        input(tooltip="Select All",type='checkbox',ng-click="")
+                                th(ng-repeat="charge in tariffList[0]",ng-show="$index > 2 && $index !== 4")
+                                       span.trim-info-large(tooltip="{{charge |toHumanReadable}}") {{charge | toHumanReadable}}
+                                th
+                                    span.trim-info-large(tooltip="Edit") Edit Tariff
+
+                tbody(ng-repeat="data in tariffList",ng-show="$index")
+                        tr(style="cursor: pointer;")
+                                //- td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                                //-     div(ng-hide="data.dataPresent")
+                                //-         i.icon-reorder.blue(ng-show="data.doc")
+                                //-         i.icon-reorder.orange(ng-hide="data.doc")
+                                //-     i.icon-spinner.icon-spin.blue.icon.small(ng-show="data.dataPresent")
+                                td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                                    input(id="chk",type='checkbox',ng-click = "changeSelectedIndex($parent.$index)", ng-class="{'checked': d === true? true : false }")
+                                    //-i.fa-check-square-o
+                                td(ng-repeat="d in data track by $index",ng-show="$index > 2 && $index !== 4",ng-switch="$index")
+                                        span.trim-info-large(tooltip="{{d}}",ng-switch-when="8") {{d | date:fullDate}}
+                                        span.trim-info-large(tooltip="{{d}}",ng-switch-when="9") {{d | date:fullDate}}
+                                        //span.trim-info-large(tooltip="{{d}}",ng-switch-when="4", ng-hide="isGroupSelected") {{d}}
+                                        span.trim-info-large(tooltip="{{d}}",ng-switch-default) {{d}}
+                                td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                                    a(href="#/billright/tariffManagement/viewTariff/{{data[2]}}/{{data[1]}}",permission="tariffRepository.editTariff")
+                                        span.in-add-txt Edit/View
+
+    pagination(ng-hide="tariffList.length==0",total-items="totalItemsListTariff",items-per-page="pageLimitListTariff", page="currentPageListTariff", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

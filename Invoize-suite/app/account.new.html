@@ -1,0 +1,32 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Welcome to Accounts configurations. You can add / configure / edit the accounts that you perform. Creating Accounts profiles would give you an ease of managing accounts with your system.<i ng-show="templateLoader" class="icon-spinner icon-spin blue icon-large"></i></div>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add"></div>
+</div>
+<div style="background:#eee;" ng-hide="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">New Accounts</div><i ng-show="templateLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-click="redirectTo('/accounts/view')" class="inz-btn btn-sm btn-default">Cancel</a>
+    <button type="submit" ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" ng-click="createAccount(account)" class="inz-btn btn-sm btn-success">Save Changes</button>
+  </div>
+</div>
+<div>
+  <form name="form" novalidate="novalidate" ng-init="account={}">
+    <div class="in-wiz-row">
+      <label class="control-label">Account Profile Name                   </label>
+      <div class="controls">
+        <input type="text" name="accountName" duplicate="accountProfile" ng-model="account.profileName" placeholder="Account Profile Name" required="required" ng-pattern="/^[a-zA-Z0-9]+$/" ng-trim="ng-trim" ng-maxlength="256"/><span ng-show="form.accountName.$error.required" class="help-inline required">*</span><span ng-show="form.accountName.$valid" class="green">&#10004;</span><span ng-show="form.accountName.$error.duplicate">Account Profile exists.</span><span ng-show="form.accountName.$error.maxlength">Maximum length 256.</span><span ng-show="form.accountName.$error.pattern">only Alphanumeric characters.                                       </span>
+      </div>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Attach System</label>
+      <div class="controls">
+        <dynamic-Select required="required" multiselect="multiselect" enterchoice="enterchoice" quickcreation="quickcreation" name="systemList" ng-model="account.systemList" ph="unlinkedAccountSystem" data-placeholder="Enter System">                                      </dynamic-Select><span ng-show="form.systemList.$error.required">*</span><span ng-show="form.systemList.$valid" class="green">&#10004;</span>
+      </div>
+    </div>
+    <div class="in-wiz-footer">   <a href="#/wizard/operation/view" class="inz-btn btn-sm btn-danger"><i class="fa fa-long-arrow-left">    </i> Previous Step</a><a href="#/wizard/accounts/view" class="inz-btn btn-sm btn-default">Cancel    </a>
+      <button type="submit" ng-disabled="form.$invalid" ng-class="{'disabled': form.$invalid}" ng-click="createAccount(account)" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </form>
+</div>

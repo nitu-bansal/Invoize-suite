@@ -1,0 +1,421 @@
+//Created by kamalsingh.saini on 04-Sep-14.
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Charts
+                label.lbl-dash
+                    span.blue Data Metrics Time Span : &nbsp;&nbsp;
+                    span.bolder.orange
+                        i.fa.fa-calendar-o &nbsp;
+                        | {{filterObj.timeRange.type}}
+        .pull-right
+            .btn-group.filter-dd
+                button.btn-custom.btn-sm.dropdown-toggle(data-toggle='dropdown', type='button', style="cursor:pointer;",tooltip="Dashboard Criteria",tooltip-placement="left")
+                    |Filter &nbsp;
+                    i.icon-filter
+                ul.dropdown-menu.filter-ddm.ulcustom.dropdown-caret.pull-right.padding-custom(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                    div.overflow-auto(style="height:350px;padding:2px 5px;")
+                        li
+                            .opt-title By Time
+                            .opt-group(ng-init="displaydt=true;applyFilter()")
+                                .opt
+                                    input(type="radio",id="dtday", value="Daily",ng-model="filterObj.timeRange.type", name="daterange",ng-click="opt='daily';displaydt=true")
+                                    label(for="dtday") &nbsp; Daily &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    input(type="radio",id="dtweek", value="Weekly",ng-model="filterObj.timeRange.type", name="daterange",ng-click="opt='week';displaydt=true")
+                                    label(for="dtweek") &nbsp; Weekly
+                                    div(style="clear:both;height:3px;")
+                                    input(type="radio",id="dtmonth", value="Monthly",ng-model="filterObj.timeRange.type", name="daterange",ng-click="opt='';displaydt=true")
+                                    label(for="dtmonth") &nbsp; Monthly &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    input(type="radio",id="dtquart", value="Quarterly", ng-model="filterObj.timeRange.type", name="daterange",ng-click="opt='quart';displaydt=false")
+                                    label(for="dtquart") &nbsp; Quarterly
+                        li
+                            .opt-title Age Group
+                            .opt-group
+                                .opt
+                                    select.input-large(multiple,ui-select2, name="ages", ng-model="filterObj.timeRange.age", data-placeholder="Please select...", required)
+                                        option(ng-repeat="a in age", value="{{a}}") {{a}}
+                        li
+                            .opt-title For Products
+                            .opt-group
+                                .opt
+                                    select.input-large(multiple,ui-select2, name="product", ng-model="filterObj.product", data-placeholder="Please select...", required)
+                                        option(ng-repeat="p in products", value="{{p}}") {{p}}
+                        li
+                            .opt-title For Scope
+                            .opt-group
+                                .opt
+                                    select.input-large(ui-select2, name="scope", ng-model="filterObj.scope", data-placeholder="Please select...", required)
+                                        option(ng-repeat="s in scope", value="{{s}}") {{s}}
+                        li(ng-if="displaydt")
+                            .opt-title Based on Date Range
+                            .opt-group.overflow-hidden
+                                .opt(ng-show="displaydt")
+                                    input.input-large(name="dtrng1",id="dtrng1",datepicker-popup="{{dateFormat[0]}}",datepicker-options="dateOptions",type="text",value="this.value",ng-model="filterObj.timeRange.startdate",ng-required="true",close-text="Close",placeholder="Start Date")
+                                    div(style="clear:both;height:3px;")
+                                    input.input-large(name="dtrng2",id="dtrng2",datepicker-popup="{{dateFormat[0]}}",datepicker-options="dateOptions",type="text",value="this.value",ng-model="filterObj.timeRange.enddate",ng-required="true",close-text="Close",placeholder="End Date")
+                        li(ng-if="opt=='week'")
+                            .opt-title For Day of week
+                            .opt-group
+                                .opt
+                                    select.input-large(ui-select2, name="days", ng-model="filterObj.timeRange.weekday", data-placeholder="Please select...",  required)
+                                        option(value="") --- Choose Day---
+                                        option(ng-repeat="d in days", value="{{d.v}}") {{d.n}}
+                        li(ng-if="opt=='quart'")
+                            .opt-title For Quarter
+                            .opt-group
+                                .opt
+                                    select.input-large(multiple,ui-select2, name="quarter", ng-model="filterObj.timeRange.quarter", data-placeholder="Please select...",  required)
+                                        option(ng-repeat="q in quarters", value="{{q.v}}") {{q.n}}
+                        li(ng-if="opt=='quart'")
+                            .opt-title In Year
+                            .opt-group
+                                .opt
+                                    input.input-large(type="number",name="year", ng-model="filterObj.timeRange.year", min="2000", max="2025")
+                        li
+                            .opt-title By Region
+                            .opt-group
+                                .opt
+                                    dynamic-Select.input-large(name="dbregion",ng-model="filterObj.region",customObj='{"column":"unRegion" }',ph="metadata_country",toolTip="Region",placeholder="Select Region")
+                            .opt-title By Sub-Region
+                            .opt-group
+                                .opt
+                                    dynamic-Select.input-large(name="dbsubregion",customObj='{"column":"unSubRegion","region":"{{filterObj.region[0].n}}"}',ng-model="filterObj.subRegion",ph="metadata_country",toolTip="Sub-Region",placeholder="Select Sub-region")
+                        li
+                            .opt-title By Country
+                            .opt-group
+                                .opt
+                                    dynamic-Select.input-large(name="dbcountry",ng-model="filterObj.country",customObj='{"column":"countryName","subRegion":"{{filterObj.subRegion[0].n}}"}',ph="metadata_country",toolTip="Country",placeholder="Select Country")
+                        li
+                            .opt-title By Account
+                            .opt-group
+                                .opt
+                                    dynamic-Select.input-large(multiselect,name="dbaccountNumber",ng-model="filterObj.account",ph="account",toolTip="Account Number",placeholder="Select Account")
+                        div(style="clear:both;height:3px;")
+                    .opt-cmd
+                        button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply
+                        button.inz-btn.btn-xs.btn-default(ng-click="resetFilter()") Reset
+div(style="clear:both;height:50px;")
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Input Volume
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#ivchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#ivdetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+            //.widget-toolbar.no-border
+            //    button.btn1.btn-primary.dropdown-toggle(data-toggle='dropdown')
+            //        | HCL Vs CEVA &nbsp;
+            //        i.icon-angle-down.icon-on-right.bigger-110
+            //    ul.dropdown-menu.pull-right.dropdown-125.dropdown-lighter.dropdown-caret
+            //        li.active
+            //            a.blue(href='#')
+            //                i.icon-caret-right.bigger-110
+            //                | &nbsp; HCL + CEVA
+            //        li
+            //            a(href='#')
+            //                i.icon-caret-right.bigger-110.invisible
+            //                | &nbsp; HCL Vs CEVA
+            //.widget-toolbar.no-border
+            //    button.btn1.btn-primary.dropdown-toggle(data-toggle='dropdown')
+            //        | Weekly &nbsp;
+            //        i.icon-angle-down.icon-on-right.bigger-110
+            //    ul.dropdown-menu.pull-right.dropdown-125.dropdown-lighter.dropdown-caret
+            //        li.active
+            //            a.blue(href='#')
+            //                i.icon-caret-right.bigger-110
+            //                | &nbsp; Daily
+            //        li
+            //            a(href='#')
+            //                i.icon-caret-right.bigger-110.invisible
+            //                | &nbsp; Weekly
+            //        li
+            //            a(href='#')
+            //                i.icon-caret-right.bigger-110.invisible
+            //                | &nbsp; Monthly
+            //        li
+            //            a(href='#')
+            //                i.icon-caret-right.bigger-110.invisible
+            //                | &nbsp; Quarterly
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#ivchart
+                        div(ng-if="inVolumeData.values.length>1")
+                            div(google-chart,obj="inVolumeData")
+                        div(ng-hide="inVolumeData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#ivdetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.inVolume.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.inVolume.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.inVolume.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.inVolume.detail.length")
+                            | No Data Available / Apply Filter again
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | (WIP) Unbilled
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#ubchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#ubdetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#ubchart
+                        div(ng-if="unbilledData.values.length>1")
+                            div(google-chart,obj="unbilledData")
+                        div(ng-hide="unbilledData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#ubdetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.unbilled.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.unbilled.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.unbilled.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.unbilled.detail.length")
+                            | No Data Available / Apply Filter again
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Output Volume (Processed Volume)
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#ovchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#ovdetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#ovchart
+                        div(ng-if="outVolumeData.values.length>1")
+                            div(google-chart,obj="outVolumeData")
+                        div(ng-hide="outVolumeData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#ovdetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.outVolume.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.outVolume.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.outVolume.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.outVolume.detail.length")
+                            | No Data Available / Apply Filter again
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Non-complaint Unbilled
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#nonUnbchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#nonUnbdetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#nonUnbchart
+                        div(ng-if="nonUnbilledData.values.length>1")
+                            div(google-chart,obj="nonUnbilledData")
+                        div(ng-hide="nonUnbilledData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#nonUnbdetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.nonUnbilled.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.nonUnbilled.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.nonUnbilled.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.nonUnbilled.detail.length")
+                            | No Data Available / Apply Filter again
+
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Non-complaint Output Volume
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#invdelchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#invdeldetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#invdelchart
+                        div(ng-if="nonInvTimelinessData.values.length>1")
+                            div(google-chart,obj="nonInvTimelinessData")
+                        div(ng-hide="nonInvTimelinessData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#invdeldetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.nonInvTimeliness.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.nonInvTimeliness.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.nonInvTimeliness.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.nonInvTimeliness.detail.length")
+                            | No Data Available / Apply Filter again
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Invoicing Timeliness
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#avTimechart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#avTimedetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#avTimechart
+                        div(ng-if="invTimelinessData.values.length>1")
+                            div(google-chart,obj="invTimelinessData")
+                        div(ng-hide="invTimelinessData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#avTimedetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.invTimeliness.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.invTimeliness.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.invTimeliness.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.invTimeliness.detail.length")
+                            | No Data Available / Apply Filter again
+
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Invoicing Accuracy
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#accchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#accdetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#accchart
+                        div(ng-if="accuracyData.values.length>1")
+                            div(google-chart,obj="accuracyData")
+                        div(ng-hide="accuracyData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#accdetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.accuracy.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.accuracy.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.accuracy.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                        div(ng-hide="globalChartData.accuracy.detail.length")
+                            | No Data Available / Apply Filter again
+.col-md-6.col-sm-12.col-xs-12
+    .widget-box
+        .widget-header
+            h5
+                i.icon-signal
+                | Undelivered
+            .widget-toolbar.no-border
+                ul.nav-tabs-1
+                    li.active
+                        a(href="#undlvrchart" ,data-toggle="tab")
+                            i.fa.fa-dollar
+                            | &nbsp; Charts
+                    li
+                        a(href="#undlvrdetail" ,data-toggle="tab")
+                            i.fa.fa-list
+                            | &nbsp; Details
+
+        .widget-body(nice-scroll)
+            .widget-main
+                .tab-content
+                    .tab-pane.in.active#undlvrchart
+                        div(ng-if="undeliveredData.values.length>1")
+                            div(google-chart,obj="undeliveredData")
+                        div(ng-hide="undeliveredData.values.length>1")
+                            | No Data Available / Apply Filter again
+                    .tab-pane#undlvrdetail.height-250
+                        table.inz-table.inz-table1(ng-show="globalChartData.undelivered.detail.length")
+                            thead
+                                tr
+                                    th(ng-repeat="h in globalChartData.undelivered.detail[0]")
+                                        span.trim-info-large(tooltip="{{h |toHumanReadable}}") {{h | toHumanReadable}}
+                            tbody
+                                tr(ng-repeat="data in globalChartData.undelivered.detail",ng-show="$index > 0")
+                                    td(ng-repeat="d in data track by $index") {{d}}
+                            | No Data Available / Apply Filter again
+                        div(ng-hide="globalChartData.undelivered.detail.length")
+

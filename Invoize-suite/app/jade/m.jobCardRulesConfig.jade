@@ -1,0 +1,40 @@
+.modal.hide(id="modal-form", tabindex="-1",aria-hidden="true",style="display: none;")
+.modal-header
+        button.close(type="button",data-dismiss="modal",ng-click="close()")×
+        h4.blue.bigger Rule Config         
+
+.modal-body.overflow-visible          
+        form.form-horizontal(novalidate, name="form")       
+                fieldset                       
+                        .control-group
+                                label.control-label Other Fields Mapping
+                                .controls
+                                         b {{item.accountName}}                        
+                        .control-group
+                                label.control-label Report                              
+                                .controls
+                                        select.input-large(ui-select2, name="reportName", ng-model="item.config.reportName", ng-change="reportNameChanged()", data-placeholder="Report", required)
+                                                option(value="")                                                
+                                                option(ng-repeat="row in tables", value="{{row.name}}") {{row.name}}
+                                        label.help-inline.required(ng-show="form.reportName.$error.required") *
+                        .control-group
+                                label.control-label Field                              
+                                .controls
+                                        select.input-large(ui-select2, name="reportField", ng-model="item.config.reportField", data-placeholder="Field",style="width:135px;", required)
+                                                option(value="")                                                
+                                                option(ng-repeat="row in fields", value="{{row.name}}") {{row.name}}&nbsp;&nbsp;&nbsp;
+                                        select.input-large(ui-select2, name="reportOperator", ng-model="item.config.reportOperator", data-placeholder="Operator",style="width:85px;", required)
+                                                option(value="")                                                
+                                                option(ng-repeat="row in operators", value="{{row.label}}") {{row.name}}&nbsp;&nbsp;&nbsp;
+                        .control-group(ng-switch="item.config.reportOperator")
+                                label.control-label value                                
+                                .controls(ng-switch-when="In")
+                                        input(type="text", name="valueStart", ng-model="item.config.start", placeholder="start", required,style="width:85px;") &nbsp;&nbsp;&nbsp;
+                                        input(type="text", name="valueEnd", ng-model="item.config.end", placeholder="end", required,style="width:85px;") 
+                                .controls(ng-switch-when="ExistsIn")                                        
+                                        input(ui-select2="listBar", name="listBar",ng-model="item.config.list",value="item.config.list", style="width: 205px;")
+                                .controls(ng-switch-default)
+                                        input(type="text", name="valueStart", ng-model="item.config.start", placeholder="value", required,style="width:85px;") 
+.modal-footer
+        button.btn.btn-primary(ng-disabled="form.$invalid", type="submit", data-dismiss="modal",ng-click="save()") Save
+        button.btn.btn-inverse(ng-click="close()") Cancel

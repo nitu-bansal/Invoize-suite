@@ -1,0 +1,35 @@
+
+<div class="row in-wiz-ttl fix-scroll">
+  <div class="col-md-7 col-sm-6">
+    <div class="in-wiz-info">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+  </div>
+  <div class="col-md-5 col-sm-6 in-add"><i ng-show="profileListLoader" class="icon-spinner icon-spin blue icon-large"></i>
+    <input placeholder="Search Profile" class="in-query"/>
+    <button class="in-query"><i class="fa fa-search"></i></button><a style="cursor:pointer" ng-click="redirectTo('/users/new')" ng-hide="loggedInUser.companyType!='Multiple'"><span class="in-add-sign">+</span><span class="in-add-txt">Add Profile</span></a>
+  </div>
+</div>
+<div nice-scroll="nice-scroll" max-height="max-height" when-scrolled="loadMore()" style="overflow:auto" class="row">
+  <div ng-repeat="ListItem in profileList | orderBy:title" ng-form="subForm" style="margin-bottom:30px;" class="col-sm-4 inz-blk">               
+    <div class="in-view-block">
+      <div class="title"> <i class="fa fa-tags small"></i> {{ListItem.title}}</div>
+      <div ng-repeat="l in ListItem.fields" class="line">
+        <div class="caption">{{l.label}}</div>
+        <div class="data">{{l.value | selectFormat}}                        </div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Delete" ng-click="confirmDeleteProfile(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="companyEditView(ListItem)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="View" ng-click="invitePeople(ListItem)" class="inz-btn btn-sm btn-danger"> <i class="fa fa-group">                                     </i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="in-wiz-footer">  
+  <button ng-click="prevStep()" class="inz-btn btn-sm btn-danger"><i class="fa fa-long-arrow-left">   </i> Previous Step</button>
+  <button type="submit" ng-disabled="mainForm2.$invalid" ng-click="" class="inz-btn btn-sm btn-success">Finish    
+  </button>
+</div>

@@ -1,0 +1,119 @@
+//   Created by noopur.waghmare on 3/14/14.
+div(ng-show="$state.current.name=='billright.tariffRepository' || $state.current.name=='billright.tariffRepository.listTariff'")
+    .row.in-wiz-ttl.in-fix-scroll(set-width, ng-init="initMetaInfo('tariffConfig')")
+        .col-xs-12.col-md-12.col-sm-12
+            .pull-left
+                .in-wiz-info Tariff Repository
+            .pull-right
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="Loader")
+                //dynamic-Select(name="accountGrouplist",ng-model="global.accountGroup",ph="accountGroup",change="setAccounts(global.accountGroup,true)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Group",placeholder="Search by Account Group")
+                //dynamic-Select(name="accountNumberlist",ng-model="global.account1",ng-disabled="isGroupSelected" ,ph="account",change="setAccounts(global.account1,false)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")
+                dynamic-Select(name="accountNumberlist",ng-model="global.account",ng-disabled="isGroupSelected" ,ph="account",change="setAccounts(global.account,false)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")
+
+                button.input-search-new1(ng-click="quickSearch(currentPage,true,'tariffConfig')" ,ng-hide="global.account1.length==0 && global.accountGroup.length==0")
+                    i.fa.fa-search
+                .btn-group.filter-dd.rule-filter(ng-show="tariffList.length>0")
+                    button.btn-sm.btn-ico.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+                        i.fa.fa-filter
+                        |  Filter &nbsp;
+                        i.fa.fa-angle-down
+                    div.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="white-space: nowrap;")
+                        div.showme.custom-filter-display.overflow-auto
+                            li(ng-repeat="f in sortedFields" ,ng-switch="fields[f].type")
+                                .opt-title {{fields[f].label}}
+                                input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="fields[f].val",close-text="Close",placeholder="{{fields[f].label}}", )
+                                dynamic-Select(ng-switch-default,name="{{fields[f]}}",ng-model="fields[f].val",customobj="{{custObj[fields[f].label]}}",ph="{{fields[f].autoSuggestSource}}",placeholder="{{fields[f].label}}")
+                            //- li(ng-repeat="(k,lb) in fields",ng-switch="lb.type" )
+                            //-   .opt-title {{lb.label}}
+                            //-   input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="lb.val",close-text="Close",placeholder="{{lb.label}}", )
+                            //-   dynamic-Select(ng-switch-default,multiselect,name="{{k}}",ng-model="lb.val",ph="{{autosuggestSource=='location'?'Location':autosuggestSource}}",customobj="{{custObj[lb.label]}}",placeholder="{{lb.label}}")
+                        div
+                            .opt-cmd
+                                button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetDataForTMS('tariffConfig')") Reset
+                                button.inz-btn.btn-xs.btn-success(ng-click="applyDataForTMS('tariffConfig')") Apply
+
+                button.btn-sm.btn-custom(permission="tariffRepository.addTariff",ng-click="redirectToAddNewTariff()",ng-show="tariffList.length>0") Add New
+                button.btn-sm.btn-custom(permission="tariffRepository.addTariff",ng-click="cloneAndAddNewTariff()",ng-show="tariffList.length>0") Clone selected to New
+    div(style="clear:both;height:47px;")
+    div(ng-if="tariffList.length==0")
+        //.col-sm-6.col-md-4.col-xs-12
+        //    .infobox.infobox1.infobox-green
+        //        .infobox-icon
+        //            i.icon-book
+        //        .infobox-data
+        //            span.infobox-data-number 3689
+        //            .infobox-content Overall Valid Tariffs
+        //        .stat.stat-important 3%
+        //        .info-footer-title.bg-green View Details
+        //            i.gly-icon.icon-arrow-right
+        //.col-sm-6.col-md-4.col-xs-12
+        //    .infobox.infobox1.infobox-red
+        //        .infobox-icon
+        //            i.icon-exclamation-sign
+        //        .infobox-data
+        //            span.infobox-data-number 3
+        //            .infobox-content Tariffs Expiring Today
+        //        .info-footer-title.bg-red View Details
+        //            i.gly-icon.icon-arrow-right
+        //.col-sm-6.col-md-4.col-xs-12
+        //    .infobox.infobox1.infobox-pink
+        //        .infobox-icon
+        //            i.icon-exclamation-sign
+        //        .infobox-data
+        //            span.infobox-data-number 16
+        //            .infobox-content Tariffs Expiring this Week
+        //        .stat.stat-warning 1%
+        //        .info-footer-title.bg-pink View Details
+        //            i.gly-icon.icon-arrow-right
+
+        //.col-sm-6.col-md-4.col-xs-12
+        //    .infobox.infobox1.infobox-orange
+        //        .infobox-icon
+        //            i.icon-exclamation-sign
+        //        .infobox-data
+        //            span.infobox-data-number 89
+        //            .infobox-content Tariffs Expiring this Month
+        //        .badge.badge-success
+        //            | +3%
+        //            i.icon-arrow-up
+        //        .info-footer-title.bg-orange View Details
+        //            i.gly-icon.icon-arrow-right
+        //.col-sm-6.col-md-4.col-xs-12
+        //    .infobox.infobox1.infobox-orange2
+        //        .infobox-chart
+        //            span.sparkline(spark,data-values="196,128,202,177,154,94,100,170,224")
+        //        .infobox-data
+        //            span.infobox-data-number 23
+        //            .infobox-content Unapproved Tariffs
+        //        .badge.badge-success
+        //            | +7.5%
+        //            i.icon-arrow-up
+        //        .info-footer-title.bg-blue-deep View Details
+        //            i.gly-icon.icon-arrow-right
+        //.col-sm-6.col-md-4.col-xs-12
+        //    .infobox.infobox1.infobox-green
+        //        .infobox-icon
+        //            i.icon-comments
+        //        .infobox-data
+        //            span.infobox-data-number 14
+        //            .infobox-content comments + 2 Issues
+        //        .info-footer-title.bg-green View Details
+        //            i.gly-icon.icon-arrow-right
+        div(style="clear:both;")
+                div(style="clear:both;height:350px;")
+                .row.center
+                    .gs-sub-title(ng-hide="showGoBtn") Choose Account & Hit Search&nbsp;
+                        i.fa.fa-search
+                    .gs-sub-title(ng-show="showGoBtn") No tariff available, Do you want to add ? &nbsp;
+                        div(style="padding:12px 0px")
+                            button.inz-btn.btn-sm.btn-success(permission="tariffRepository.addTariff",ng-click="redirectToAddNewTariff()",ng-show="showGoBtn") Go &nbsp;&nbsp;
+                                i.fa.fa-long-arrow-right
+                    //.col-sm-4
+                    // .in-wiz-row.pull-left.pull-up(style="margin-top:-42px;", ng-hide="$state.current.name.split('.')[0]=='wizard'")
+                    //     label.control-label Selected Accounts
+                    //     .controls
+                    //         dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",ng-readonly="true",ng-init="initAccount()")
+
+
+
+div(ui-view="childContents")

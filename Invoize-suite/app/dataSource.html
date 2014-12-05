@@ -1,0 +1,100 @@
+
+<div class="col-md-3 col-sm-12 col-xs-12">
+  <div class="ds-tree">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="pull-left">Rules For</div>
+        <div class="pull-right"><a type="button" id="newRule" name="ruleGroup" ng-click="fillDetails()" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" toolTip="Create new" tooltip-placement="bottom" class="anchor"><i class="fa fa-plus"></i>
+            <input id="createRul" type="radio" name="ruleGroup" class="hide"/></a></div>
+        <div style="clear:both;height:10px;"></div>
+        <select ui-select2="ui-select2" ng-model="selectedDoc" ng-change="setReportIndex()" data-placeholder="Select Source" class="input-xxlarge text-left">
+          <option ng-repeat="report in reports" value="{{report.details.docType}}">{{report.details.displayName}}</option>
+        </select>
+        <div style="clear:both;height:10px;"></div>
+        <div class="div-rules">
+          <div style="height:284px;" class="ul-rules overflow-auto">
+            <li ng-repeat="rul in rules" ng-click="fillDetails($index)" ng-class="{'active':rule.indx==$index}">
+              <!--label.fa.fa-hand-o-right(tooltip="Rule Name")-->
+              <div class="in-side-ttl"><span>{{rul.ruleName}}</span></div><br/>
+              <label tooltip="Expiry Date" class="fa fa-calendar"></label><span>{{rul.expiryDate | date:'mediumDate'}}</span><br/>
+              <!--label.fa.fa-flag-o(tooltip="Status")--><span ng-if="!rul.isActive" class="span-red">Inactive</span><span ng-if="rul.isActive" class="span-green">Active</span>
+            </li>
+          </div>
+          <div ng-show="rules.length==0 &amp;&amp; $parent.loader==false" class="ul-rules">
+            <h5 class="orange">No Rule Found :(</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-9 col-sm-12 col-xs-12">
+  <form name="rulForm" novalidate="novalidate">
+    <div ng-form="rulesForm">
+      <div class="ds-tree">
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label class="control-label">Name</label><span ng-show="rulesForm.ruleName.$error.required" class="red">&nbsp; *</span><br/>
+            <input type="text" name="ruleName" ng-model="rule.ruleName" placeholder="Rule Name" required="required" ng-required="true" class="input-large"/>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label>Effective Date</label><span ng-show="rulesForm.EffectiveDate.$error.required" class="red">&nbsp; *</span><br/>
+            <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="EffectiveDate" type="text" ng-model="rule.effectiveDate" ng-required="true" close-text="Close" placeholder="Effective Date" ng-change="setMinData(rule.effectiveDate)" class="input-medium"/>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label>Expiry Date</label><span ng-show="rulesForm.ExpiryDate.$error.required" class="red">&nbsp; *</span><br/>
+            <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="ExpiryDate" min="minDate" type="text" ng-model="rule.expiryDate" ng-required="true" close-text="Close" placeholder="Expiry Date" class="input-medium"/>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label>Create Using</label><span ng-show="rulesForm.CollectionType.$error.required" class="red">&nbsp; *</span><br/>
+            <select ui-select2="ui-select2" ng-model="rule.fieldType" ng-change="clearFilterAll()" data-placeholder="Select Source" ng-required="true" name="CollectionType" toolTip="Collection Type" placeholder="Collection Type" class="input-large text-left">
+              <option value=""></option>
+              <option ng-repeat="report in nonOpReports" value="{{report.details.docType}}">{{report.details.displayName}}</option>
+            </select>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label>Conditions On</label><span ng-show="rulesForm.ruleCollection.$error.required" class="red">&nbsp; *</span><br/>
+            <select ui-select2="ui-select2" name="ruleCollection" ng-model="rule.ruleCollection" ng-change="getSourceFields()" select-validate="select-validate" required="required" class="input-large">
+              <option value=""></option>
+              <option ng-if="selectedDoc.length&gt;0" value="{{selectedDoc}}">{{selectedDoc}}</option>
+              <option ng-if="rule.fieldType!=null" value="{{rule.fieldType}}">{{rule.fieldType}}</option>
+            </select>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <label>Status</label><br/>
+            <label>
+              <input type="checkbox" name="ruleGroup" ng-model="rule.isActive" class="ace ace-switch-8"/><span class="lbl"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div style="clear:both;height:10px;border-bottom:1px solid #dddddd;"></div>
+      <div class="ds-tree"><a name="btnAddTag" ng-click="addTag()" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" style="cursor:pointer" class="margin10"><span class="in-add-sign">+</span><span class="in-add-txt">Add</span></a>
+        <div ng-repeat="row in rule.ruleTagNameVal" class="row">
+          <div style="clear:both;height:10px;"></div>
+          <div class="col-md-5 col-sm-12 col-xs-12">
+            <div class="input-group"><span class="input-group-addon">Field Name</span>
+              <input type="text" ng-model="row.tagName" ng-disabled="rule.fieldType==null || selectedDoc==null" name="ruleTagName_{{$index}}" typeahead="suggestion.id for suggestion in fieldBar($viewValue)" typeahead-editable="true" toolTip="Tag Name" placeholder="Tag Name" ng-change="clearFilter($index)" class="ruleTagName"/>
+            </div>
+          </div>
+          <div class="col-md-7 col-sm-12 col-xs-12">
+            <label class="iz-switch">
+              <input name="isField" ng-model="row.isField" ng-change="row.tagVal=null" type="checkbox" class="ace ace-switch"/><span class="lbl"></span>
+            </label>
+            <div ng-if="row.isField==null || row.isField==false" class="controls">
+              <input type="text" ng-model="row.tagVal" ng-disabled="rule.fieldType==null || selectedDoc==null" name="ruleTagVal_{{$index}}" typeahead="suggestion for suggestion in valueBar($viewValue,$index)" typeahead-editable="true" toolTip="Tag Value" placeholder="Tag Value" class="ruleTagName"/>
+            </div>
+            <div ng-if=" row.isField==true" class="controls">
+              <input type="text" ng-model="row.tagVal" ng-disabled="rule.fieldType==null || selectedDoc==null" name="ruleTagVal_{{$index}}" typeahead="suggestion.id for suggestion in fieldBarVal($viewValue,$index)" typeahead-editable="true" toolTip="Tag Value" placeholder="Tag Value" class="ruleTagName"/>
+            </div><a data-action="close" ng-click="removeTag($index)" style="cursor: pointer; margin-left:5px;" ng-show="$index&gt;0" tooltip="Delete" class="grey"><i class="icon-trash"></i></a>
+          </div>
+        </div>
+      </div>
+      <div style="clear:both;height:10px; border-bottom:1px solid #dddddd;"></div>
+      <div id="rules" ng-show="rule.ruleCollection.length&gt;0" class="row">
+        <div rules="rules" class="ds-tree"></div>
+      </div>
+      <div style="clear:both;height:280px;"></div>
+    </div>
+  </form>
+</div>

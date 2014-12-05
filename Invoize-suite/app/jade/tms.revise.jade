@@ -1,0 +1,150 @@
+.col-md-8
+        form.form-horizontal(novalidate, name="form")                        
+                fieldset        
+                        .row
+                                h4.header.smaller.lighter.gray Tariff Detail
+                                        .btn-group.pull-right
+                                                a.btn.btn-sm.btn-primary.btn-margin(ng-hide="tariffCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                    i.icon-mail-reply.icon-large
+                                                button.btn.btn-sm.btn-success(permission="tariffApprove.*.*", ng-hide="tariffCreateLoader || isInProcess", ng-disabled="form.$invalid", type="submit", ng-click="approveTariff(tariff)", style="cursor: pointer;", bs-tooltip="tooltip.approve")
+                                                    i.icon-ok.icon-large
+                                                button.btn.btn-sm.btn-danger(permission="tariffReject.*.*", ng-hide="tariffCreateLoader || isInProcess", ng-disabled="form.$invalid",type="submit", ng-click="rejectTariff()", style="cursor: pointer;", bs-tooltip="tooltip.reject")
+                                                    i.icon-remove.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="tariffCreateLoader")                               
+                        .form-group
+                            label.control-label Effective Date
+                            .controls
+                                    input(type="text", name="effectiveDate", ng-model="tariff.effectiveDate",value="{{tariff.effectiveDate | date:'mediumDate'}}",data-date-format="M d, yyyy" , placeholder="Effective Date", b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.effectiveDate.$error.required") *
+                        .form-group
+                            label.control-label Expiry Date
+                            .controls
+                                    input(type="text", name="expiryDate", ng-model="tariff.expiryDate",value="{{tariff.expiryDate | date:'mediumDate'}}",data-date-format="M d, yyyy" , placeholder="Expiry Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.expiryDate.$error.required") *
+                        .form-group
+                            label.control-label Received Date
+                            .controls
+                                    input(type="text", name="receivedDate", ng-model="tariff.receivedDate",value="{{tariff.receivedDate | date:'mediumDate'}}",data-date-format="M d, yyyy" , placeholder="Received Date",  b-datepicker="{{dateOptions}}", bs-datepicker='bs-datepicker',required)
+                                    label.help-inline.required(ng-show="form.receivedDate.$error.required") *
+                        .form-group
+                            label.control-label Received From
+                            .controls
+                                    input(type="text", name="receivedFrom", ng-model="tariff.receivedFrom", placeholder="Received From", required)
+                                    label.help-inline.required(ng-show="form.receivedFrom.$error.required") *
+                        .form-group
+                            label.control-label Comments
+                            .controls
+                                    textarea(rows=3, name="tariffComments", ng-model="tariff.comment", placeholder="Comments",required)
+                                    label.help-inline.required(ng-show="form.tariffComments.$error.required") *
+
+                        //- {{tariff.docId | json}}
+
+                fieldset
+                        .widget-box.transparent
+                                .widget-header                                     
+                                        h5.lighter.smaller
+                                                i.icon-large.icon-paper-clip(ng-hide="isWidgetCollapsed") &nbsp Attached Documents
+                                                i.icon-large.icon-paper-clip(ng-show="isWidgetCollapsed") &nbsp Total Attached Documents : {{tariff.docId.length}}
+                                        .widget-toolbar
+                                                a(ng-click='isWidgetCollapsed=!isWidgetCollapsed',style="cursor: pointer;")
+                                                    i.icon-chevron-up(ng-hide="isWidgetCollapsed",bs-tooltip="tooltip.expand")
+                                                    i.icon-chevron-down(ng-show="isWidgetCollapsed",bs-tooltip="tooltip.detail")
+                                .widget-body(ng-hide='isWidgetCollapsed')
+                                        .widget-main.no-padding
+                                                br
+                                                .dialogss(data-ng-repeat='f in tariff.docId')
+                                                                    ng-form.row     
+                                                                            .alert-blank2
+                                                                                    .btn-toolbar.reviseFiles(id="reviseFiles{{$index}}",ng-controller="FileUploadController",ng-class='queue[0].$viewStyle()')
+                                                                                            .row
+                                                                                                    .btn-group
+                                                                                                           
+                                                                                                            div(ng-init="updateCurrentFile=true;")
+                                                                                                                    form.fileupload(data-upload-template-id="template-upload-2",method='POST', enctype='multipart/form-data',data-ng-app="angularApp")
+                                                                                                                           .a.btn.btn-sm.btn-info.fileinput-button(bs-tooltip="tooltip.upload")
+                                                                                                                                    i.icon-upload-alt
+                                                                                                                                    input(type='file',id="files-upload", name='files[]',ng-click="fileToReplace(f)")
+
+                                                                                                    .btn-group
+                                                                                                            .btn.btn-sm.btn-danger(permission="deleteTariffDocument.*.*",data-dismiss='alert',ng-click="removeExistingAttachment(f.id)", bs-tooltip="tooltip.delete",style="cursor: pointer;")
+                                                                                                                    i.icon-remove
+                                                                                                            .btn.btn-sm.btn-info
+                                                                                                                    //- {{queue.length}}
+                                                                                                                    i.icon-large.icon-paper-clip(ng-hide="queue.length")
+                                                                                                                    i.icon-large(ng-class='queue[0].$iconStyle()')
+                                                                                                                    a.whitelink(ng-hide="queue.length",style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='/api/tms/download/file?id={{f.id}}', download='{{f.name}}' )
+                                                                                                                            strong {{f.v}}
+                                                                                                                    a.whitelink(ng-show="queue.length",style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='/api/tms/download/file?id={{queue[0].id}}', download='{{queue[0].name}}' )
+                                                                                                                            strong {{queue[0].name}}
+                                                                                                                    strong(ng-hide="checkType(downloadTariff)") {{f.v}}
+                                                                                                                    strong(ng-hide="checkType(downloadTariff)") {{queue[0].name}}
+
+                                                                                                            .btn.btn-sm.btn-warning(ng-show="queue.length",ng-click="UndoFileRevision(f.id,$index)", bs-tooltip="tooltip.undo",style="cursor: pointer;")
+                                                                                                                    i.icon-undo
+                                                                                                    .btn-group.pull-right.col-md-3(bs-tooltip="tooltip.type",permission="reviseTariffDocument.*.*")
+                                                                                                            select.col-md-12(name='fileTypeSelect',ng-model='f.t',ng-change="setFileType(f.id,f.t)",ng-options='value.id as value.name for (key, value) in fileTypeSelects', data-style='btn btn-primary btn-sm show-tick', bs-select='bs-select' ,required)
+                                                                                                            label.help-inline.required(ng-show="form.fileTypeSelect.$error.required") *
+                fieldset(ng-hide="isInProcess")
+                        .widget-box.transparent
+                                .widget-header
+                                        h5.lighter.smaller
+                                                i.icon-large.icon-paper-clip
+                                                | Upload New Documents
+                                .widget-body
+                                        .widget-main.no-padding
+                                                br
+                                                dialogss
+                                                        .form-group
+                                                                include upload               
+
+                 fieldset
+                                h5(ng-show="tariffHistoryLoader") Loading History
+                                        i.icon-spinner.icon-spin.icon.icon-large(ng-show="tariffHistoryLoader")                        
+                        div(ng-show="tariffHistoryAvailable")
+                                br
+                                .widget-box.transparent
+                                        .widget-header
+                                                h5.lighter.smaller
+                                                        i.icon-comment.blue
+                                                        | History
+                                        .widget-body
+                                                .widget-main.no-padding
+                                                        .dialogs                                            
+                                                                .itemdiv.dialogdiv(ng-repeat="row in documentRequestHistory")
+                                                                        .user
+                                                                                img(alt="Avatar",src="avatars/user12.png") 
+                                                                        .body(ng-click='isCollapsed = !isCollapsed',style="cursor: pointer;")
+                                                                                .time
+                                                                                        span.small.label.label-success.pull-right(ng-show="row.action=='Approved'") Approved
+                                                                                        span.small.label.label-important.pull-right(ng-show="row.action=='Rejected'") Rejected
+                                                                                        span.small.label.label-info.pull-right(ng-show="row.action=='Created'") Created 
+                                                                                .name
+                                                                                        a {{row.un}}  
+                                                                                .text {{row.oldSnapshot.comment}}
+                                                                                        div(collapse='isCollapsed')
+                                                                                                .row                                                                        
+                                                                                                        small.muted 
+                                                                                                                i.icon-caret-right.green  Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} 
+                                                                                                        br
+                                                                                                        small.muted    
+                                                                                                                i.icon-caret-right.green  Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} 
+                                                                                                        br
+                                                                                                        small.muted     
+                                                                                                                i.icon-caret-right.green  Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}
+                                                                                                        br
+                                                                                                strong.text-black Attached Documents
+                                                                                                div(data-ng-repeat='file in row.oldSnapshot.docId')
+                                                                                                        div
+                                                                                                                div.pull-right
+                                                                                                                        &nbsp
+                                                                                                                        span.pull-right.small.label.label-info {{file.t}}
+
+                                                                                                                i.icon-large.icon-paper-clip &nbsp
+                                                                                                                a.link(href='/api/tms/download/file?id={{file.id}}',download='{{file.name}}',style="cursor: pointer;", bs-tooltip="tooltip.download",data-placement="right")
+                                                                                                                        strong|{{file.v}}
+                                                                                                                strong(ng-hide="checkType(downloadTariff)") {{file.v}}
+                                                                                                                    br
+                                                                                                                    small.muted  You do not have download permissions
+                                                                                .tools
+                                                                                    a.btn.btn-minier.btn-info
+                                                                                        i.icon-only.icon-share-alt     

@@ -1,0 +1,517 @@
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+  <div id="navbar-container" class="navbar-container">
+    <div class="pull-left">
+      <div class="navbar-header nav-menu-toggeler">
+        <div class="navbar-brand"><a class="brand"><span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span></a></div>
+      </div>
+      <div class="navbar-header menu-toggle">
+        <ul class="nav ace-nav">
+          <li ng-class="{ active: $state.includes('route:/home')}"><a href="#/home"><i class="icon-home"></i><span> Home</span></a></li>
+          <li permission=".navBillright" product="Bill Right" ng-class="{ active: $state.includes('billright')}"><a href="#/billright"><i class="icon-book"></i><span> Bill Right </span></a></li>
+          <!--li(permission="Pay Right",ng-class="{ active: $state.includes('payright')}")-->
+          <!--                                    a(href="#/payright")-->
+          <!--                                            i.icon-book-->
+          <!--                                            span  Pay Right-->
+          <!--li(permission="Quote Right",ng-class="{ active: $state.includes('quote')}")-->
+          <!--                                    a(href="#/quote")-->
+          <!--                                            i.icon-file-text-alt-->
+          <!--                                            span  Quote-->
+          <!--li(permission="rateNav.*.*",ng-class="{ active: $state.includes('rate')}")-->
+          <!--                                    a(href="#/rate")-->
+          <!--                                            i.icon-money-->
+          <!--                                            span  Rate-->
+          <!--li(permission="requestNav.*.*",ng-class="{ active: $state.includes('request')}")-->
+          <!--                                    a(href="#/request")-->
+          <!--                                            i.icon-retweet-->
+          <!--                                            span  Request-->
+          <!--li(permission="tmsNav.*.*",ng-class="{ active: $state.includes('tms')}")-->
+          <!--                                    a(href="#/tms")-->
+          <!--                                            i.icon-credit-card-->
+          <!--                                            span  Tariff-->
+          <li permission=".navOrganization" product="Admin" ng-class="{ active: $state.includes('organizationSetup')}"><a href="#/organizationSetup"><i class="icon-cogs"></i><span> Organization Setup</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pull-right">
+      <div class="navbar-header">
+        <ul class="nav ace-nav">
+          <li ng-show="pendingQuoteRequestCount || pendingRateRequestCount || pendingTmsRequestCount" class="label-warning"><a data-toggle="dropdown" href="#" class="dropdown-toggle"><i class="icon-bell-alt icon-only icon-animated-bell"></i><span ng-cloak="ng-cloak" class="badge badge-important">{{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}}</span></a>
+            <ul class="pull-right dropdown-navbar navbar-green dropdown-menu dropdown-caret dropdown-closer">
+              <li class="nav-header"><i class="icon-warning-sign"></i>{{pendingQuoteRequestCount + pendingRateRequestCount + pendingTmsRequestCount}} Notifications</li>
+              <li ng-show="pendingQuoteRequestCount"><a href="#/request/quote/pending">
+                  <div class="clearfix"><span class="pull-left"><i class="btn btn-mini no-hover btn-pink icon-envelope-alt"></i>New Quotes</span><span ng-cloak="ng-cloak" class="pull-right badge badge-pink">+{{pendingQuoteRequestCount}}</span></div></a></li>
+              <li ng-show="pendingRateRequestCount"><a href="#/request/rate/pending">
+                  <div class="clearfix"><span class="pull-left"><i class="btn btn-mini no-hover btn-success icon-envelope-alt"></i>New Rates</span><span ng-cloak="ng-cloak" class="pull-right badge badge-success">+{{pendingRateRequestCount}}</span></div></a></li>
+              <li ng-show="pendingTmsRequestCount"><a href="#/request/tms/pending">
+                  <div class="clearfix"><span class="pull-left"><i class="btn btn-mini no-hover btn-info icon-envelope-alt"></i>New Tariffs</span><span ng-cloak="ng-cloak" class="pull-right badge badge-info">+{{pendingTmsRequestCount}}</span></div></a></li>
+              <li><a href="#/request">See all requests<i class="icon-arrow-right"></i></a></li>
+            </ul>
+            <li tootltip="Set your work environment" class="minfo"><a data-toggle="dropdown" href="#" tooltip-placement="bottom" tooltip="Your Work Environment" class="in-alert dropdown-toggle"><i class="icon-cog icon-animated-vertical"></i><span ng-hide="loggedInUser.userCompany &amp;&amp; loggedInUser.userSystem" class="in-alert-cnt">!</span><span ng-show="loggedInUser.userCompany &amp;&amp; loggedInUser.userSystem" class="in-success-cnt"><i class="fa fa-check"></i></span></a>
+              <ul class="pull-right dropdown-menu filter-ddm dropdown-caret dropdown-close in-dd-noti inz-env">
+                <li class="in-notiifier in-notiifier1">
+                  <div class="noti-con">
+                    <div class="noti-title">Company</div>
+                    <dynamic-Select required="required" name="searchCompany" ng-model="search.company" ph="userCompany" placeholder="Select Company" change="clearSystem()" class="ftext"></dynamic-Select>
+                  </div>
+                </li>
+                <li class="in-notiifier in-notiifier1">
+                  <div class="noti-con">
+                    <div class="noti-title">System</div>
+                    <dynamic-Select required="required" customobj="{&quot;companyId&quot;:&quot;{{search.company[0].id!=null ? search.company[0].id : userCompany[0].id}}&quot;}" disabled="search.company==null || search.company.length==0" name="searchSystem" ng-model="search.system" ph="userSystem" placeholder="Select System" class="ftext"></dynamic-Select>
+                  </div>
+                </li>
+                <li class="in-notiifier in-notiifier1">
+                  <div class="noti-con pull-right">
+                    <button ng-click="setCompanySystemCookie()" ng-class="{'disabled': search.company==null || search.system==null}" ng-disabled="search.company==null || search.system==null" class="pull-right noti-title inz-btn btn-xs btn-success">Apply</button>
+                  </div>
+                  <div class="clearfix"></div>
+                </li>
+              </ul>
+            </li>
+          </li>
+          <li><a data-toggle="dropdown" href="#" class="in-alert dropdown-toggle"><i class="icon-envelope icon-animated-hand-pointer"></i><span class="in-alert-cnt">3</span></a>
+            <ul class="pull-right dropdown-menu dropdown-caret dropdown-close in-dd-noti filter-ddm">
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar8.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Shanon Butler</div>
+                  <div class="noti-des">Updated Pending bill request in abcd station.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar10.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Nikita Smith</div>
+                  <div class="noti-des">Updated Pending bill request.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar11.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Kesha</div>
+                  <div class="noti-des">Reported new bug.</div>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li><a data-toggle="dropdown" href="#" class="in-alert dropdown-toggle"><i class="icon-bell-alt icon-animated-bell"></i><span class="in-alert-cnt">9+</span></a>
+            <ul class="pull-right dropdown-menu dropdown-caret dropdown-close in-dd-noti filter-ddm">
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar8.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Shanon Butler</div>
+                  <div class="noti-des">Updated Pending bill request in abcd station.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar10.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Nikita Smith</div>
+                  <div class="noti-des">Updated Pending bill request.</div>
+                </div>
+              </li>
+              <li class="in-notiifier"><a class="noti-img"><img src="avatars/avatar11.jpg"/></a>
+                <div class="noti-con">
+                  <div class="noti-title">Kesha</div>
+                  <div class="noti-des">Reported new bug.</div>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li><a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle"><img src="avatars/avatar2.png" class="nav-user-photo"/>
+              <div id="user_info" class="user-info">{{loggedInUser.email}}
+              </div><i class="icon-angle-down"></i></a>
+            <ul class="user-menu pull-right dropdown-menu dropdown-caret dropdown-close in-dd-pro">
+              <li style="text-align: center;"><img src="avatars/avatar31.png" class="in-pro-img"/></li>
+              <li>
+                <div class="in-name">{{loggedInUser.firstName}}</div>
+                <div class="in-desig">{{loggedInUser.designation}}</div>
+              </li>
+              <li class="li-bt"><a href="#/main/users/{{userId}}" class="tab"><i class="icon-user"></i>Profile</a></li>
+              <li ng-class="{ active: $state.includes('changePassword')}" class="li-bt"><a href="#/changePassword" ng-hide="isCevaUser"><i class="icon-edit"></i>Change Password</a><a href="https://helpdesk.invoize.com/recovery.php?changepassword=true" ng-show="isCevaUser"><i class="icon-edit"></i>Change Password</a></li>
+              <li class="li-bt"><a ng-click="logout()" class="tab"><i class="icon-signout"></i>Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+</div>
+<div click-hide-show="click-hide-show" clickHide="btnEnvWarning" style="display:none;" class="modal-backdrop modal-info">
+  <div class="info-block"><img src="../styles/images/hd-arrow.png" height="70" class="img"/>
+    <div class="msg">Please choose your work environment first!
+      <button id="btnEnvWarning" class="inz-btn btn-sm btn-success">got it!</button>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" type="text/css" href="/styles/org_setup.css"/>
+<link rel="stylesheet" type="text/css" href="/styles/inz-in.css"/>
+<div id="main-container" class="main-container">
+  <div class="main-container-inner"><!--a.menu-toggler(id="menu-toggler",href="#")<span class="menu-text"></span>-->
+    <div id="sidebar" class="sidebar">
+      <div class="in-brand"><a href="#" class="navbar-brand"><span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span>invoize</a></div>
+      <div id="sidebar-shortcuts" class="sidebar-shortcuts">
+        <div id="sidebar-shortcuts-mini" class="sidebar-shortcuts-mini"><span class="icon-cog"></span></div>
+      </div>
+      <div id="sidebar-collapse" class="sidebar-collapse"><i class="icon-chevron-left"></i></div>
+      <ul ng-init="tab=''" class="nav nav-list">
+        <li permission="dashboard.billrightDashboard" ng-class="{ active:getCurrentState('charts,summary')}"><a data-toggle="tooltip" href="#/billright" tool-tip="tool-tip" data-placement="top" ng-click="tab='dashboard'" title="Dashboard" class="dropdown-toggle"><i class="icon-dashboard"></i><span class="menu-text trim-info-large">&nbsp; Dashboard</span><i class="arrow icon-angle-down"></i></a>
+          <ul ng-show="tab=='dashboard' || getCurrentState('charts,summary')" class="submenu">
+            <li permission="charts.billrightCharts" ng-class="{ active: getCurrentState('charts')}"><a href="#/billright/charts"> Charts</a></li>
+            <li permission="summary.billrightSummary" ng-class="{ active: getCurrentState('summary')}"><a href="#/billright/summary"> Summary</a></li>
+          </ul>
+        </li>
+        <li ng-class="{ active : getCurrentState('approvalRequest,workAllocation,shipmentEntry,invoiceProcessing,invoizeDelivery,webInvoice,tariffRepository,tariffLanes,calculationCode,documentManagement')}"><a href="#" ng-click="tab='Process'" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Process Management" class="dropdown-toggle"><i class="icon-tasks"></i><span class="menu-text trim-info-large">&nbsp; Process</span><i class="arrow icon-angle-down"></i></a>
+          <ul ng-show="tab.indexOf('Process')!==-1" class="submenu">
+            <li permission="workAllocation.sideWorkAllocation" ng-class="{ active: getCurrentState('workAllocation')}"><a href="#/billright/WorkAllocation" title="Work Allocation">Work Allocation</a></li>
+            <li permission="invoicing.sideInvoicing" ng-class="{ active: getCurrentState('shipmentEntry,invoiceProcessing')}"><a href="#" toggle-ele="toggle-ele" toggletarget="ul#Invoicing" title="Invoicing" class="dropdown-toggle">Invoicing<i class="fa fa-angle-down"></i></a>
+              <ul id="Invoicing" class="sub submenu">
+                <li permission="shipmentEntry.sideShipmentEntry" ng-class="{ active: getCurrentState('shipmentEntry')}"><a href="#/billright/shipmentEntry" title="Shipment Processing">Shipment Processing</a></li>
+                <li permission="invoiceProcessing.sideInvoiceProcessing" ng-class="{ active: getCurrentState('invoiceProcessing')}"><a href="#/billright/invoiceProcessing" title="Invoice Processing">Invoice Processing</a></li>
+              </ul>
+            </li>
+            <!--li(permission='invoiceDelivery.sideInvoiceDelivery',ng-class="{ active: getCurrentState('invoizeDelivery')}")-->
+            <!--    a(href="#/billright/invoizeDelivery/edi" ,title="Invoice Delivery") Invoice Delivery-->
+            <li permission="invoiceDelivery.sideInvoiceDelivery" ng-class="{ active: getCurrentState('invoizeDelivery')}"><a href="" title="Invoice Delivery" toggle-ele="toggle-ele" toggletarget="ul#Invoicedelivery">Invoice Delivery<i class="fa fa-angle-down"></i></a>
+              <ul id="Invoicedelivery" class="sub submenu">
+                <li permission="invoiceDelivery.tabEdiInvoiceDelivery" ng-class="{ active: getCurrentState('edi',2)}"><a href="#/billright/invoizeDelivery/edi" title="Invoices to be Delivered">Invoices to be Delivered</a></li>
+                <li permission="invoiceDelivery.tabDeliveredInvoice" ng-class="{ active: getCurrentState('deliveredInvoice',2)}"><a href="#/billright/invoizeDelivery/deliveredInvoice" title="Delivered Invoice">Delivered Invoice</a></li>
+              </ul>
+            </li>
+            <li permission="invoiceProcessing.sideInvoiceDelivery" ng-class="{ active: getCurrentState('webInvoice',2)}"><a href="#/billright/invoizeDelivery/webInvoice" title="Web Invoice">Web Invoice</a></li>
+            <li ng-class="{ active: getCurrentState('tariffRepository,calculationCode,documentManagement,tariffLanes')}"><a href="" toggle-ele="toggle-ele" toggletarget="ul#Tariff" title="Tariff Management">Tariff Management<i class="fa fa-angle-down"></i></a>
+              <ul id="Tariff" class="sub submenu">
+                <li permission="tariffRepository.viewTariffConfiguration" ng-class="{ active: getCurrentState('tariffRepository')}"><a href="#/billright/tariffManagement" title="Tariff Repository">Tariff Configuration</a></li>
+                <li permission="tariffLanes.tariffLaneView" ng-class="{ active: getCurrentState('tariffLanes')}"><a href="#/billright/tariffLane" title="Tariff Repository">Tariff Lanes</a></li>
+                <li permission="documentRepository.sideDocumentRepository" ng-class="{ active: getCurrentState('documentManagement')}"><a href="#/billright/documentManagement" title="Document Repository">Document Repository</a></li>
+                <li permission="calculationCode.sideCalculationCode" ng-class="{ active: getCurrentState('calculationCode')}"><a href="#/billright/calculationCode/view" title="Calculation Codes">Calculation Codes</a></li>
+              </ul>
+            </li>
+            <li ng-class="{ active: $state.current.name.split('.')[1]=='ims'}" permission="ims.sideIMS"><a href="#/billright/ims" title="Issue Management">Issue Management</a></li>
+            <!--li(ng-class="{ active: getCurrentState('approvalRequest')}")-->
+            <!--    a(href="",toggle-ele,toggletarget="ul#Approval" ,title="Approval Requests") Approval Requests-->
+            <!--        i.fa.fa-angle-down-->
+            <!--    ul.sub.submenu#Approval-->
+            <!--        li(ng-class="{ active: getCurrentState('my',2)}")-->
+            <!--            a(href="#/billright/approvalRequest/my" ,title="My Requests") My Requests-->
+            <!--        li(ng-class="{ active: getCurrentState('pending',2)}")-->
+            <!--            a(href="#/billright/approvalRequest/pending" ,title="Pending Requests") Pending-->
+            <li ng-class="{ active: getCurrentState('approvalRequest')}"><a href="" toggle-ele="toggle-ele" toggletarget="ul#Approval" title="Approval Requests">Approval Requests<i class="fa fa-angle-down"></i></a>
+              <ul id="Approval" class="sub submenu">
+                <!--<<<<<<< HEAD-->
+                <!--                                li(ng-class="{ active: getCurrentState('mycompleted,mypending',2)}")-->
+                <!--                                    a(href="",toggle-ele,toggletarget="ul#myApproval" ,title="My Requests") My Requests-->
+                <!--                                        i.fa.fa-angle-down(style="margin-top:-13px;")-->
+                <!--                                    ul.sub.submenu.sub2-menu#myApproval-->
+                <!---->
+                <!--                                        li-->
+                <!--=======-->
+                <li ng-class="{ active: getCurrentState('myapproved,myrejected,mypending',2)}"><a href="" toggle-ele="toggle-ele" toggletarget="ul#myApproval" title="My Requests">My Requests<b class="fa fa-angle-down"></b></a>
+                  <ul id="myApproval" class="sub submenu sub2-menu">
+                    <li ng-class="{ active: getCurrentState('myapproved',2)}"><a href="#/billright/approvalRequest/myapproved" title="Completed">Approved</a></li>
+                    <li ng-class="{ active: getCurrentState('myrejected',2)}"><a href="#/billright/approvalRequest/myrejected" title="Completed">Rejected</a></li>
+                    <li ng-class="{ active: getCurrentState('mypending',2)}"><a href="#/billright/approvalRequest/mypending" title="Pending">In Process</a></li>
+                  </ul>
+                </li>
+                <li ng-class="{ active: getCurrentState('pending',2)}"><a href="#/billright/approvalRequest/pending" title="Pending Requests">Pending for Me</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li permission="reports.sideReports" ng-class="{ active: getCurrentState('HWBStatusReport')}"><a href="#" data-placement="top" ng-click="tab='reports'" data-toggle="tooltip" title="Reports" class="dropdown-toggle"><i class="icon-file-text"></i><span class="menu-text trim-info-large">&nbsp; Reports</span><i class="arrow icon-angle-down"></i></a>
+          <ul ng-show="tab=='reports' || getCurrentState('HWBStatusReport')" class="submenu">
+            <li ng-class="{ active: getCurrentState('HWBStatusReport')}"><a href="#/billright/HWBStatusReport"> Status Report</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="main-content" class="main-content">
+      <div ng-if="$state.current.name=='billright' &amp;&amp; (loggedInUser.userCompany &amp;&amp; loggedInUser.userSystem)" permission="dashboard.billrightDashboard">
+        <div style="clear:both;height:10px;"></div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="div-bill">
+              <div ng-init="search=null" class="pull-right">
+                <button ng-click="refreshShipments()" title="Refresh" class="inz-btn btn-xs btn-success"><i class="fa fa-refresh"></i></button>
+                <div style="vertical-align: inherit;" class="btn-group">
+                  <button data-toggle="dropdown" type="button" class="btn-sm dropdown-toggle btn-custom"> Choose columns &nbsp;<i class="fa fa-angle-down"></i></button>
+                  <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+                    <li>
+                      <div ng-repeat="(k,col) in allocationColumns" class="col-sm-12">
+                        <input type="checkbox" id="col_{{$index}}" ng-click="setSelectedCols($event.target,k+'|'+col)"/>
+                        <label for="col_{{$index}}">{{col}}</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="opt-cmd">
+                        <button ng-click="getAllocatedList()" class="inz-btn btn-xs btn-success">Apply</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <input placeholder="Search.." ng-model="search" class="input-search-brown"/>
+                <button class="input-search-brown"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+            <div class="stat-panel">
+              <div class="stat-row">
+                <div class="col-md-3 col-sm-12 col-xs-12 stat-cell padding-sm-hr no-border-r valign-top">
+                  <h4 class="padding-sm padding-xs-hr"><i class="fa fa-cloud text-primary"></i>&nbsp; Work Allocation</h4>
+                  <ul class="list-group no-margin">
+                    <li class="list-group-item-c no-border-hr padding-xs-hr no-bg no-border-radius">Accounts<span class="label-info pull-right p-side">{{totalShipments.account}}</span></li>
+                    <li class="list-group-item-c no-border-hr padding-xs-hr no-bg no-border-radius">Users<span class="label-success pull-right p-side">{{totalShipments.users}}</span></li>
+                    <li class="list-group-item-c no-border-hr padding-xs-hr no-bg no-border-radius">Shipments<span class="label-warning pull-right p-side">{{totalShipments.shipments}}</span></li>
+                  </ul>
+                </div>
+                <div class="col-md-9 col-sm-12 col-xs-12 bg-primary stat-cell padding-sm valign-middle">
+                  <div style="max-height:250px; height:250px;outline:none !important;padding-right:10px;" nice-scroll="nice-scroll">
+                    <!--table.table-b-->
+                    <!--    thead-->
+                    <!--        tr-->
+                    <!--            td S.No.-->
+                    <!--            td(ng-repeat="h in allocatedShipments.header") {{h}}-->
+                    <!--    tbody(tree-table="allocatedShipments")-->
+                    <table class="table-b">
+                      <thead>
+                        <tr>
+                          <th>S.No.</th>
+                          <th ng-repeat="h in allocatedShipments.header">{{h}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="shipment in allocatedShipments.msg | filter:search ">
+                          <td><span> {{$index+1}}</span></td>
+                          <td ng-repeat="h in allocatedShipments.header"><i ng-if="h==='User ID'" class="fa fa-user color-sample"></i><span ng-if="h!=='Count'">&nbsp; {{shipment[h]}}</span><span ng-if="h==='Count'" class="command1 dropdown-toggle p-side1">{{shipment[h]}}</span>
+                            <ul ng-if="shipment[h] &amp;&amp; h==='Count'" class="dropdown-menu-c dropdown-caret-c dropdown-menu-c1">
+                              <li><a href="" ng-click="showPendingShipment(shipment[&quot;Account Number&quot;],shipment[&quot;Account ID&quot;],shipment[&quot;User ID&quot;])" permission="shipmentEntry.viewShipmentData">Processing</a><a href="" ng-click="openAllocateDialog(shipment)">Re-allocate</a></li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="row">
+          <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <div class="infobox infobox1 infobox-green">
+                <div class="infobox-icon"><i class="icon-comments"></i></div>
+                <div class="infobox-data"><span class="infobox-data-number">14</span>
+                  <div class="infobox-content">comments + 2 Issues</div>
+                </div>
+                <div class="stat stat-important">8%</div>
+                <div class="info-footer-title bg-green">View Details<i class="gly-icon icon-arrow-right"></i></div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <div class="infobox infobox1 infobox-blue">
+                <div class="infobox-icon"><i class="icon-book"></i></div>
+                <div class="infobox-data"><span class="infobox-data-number">11</span>
+                  <div class="infobox-content">Pending Shipments</div>
+                </div>
+                <div class="badge badge-success">+3%<i class="icon-arrow-up"></i></div>
+                <div class="info-footer-title bg-blue">View Details<i class="gly-icon icon-arrow-right"></i></div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <div class="infobox infobox1 infobox-pink">
+                <div class="infobox-icon"><i class="icon-book"></i></div>
+                <div class="infobox-data"><span class="infobox-data-number">389</span>
+                  <div class="infobox-content">New Shipments</div>
+                </div>
+                <div class="stat stat-warning">8%</div>
+                <div class="info-footer-title bg-pink">View Details<i class="gly-icon icon-arrow-right"></i></div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <div class="infobox infobox1 infobox-red">
+                <div class="infobox-icon"><i class="icon-exclamation-sign"></i></div>
+                <div class="infobox-data"><span class="infobox-data-number">32</span>
+                  <div class="infobox-content">Pending Issues</div>
+                </div>
+                <div class="info-footer-title bg-red">View Details<i class="gly-icon icon-arrow-right"></i></div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <div class="infobox infobox1 infobox-orange2">
+                <div class="infobox-chart"><span spark="spark" data-values="196,128,202,177,154,94,100,170,224" class="sparkline"></span></div>
+                <div class="infobox-data"><span class="infobox-data-number">6,251</span>
+                  <div class="infobox-content">Overall Unbilled</div>
+                </div>
+                <div class="badge badge-success">+7.5%<i class="icon-arrow-up"></i></div>
+                <div class="info-footer-title bg-blue">View Details<i class="gly-icon icon-arrow-right"></i></div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <div class="infobox infobox1 infobox-red">
+                <div class="infobox-progress1">
+                  <div epc="epc" size="50" data-percent="42" class="easy-pie-chart percentage">
+                    <div class="percent">42%</div>
+                  </div>
+                </div>
+                <div class="infobox-data"><span class="infobox-text font-size-11">Work Allocation</span>
+                  <div class="infobox-content font-size-11">58 Shipments Pending</div>
+                </div>
+                <div class="info-footer-title bg-red">View Details<i class="gly-icon icon-arrow-right"></i></div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="infobox infobox infobox-green infobox-small infobox-small1 infobox-dark">
+                <div class="infobox-progress">
+                  <div epc="epc" size="39" data-percent="61" class="easy-pie-chart percentage">
+                    <div class="percent">61%</div>
+                  </div>
+                </div>
+                <div class="infobox-data">
+                  <div class="infobox-content">Billing</div>
+                  <div class="infobox-content">Completion</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="infobox infobox infobox-blue infobox-small infobox-small1 infobox-dark">
+                <div class="infobox-chart"><span spark="spark" data-values="3,4,2,3,4,4,2,2" class="sparkline"></span></div>
+                <div class="infobox-data"><span class="infobox-content">Revenue</span>
+                  <div class="infobox-content">$32,000
+                    <!--.infobox-data-->
+                    <!--     .infobox-content Earnings-->
+                    <!--     .infobox-content $32,000-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="infobox infobox infobox-grey infobox-small infobox-small1 infobox-dark">
+                <div class="infobox-icon"><i class="icon-download-alt"></i></div>
+                <div class="infobox-data">
+                  <div class="infobox-content">Downloads</div>
+                  <div class="infobox-content">1,205</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="widget-box">
+                <div class="widget-header">
+                  <h5><i class="icon-signal"></i>Global Unbilled Details</h5>
+                  <div class="widget-toolbar no-border">
+                    <button data-toggle="dropdown" class="btn1 btn-primary dropdown-toggle">This Week &nbsp;<i class="icon-angle-down icon-on-right bigger-110"></i></button>
+                    <ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
+                      <li class="active"><a href="#" class="blue"><i class="icon-caret-right bigger-110"></i>&nbsp; This Week</a></li>
+                      <li><a href="#"><i class="icon-caret-right bigger-110 invisible"></i>&nbsp; Last Week</a></li>
+                      <li><a href="#"><i class="icon-caret-right bigger-110 invisible"></i>&nbsp; This Month</a></li>
+                      <li><a href="#"><i class="icon-caret-right bigger-110 invisible"></i>&nbsp; Last Month</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div nice-scroll="nice-scroll" class="widget-body">
+                  <div class="widget-main">
+                    <div worldmap="worldmap" style="height:450px;border:1px solid #ddd;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--    .col-xs-12.col-sm-12.col-md-12-->
+        <!--        .widget-box-->
+        <!--            .widget-header-->
+        <!--                h4-->
+        <!--                    i.icon-list-alt-->
+        <!--                    | Shipment Volume-->
+        <!--                .widget-toolbar.no-border-->
+        <!--                    ul.nav-tabs-1-->
+        <!--                        li.active-->
+        <!--                            a(href="#cchart" ,data-toggle="tab")-->
+        <!--                                i.fa.fa-dollar-->
+        <!--                                | &nbsp; Charts-->
+        <!--                        li-->
+        <!--                            a(href="#cdetail" ,data-toggle="tab")-->
+        <!--                                 i.fa.fa-list-->
+        <!--                                 | &nbsp; Details-->
+        <!--            .widget-body-->
+        <!--                .widget-main-->
+        <!--                    .tab-content-->
+        <!--                        .tab-pane.in.active#cchart-->
+        <!--                            //div(plot,style='height: 215px;')-->
+        <!--                            div(google-chart,obj="coffeeData")-->
+        <!--                        .tab-pane#cdetail-->
+        <!--                            div.overflow-auto(style='height:215px;')-->
+        <!--                                table.table-chart.table-bordered.table-striped-->
+        <!--                                    thead-->
+        <!--                                        tr-->
+        <!--                                            th Column name-->
+        <!--                                            th Column name-->
+        <!--                                            th Column name-->
+        <!--                                            th Column name-->
+        <!--                                    tbody-->
+        <!--                                        tr-->
+        <!--                                            td Row1-->
+        <!--                                            td Row2-->
+        <!--                                            td Row3-->
+        <!--                                            td Row4-->
+        <!--                                        tr-->
+        <!--                                            td Row1-->
+        <!--                                            td Row2-->
+        <!--                                            td Row3-->
+        <!--                                            td Row4-->
+        <!--                                        tr-->
+        <!--                                            td Row1-->
+        <!--                                            td Row2-->
+        <!--                                            td Row3-->
+        <!--                                            td Row4-->
+        <!--                                        tr-->
+        <!--                                            td Row1-->
+        <!--                                            td Row2-->
+        <!--                                            td Row3-->
+        <!--                                            td Row4-->
+        <!--                                        tr-->
+        <!--                                            td Row1-->
+        <!--                                            td Row2-->
+        <!--                                            td Row3-->
+        <!--                                            td Row4-->
+        <!--                                        tr-->
+        <!--                                            td Row1-->
+        <!--                                            td Row2-->
+        <!--                                            td Row3-->
+        <!--                                            td Row4-->
+        <!--.col-md-6.col-sm-12.col-xs-12-->
+        <!--    .col-sm-12.col-md-12.col-xs-12-->
+        <!--        .widget-box-->
+        <!--            .widget-header-->
+        <!--                h4-->
+        <!--                    i.icon-list-alt-->
+        <!--                    | Realtime-->
+        <!--                span.widget-toolbar-->
+        <!--                    a(data-action="settings",href="#")-->
+        <!--                        i.icon-cog-->
+        <!--                    a(data-action="reload",href="#")-->
+        <!--                        i.icon-refresh-->
+        <!--                        //a(data-action="collapse", href="#")-->
+        <!--                        //    i.icon-chevron-up-->
+        <!--                    a(data-action="close", href="#")-->
+        <!--                        i.icon-remove-->
+        <!--            .widget-body-->
+        <!--                .widget-main-->
+        <!--                    div(real-time-chart,style='height:350px;')-->
+        <!--.row-->
+        <!--        .col-md-12-->
+        <!--            div(style="clear:both; height:20px;")-->
+        <!--            .row-->
+        <!--                .col-sm-12(style="min-width:100% !important;")-->
+        <!--                    .widget-box-->
+        <!--                        .widget-header-->
+        <!--                            h4-->
+        <!--                                i.icon-list-alt-->
+        <!--                                | Pie Chart-->
+        <!--                        .widget-body-->
+        <!--                            .widget-main-->
+        <!--                                div(flot-pie,style='height: 400px;')-->
+      </div>
+      <div ui-view="contents" class="page-content"></div>
+    </div>
+  </div>
+</div>

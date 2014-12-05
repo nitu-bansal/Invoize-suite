@@ -1,0 +1,150 @@
+
+<div class="col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">
+      <div class="fluid-row">
+        <div class="btn-group pull-right"><a ng-hide="accountCreateLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary"><i class="icon-mail-reply"></i></a>
+          <button permission="createProfile.*.*" ng-hide="profileCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="create(profile)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-sm btn-primary"><i class="icon-ok"></i></button><i ng-show="profileCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+        </div>
+      </div>
+      <tabset>
+        <tab heading="Profile" style="overflow:hidden" class="tab">
+          <ng-form name="form2">
+            <div class="form-group">
+              <label class="control-label">Company Name</label>
+              <div class="col-sm-9">
+                <input type="text" name="companyName" ng-model="profile.companyName" placeholder="Company Name" style="width:200px" required="required"/>
+                <label ng-show="form2.companyName.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.companyName.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Company Headquarters City</label>
+              <div class="col-sm-9">
+                <input type="text" name="companyHeadquartersCity" ng-model="profile.companyHeadquartersCity" placeholder="Company Headquarters City" style="width:200px" required="required"/>
+                <label ng-show="form2.companyHeadquartersCity.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.companyHeadquartersCity.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Name</label>
+              <div class="col-sm-9">
+                <input type="text" name="name" ng-model="profile.name" placeholder="Name" style="width:200px" required="required"/>
+                <label ng-show="form2.name.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.name.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Vender #</label>
+              <div class="col-sm-9">
+                <input type="text" name="venderNo" ng-model="profile.venderNo" placeholder="Vender Number" style="width:200px" required="required"/>
+                <label ng-show="form2.venderNo.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.venderNo.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Pay to</label>
+              <div class="col-sm-9">
+                <input type="text" name="payTo" ng-model="profile.payTo" placeholder="Pay to" style="width:200px" required="required"/>
+                <label ng-show="form2.payTo.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.payTo.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Payment Mode</label>
+              <div class="col-sm-9">
+                <input type="text" name="paymentMode" ng-model="profile.paymentMode" placeholder="Payment Mode" style="width:200px" required="required"/>
+                <label ng-show="form2.paymentMode.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.paymentMode.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Department</label>
+              <div class="col-sm-9">
+                <input type="text" name="department" ng-model="profile.department" placeholder="Department" style="width:200px" required="required"/>
+                <label ng-show="form2.department.$error.required" class="help-inline required">*</label>
+                <label ng-show="form2.department.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+          </ng-form>
+        </tab>
+        <tab heading="Contact Info" style="overflow:hidden" class="tab">
+          <ng-form name="form3">
+            <div class="form-group">
+              <label class="control-label">Phone</label>
+              <div class="col-sm-9">
+                <input type="text" name="phone" ng-model="profile.phone" placeholder="Phone" style="width:200px" required="required"/>
+                <label ng-show="form3.phone.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.phone.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Mobile</label>
+              <div class="col-sm-9">
+                <input type="text" name="mobile" ng-model="profile.mobile" placeholder="Mobile" style="width:200px" required="required"/>
+                <label ng-show="form3.mobile.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.mobile.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Fax</label>
+              <div class="col-sm-9">
+                <input type="text" name="fax" ng-model="profile.fax" placeholder="Fax" style="width:200px" required="required"/>
+                <label ng-show="form3.fax.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.fax.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Email</label>
+              <div class="col-sm-9">
+                <input type="text" name="email" ng-model="profile.email" placeholder="Email" style="width:200px" required="required"/>
+                <label ng-show="form3.email.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.email.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Address 1</label>
+              <div class="col-sm-9">
+                <input type="text" name="address1" ng-model="profile.address1" placeholder="Address 1" style="width:200px" required="required"/>
+                <label ng-show="form3.address1.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.address1.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Address 2</label>
+              <div class="col-sm-9">
+                <input type="text" name="address2" ng-model="profile.address2" placeholder="Address 2" style="width:200px" required="required"/>
+                <label ng-show="form3.address2.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.address2.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Location</label>
+              <div class="col-sm-9">
+                <input type="text" name="location" ng-model="profile.location" placeholder="Location" style="width:200px" required="required"/>
+                <label ng-show="form3.location.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.location.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">State</label>
+              <div class="col-sm-9">
+                <input type="text" name="state" ng-model="profile.state" placeholder="State" style="width:200px" required="required"/>
+                <label ng-show="form3.state.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.state.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Zipcode </label>
+              <div class="col-sm-9">
+                <input type="text" name="zipcode" ng-model="profile.zipcode" placeholder="Zipcode" style="width:200px" required="required"/>
+                <label ng-show="form3.zipcode.$error.required" class="help-inline required">*</label>
+                <label ng-show="form3.zipcode.$valid" class="help-inline required validTick">&#10004;</label>
+              </div>
+            </div>
+          </ng-form>
+        </tab>
+      </tabset>
+    </div>
+  </form>
+</div>

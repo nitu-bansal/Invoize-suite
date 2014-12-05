@@ -1,0 +1,10 @@
+.row.in-wiz-ttl.in-fix-scroll(ng-hide="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12.in-add
+        .pull-left.in-wiz-info Permission
+        a.inz-btn.btn-sm.btn-default(ng-click="getTemplateAccessModule()") Cancel
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-click="save()") Save
+.row(ng-init="getTemplateAccessModule()")
+    .col-xs-12
+        tabset
+            tab.tab(heading="Modules",ng-click="AddModify=false;register=false;invite=true")
+                div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',height="hh",datarows='moduleSI in modulesSI',manualColumnResize='true', columns='columnsSI',minsparerows='1',onBeforeChange='celChange')

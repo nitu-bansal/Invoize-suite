@@ -1,0 +1,22 @@
+
+<div ng-init="getAccountMetadataList('')"></div>
+<div ng-show="!showGrid">
+  <div ng-repeat="ListItem in metadataTypes | orderBy:title" ng-form="subForm" style="margin-bottom:10px;" class="col-sm-6 col-md-4 col-xs-12 inz-blk">
+    <div class="in-view-block">
+      <div class="title">{{ListItem.n}}</div>
+      <div class="line">
+        <div class="caption">Count</div>
+        <div class="data">{{ListItem.count}}</div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="setMetadataType(ListItem)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-show="!metadataLoader &amp;&amp; showGrid" ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" height="hh" width="hw" datarows="metadata in metadatas" manualColumnResize="true" columns="columns" minsparerows="1" onBeforeChange="celChangeMetadata" afterRender="afterRender()"></div>
+<pagination id="chargePaginations" ng-show="!metadataLoader &amp;&amp; showGrid" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" max-size="paginationSize" rotate="true" class="pagination-small"></pagination>

@@ -1,0 +1,149 @@
+.row.in-wiz-ttl.in-fix-scroll(ng-init="readCode()",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Calculation Code
+        .pull-right
+            a.inz-btn.btn-sm.btn-default(ng-href="#/billright/calculationCode/view") Cancel
+            button.inz-btn.btn-sm.btn-success(permission="calculationCode.editCalculationCode",type="submit",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="updateCode(calculationCode)") Save Changes
+div(style="clear:both;height:47px;")
+form(name="form",novalidate)
+    .col-xs-12.col-md-12.col-sm-12
+        .widget-box
+            .widget-header.widget-header1
+                h4  Basic
+            .widget-body
+                .widget-main
+                    .row
+                        .col-sm-6.col-md-4.col-xs-12
+                            label Calculation Code
+                            br
+                            input.input-large(type="text", name="codeName", ng-model="calculationCode.name", placeholder="Calculation Code", required,ng-disabled="true")
+                            span.red(ng-show="form.codeName.$error.required") *
+                            span.green.validTick(ng-show="form.codeName.$valid") &#10004;
+                        .col-sm-6.col-md-4.col-xs-12
+                            label Calculation Text
+                            br
+                            input.input-large(type="text", name="codeDescription", ng-model="calculationCode.description", placeholder="Calculation Code", required)
+                        .col-sm-6.col-md-4.col-xs-12
+                            label Calculation Format
+                            br
+                            select.input-large(ui-select2, name="codeFormat", ng-model="calculationCode.format", data-placeholder="Please select...", style="width:200px", required)
+                                option(value="")
+                                option(ng-repeat="calculationFormat in calculationFormatList", value="{{calculationFormat.id}}") {{calculationFormat.n}}
+                            span.red(ng-show="form.codeFormat.$error.required") *
+                            span.green.validTick(ng-show="form.codeFormat.$valid") &#10004;
+    .col-xs-12.col-md-12.col-sm-12
+        .widget-box
+            .widget-header.widget-header1
+                h4 Code Definition
+            .widget-body.overflow-auto
+                .widget-main
+                    table.inz-table.inz-table2(ng-show="calculationCode.codeLevels.length")
+                        thead
+                            tr
+                                th(rowspan="2", colspan="0", class="center borderleftB" ,style="min-width:40px;")
+                                th(colspan="3", class="center borderleftB") Level 1
+                                th(rowspan="2",colspan="0", class="center borderleftB", style="min-width:130px;") Operator
+                                th(colspan="3", class="center borderleftB") Level 2
+                                th(rowspan="2",colspan="0", class="center borderleftB", style="min-width:130px;") Operator
+                                th(colspan="3", class="center borderleftB") Level 3
+                                th(colspan="2", class="center borderleftB") Result
+
+                            tr
+
+                                th.borderleftB(style="min-width:130px;") Field/Value
+                                th.borderleftB(style="min-width:130px;") Rounding Factor
+                                th.borderleftB(style="min-width:130px;") Rounding Method
+                                th.borderleftB(style="min-width:130px;") field/Value
+                                th.borderleftB(style="min-width:130px;") Rounding Factor
+                                th.borderleftB(style="min-width:130px;") Rounding Method
+                                th.borderleftB(style="min-width:130px;") field/Value
+                                th.borderleftB(style="min-width:130px;") Rounding Factor
+                                th.borderleftB(style="min-width:130px;") Rounding Method
+                                th.borderleftB(style="min-width:130px;") Rounding Factor
+                                th.borderleftB(style="min-width:130px;") Rounding Method
+                        tbody(ng-repeat="row in calculationCode.codeLevels")
+                            tr(style="cursor: pointer;")
+                                td
+                                    span
+                                        a.grey(data-action='close',ng-click="removeLevel($index)", style="cursor: pointer;",ng-show="$index>0")
+                                            i.icon-trash
+                                td
+                                    span
+                                        input.ruleTagName(type="text", ng-model="row.l1Field", name="l1Field_{{$index}}",typeahead="suggestion for suggestion in fieldBarVal($viewValue,$index,'l1Field_'+$index)", typeahead-editable="true",toolTip="Field/Value",placeholder="Field/Value",ng-change="checkLength()")
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="l1RoundingFactor_{{$index}}", ng-model="row.l1RoundingFactor", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rf in roundingFactor", value="{{rf.id}}") {{rf.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="l1RoundingMethod_{{$index}}",ng-disabled="row.l1RoundingFactor==null", ng-model="row.l1RoundingMethod", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rm in roundingMethod", value="{{rm.id}}") {{rm.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="operator1_{{$index}}", ng-model="row.operator1", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="o in operators", value="{{o.id}}") {{o.n}}
+                                td
+                                    span
+                                        input.ruleTagName(type="text", ng-model="row.l2Field", name="l2Field_{{$index}}",typeahead="suggestion for suggestion in fieldBarVal($viewValue,$index,'l2Field_'+$index)", typeahead-editable="true",toolTip="Field/Value",placeholder="Field/Value")
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="l2RoundingFactor_{{$index}}", ng-model="row.l2RoundingFactor", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rf in roundingFactor", value="{{rf.id}}") {{rf.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="l2RoundingMethod_{{$index}}", ng-model="row.l2RoundingMethod", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rm in roundingMethod", value="{{rm.id}}") {{rm.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="operator2_{{$index}}", ng-model="row.operator2", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="o in operators", value="{{o.id}}") {{o.n}}
+                                td
+                                    span
+                                        input.ruleTagName(type="text", ng-model="row.l3Field", name="l3Field_{{$index}}",typeahead="suggestion for suggestion in fieldBarVal($viewValue,$index,'l3Field_'+$index)", typeahead-editable="true",toolTip="Field/Value",placeholder="Field/Value")
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="l3RoundingFactor_{{$index}}", ng-model="row.l3RoundingFactor", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rf in roundingFactor", value="{{rf.id}}") {{rf.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="l3RoundingMethod_{{$index}}", ng-model="row.l3RoundingMethod", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rm in roundingMethod", value="{{rm.id}}") {{rm.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="resultRoundingFactor_{{$index}}", ng-model="row.resultRoundingFactor", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rf in roundingFactor", value="{{rf.id}}") {{rf.n}}
+                                td
+                                    span
+                                        select.input-type-table(ui-select2, name="resultRoundingMethod_{{$index}}", ng-model="row.resultRoundingMethod", data-placeholder="Please select...")
+                                            option(value="")
+                                            option(ng-repeat="rm in roundingMethod", value="{{rm.id}}") {{rm.n}}
+                    div(style="clear:both;height:10px;")
+                    a(name='btnAddTag',ng-click='addLevel()',tool-tip,data-placement="top", data-toggle="tooltip",toolTip="Add",tooltip-placement="top",style="cursor:pointer;")
+                        span.in-add-sign +
+                        span.in-add-txt Add
+                    div(style="clear:both;height:10px;")
+                    div(ng-if="isMultiple")
+                        label Select Result Whichever is &nbsp;
+                        select.input-large(ui-select2, name="resultCriteria", ng-model="calculationCode.resultCriteria", data-placeholder="Please select...", style="width:200px", required)
+                            option(value="")
+                            option(ng-repeat="item in compareList", value="{{item.id}}") {{item.n}}
+                        span(ng-show="form.resultCriteria.$error.required") *
+                        span.green.validTick(ng-show="form.resultCriteria.$valid") &#10004;
+    .col-xs-12.col-md-12.col-sm-12
+        .widget-box
+            .widget-header.widget-header1
+                h4 Action to Perform
+            .widget-body
+                .widget-main
+                    label Pass Result To  &nbsp;
+                    dynamic-Select(name='passToCode',ng-model="calculationCode.passToCode",customObj='{"system":"{{loggedInUser.userSystem[0].id}}","source":"{{calculationCode.name}}","currentContext":"{{$state.$current.context.product}}.calculationCode"}',ph="calculationCode",data-placeholder="Select Module", change="checkPassCode()")

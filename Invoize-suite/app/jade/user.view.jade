@@ -1,0 +1,44 @@
+.row.in-wiz-ttl.fix-scroll
+        .col-md-7.col-sm-6
+                .in-wiz-info Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+        .col-md-5.col-sm-6.in-add
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="profileListLoader")
+                input.in-query(placeholder="Search Profile")
+
+                button.in-query
+                        i.fa.fa-search
+                //- a(href="#/wizard/users/new", style="vertical-align: middle;")
+                a(style="vertical-align: middle;",ng-click="redirectTo('/users/new')",style="cursor:pointer",ng-hide="loggedInUser.companyType!='Multiple'")
+                        span.in-add-sign +
+                        span.in-add-txt Add Profile
+
+
+
+.row(nice-scroll, max-height, when-scrolled="loadMore()", style="overflow:auto")
+        .col-sm-4.inz-blk(ng-repeat="ListItem in profileList | orderBy:title",ng-form="subForm", style="margin-bottom:30px;")                
+                .in-view-block
+                        .title 
+                                i.fa.fa-tags.small
+                                |  {{ListItem.title}}
+                        .line(ng-repeat="l in ListItem.fields")
+                                .caption {{l.label}}
+                                .data {{l.value | selectFormat}}                        
+                .in-btn-blk
+                        .in-btn-grp
+                                .in-btn-row
+                                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" , ng-click="confirmDeleteProfile(ListItem.id)")
+                                                i.fa.fa-trash-o
+                                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="companyEditView(ListItem)")
+                                                i.fa.fa-pencil
+                                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="View" , ng-click="invitePeople(ListItem)")  
+                                                i.fa.fa-group                                      
+        
+
+.in-wiz-footer   
+        //- button.inz-btn.btn-sm.btn-primary(type="submit",ng-click="loadMore()") Load More   
+        button.inz-btn.btn-sm.btn-danger(ng-click="prevStep()")
+                i.fa.fa-long-arrow-left    
+                |  Previous Step
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-disabled="mainForm2.$invalid",ng-click="") Finish    
+                //- i.icon-angle-right 
+     

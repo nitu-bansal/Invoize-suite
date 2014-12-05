@@ -1,0 +1,64 @@
+.row.in-wiz-ttl.fix-scroll(ng-init="companyEditView($routeParams.companyId)", ng-show="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12
+        .pull-left
+            .in-wiz-info Welcome to company configuration. You can add / configure / edit your companies here. You can also arrange the companies as per the company hierarchy in your organization.
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyUpdateLoader")
+            a(permission="editTemplateCompany",ng-click="openDialogUpdateTemplate(company,false)", href="javascript:void(0);", style="margin-right:15px")
+                span.in-add-sign +
+                span.in-add-txt Add / Modify Fields
+
+.row.in-wiz-ttl.in-fix-scroll(ng-init="companyEditView($routeParams.companyId)",ng-hide="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12
+        .pull-left
+            .in-wiz-info Edit Company
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyCreateLoader")
+            a(permission="editTemplateCompany",ng-click="openDialogUpdateTemplate(company,false)", href="javascript:void(0);", style="margin-right:15px")
+                span.in-add-sign +
+                span.in-add-txt Add / Modify Fields
+            a.inz-btn.btn-sm.btn-default(permission="listCompany",ng-click="redirectTo('/company/view')") Cancel
+            button.inz-btn.btn-sm.btn-success(permission="editCompany",type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="update()") Save Changes
+
+div
+    form(name="mainForm2",novalidate)
+        div.in-wiz-row(ng-repeat="item in company.fields | orderBy:'displayOrder'",ng-form="subForm",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+            label.control-label {{item.label}}
+            .controls(ng-switch-when="true",ng-switch='item.type')
+                input(ng-switch-when='text',unique="{{item.key}},{{item.isUniqueField}},company,{{$routeParams.companyId}}",type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                //input(ng-switch-when='date',datepicker-popup="{{format}}", min="'2013-12-16'", max="'2013-12-26'",datepicker-options="dateOptions",name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                input(ng-switch-when='numeric',unique="{{item.key}},{{item.isUniqueField}},company,{{$routeParams.companyId}}",type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                dynamic-Select(ng-switch-when='dropdown',customobj='{"childCompany":"{{$routeParams.companyId}}"}',ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                span(ng-show="subForm.name.$error.required") *
+                span(ng-show="subForm.name.$error.unique") already Exists
+                span(ng-show="subForm.name.$error.number") only numbers
+                span(ng-show="subForm.name.$error.date") only date
+                span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+                span(ng-show="subForm.name.$error.pattern") Can contain only text
+                span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+        .in-wiz-footer
+            a.inz-btn.btn-sm.btn-default(permission="listCompany",ng-click="redirectTo('/company/view')") Cancel
+            button.inz-btn.btn-sm.btn-success(permission="editCompany",type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="update()") Save
+
+.row.in-wiz-ttl.history(permission="historyViewCompany")
+    .col-xs-12
+        .pull-left
+            .in-wiz-info History
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-small(ng-show="historyLoader")
+
+.row.history-block(permission="historyViewCompany")
+    .col-xs-12
+        div(ng-hide="historyTemp.count") No history available
+        div(ng-repeat="obj in historyTemp.history",data-accordion="",data-close-others="false",ng-show="historyTemp.count")
+            div(data-accordion-group="",data-heading="{{obj.emailID}}",data-date="{{obj.timestamp}}",ng-click="getHistory($index,obj)")
+                div.line(ng-repeat="row1 in obj.historyData.fields")
+                    .caption {{row1.label}}
+                    .data {{row1.value | selectFormat}}
+        div(style="clear:both;height:5px;")
+        .pull-right
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-click="loadMoreHistory()",ng-show="historyTemp.count && showLoadmore",ng-class="{'disabled': disableLoadmore}",ng-disabled="disableLoadmore") Load More
+

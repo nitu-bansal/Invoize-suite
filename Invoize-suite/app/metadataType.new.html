@@ -1,0 +1,21 @@
+
+<div set-width="set-width" ng-init="initialMetadataType()" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <form name="form" novalidate="novalidate">
+      <div class="pull-left">
+        <div class="in-wiz-info">New Metadata Type :
+          <input type="text" duplicate="metadataType,{{$routeParams.metadataTypeId}}" name="metadataTypeName" ng-model="metadataType.Name" placeholder="Enter Type" required="required" ng-pattern="/^[a-zA-Z0-9]+$/" ng-trim="ng-trim" ng-maxlength="256"/><span ng-show="form.metadataTypeName.$error.required" class="help-inline required">&nbsp *</span><span ng-show="form.metadataTypeName.$valid" class="green">&nbsp &#10004;</span><span ng-show="form.metadataTypeName.$error.duplicate" class="red">&nbsp; metadata exists.</span><span ng-show="form.metadataTypeName.$error.maxlength" class="red">&nbsp;  Maximum length 256.</span><span ng-show="form.metadataTypeName.$error.pattern" class="red">&nbsp; only Alphanumeric characters.</span>
+        </div>
+      </div>
+      <div class="pull-right"><i ng-show="metadataLoader" class="icon-spinner icon-spin icon-2x"></i><a ng-hide="metadataLoader" ng-href="/#/organizationSetup/metadata/view" class="inz-btn btn-sm btn-default">Back</a>
+        <button ng-click="addKeys($event.currentTarget)" class="inz-btn btn-sm btn-default">Add Keys</button>
+        <button ng-hide="metadataLoader" ng-disabled="form.$invalid" ng-class="{'disabled': form.$invalid}" type="submit" ng-click="validateFields()" class="inz-btn btn-sm btn-success">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <div id="keyHT" ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-show="isKeys" onBeforeChange="beforeKeyChange" datarows="key in keys" columns="keyColumns" minsparerows="1" contextMenu="false" width="hw" afterRender="afterRender()"></div>
+  <div ui-handsontable="{rowHeaders: true, currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" ng-hide="isKeys" height="hh" datarows="field in metadataType.fields" columns="templateColumns" manualColumnResize="true" minsparerows="1" contextMenu="false" onBeforeChange="celChangeMetadataType" width="hw" afterRender="afterRender()"></div>
+</div>

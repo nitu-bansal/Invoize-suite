@@ -1,0 +1,69 @@
+
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">Edit / View Tariff</div><i ng-show="Loader" class="icon-spinner icon-spin blue icon-large"></i>
+    <input placeholder="Search Invoices" ng-change="searchCompany(q)" ng-model="q" class="in-query"/>
+    <button class="in-query"><i class="fa fa-search"></i></button>
+    <div style="margin-left: -10px; vertical-align: text-bottom;" class="btn-group filter-dd">
+      <button class="command dropdown-toggle"><i class="fa fa-caret-down"></i></button>
+      <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+        <li>
+          <div class="opt-title">Invoice Numnber</div>
+          <select ui-select2="ui-select2" multiple="multiple" ng-model="select2" data-placeholder="Invoice Numnber" class="filter-input">
+            <option value=""></option>
+            <option value="one">First</option>
+            <option value="two">Second</option>
+            <option value="three">Third</option>
+          </select>
+        </li>
+        <li>
+          <div class="opt-title">From</div>
+          <select ui-select2="ui-select2" ng-model="select2" data-placeholder="From" class="filter-input">
+            <option value=""></option>
+            <option value="one">First</option>
+            <option value="two">Second</option>
+            <option value="three">Third</option>
+          </select>
+        </li>
+        <li>
+          <div class="opt-title">Subject</div>
+          <select ui-select2="ui-select2" multiple="multiple" ng-model="select2" data-placeholder="Subject" class="filter-input">
+            <option value=""></option>
+            <option value="one">First</option>
+            <option value="two">Second</option>
+            <option value="three">Third</option>
+          </select>
+        </li>
+        <li>
+          <div class="opt-title">Tags</div>
+          <select ui-select2="ui-select2" multiple="multiple" ng-model="select2" data-placeholder="Tags" class="filter-input">
+            <option value=""></option>
+            <option value="one">First</option>
+            <option value="two">Second</option>
+            <option value="three">Third</option>
+          </select>
+        </li>
+        <li>
+          <div class="opt-cmd">
+            <button class="inz-btn btn-xs btn-default">reset</button>
+            <button class="inz-btn btn-xs btn-success">Apply</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div style="vertical-align: inherit;" class="btn-group">
+      <button data-toggle="dropdown" type="button" class="inz-btn btn-sm btn-default dropdown-toggle"><i class="fa fa-play-circle-o"></i>   Actions &nbsp;<i class="fa fa-angle-down"></i></button>
+      <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu">
+        <li ng-click="$parent.currentTab='accountInvoice'; EditRules('Invoice')"><a style="cursor:pointer">Share</a></li>
+        <li ng-click="$parent.currentTab='accountShipment'; EditRules('Shipment')"><a style="cursor:pointer">Export to</a></li>
+      </ul>
+    </div>
+    <button type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="" class="inz-btn btn-sm btn-success">Save</button>
+  </div>
+</div>
+<div class="row">
+  <div style="padding-top: 70px;" class="col-xs-12"></div>
+</div>
+<div class="row">
+  <div class="col-xs-12"> HandsOn goes here</div>
+</div>

@@ -1,0 +1,200 @@
+.row.in-wiz-ttl.in-fix-scroll(ng-if="$state.current.name.split('.')[0]!=='wizard'",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info
+                span Profiles Associated With System : &nbsp;
+                span.red {{$routeParams.systemName}} &nbsp;
+            .gloader(ng-show="loader")
+                i.icon-spinner.icon-spin
+                |    Please Wait...
+        .pull-right
+            a(ng-click='editTemplate();',href="javascript:void(0)",ng-hide="$state.current.name.indexOf('InvoiceDeliveryDocProfilerules')!=-1 || $state.current.name.indexOf('InvoiceDeliveryWebrules')!=-1 || $state.current.name.indexOf('InvoicedeliveryEdirules')!=-1 || $state.current.name.indexOf('InvoiceDeliveryEmailrules')!=-1 || $state.current.url=='/metadata' || $state.current.name.indexOf('account.edit') != -1 || $state.current.url=='/dataSource' || $state.current.name.indexOf('accountInvoiceDelivery')!=-1 || $state.current.url.indexOf('/shipment') != -1")
+                span.in-add-sign +
+                span.in-add-txt Add / Edit Fields
+            a(style="vertical-align: middle;",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/account/InvoiceDeliveryEDIrules/new')",style="cursor:pointer",ng-show="$state.current.name.indexOf('InvoicedeliveryEdirules')!=-1")
+                span.in-add-sign +
+                span.in-add-txt Add EDI Profile
+            a(style="vertical-align: middle;",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId + '/account/InvoiceDeliveryEmailrules/new')",style="cursor:pointer",ng-show="$state.current.name.indexOf('InvoiceDeliveryEmailrules')!=-1")
+                span.in-add-sign +
+                span.in-add-txt Add Email Profile
+                //div(style="clear:both;height:10px;")
+            a(style="vertical-align: middle;",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId + '/account/InvoiceDeliveryWebrules/new')",style="cursor:pointer",ng-show="$state.current.name.indexOf('InvoiceDeliveryWebrules')!=-1")
+                span.in-add-sign +
+                span.in-add-txt Add Web Profile
+            a(style="vertical-align: middle;",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId + '/account/InvoiceDeliveryDocProfilerules/new')",style="cursor:pointer",ng-show="$state.current.name.indexOf('InvoiceDeliveryDocProfilerules')!=-1")
+                span.in-add-sign +
+                span.in-add-txt Add Document Profile
+            .btn-group(style="vertical-align: inherit;",menu-group,permission='viewConfigurationAccount',ng-hide="$state.current.name.indexOf('.account')==-1")
+                button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right.pad6-12(data-toggle='dropdown', type='button',style="margin-left:0;")
+                    i.fa.fa-angle-down &nbsp;
+                    | Configuration
+                ul.dropdown-menu-c.dropdown-menu-c2.dropdown-caret-c(aria-labelledby='btnGroupVerticalDrop1', role='menu', style="text-align:left; float:left;")
+                    li(ng-click="redirectRule('Invoice')",permission='viewInvoiceConfigurationAccount')
+                        a(style="cursor:pointer") Invoice
+                    li(ng-click="redirectRule('Shipment')",permission='viewShipmentConfigurationAccount')
+                        a(style="cursor:pointer") Shipment
+                        li(ng-click="redirectRule('Charge')",permission='viewChargeConfigurationAccount')
+                            a(style="cursor:pointer") Charge
+                        li
+                            a(href="#")
+                                i.icon-caret-left
+                                | Invoice Delivery
+                            ul
+                                li(ng-click="redirectRule('InvoiceDeliveryEDI')")
+                                    a(href='javascript:void(0);') EDI
+                                li(ng-click="redirectRule('InvoiceDeliveryEmail')")
+                                    a(href='javascript:void(0);') Email
+                                li(ng-click="redirectRule('InvoiceDeliveryWeb')")
+                                    a(href='javascript:void(0);') Web
+
+                        li(ng-click="redirectRule('InvoiceDeliveryDocProfile')")
+                                    a(href='javascript:void(0);') Document Profile
+                        li(ng-click="redirectRule('tms')",permission='viewDocumentConfigurationAccount')
+                            a(style="cursor:pointer") Documents
+                        li(ng-click="redirectRule('metadata')",permission='viewMetadataAccount')
+                            a(style="cursor:pointer") Metadata
+            button.inz-btn.btn.btn-ico.btn-default.go-back(ng-hide="$state.current.name.indexOf('.account.')==-1",ng-click="setDefaultConfig();redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/account');showConfigurationDD=true;",tool-tip,data-placement="top", data-toggle="tooltip", title="Back to Account List")
+                i.fa.fa-reply
+            .btn-group.filter-dd.rule-filter(style="vertical-align: inherit;",ng-if="$state.current.url=='/location' || $state.current.url=='/account' || $state.current.url=='/Chargerules' || ($state.current.url=='/metadata' && isMetadataEdit==true)")
+                button.btn-sm.btn-ico.btn-custom.dropdown-toggle.pad6-12(data-toggle='dropdown', type='button')
+                    i.fa.fa-filter
+                    |  Filter &nbsp;
+                    i.fa.fa-angle-down
+
+                .dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;white-space: nowrap;")
+                    div
+                        button.btn-sm.btn-ico.btn-custom.pull-right(ng-click="isAdvancedFilter=!isAdvancedFilter")
+                            span(ng-show="isAdvancedFilter") Easy Filter
+                            span(ng-show="!isAdvancedFilter") Flexi Filter
+                        br
+                    div.rule-filter1.showme.custom-filter-display.overflow-auto(ng-show="isAdvancedFilter")
+                        .row#rules
+                            .row
+                                .ds-tree(ng-form="rulesForm",rules,ng-init="getRuleFields()")
+                    div(ng-show="isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(ng-click="reset()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="getData(currentPage,true)") Apply
+                    div.showme.custom-filter-display.overflow-auto(ng-show="!isAdvancedFilter")
+                        li(ng-repeat="f in sortedFields" ,ng-switch="fields[f].type")
+                            .opt-title {{fields[f].label}}
+                            input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="fields[f].val",close-text="Close",placeholder="{{fields[f].label}}", )
+                            dynamic-Select(ng-switch-default,multiselect,name="{{fields[f]}}",ng-model="fields[f].val",ph="{{autosuggestSource=='location'?'Location':autosuggestSource}}",customobj="{{custObj[fields[f].label]}}",placeholder="{{fields[f].label}}")
+
+                    div(ng-show="!isAdvancedFilter")
+                        .opt-cmd
+                            button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetFilter()") Reset
+                            button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply
+
+            button.inz-btn.btn-sm.btn-success(ng-click="addKeys($event.currentTarget)",ng-if="$state.current.url=='/systemShipment' || $state.current.url=='/accountShipment' ") Add Keys
+            button.inz-btn.btn-sm.btn-default(type="button",ng-Click="Back()",ng-show="$state.current.url=='/metadata' || $state.current.name == 'organizationSetup.system.profile.account.InvoiceDeliveryEmailrules.new' || $state.current.name == 'organizationSetup.system.profile.account.InvoiceDeliveryEmailrules.edit'|| $state.current.name == 'organizationSetup.system.profile.account.InvoiceDeliveryEmailrules.detail' || $state.current.name == 'organizationSetup.system.profile.account.InvoiceDeliveryWebrules.new' || $state.current.name == 'organizationSetup.system.profile.account.InvoiceDeliveryWebrules.edit'|| $state.current.name == 'organizationSetup.system.profile.account.InvoiceDeliveryWebrules.detail'") Cancel
+
+            button#saveSys.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': validForm}",ng-disabled="validForm",ng-if="$state.current.url!='/systemShipment' && $state.current.url!='/Chargerules' && $state.current.url!='/accountShipment'&& $state.current.url!='/accountCharge'  && $state.current.name != 'organizationSetup.system.profile.account.InvoiceDeliveryEmailrules.detail' && $state.current.name != 'organizationSetup.system.profile.account.InvoiceDeliveryEmailrules.view' && $state.current.name != 'organizationSetup.system.profile.account.InvoiceDeliveryWebrules.view' && $state.current.name != 'organizationSetup.system.profile.account.InvoiceDeliveryWebrules.detail' &&  $state.current.name != 'organizationSetup.system.profile.account.InvoiceDeliveryDocProfilerules.detail' && $state.current.name != 'organizationSetup.system.profile.account.InvoiceDeliveryDocProfilerules.view'", ng-click="saveData()")
+                i.fa.fa-save
+                | &nbsp Save
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-if="$state.current.url=='/accountCharge' || $state.current.url=='/Chargerules' || $state.current.url=='/systemShipment'  || $state.current.url=='/accountShipment' ", ng-click="saveData()")
+                i.fa.fa-save
+                | &nbsp Save
+
+div(style="clear:both;")
+form(name="form",novalidate)
+    .col-xs-12.col-md-12.col-sm-12
+        ul.nav.nav-tabs
+            li.tab(permission='tabInvoice',class="{{$state.current.url=='/profile/:systemName/:systemId'?'active':''}}",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId);getTemplateSystemRules('/profile/:systemName/:systemId')")
+                a
+                    i.fa.fa-file-text
+                    | &nbsp; Invoice
+            li.tab(class="{{$state.current.url=='/shipmentRules'?'active':''}}",permission='tabShipment',ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/shipmentRules');getTemplateSystemRules('shipmentRules')")
+                a
+                    i.fa.fa-truck
+                    | &nbsp; Shipment
+            //li.tab(class="{{$state.current.url=='/location'?'active':''}}",permission='tabLocation', ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/location')")
+            //    a
+            //        i.fa.fa-map-marker
+            //        | &nbsp; Location
+            li.tab(class="{{$state.current.url=='/account'?'active':''}}",permission='tabAccount',ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/account')")
+                a
+                    i.fa.fa-lock
+                    | &nbsp; Account
+            li.tab(class="{{$state.current.url=='/metadata'?'active':''}}",permission='tabMetadata',ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/metadata')")
+                a
+                    i.fa.fa-tasks
+                    | &nbsp; Metadata
+            li.tab(class="{{$state.current.url=='/dataSource'?'active':''}}",permission='tabRules',ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/dataSource')")
+                a
+                    i.fa.fa-book
+                    | &nbsp; Rules
+            div(ng-if="$state.current.name.split('.')[0]=='wizard'")
+                .pull-right
+                    button.inz-btn.btn.btn-ico.btn-default.go-back(ng-hide="$state.current.name.indexOf('.account.')==-1",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId+'/account');showConfigurationDD=true;",tool-tip,data-placement="top", data-toggle="tooltip", title="Back to Account List")
+                        i.fa.fa-reply
+                    .btn-group(style="vertical-align: inherit;",menu-group,permission='viewConfigurationAccount',ng-hide="$state.current.name.indexOf('.account')==-1")
+                        button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button',style="margin-left:0;")
+                            i.fa.fa-angle-down &nbsp;
+                            | Configuration
+                        ul.dropdown-menu-c.dropdown-menu-c2.dropdown-caret-c.dropdown-menu-c-w(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="text-align:left; float:left;")
+                            li(ng-click="redirectRule('Invoice')",permission='viewInvoiceConfigurationAccount')
+                                a(style="cursor:pointer") Invoice
+                            li(ng-click="redirectRule('Shipment')",permission='viewShipmentConfigurationAccount')
+                                a(style="cursor:pointer") Shipment
+                                li(ng-click="redirectRule('Charge')",permission='viewChargeConfigurationAccount')
+                                    a(style="cursor:pointer") Charge
+                                li
+                                    a(href="#")
+                                        i.icon-caret-left
+                                        | Invoice Delivery
+                                    ul
+                                        li(ng-click=" redirectRule('InvoiceDeliveryEDI')",permission='viewInvoiceDeliveryEDIConfigurationAccount')
+                                            a(href='javascript:void(0);') EDI
+                                        li(ng-click=" redirectRule('InvoiceDeliveryEmail')",permission='viewInvoiceDeliveryEmailConfigurationAccount')
+                                            a(href='javascript:void(0);') Email
+                                        li(ng-click="redirectRule('InvoiceDeliveryWeb')")
+                                            a(href='javascript:void(0);') Web
+                                    a(style="cursor:pointer")  Documents
+                                li(ng-click="redirectRule('metadata')",permission='viewMetadataAccount')
+                                    a(style="cursor:pointer")  Metadata
+
+
+                    label(style="margin-bottom:0;",ng-show ="$state.current.url == '/location' || ($state.current.name.indexOf('.account')>-1 &&  $state.current.name.indexOf('.account.')==-1)")
+                        input( type="checkbox", class="ace ace-switch ace-switch-addUpdate", name="switch-field-1",ng-click='toggleEvent()',ng-model="eventAddUpdate",ng-required="false",text-on="Add")
+                        span.lbl
+
+        div(style="clear:both")
+        form(name="mainForm2",novalidate)
+            .row(ng-if="$state.current.url=='/profile/:systemName/:systemId'")
+                .col-md-6.col-sm-12.col-xs-12
+                    h3.header.smaller.lighter.red
+                        i.fa.fa-file-o &nbsp;
+                        | Invoice Profile
+
+                    div(ng-repeat="item in profile.fields | orderBy:'displayOrder'",ng-form="subForm1",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+                        label.input-medium {{item.label}}
+                        label(ng-switch-when="true", ng-switch='item.type')
+                            input.input-large(ng-switch-when='text',unique="{{item.key}},{{item.isUniqueField}},system",type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                            input.input-large(ng-switch-when='date',unique="{{item.key}},{{item.isUniqueField}},system",datepicker-popup="{{format}}",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                            input.input-large(ng-switch-when='numeric',unique="{{item.key}},{{item.isUniqueField}},system",type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                            dynamic-Select.input-large(ng-switch-when='multiselect',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                            dynamic-Select.input-largelarge(ng-switch-when='dropdown',ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                            textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                            span.red(ng-show="subForm1.name.$error.required") *
+                            span.red(ng-show="subForm1.name.$error.number") only numbers
+                            span.red(ng-show="subForm1.name.$error.unique") already Exists
+                            span.red(ng-show="subForm1.name.$error.date") only date
+                            span.red(ng-show="subForm1.name.$error.maxlength") max length is {{item.length}}
+                            span.red(ng-show="subForm1.name.$error.pattern") Can contain only text
+                            span.green.validTick(ng-show="subForm1.name.$valid") &#10004;
+
+
+                .col-md-6.col-sm-12.col-xs-12
+                    h3.header.smaller.lighter.red
+                        i.fa.fa-copy &nbsp;
+                        | Clone From System &nbsp;
+                        i.icon-spinner.icon-spin.blue.icon-large(ng-show="systemListLoader")
+                        dynamic-Select(dropdown,customobj='{"removeSystem":"{{$routeParams.systemId}}"}',name="cloneSystem",ng-model="cloneSystem.id",ph="system",placeholder="System",change="getTemplateSystemRules();")
+
+
+
+        div(ui-view="contents")
+    .in-wiz-footer
+        a.inz-btn.btn-sm.btn-default(href="#/wizard/system/view") Cancel
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': validForm}",ng-disabled="validForm",ng-if="$state.current.url!=='/systemShipment' && $state.current.url!=='/accountShipment'",ng-click="saveData()") Save Changes

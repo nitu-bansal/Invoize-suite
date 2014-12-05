@@ -1,0 +1,97 @@
+
+<div class="col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <fieldset ng-hide="tariffDetailLoader">
+      <div class="row">
+        <h4 class="header smaller lighter gray">Tariff Detail
+          <div class="pull-right btn-group"><a ng-hide="tariffDetailLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary"><i class="icon-mail-reply icon-large"></i></a><i ng-show="tariffDetailLoader" class="icon-spinner icon-spin icon-2x">                           </i>
+          </div>
+        </h4>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Effective Date</label>
+        <div class="controls">
+          <label>: {{tariff.effectiveDate | date:'mediumDate'}}</label>
+        </div>
+      </div>
+      <div class="form-group"> 
+        <label class="control-label">Expiry Date</label>
+        <div class="controls">
+          <label>: {{tariff.expiryDate | date:'mediumDate'}}</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Received Date</label>
+        <div class="controls">
+          <label>: {{tariff.receivedDate | date:'mediumDate'}}</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Received From</label>
+        <div class="controls">
+          <label>: {{tariff.receivedFrom}}</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Comments</label>
+        <div class="controls">
+          <label>: {{tariff.comment}}</label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <div class="widget-box transparent">
+        <div class="widget-header">
+          <h5 class="lighter smaller"><i class="icon-large icon-paper-clip"></i>Attached Documents</h5>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div class="dialogss">                                          
+              <ul data-ng-repeat="file in tariff.docId" class="item-list ui-sortable">
+                <li class="item-green clearfix">
+                  <label class="inline">                                                               <i class="icon-large icon-paper-clip">&nbsp<a href="/api/tms/download/file?id={{file.id}}" download="{{file.name}}" style="cursor: pointer;" bs-tooltip="tooltip.download" class="link"><strong>{{file.v}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{file.v}}<br/><small class="muted"> You do not have download permissions</small></strong></i></label>
+                  <div class="pull-right"><span class="label label-warning">{{file.t}}   </span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <h5 ng-show="tariffHistoryLoader">Loading History<i ng-show="tariffHistoryLoader" class="icon-spinner icon-spin icon icon-large">                       </i></h5>
+    </fieldset>
+    <div ng-show="tariffHistoryAvailable"><br/>
+      <div class="widget-box transparent">
+        <div class="widget-header">
+          <h5 class="lighter smaller"><i class="icon-comment blue"></i>History    {{isCollapsed}}</h5>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div class="dialogs">                                           
+              <div ng-repeat="row in documentRequestHistory" class="itemdiv dialogdiv">
+                <div class="user"><img alt="Avatar" src="avatars/user12.png"/></div>
+                <div ng-click="isCollapsed = !isCollapsed" style="cursor: pointer;" class="body">
+                  <div class="time"><span ng-show="row.action=='Approved'" class="small label label-success pull-right">Approved</span><span ng-show="row.action=='Rejected'" class="small label label-important pull-right">Rejected</span><span ng-show="row.action=='Created'" class="small label label-info pull-right">Created </span></div>
+                  <div class="name"><a>{{row.un}}  </a></div>
+                  <div class="text">{{row.oldSnapshot.comment}}
+                    <div collapse="isCollapsed"><small class="muted"> <i class="icon-caret-right green"> Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} </i></small><br/><small class="muted">   <i class="icon-caret-right green"> Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} </i></small><br/><small class="muted">    <i class="icon-caret-right green"> Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}</i></small><br/></div><strong class="text-black">Attached Documents
+                      <div data-ng-repeat="file in row.oldSnapshot.docId">
+                        <div>
+                          <div class="pull-right">&nbsp<span class="pull-right small label label-info">{{file.t}}</span></div><i class="icon-large icon-paper-clip">&nbsp</i><a href="/api/tms/download/file?id={{file.id}}" download="{{file.name}}" style="cursor: pointer;" bs-tooltip="tooltip.download" data-placement="right" class="link"><strong>{{file.v}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{file.v}}<br/><small class="muted"> You do not have download permissions</small></strong>
+                        </div>
+                      </div></strong>
+                  </div>
+                  <div class="tools"><a class="btn btn-minier btn-info"><i class="icon-only icon-share-alt">                                  </i></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-hide="tariffHistoryAvailable || tariffHistoryLoader" class="div">
+        <h5>History not available for this tariff</h5>
+      </div>
+    </div>
+  </form>
+</div>

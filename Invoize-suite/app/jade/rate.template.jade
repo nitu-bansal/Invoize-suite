@@ -1,0 +1,50 @@
+.col-md-7
+        form.form-horizontal(novalidate, name="form")
+                .fieldset                       
+                        legend New Rate Definition
+                                .pull-right.btn-group
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="chargeDefnCreateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-primary.btn-sm(ng-hide="chargeDefnCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="createChargeDefn(chargeDefn,$routeParams.accountId)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                        i.icon-ok.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="chargeDefnCreateLoader")                                     
+                        .form-group
+                                label.control-label Name
+                                .col-sm-9
+                                        input(type="text", name="name", ng-model="chargeDefn.name", placeholder="Name", required)
+                                        label.help-inline.required(ng-show="form.name.$error.required") *
+                                        label.help-inline.required.validTick(ng-show="form.name.$valid") &#10004;  
+                        .form-group
+                                label.control-label Group
+                                .col-sm-9
+                                        select(ui-select2, multiple="true", name="group", ng-model="chargeDefn.group",required, data-placeholder="Please select...", style="width:200px")
+                                                option(ng-repeat="field in chargeDefnGroup", value="{{field.n}}") {{field.n}}                                                        
+                                        label.help-inline.required(ng-show="form.group.$error.required") *
+                                        label.help-inline.required.validTick(ng-show="form.group.$valid") &#10004;  
+                       
+                        .form-group                       
+                                label.control-label Charge Type                                
+                                .col-sm-9
+                                        input(ui-select2="chargeTypeBar", name="chargeType", ng-model="chargeDefn.chargeType", style="width:200px", required)
+                                        label.help-inline.required(ng-show="form.chargeType.$error.required") *
+                                        label.help-inline.required.validTick(ng-show="form.chargeType.$valid") &#10004;  
+              
+                        .form-group
+                                label.control-label Lane Parameters
+                                .col-sm-9
+                                        input(ui-select2="laneParameterBar", multiple="true", name="laneParam", ng-model="chargeDefn.laneParam",required, data-placeholder="Please select...", style="width:200px")                                                
+                                        label.help-inline.required(ng-show="form.laneParam.$error.required") * 
+                                        label.help-inline.required.validTick(ng-show="form.laneParam.$valid") &#10004;                                 
+                        .form-group
+                                label.control-label Effective Base
+                                .col-sm-9
+                                        select(ui-select2="{'closeOnSelect':false}", name="effectiveBase", ng-model="chargeDefn.effectiveBase",required, data-placeholder="Please select...", style="width:200px")
+                                                option(value="")
+                                                option(ng-repeat="field in chargeDefnEffectiveBase", value="{{field.n}}") {{field.n}}                                                        
+                                        label.help-inline.required(ng-show="form.effectiveBase.$error.required") * 
+                                        label.help-inline.required.validTick(ng-show="form.effectiveBase.$valid") &#10004;                        
+                        .form-group
+                                label.control-label Description
+                                .col-sm-9
+                                        textarea(rows=3, name="description", ng-model="chargeDefn.description", placeholder="Short Description")
+        

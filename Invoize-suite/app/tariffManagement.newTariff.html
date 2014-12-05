@@ -1,0 +1,340 @@
+
+<form novalidate="novalidate" name="frm1" class="form-horizontal">
+  <div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <div class="pull-left"><span ng-hide="{{$state.current.name.split('.')[2]=='viewTariff'}}" class="in-wiz-info">New tariff configuration for : &nbsp</span><span ng-show="{{$state.current.name.split('.')[2]=='viewTariff'}}" class="in-wiz-info">Showing tariff configuration for : &nbsp</span><span ng-show="{{$state.current.name.split('.')[2]=='viewTariff'}}" class="in-wiz-info red">{{global.account | selectFormat}}</span>
+        <!--i.icon-spinner.icon-spin.blue.icon-large(ng-show="Loader")--><span ng-if="$state.current.name.split('.')[2]=='newTariff'">
+          <dynamic-Select required="required" name="account" ng-model="global.account" ph="account" change="setAccounts(global.account,isGroupSelected)" customobj="{&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.tariffRepository&quot;}" toolTip="Account Number" placeholder="Search by Account"></dynamic-Select><span ng-show="frm1.account.$error.required" class="red">*</span><span ng-show="frm1.account.$valid" class="green validTick">&#10004;</span>
+          <!--,ng-readonly="{{$state.current.name.split('.')[2]=='viewTariff'}}"-->
+          <!--dynamic-single-select(name="accountNumber",ng-model="accountGlobal",ph="accountNumber",change="setAccounts(accountGlobal)",customobj='{"systemId":"{{userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")--></span>
+      </div>
+      <div class="pull-right">
+        <button ng-click="redirectTo('/tariffManagement');setAccounts(global.account,isGroupSelected);quickSearch(currentPage,true,'tariffConfig')" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Back to Account List" class="inz-btn btn btn-ico btn-default go-back"><i class="fa fa-reply"></i></button>
+      </div>
+    </div>
+  </div>
+  <div ng-if="$state.current.name.split('.')[2]=='viewTariff'" style="clear:both; height:47px;" ng-init="onloadAddTariffPage();openEditTemplate()"></div>
+  <div ng-if="$state.current.name.split('.')[2]=='newTariff'" style="clear:both; height:47px;" ng-init="onloadAddTariffPage();getCharges()"></div>
+  <div class="col-md-12 col-xs-12 col-sm-12">
+    <div class="cpanel">
+      <div class="cpanel-heading cpanel-heading1"><a class="accordion-toggle"><span class="ico-container"><i class="fa fa-tag white"></i></span>&nbsp;<span toolTip="Information" class="label white">Basic Information</span></a></div>
+      <div class="cpanel-body">
+        <div class="row">
+          <div class="col-md-6 col-sm-12 col-xs-12">
+            <label>Tariff Name &nbsp;
+              <!--span.input-large1.non-valid-->
+            </label>
+            <input ng-trim="ng-trim" type="text" name="tname" placeholder="Name" ng-change="validateTariffGroup();" ng-model="basicInfo.tariffName" required="required" auto-fill-sync="auto-fill-sync" class="input-large"/><span ng-show="frm1.tname.$error.required" class="red">&nbsp; *</span><span ng-show="frm1.tname.$valid" class="green validTick">&nbsp; &#10004;</span>
+          </div>
+          <div class="col-md-6 col-sm-12 col-xs-12">
+            <label style="margin-right:7px">Tariff Type &nbsp;</label><span class="input-large1 non-valid">
+              <select ui-select2="ui-select2" name="TariffType" required="required" ng-change="validateTariffGroup();" ng-model="basicInfo.tariffType" data-placeholder="Please select..." auto-select-sync="auto-select-sync" class="input-large">
+                <option value=""></option>
+                <option value="Main"> Main</option>
+                <option value="Accessorial"> Accessorial</option>
+                <option value="Others"> Others</option>
+              </select></span>
+            <!--dynamic-Select.input-large1(name='TariffType',ng-model="basicInfo.tariffType",ph="metadata_tariffTypes",data-placeholder="Please select...",change="validateTariffGroup();")--><span ng-show="frm1.TariffType.$error.required" class="red">&nbsp; *</span><span ng-show="frm1.TariffType.$valid" class="green validTick">&nbsp; &#10004;</span>
+          </div>
+          <!--.col-md-6.col-sm-12.col-xs-12-->
+          <!--    label Effective date &nbsp;-->
+          <!--        //span.input-large1.non-valid-->
+          <!--    input.input-large(type="text",required,datepicker-popup="{{format}}",ng-change="validateTariffGroup();",datepicker-options="dateOptions",name="effDate",ng-model="additionalTariffInfo.effectiveDate",auto-fill-sync,ng-change="setMinData(additionalTariffInfo.effectiveDate)")-->
+          <!--    span.red(ng-show="frm1.effDate.$error.required") &nbsp; *-->
+          <!--    span.green.validTick(ng-show="frm1.effDate.$valid") &nbsp; &#10004;-->
+          <!--.col-md-6.col-sm-12.col-xs-12-->
+          <!--    label(style="margin-right:7px") Expiry Date-->
+          <!--        //span.input-large1.non-valid-->
+          <!--    input.input-large(type="text",required,datepicker-popup="{{format}}",ng-change="validateTariffGroup();",datepicker-options="dateOptions",name="expDate",min="minDate",ng-model="additionalTariffInfo.expiryDate",auto-fill-sync)-->
+          <!--    span.red(ng-show="frm1.expDate.$error.required") &nbsp; *-->
+          <!--    span.green.validTick(ng-show="frm1.expDate.$valid") &nbsp; &#10004;-->
+          <!--.col-md-6.col-sm-12.col-xs-12-->
+          <!--    label Effective date-->
+          <!--    input.input-large(type="text",required,datepicker-popup="{{format}}",datepicker-options="dateOptions",name="effDate",ng-model="additionalTariffInfo.effectiveDate",auto-fill-sync,ng-change="setMinData(additionalTariffInfo.effectiveDate)")-->
+          <!--    span.red(ng-show="frm1.effDate.$error.required") &nbsp; *-->
+          <!--    span.green.validTick(ng-show="frm1.effDate.$valid") &nbsp; &#10004;-->
+          <!--    //br-->
+          <!--    //span.input-large1.non-valid-->
+          <!---->
+          <!--.col-md-6.col-sm-12.col-xs-12-->
+          <!--    label(style="margin-right:7px") Expiry Date-->
+          <!--    //br-->
+          <!--    //span.input-large1.non-valid-->
+          <!--    input.input-large(type="text",required,datepicker-popup="{{format}}",datepicker-options="dateOptions",name="expDate",min="minDate",ng-model="additionalTariffInfo.expiryDate",auto-fill-sync)-->
+          <!--    span.red(ng-show="frm1.expDate.$error.required") &nbsp; *-->
+          <!--    span.green.validTick(ng-show="frm1.expDate.$valid") &nbsp; &#10004;-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;" ng-show="true">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <div class="cpanel">
+        <div class="cpanel-heading cpanel-heading1"><a ng-click="isOpenIdentifiers = !isOpenIdentifiers" ng-class="{ open: isOpenIdentifiers}" class="accordion-toggle"><span class="ico-container"><i ng-hide="isOpenIdentifiers" class="fa fa-plus-square white"></i><i ng-show="isOpenIdentifiers" class="fa fa-minus-square white"></i></span>&nbsp;<span toolTip="Identifiers" class="label white">Identifiers</span></a></div>
+        <div ng-show="isOpenIdentifiers" class="cpanel-body overflow-auto">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-9">
+              <table class="inz-table inz-table1">
+                <thead>
+                  <th> Identifier Name</th>
+                  <th> Identifier value</th>
+                  <th>
+                    <button ng-click="identifiers.fields.push({fieldKey:null,fieldVal:null,readOnly:false,defaultVal:false});" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Identifier" class="command light"><i class="fa fa-plus greenplus"></i></button>
+                  </th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="field in identifiers.fields">
+                    <td>
+                      <div ng-form="subForm1">
+                        <dynamic-Select name="s1" customobj="{ &quot;selected&quot;:&quot;{{fieldKeys.join()}}&quot;,&quot;type&quot;:&quot;identifier&quot;}" ng-model="field.fieldKey" ph="tarrifShipmentFields" data-placeholder="Identifier" change="fieldKeyChanged($index,field)" ng-readonly="{{field.readOnly}}" required="required" class="input-large1"></dynamic-Select><span ng-show="subForm1.s1.$error.required" class="red">*</span><span ng-show="subForm1.s1.$valid" class="green validTick">&#10004;</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div ng-form="subForm2"><span class="input-large1">
+                          <!--span.non-valid.form-section-->
+                          <dynamic-Select required="required" enterchoice="enterchoice" name="s2" customobj="{&quot;type&quot;:&quot;identifier&quot;,&quot;identifierName&quot;:&quot;{{field.fieldKey[0].id!=null ? field.fieldKey[0].id : &quot;none&quot;}}&quot;}" ng-model="field.fieldVal" ph="tarrifShipmentFields" data-placeholder="Identifier Value" class="input-large1"></dynamic-Select><span ng-show="subForm2.s2.$error.required" class="red">*</span><span ng-show="subForm2.s2.$valid" class="green validTick">&#10004;</span></span></div>
+                    </td>
+                    <td>
+                      <button ng-click="removeIdentifier($index);" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Remove Permission" ng-disabled="field.readOnly" class="command"><i ng-hide="field.readOnly" class="fa fa-minus redminus"></i><i ng-show="field.readOnly" class="fa fa-minus grey"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <div class="cpanel">
+        <div class="cpanel-heading cpanel-heading1"><a ng-click="isOpenTariffInfo = !isOpenTariffInfo" ng-class="{ open: isOpenTariffInfo}" class="accordion-toggle"><span class="ico-container"><i ng-hide="isOpenTariffInfo" class="fa fa-plus-square white"></i><i ng-show="isOpenTariffInfo" class="fa fa-minus-square white"></i></span>&nbsp;<span toolTip="Tariff Info" class="label white">Additional Information</span></a></div>
+        <div ng-show="isOpenTariffInfo" class="cpanel-body">
+          <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <label>Tariff Applied On</label><br/>
+              <!--span.input-large1.non-valid.form-section-->
+              <dynamic-single-select name="tappon" ng-model="additionalTariffInfo.tariffAppliedOn" ph="tarrifAppliedOnDates" toolTip="Date" placeholder="Select"></dynamic-single-select>
+              <!--span.red(ng-show="frm1.tappon.$error.required") *-->
+              <!--span.green.validTick(ng-show="frm1.tappon.$valid") &#10004;-->
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <label>Effective date</label><span ng-show="frm1.effDate.$error.required" class="red">&nbsp; *</span><span ng-show="frm1.effDate.$valid" class="green validTick">&nbsp; &#10004;</span><br/>
+              <!--span.input-large1.non-valid-->
+              <input type="text" required="required" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="effDate" ng-model="additionalTariffInfo.effectiveDate" auto-fill-sync="auto-fill-sync" ng-change="setMinData(additionalTariffInfo.effectiveDate)" class="input-large"/>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <label>Expiry Date</label><span ng-show="frm1.expDate.$error.required" class="red">&nbsp; *</span><span ng-show="frm1.expDate.$valid" class="green validTick">&nbsp; &#10004;</span><br/>
+              <!--span.input-large1.non-valid-->
+              <input type="text" required="required" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="expDate" min="minDate" ng-model="additionalTariffInfo.expiryDate" auto-fill-sync="auto-fill-sync" class="input-large"/>
+            </div>
+          </div>
+          <fieldset ng-hide="perChargeCurrencyConversion" class="row inz-fs">
+            <legend>Currency Conversion</legend>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <label>Source</label><br/>
+              <!--span.input-large1.non-valid-->
+              <dynamic-single-select ng-model="additionalTariffInfo.currencySource" ph="metadata_currencySource" toolTip="CurrencySource" placeholder="Select"></dynamic-single-select>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <label>Frequency</label><br/>
+              <!--span.input-large1.non-valid-->
+              <dynamic-single-select ng-model="additionalTariffInfo.currencyFrequency" ph="metadata_currencyFrequency" toolTip="CurrencyFrequency" placeholder="Select"></dynamic-single-select>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <label>Exchange Rate on Date</label><br/>
+              <!--span.input-large1.non-valid-->
+              <dynamic-single-select ng-model="additionalTariffInfo.tariffAppliedOnDate" ph="tarrifAppliedOnDates" toolTip="Date" placeholder="Select"></dynamic-single-select>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <label>Currency</label><br/>
+              <!--span.input-large1.non-valid-->
+              <dynamic-single-select ng-model="additionalTariffInfo.currency" ph="currency" toolTip="Currency" placeholder="Select"></dynamic-single-select>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="cpanel">
+        <div class="cpanel-heading cpanel-heading1"><a ng-click="isOpenParam = !isOpenParam" ng-class="{ open: isOpenParam}" class="accordion-toggle"><span class="ico-container"><i ng-hide="isOpenParam" class="fa fa-plus-square white"></i><i ng-show="isOpenParam" class="fa fa-minus-square white"></i></span>&nbsp;<span toolTip="Parameters" class="label white">Parameters</span></a></div>
+        <div ng-show="isOpenParam" class="cpanel-body overflow-auto">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-10">
+              <table class="inz-table inz-table1">
+                <thead>
+                  <th>
+                    <button ng-click="parameters.fields.push({fieldKey:null,fieldVal:null,displayOrder:null,uniqueCalculationParam: false});" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Parameter" class="command light"><i class="fa fa-plus greenplus"></i></button>Parameter Name
+                  </th>
+                  <th> Display Name</th>
+                  <th> Display Order</th>
+                  <th> Calc. Param</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="field in parameters.fields ">
+                    <td>
+                      <div ng-form="subForm3">
+                        <button ng-click="parameters.fields.splice($index,1);fieldKeyChangedParameters();" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Remove parameter" ng-disabled="field.readOnly" class="command"><i ng-hide="field.readOnly" class="fa fa-minus redminus"></i><i ng-show="field.readOnly" class="fa fa-minus grey"></i></button><span ng-class="{ invalidEle: subForm3.pname.$invalid}" class="input-large1 form-section">
+                          <dynamic-Select required="required" name="pname" customobj="{&quot;selected&quot;:&quot;{{fieldKeysParams.join()}}&quot;,&quot;type&quot;:&quot;parameter&quot;}" ng-model="field.fieldKey" ph="tarrifShipmentFields" data-placeholder="Parameter" change="fieldKeyChangedParameters($index,field);" ng-readonly="{{field.readOnly}}" class="input-large1"></dynamic-Select></span>
+                      </div>
+                    </td>
+                    <td>
+                      <div ng-form="subForm4"><span ng-class="{ invalidEle: subForm4.dname.$invalid}" class="input-large1 form-section">
+                          <input required="required" type="text" name="dname" placeholder="Display Name" ng-model="field.fieldVal" auto-fill-sync="auto-fill-sync"/></span></div>
+                    </td>
+                    <td>
+                      <div ng-form="subForm6"><span class="input-small non-valid form-section">
+                          <div class="in-err">
+                            <div ng-show="subForm6.dispOrd.$error.pattern">Invalid Value</div>
+                          </div>
+                          <input required="required" ng-change="checkDuplicate(field,$index)" type="text" name="dispOrd" placeholder="Display Order" ng-model="field.displayOrder" ng-pattern="/^[0-9]{0,3}$/" auto-fill-sync="auto-fill-sync"/></span></div>
+                    </td>
+                    <td><span class="input-large100">
+                        <input required="required" id="chk" type="checkbox" ng-click="setUniqueParamTrue($index,$event)" ng-disabled="field.readOnly" auto-fill-sync="auto-fill-sync"/></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <div class="cpanel">
+        <div class="cpanel-heading cpanel-heading1"><a ng-click="isOpenCharges = !isOpenCharges" ng-class="{ open: isOpenCharges}" class="accordion-toggle"><span class="ico-container"><i ng-hide="isOpenCharges" class="fa fa-plus-square white"></i><i ng-show="isOpenCharges" class="fa fa-minus-square white"></i></span>&nbsp;<span toolTip="Charge" class="label white">Charges</span></a></div>
+        <div ng-show="isOpenCharges" class="cpanel-body overflow-auto">
+          <div class="row">
+            <div class="col-xs-12 col-md-12 col-sm-12">
+              <table class="inz-table inz-table2">
+                <thead>
+                  <tr>
+                    <th rowspan="2" colspan="0" class="center borderleftB ">
+                      <button ng-class="{'greendisabled': chargeList.fields.length&gt;=chargeData.length-1}" ng-disabled="chargeList.fields.length&gt;=chargeData.length-1" ng-click="addCharge()" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Charge" class="command light"><i class="fa fa-plus greenplus"></i></button>
+                    </th>
+                    <th rowspan="2" colspan="3" class="center borderleftB">Charge</th>
+                    <th colspan="3" class="center borderleftB">Charge Rounding</th>
+                    <th colspan="4" class="center borderleftB">Calculation Method</th>
+                    <th colspan="4" class="center borderleftB">Currency Conversion<span class="input-large100"></span>
+                      <input id="m" type="checkbox" ng-model="perChargeCurrencyConversion" value="{{perChargeCurrencyConversion}}" ng-checked="currencyPercharge(perChargeCurrencyConversion)"/>
+                    </th>
+                    <th colspan="2" class="center borderleftB">Limit</th>
+                    <th rowspan="2" colspan="0" class="center borderleftB">Breakage</th>
+                  </tr>
+                  <tr>
+                    <th class="borderleftB">Method</th>
+                    <th class="borderleftB">Decimal</th>
+                    <th class="borderleftB">Nearest(Dec.)</th>
+                    <th class="borderleftB">Calculation</th>
+                    <th class="borderleftB">Weight</th>
+                    <th class="borderleftB">Charge</th>
+                    <th class="borderleftB">Operand</th>
+                    <th class="borderleftB">Currency</th>
+                    <th class="borderleftB">CurrencySource</th>
+                    <th class="borderleftB">Exch.Rt.Appl</th>
+                    <th class="borderleftB">LaneCurrency</th>
+                    <!--th.borderleftB Freq.-->
+                    <th class="borderleftB">MAX</th>
+                    <th class="borderleftB">MIN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="field in chargeList.fields">
+                    <td>
+                      <button ng-click="chargeRemoveConfirmation($index);" tooltip-placement="right" data-placement="top" data-toggle="tooltip" tooltip="Remove Charge" class="command"><i class="fa fa-minus redminus"></i></button>
+                    </td>
+                    <td><span class="non-valid form-section">
+                        <!--dynamic-single-Select(customobj='{"selected":"{{fieldKeysCharges.join()}}"}',ng-model="field.chargeID",ph="systemChargeCode", url="api/suggestion?tariffName={{basicInfo.tariffName}}&tariffType={{basicInfo.tariffType}}&account={{accountGlobal[0].n}}",data-placeholder="Charge",change="checkCharge(field.chargeID,$index)", emptySelect=false, style="width:100px !important;")-->
+                        <dynamic-single-Select customobj="{&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;,&quot;selected&quot;:&quot;{{fieldKeysCharges.join()}}&quot;,&quot;tariffName&quot;:&quot;{{basicInfo.tariffName}}&quot;,&quot;tariffType&quot;:&quot;{{basicInfo.tariffType}}&quot;,&quot;account&quot;:&quot;{{global.account[0].id}}&quot;}" ng-model="field.chargeID" ph="systemChargeCode" data-placeholder="Charge Code" change="checkCharge(field.chargeID,$index,'chargeCode')"></dynamic-single-Select></span></td>
+                    <td><span class="non-valid form-section">
+                        <!--dynamic-single-Select(customobj='{"selected":"{{fieldKeysCharges.join()}}"}',ng-model="field.chargeID",ph="systemChargeCode", url="api/suggestion?tariffName={{basicInfo.tariffName}}&tariffType={{basicInfo.tariffType}}&account={{accountGlobal[0].n}}",data-placeholder="Charge",change="checkCharge(field.chargeID,$index)", emptySelect=false, style="width:100px !important;")-->
+                        <dynamic-single-Select customobj="{&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;,&quot;selected&quot;:&quot;{{fieldKeysChargeNames.join()}}&quot;,&quot;tariffName&quot;:&quot;{{basicInfo.tariffName}}&quot;,&quot;tariffType&quot;:&quot;{{basicInfo.tariffType}}&quot;,&quot;account&quot;:&quot;{{global.account[0].id}}&quot;}" ng-model="field.chargeName" ph="systemChargeName" data-placeholder="Charge Name" change="checkCharge(field.chargeName,$index,'chargeName')"></dynamic-single-Select></span></td>
+                    <td><span class="non-valid form-section">
+                        <input required="required" type="text" name="chargedname" placeholder="Display Name" ng-model="field.displayName" auto-fill-sync="auto-fill-sync"/></span></td>
+                    <td><span class="non-valid form-section">
+                        <!--input.input-type-table(required,type="text", placeholder="",ng-model="field.chargeRounding" ,auto-fill-sync)-->
+                        <select required="required" ui-select2="ui-select2" name="chrgRounding" ng-model="field.chargeRounding" data-placeholder="Please select..." auto-select-sync="auto-select-sync" class="inz-txt">
+                          <option value=""></option>
+                          <option value="roundUp"> Round Up</option>
+                          <option value="roundDown">Round Down</option>
+                          <option value="noRounding"> No Rounding</option>
+                        </select></span></td>
+                    <td>
+                      <!--span.non-valid.form-section-->
+                      <input ng-hide="field.chargeRounding=='' || field.chargeRounding=='noRounding'" type="text" placeholder="" ng-model="field.chargeDecimal" value="0" auto-fill-sync="auto-fill-sync" class="input-type-table"/><span ng-show="field.chargeRounding=='' || field.chargeRounding=='noRounding'">N/A</span>
+                    </td>
+                    <td>
+                      <!--span.non-valid.form-section-->
+                      <input ng-hide="field.chargeRounding=='' ||  field.chargeRounding=='noRounding'" type="text" placeholder="" ng-model="field.chargeNearest" auto-fill-sync="auto-fill-sync" class="input-type-table"/><span ng-show="field.chargeRounding=='' || field.chargeRounding=='noRounding'">N/A</span>
+                    </td>
+                    <td><span class="non-valid form-section"></span>
+                      <!--select(ui-select2,ng-model="field.calculation")-->
+                      <!--    option(value="") Select-->
+                      <!--    option(value="{{c.id}}",ng-repeat="c in calculationCodes") {{c.n}}-->
+                      <dynamic-single-select ng-model="field.calculation" ph="calculationCode" toolTip="Calculation" placeholder="Select" emptySelect="emptySelect" url="api/suggestion?systemId={{loggedInUser.userSystem[0].id}}"></dynamic-single-select>
+                    </td>
+                    <td><span class="non-valid form-section"></span>
+                      <!--select(ui-select2,ng-model="field.weight")-->
+                      <!--    option(value="") Select-->
+                      <!--    option(value="{{w}}",ng-repeat="w in weightDS") {{w.n}}-->
+                      <dynamic-single-select ng-model="field.weight" ph="weight" toolTip="Weight" placeholder="Select" emptySelect="emptySelect" url="api/suggestion?systemId={{loggedInUser.userSystem[0].id}}" class="input-large"></dynamic-single-select>
+                    </td>
+                    <td>
+                      <!--span.non-valid.form-section-->
+                      <dynamic-Select multiselect="multiselect" customobj="{&quot;selected&quot;:&quot;{{fieldKeysCharges.join()}}&quot;,&quot;calculationMethod&quot;:&quot;true&quot;}" ng-model="field.calculationOnCharge" ph="systemChargeCode" data-placeholder="Charge" class="input-large1"></dynamic-Select>
+                    </td>
+                    <td>
+                      <!--span.non-valid.form-section-->
+                      <!--select(ui-select2,ng-model="field.operand")-->
+                      <!--    option(value="") Select-->
+                      <!--    option(value="{{o}}",ng-repeat="o in operandDS") {{o.n}}-->
+                      <dynamic-single-select ng-model="field.operand" ph="metadata_operandMethod" toolTip="Operand" placeholder="Select" emptySelect="emptySelect" class="input-medium"></dynamic-single-select>
+                    </td>
+                    <td>
+                      <div ng-hide="!perChargeCurrencyConversion"><span class="non-valid form-section">
+                          <dynamic-single-select ng-model="field.currency" ph="currency" toolTip="Currency" placeholder="Select" emptySelect="emptySelect" style="width:100px !important;"></dynamic-single-select></span></div>
+                      <div ng-hide="perChargeCurrencyConversion"><span class="green"><b>Inherit</b></span></div>
+                    </td>
+                    <td>
+                      <div ng-hide="!perChargeCurrencyConversion"><span class="non-valid form-section">
+                          <dynamic-single-select ng-model="field.currencySource" ph="metadata_currencySource" toolTip="CurrencySource" placeholder="Select" class="input-large"></dynamic-single-select></span></div>
+                      <div ng-hide="perChargeCurrencyConversion"><span class="green"><b>Inherit</b></span></div>
+                    </td>
+                    <td>
+                      <div ng-hide="!perChargeCurrencyConversion"><span class="non-valid form-section">
+                          <!--dynamic-single-select(ng-model="field.exchangeRateAppldOn",customobj='{ph="tarrifAppliedOnDates",toolTip="Date",placeholder="Select"}' , style="width:100px !important;")-->
+                          <dynamic-single-select ng-model="field.exchangeRateAppldOn" ph="tarrifAppliedOnDates" toolTip="Date" placeholder="Select" style="width:100px !important;"></dynamic-single-select></span></div>
+                      <div ng-hide="perChargeCurrencyConversion"><span class="green"><b>Inherit</b></span></div>
+                    </td>
+                    <td><span class="input-large100">
+                        <input id="laneCurrency_chk_{{$index}}" type="checkbox" value="{{field.isLaneCurrency}}" ng-model="field.isLaneCurrency"/></span></td>
+                    <td><span class="input-large100">
+                        <input id="max_chk_{{$index}}" type="checkbox" value="{{field.max}}" ng-model="field.max"/></span></td>
+                    <td><span class="input-large100">
+                        <input id="min_chk_{{$index}}" type="checkbox" value="{{field.min}}" ng-model="field.min"/></span></td>
+                    <td>
+                      <button ng-click="openDialogChargeBreakage($index)" href="javascript:void(0);" tooltip="Add Breakages" class="command inz-btn btn-xs btn-success">Add</button>
+                    </td>
+                  </tr>
+                  <div style="clear:both;height:auto !important;"></div>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;height:5px;"></div>
+  <div class="row center">
+    <button ng-click="CreateandSendTemplate()" ng-disabled="frm1.$invalid || chargeList.fields.length&lt;=0 || parameters.fields.length&lt;=0 || identifier.fields.length&lt;=0" class="inz-btn btn-xs btn-success">Preview</button>
+  </div>
+  <div style="clear:both;height:10px;"></div>
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" rowHeaders="rowNos" datarows="t in TempR" height="hh" width="hw" manualColumnResize="true" columns="columnsTariff" minsparerows="0" ng-show="showPreviewTable"></div>
+  </div>
+  <div style="clear:both;height:20px;"></div>
+  <div class="row center">
+    <button permission="tariffRepository.editTariff" ng-show="btnDoneShow" ng-click="saveTemplate()" class="inz-btn btn-xs btn-success">Done</button>
+  </div>
+  <div style="clear:both;height:100px;"></div>
+</form>

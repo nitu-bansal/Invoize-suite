@@ -1,0 +1,54 @@
+
+<div class="page-header">       </div>
+<div class="row">       
+  <div class="col-xs-12">
+    <form class="form-horizontal">
+      <legend>Role
+        <div class="btn-group pull-right"><a ng-hide="roleDetailLoader" ng-click="backToList()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-default btn-sm btn-primary"><i class="icon-mail-reply icon-large">                                             </i></a><a permission="updateRole.*.*" ng-hide="roleDetailLoader" bs-tooltip="tooltip.edit" href="#/organizationSetup/role/edit/{{$stateParams.roleId}}" ng-click="editRole()" class="btn btn-default btn-sm btn-primary btn-margin"><i class="icon-pencil icon-large">                                              </i></a><a permission="deleteRole.*.*" ng-hide="roleDetailLoader" ng-click="confirmDeleteRole()" style="cursor: pointer;" bs-tooltip="tooltip.delete" class="btn btn-default btn-sm btn-primary btn-margin"><i class="icon-trash icon-large"></i></a><i ng-show="roleDetailLoader" class="icon-spinner icon-spin icon-2x"></i></div>
+      </legend>
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Role Name  </label>
+        <div class="col-sm-9">                        
+          <label>: {{role.name}}</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Description</label>
+        <div class="col-sm-9"> 
+          <label>: {{role.description}}</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Permission</label>
+        <div class="col-sm-9"> 
+          <label>: {{role.definition | array2text}}</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Created By</label>
+        <div class="col-sm-9"> 
+          <label>: {{role.createdBy}}</label>
+        </div>
+      </div>
+      <div ng-hide="!role.createdBy" class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Created On</label>
+        <div class="col-sm-9"> 
+          <label ng-show="!role.createdBy">: {{role.createdOn}}</label>
+          <label ng-hide="!role.createdBy">: 2013-06-25</label>
+        </div>
+      </div>
+      <div ng-show="role.updatedBy" class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Modified By</label>
+        <div class="col-sm-9"> 
+          <label>: {{role.updatedBy}}</label>
+        </div>
+      </div>
+      <div ng-show="role.updatedOn" class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Modified On</label>
+        <div class="col-sm-9"> 
+          <label>: {{role.updatedOn}}                        </label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

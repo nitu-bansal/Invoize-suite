@@ -1,0 +1,32 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        fieldset                                                       
+                                legend Role
+                                        .btn-group.pull-right
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="roleCreateLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-primary.btn-sm(permission="createRole.*.*", ng-hide="roleCreateLoader", ng-disabled="form.$invalid", type="submit", ng-click="create(role)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                        i.icon-ok.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="roleCreateLoader")
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Name
+                                        .col-sm-9  
+                                                input(type="text",  id="rolname", name="roleName", duplicate="role", ng-model="role.name", placeholder="Role Name", required)
+                                                label.help-inline.required(ng-show="form.roleName.$error.required") *
+                                                label.help-inline.required(ng-show="form.roleName.$error.duplicate") Role exists.
+                                                label.help-inline.required.validTick(ng-show="form.roleName.$valid") &#10004;
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Description
+                                        .col-sm-9  
+                                                textarea(rows=3, name="roleDescription", ng-model="role.description", placeholder="Role Description", required)
+                                                label.help-inline.required(ng-show="form.roleDescription.$error.required") *
+                                                label.help-inline.required.validTick(ng-show="form.roleDescription.$valid") &#10004;
+                                                
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Permissions
+                                        .col-sm-9  
+                                                input.input-xxlarge.roleBarselect(ui-select2="roleBar", name="roleBar", ng-model="role.definition",ng-change="showDialog(role.definition)", select-validate,required)
+                                                .help-inline.required(ng-show="form.roleBar.$error.selectvalidate || form.roleBar.$error.required") *
+                                                label.help-inline.required.validTick(ng-show="form.roleBar.$valid") &#10004;

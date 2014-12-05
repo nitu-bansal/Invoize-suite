@@ -1,0 +1,54 @@
+.col-xs-12
+    .modal-dialog.container
+        .modal-content
+            form(name="form",novalidate)
+                .modal-header
+                    button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                    h4.modal-title Invoice Details
+                        i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+                .modal-body(ng-init="getTemplate()")
+                        
+                        tabset
+                            tab(ng-repeat='tab in tabs', heading='{{tab.title}}', active='tab.active')
+                                
+                                label.blue Invoice Type
+                                label : {{datas.Invoices[$index].invoiceType}} &nbsp;&nbsp;&nbsp;&nbsp;
+                                label.blue Status :
+                                select.input-large(ui-select2='ui-select2',ng-required="true",name="datas.Invoices[$index].status", ng-model='datas.Invoices[$index].status', data-placeholder='Status')
+                                    option(value="")
+                                    option(value="{{status.n}}",ng-repeat="status in invoiceStatuses") {{status.n}}
+                                button.btn-sm.btn-custom.dropdown-toggle(ng-show="isCorrectInvoice[$index]==true",ng-click="correctInvoice(datas.Invoices[$index].invoiceNumber)")
+                                    | Correct Invoice
+                                div(style="clear:both;height:5px")
+                                div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',datarows='data in datas.Invoices[$index].charges', columns='dlgColumns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='celChange',id="invoice_{{$index}}",beforeKeyDown='beforeKeydown',afterSelection='afterSelection')
+                                div(style="clear:both;padding-top:12px")
+                                
+                                label(style="width:590px")
+                                    strong Total                                 
+                                                          
+                                //-label.blue Tariff Value
+                                label.center(style="width:120px") 
+                                    strong {{totalTariffValue[$index]}}
+                            
+                                //-label.blue Invoice Value
+                                label.center(style="width:150px") 
+                                    strong {{totalInvoiceValue[$index]}}
+
+                .modal-footer
+                    .pull-left
+                        .btn-group.text-left
+                          
+                            button.btn-sm.btn-custom.dropdown-toggle(ng-show="(($state.current.url=='/shipmentEntry' || $state.current.url=='/pending/:account/:accountID/:emailID') && isNewInvoiceActive == true)==true ")
+                                i.icon-angle-down &nbsp;
+                                | Add New Invoice
+                            ul.dropdown-menu.filter-ddm.arrow-left.dropdown-caret(ng-show="(($state.current.url=='/shipmentEntry' || $state.current.url=='/pending/:account/:accountID/:emailID')  && isNewInvoiceActive == true)==true")
+                                li(ng-repeat="type in invoiceTypes")
+                                    a(href='', ng-click='addNewInvoice(type)') {{type}}
+                    .pull-right
+                        //- button.inz-btn3.btn-sm.btn-default(ng-click="replicateInvoice()") Replicate Invoice
+                        
+                        button.inz-btn3.btn-sm.btn-default(ng-click="calculateTariff()") Calculate Charges
+                        button.inz-btn3.btn-sm.btn-default(ng-click="close()") Cancel
+                        button.inz-btn3.btn-sm.btn-success(ng-click="saveData()") Save
+
+                       

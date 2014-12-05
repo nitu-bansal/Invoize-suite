@@ -1,0 +1,34 @@
+
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Metadata Type :<span class="red">&nbsp;  {{metadataType.Name}}</span></div>
+    </div>
+    <div class="pull-right"><i ng-show="metadataLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-click="editMetadataType($routeParams.metadataTypeId);" href="javascript:void(0)"><span class="in-add-sign">+</span><span class="in-add-txt">Edit Profile</span></a><a ng-href="/#/organizationSetup/metadata/view" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button type="submit" ng-click="saveMetadatas()" class="inz-btn btn-sm btn-success">Save Changes</button>
+      <div style="vertical-align: inherit;" class="btn-group filter-dd rule-filter">
+        <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle pad6-12"><i class="fa fa-filter"></i> Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+        <div aria-labelledby="btnGroupVerticalDrop1" role="menu" style="left: auto; right: 0;" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+          <div ng-show="!isAdvancedFilter" class="custom-filter-display showme">
+            <div ng-repeat="(k,lb) in fields" ng-switch="lb.type">
+              <div class="opt-title">{{lb.label}}</div>
+              <input ng-switch-when="date" datepicker-popup="yyyy-mm-dd" datepicker-options="dateOptions" type="text" ng-model="filter[k]" close-text="Close" placeholder="{{lb.label}}" class="input-large"/>
+              <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" name="{{k}}" ng-model="filter[k]" ph="{{autosuggestSource}}" customobj="{{custObj[lb.label]}}" placeholder="{{lb.label}}"></dynamic-Select>
+            </div>
+          </div>
+          <div ng-show="!isAdvancedFilter">
+            <div class="opt-cmd">
+              <button type="reset" ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+              <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both"></div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" ng-show="!metadataLoader" height="hh" width="hw" datarows="metadata in metadatas" manualColumnResize="true" columns="columns" minsparerows="1" onBeforeChange="celChangeMetadata" ng-init="getMetadataType(true)" afterRender="afterRender()"></div>
+  <pagination total-items="totalItems" items-per-page="pageLimit" max-size="paginationSize" rotate="true" ng-init="paginationSize=20" page="currentPage" ng-show="!metadataLoader" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+</div>

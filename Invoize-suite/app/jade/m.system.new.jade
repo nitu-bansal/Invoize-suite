@@ -1,0 +1,20 @@
+.modal-dialog(style="width:600px")
+    .modal-content()
+        form(novalidate, name="form1")
+            .modal-header
+                    button.close(aria-hidden='true', data-dismiss='modal', type='button',ng-click="close()")     &times;                            
+                    h4.modal-title Add New System
+            .modal-body
+                           .in-center-block
+                                div.line
+                                    .data Name : {{item.systemName}}  
+                             
+                                label.control-label Attach Company : 
+                                .controls
+                                        dynamic-Select(ng-required="true",name="company",ng-model="item.systemCompany",ph="company")
+                                        span.red(ng-show="form1.company.$error.required") *                                         
+                                        span.green.validTick(ng-show="form1.company.$valid") &#10004;
+            .modal-footer                       
+                    button.inz-btn.btn-sm.btn-default(ng-click="close()") Close
+                    button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form1.$invalid}",ng-disabled="form1.$invalid", type="submit", data-dismiss="modal",ng-click="save()") Create
+

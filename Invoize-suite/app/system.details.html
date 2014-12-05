@@ -1,0 +1,10 @@
+
+<div ng-repeat="row1 in system.fields" class="control-group">
+  <ng-form name="selectionForm">
+    <label class="control-label">{{row1.label}}</label>
+    <div class="controls">                                                                                                                                               
+      <label>: {{row1.value }}</label>
+    </div>
+  </ng-form>
+</div>
+<button type="submit" ng-click="backToView()" class="btn btn-primary">Back</button>

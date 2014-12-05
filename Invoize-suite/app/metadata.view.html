@@ -1,0 +1,31 @@
+
+<div ng-init="getMetadataList('')" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">Metadata</div><i ng-show="templateLoader" class="icon-spinner icon-spin blue icon-large"></i>
+    <input placeholder="Search Account" ng-model="q" class="in-query"/>
+    <button class="in-query"><i class="fa fa-search"></i></button><a style="cursor:pointer" ng-click="redirectTo('/metadata/new')"><span class="in-add-sign">+</span><span class="in-add-txt">Add Metadata {{q}}</span></a>
+  </div>
+</div>
+<div class="row">
+  <div ng-repeat="ListItem in metadataTypes | filter:{profileName:q} | orderBy:title" ng-form="subForm" style="margin-bottom:30px;" class="col-sm-6 col-md-6 col-lg-4 inz-blk">
+    <div class="in-view-block">
+      <div class="title">{{ListItem.profileName}}</div>
+      <div class="line">
+        <div class="caption">System</div>
+        <div class="data">{{ListItem.systemList| selectFormat}}</div>
+      </div>
+    </div>
+    <div class="in-btn-blk">
+      <div class="in-btn-grp">
+        <div class="in-btn-row">
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Delete" ng-click="confirmDeleteProfile(ListItem.id)" class="inz-btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
+          <button tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Edit" ng-click="editViewTemplete(ListItem)" class="inz-btn btn-sm btn-danger"><i class="fa fa-pencil"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="in-wiz-footer">
+  <button ng-click="prevStep()" class="inz-btn btn-sm btn-danger"><i class="fa fa-long-arrow-left"></i>Previous Step</button>
+  <button ng-click="nextStep()" class="inz-btn btn-sm btn-success">Next Step<i class="fa fa-long-arrow-right"></i></button>
+</div>

@@ -1,0 +1,26 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        fieldset                        
+                                .row
+                                legend Metadata       
+                                        .btn-group.pull-right 
+                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="metadataDetailLoader", ng-click="backToListMetadata()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                a.btn.btn-primary.btn-margin.btn-sm(permission="editMetadata.*.*", ng-hide="userDetailLoader", bs-tooltip="tooltip.edit", href="#/metadata/{{$stateParams.metadataType}}/edit/{{$stateParams.metadataId}}")
+                                                        i.icon-pencil.icon-large
+                                                a.btn.btn-primary.btn-margin.btn-sm(permission="deleteMetadata.*.*", ng-hide="metadataDetailLoader", ng-click="confirmDeleteMetadata()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                        i.icon-trash.icon-large
+                                                
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="metadataDetailLoader")                                        
+                                .form-group
+                                        label.col-sm-3.control-label.no-padding-right Value
+                                        .col-sm-9                                        
+                                                label : {{selectedMetadata.value}}    
+                                .form-group(ng-repeat="row in selectedMetadataFields",ng-switch='row.t')
+                                        label.col-sm-3.control-label.no-padding-right {{row.v}}
+                                        .col-sm-9(ng-switch-when='date')
+                                                label : {{selectedMetadata[row.v] | date:'mediumDate'}}
+                                        .col-sm-9(ng-switch-default)
+                                                label : {{selectedMetadata[row.v]}}

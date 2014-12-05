@@ -1,0 +1,24 @@
+.modal.hide.fade     
+.modal-header
+            h3 Upload File    
+            div(ng-controller="FileUploadController")      
+                form#fileupload(action='/api/tms/upload/file', method='POST', enctype='multipart/form-data',data-ng-app="angularApp", data-file-upload='options', data-ng-class='{true: \'fileupload-processing\'}[!!processing() || loadingFiles]')
+                      
+                    .row-fluid 
+                               .btn.btn-success.fileinput-button.pull-left(,bs-tooltip="tooltip.attach")
+                                            i.icon-paper-clip.icon-white.icon-2x
+                                                |Browse
+                                            input(type='file',id="files-upload", name='files[]')                                 
+                            
+                    
+                    div(data-ng-repeat='file in queue')
+                             div.well.well-small.alert(ng-class='file.$viewStyle()')
+                                    button.close(type='button', data-dismiss='alert',ng-click="removeAttachment(file.id)", bs-tooltip="tooltip.delete") ×
+                                    div.col-md-6
+                                            div 
+                                                    i.icon-large(ng-class='file.$iconStyle()')                                
+                                                    strong|&nbsp {{file.name}} &nbsp &nbsp 
+                                                    | ({{file.size | formatFileSize}})
+.modal-footer 
+        button.btn.btn-primary(ng-disabled="form.$invalid", type="submit", data-dismiss="modal",ng-click="save()") Save
+        button.btn.btn-inverse(ng-click="close()") Cancel                                        

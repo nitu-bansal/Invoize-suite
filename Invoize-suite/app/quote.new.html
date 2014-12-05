@@ -1,0 +1,240 @@
+
+<div class="col-md-7">
+  <div class="widget-box transparent invoice-box">
+    <div class="widget-header widget-header-large">
+      <h3 class="grey lighter pull-left position-relative"><i class="icon-leaf green"></i>Quote</h3>
+      <div class="widget-toolbar no-border invoice-info"><span class="invoice-info-label">Quote #:</span><span class="red">{{quote.sequence}}</span><br/><span class="invoice-info-label">Date:</span><span class="blue">{{quote.quoteDate}}</span></div>
+      <div class="widget-toolbar hidden-480"><a click="window.print()"><i class="icon-print"></i></a></div>
+    </div>
+    <div class="widget-body">
+      <div class="widget-main padding-24">
+        <form novalidate="novalidate" name="form1" class="form-horizontal">
+          <div class="fieldset">
+            <div class="row">
+              <div class="pull-right btn-group"><a onClick="window.history.back()" bs-tooltip="tooltip.back" style="cursor: pointer;" class="btn btn-primary btn-sm"><i class="icon-mail-reply icon-largeasd"></i></a>
+                <button ng-disabled="form1.$invalid" bs-tooltip="tooltip.sendRequest" type="submit" style="cursor: pointer;" ng-click="create(quote)" class="btn btn-primary btn-sm"><i class="icon-ok icon-large"></i></button>
+              </div>
+            </div>
+            <tabset>
+              <tab heading="Profile">
+                <div ng-repeat="row in quote.selectionCriteria" class="form-group">
+                  <ng-form name="selectionForm">
+                    <label class="control-label">{{row.n | toHumanReadable}}</label>
+                    <div class="controls">
+                      <input type="text" name="{{row.n}}" ng-model="quote.selection[row.n]" placeholder="{{row.n | toHumanReadable}}" required="required"/>
+                      <label ng-show="selectionForm.{{row.n}}.$error.required" class="help-inline required">*</label>
+                      <label ng-show="row.m" class="help-inline"><a ng-click="removeFromList($index)" class="close">&times;   </a></label>
+                    </div>
+                  </ng-form>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Comments</label>
+                  <div class="controls">
+                    <textarea rows="3" name="quoteComments" ng-model="quote.comment" placeholder="Comments" required="required"></textarea>
+                    <label ng-show="form.quoteComments.$error.required" class="help-inline required">*   </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">More Fields</label>
+                  <div class="controls">
+                    <select ui-select2="{'closeOnSelect':false}" multiple="true" ng-change="appendToList(currentSelectedField)" name="workflowMode" ng-model="currentSelectedField" data-placeholder="Please select..." style="width:200px">
+                      <option ng-repeat="field in otherFieldsList" value="{{field}}">{{field.n}}                                                                 </option>
+                    </select>
+                  </div>
+                </div>
+                <div ng-repeat="rows in  quote.weightBracketFields">
+                  <ng-form name="chargeTypeForm">
+                    <div style="opacity: 20;" class="widget-box">
+                      <div class="widget-header widget-header-sm header-color-green">
+                        <h5><strong>{{quote["selectedChargeTypeList"][$index]["n"]}}</strong></h5>
+                        <div class="widget-toolbar"><small class="green2">Amount  </small><span class="standOut yellow"><b>{{quote.charges[$index]}}                                                                                                               </b></span>
+                        </div>
+                        <div class="widget-toolbar">                                                                                                 <a data-action="close" ng-click="removeFromSelectedChargeTypeList($index)" style="cursor: pointer;"><i class="icon-remove">                                                                                              </i></a>
+                        </div>
+                      </div>
+                      <div class="widget-body">
+                        <div style="display: block;" class="widget-body-inner">
+                          <div class="widget-main">
+                            <div class="alert-blank2">    <br/>
+                              <div class="form-inline">
+                                <label>Calculation Type
+                                  <select ui-select2="ui-select2" name="rateQualifier" ng-change="getBasisList(quote.currentRateQualifier[$index])" ng-model="quote.currentRateQualifier[$index]" data-placeholder="Please select..." style="width:200px" required="required">
+                                    <option value=""></option>
+                                    <option ng-repeat="row in rateQualifier" value="{{row.id}}">{{row.val}}</option>
+                                  </select>
+                                  <label ng-show="form.rateQualifier.$error.required" class="help-inline required">*</label>
+                                </label>
+                                <label>On
+                                  <select ui-select2="ui-select2" name="basis" ng-options="row.n for row in allBasisList" ng-change="checkAvailableThenAppend(quote.basis[$index],{{$index}})" ng-model="quote.basis[$index]" data-placeholder="Please select..." style="width:200px" required="required">
+                                    <option value=""></option>
+                                  </select>
+                                  <label ng-show="form.basis.$error.required" class="help-inline required">*</label>
+                                </label>&nbsp;<span id="basis{{$index}}"></span>
+                                <h4 class="pull-right"></h4>
+                              </div><br/>
+                              <div class="form-group">
+                                <label class="control-label">Weight Brackets</label>
+                                <div class="controls">
+                                  <div ng-repeat="row in rows" class="row">
+                                    <ng-form name="weightBracketForm">
+                                      <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;s&quot;,$parent.$index,$index)'}" name="s" ng-model="quote.weightBracketFields[$parent.$index][$index]['s']" placeholder="{{row.sph}}" required="required" class="col-md-1"/>&nbsp-&nbsp
+                                      <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;e&quot;,$parent.$index,$index)'}" name="e" ng-model="quote.weightBracketFields[$parent.$index][$index]['e']" placeholder="{{row.eph}}" required="required" class="col-md-1"/>&nbsp&nbsp&nbsp&nbsp                                                                                                                                                        
+                                      <input type="text" placeholder="value" name="v" ng-model="quote.weightBracketFields[$parent.$index][$index]['v']" required="required" class="col-md-2 offset1"/>
+                                      <label ng-show="weightBracketForm.v.$error.required" class="help-inline required">*</label>
+                                      <label class="help-inline"><a ng-hide="$index == 0" ng-click="removeFromWeightBracketFields($parent.$index,$index)" class="close">&times;</a></label>
+                                    </ng-form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-form>
+                </div>
+                <div class="widget-box">
+                  <div class="widget-header widget-hea1der-sm header-color-dark">
+                    <h5><span>Add Charge :
+                        <select ui-select2="ui-select2" multiple="false" ng-change="currentSelectedCharge=appendToSelectedChargeTypeList(currentSelectedCharge)" name="chargeType" ng-model="currentSelectedCharge" data-placeholder="select charge ..." style="width:220px">
+                          <option ng-repeat="row in allChargeTypeList" value="{{row}}">{{row.n}}</option>
+                        </select></span></h5>
+                  </div>
+                </div>
+              </tab>
+              <tab heading="Workflow" style="overflow:hidden">
+                <div class="widget-box">
+                  <div class="widget-header">
+                    <h4>{{quote.workflow.name}}</h4>
+                  </div>
+                  <div class="widget-body">
+                    <div class="widget-main">
+                      <div class="alert-blank">
+                        <div class="form-group"></div>
+                        <h5>Definition</h5>
+                        <div ng-repeat="row in quote.workflow.definition" class="form-group well well-sm">
+                          <label class="control-label"><span class="label label-large label-info arrowed-in">Level {{$index + 1}}</span><br/>
+                            <div ng-switch="quote.workflow.definitionCount[$index]" class="label label-success help-inline">
+                              <div ng-switch-when="*">All</div>
+                              <div ng-switch-default="ng-switch-default">Any {{quote.workflow.definitionCount[$index]}}</div>
+                            </div>
+                          </label>
+                          <div class="controls">
+                            <label>{{quote.workflow.definition[$index] | workflowArray2text}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tab>
+              <tab heading="Email" style="overflow:hidden">
+                <div class="form-group">
+                  <label class="control-label">To</label>
+                  <div class="controls">
+                    <label>{{quote.email.to | workflowArray2text}}</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Cc</label>
+                  <div class="controls">
+                    <label>{{quote.email.cc | workflowArray2text}}</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Subject</label>
+                  <div class="controls">
+                    <label>{{quote.email.subject}}</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Signature</label>
+                  <div class="controls">
+                    <label>{{quote.email.signature}}</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Message</label>
+                  <div class="controls">
+                    <div id="quoteEmail"></div>
+                  </div>
+                </div>
+              </tab>
+              <tab id="asdsad" heading="Template" select="GetQuoteTemplate(quote.selection,quote.weightBracketFields,quote.currentRateQualifier,$stateParams.accountId,$stateParams.quoteTemplateId,quote.comment)">
+                <div class="form-group">
+                  <div class="col-md-12">                                                                                                                                                               
+                    <iframe id="ifrmFilled" style="height:530px; border:none" class="col-md-12"></iframe>
+                  </div>
+                </div>
+              </tab>
+            </tabset>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="pull-right">
+      <h4 class="pull-right">Total amount :<span class="red">{{quote.totalAmount}}</span></h4>
+    </div>
+    <div class="col-md-7 pull-left">Extra Information</div>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-12 well well-sm">Thank you for choosing Invoize. We believe you will be satisfied by our services.</div>
+  </div>
+</div>
+<div class="col-md-5">
+  <div class="widget-box transparent invoice-box">
+    <div class="widget-header widget-header-large">
+      <h3 class="grey lighter pull-left position-relative">Old Quotes</h3>
+    </div>
+    <div class="widget-body">
+      <div class="widget-main padding-24">
+        <h5 ng-hide="oldQuoteList.length">&nbsp;&nbsp; No matching Quotes available  <i class="icon-frown"></i></h5>
+        <div id="FixedRate" when-scrolled="loadMore($stateParams.accountId,$stateParams.templateId)"> 
+          <table ng-show="oldQuoteList.length" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>                                           </th>
+                <th ng-repeat="charge in oldQuoteList[0]" ng-show="$index &gt; 1"> <span tooltip="{{charge |toHumanReadable}}" class="trim-info-large">{{charge | toHumanReadable}}</span></th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="data in oldQuoteList" ng-show="$index &gt; 0">
+              <tr ng-click="isRowCollapsed=!isRowCollapsed" style="cursor: pointer;">
+                <td><i ng-show="isRowCollapsed" class="icon-caret-right blue">                                          </i><i ng-hide="isRowCollapsed" class="icon-caret-down blue">   </i></td>
+                <td ng-repeat="d in data" ng-show="$index &gt; 1"><span tooltip="{{d |toHumanReadable}}" class="trim-info-large">{{d |toHumanReadable}} </span></td>
+              </tr>
+              <tr ng-hide="isRowCollapsed">
+                <td colspan="{{data.length}}" class="well well-sm">        
+                  <div ng-repeat="row in data" ng-show="$index==7">
+                    <center>
+                      <div ng-repeat="chargeDetail in row" class="col-md-3">                                                     <b>{{chargeDetail[0]}} ({{chargeDetail[1]}})                                                                                 </b><br/>
+                        <table class="pure-table">
+                          <thead>
+                            <tr>
+                              <th>From</th>
+                              <th>To</th>
+                              <th>                                                                                                                                                                                                                                                                                         </th>
+                            </tr>
+                          </thead>
+                          <tbody ng-repeat="weightBrackets in chargeDetail[2]">   
+                            <tr>
+                              <td class="center">{{weightBrackets[0]}}</td>
+                              <td class="center">{{weightBrackets[1]}}</td>
+                              <td class="center">{{weightBrackets[2]}} {{weightBrackets[3]}}              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </center>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="hr hr8 hr-double hr-dotted"></div>
+  </div>
+</div>

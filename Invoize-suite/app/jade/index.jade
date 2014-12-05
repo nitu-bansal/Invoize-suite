@@ -1,0 +1,26 @@
+!!! html
+html(lang='en', ng-app='angularApp', class='ng-cloak', ng-controller="MainCtrl")
+        include head
+        body.navbar-fixed(nice-scroll)
+                div(class="alert alert-block alert-{{flash.get().type}}", ng-show="flash.get().body")
+                        h4(ng-cloak) {{flash.get().title}}
+                        p(ng-cloak) {{flash.get().body}}
+                div(ng-view)
+        .loader-backdrop
+                .center-con
+                        span.in-load-bar.t
+                        span.in-load-bar.r
+                        span.in-load-bar.b
+                        span.in-load-bar.g
+                 //- Commented for demonstration purpose
+                    .navbar.navbar-default
+                            .navbar-inner
+                                    .nav-collapse
+                                            ui.nav
+                                                    li.success $state = {{$state.current.name}}
+                                            ui.nav
+                                                    li.success $stateParams = {{$stateParams}}
+                                            ui.nav
+                                                    li.success $route = {{$route.current.name}}
+                                            ui.nav
+                                                    li.success $routeParams = {{$routeParams}}

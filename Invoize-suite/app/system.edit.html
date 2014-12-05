@@ -1,0 +1,58 @@
+
+<div ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Welcome to system configuration. You can add / configure / edit your systems here and link your systems with the company that operates on it.</div>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add"><i ng-show="systemUpdateLoader" class="icon-spinner icon-spin blue icon-large"></i><a permission="editTemplateSystem" ng-click="openDialogUpdateTemplate(system)" href="javascript:void(0);" style="margin-right:15px"><span class="in-add-sign">+</span><span class="in-add-txt">Add / modify fields</span></a></div>
+</div>
+<div ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Edit system</div>
+    </div>
+    <div class="pull-right"><i ng-show="systemUpdateLoader" class="icon-spinner icon-spin blue icon-large"></i><a permission="editTemplateSystem" ng-click="openDialogUpdateTemplate(system)" href="javascript:void(0);" style="margin-right:15px"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Modify Fields</span></a><a permission="listSystem" ng-click="redirectTo('/system/view')" class="inz-btn btn-sm btn-default">Cancel</a>
+      <button permission="editSystem" type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="update()" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;" ng-init="systemEditView($routeParams.systemId)"></div>
+<form name="mainForm2" novalidate="novalidate">
+  <div ng-repeat="item in system.fields" ng-form="subForm" ng-show="{{item.isActive}}" ng-switch="{{item.isActive}}" class="col-md-6 col-sm-12 col-xs-12">
+    <label class="input-medium">{{item.label}}</label>
+    <label ng-switch-when="true" ng-switch="item.type">
+      <input ng-switch-when="text" unique="{{item.key}},{{item.isUniqueField}},system,{{$routeParams.systemId}}" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"/>
+      <input ng-switch-when="date" unique="{{item.key}},{{item.isUniqueField}},system,{{$routeParams.systemId}}" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"/>
+      <input ng-switch-when="numeric" unique="{{item.key}},{{item.isUniqueField}},system,{{$routeParams.systemId}}" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"/>
+      <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}" class="input-large"></dynamic-Select>
+      <dynamic-Select ng-switch-when="dropdown" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}" class="input-large"></dynamic-Select>
+      <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" class="input-large"></textarea><span ng-show="subForm.name.$error.required" class="red">*</span><span ng-show="subForm.name.$error.number" class="red">only numbers</span><span ng-show="subForm.name.$error.unique" class="red">already Exists</span><span ng-show="subForm.name.$error.date" class="red">only date</span><span ng-show="subForm.name.$error.maxlength" class="red">max length is {{item.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+    </label>
+  </div>
+  <div class="in-wiz-footer"><a permission="listSystem" href="#/wizard/system/view" class="inz-btn btn-sm btn-default">Cancel</a>
+    <button permission="editSystem" type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="update()" class="inz-btn btn-sm btn-success">Save</button>
+  </div>
+</form>
+<div style="clear:both;"></div>
+<div permission="historyViewSystem" class="row">
+  <h3 class="header smaller lighter red"><i class="fa fa-search-plus">&nbsp;</i>History</h3><i ng-show="historyLoader" class="icon-spinner icon-spin blue icon-small"></i>
+</div>
+<div permission="historyViewSystem" class="row history-block">
+  <div ng-show="historyTemp.count&lt;=0">
+    <label class="red">No history available</label>
+  </div>
+  <div ng-repeat="obj in historyTemp.history" data-accordion="" data-close-others="false" ng-show="historyTemp.count&gt;0" class="col-xs-12 col-sm-12 col-md-6">
+    <div data-accordion-group="" data-heading="{{obj.emailID}}" data-date="{{obj.timestamp}}" ng-click="getHistory($index,obj)">
+      <div ng-repeat="row1 in obj.historyData.fields" ng-switch="row1.type" class="line">
+        <div class="caption">{{row1.label}}</div>
+        <div ng-switch-when="text" class="data">{{row1.value}}</div>
+        <div ng-switch-when="dropdown" class="data">{{row1.value[0].n}}</div>
+        <div ng-switch-when="multiselect" class="data">{{row1.value | selectFormat}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-right">
+      <button type="submit" ng-click="loadMoreHistory()" ng-show="historyTemp.count&gt;0 &amp;&amp; showLoadmore" ng-class="{'disabled': disableLoadmore}" ng-disabled="disableLoadmore" class="inz-btn btn-sm btn-success">Load More</button>
+    </div>
+  </div>
+</div>

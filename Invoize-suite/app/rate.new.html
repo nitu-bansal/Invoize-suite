@@ -1,0 +1,75 @@
+
+<div class="offset1 col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">
+    <div class="fieldset">                     
+      <div class="row">                                         
+        <div class="pull-right"><a onClick="window.history.back()" bs-tooltip="tooltip.back" style="cursor: pointer;" class="btn btn-primary btn-margin btn-xs"> <i class="icon-mail-reply icon-largeasd"></i></a>
+          <button ng-disabled="form.$invalid" bs-tooltip="tooltip.sendRequest" style="cursor: pointer;" ng-click="create(selection,weightBracketFields,selectedChargeType,selectedRateQualifier,$stateParams.accountId,$stateParams.templateId,comment)" class="btn btn-primary btn-margin btn-xs"> <i class="icon-ok icon-large">                                            </i></button>
+        </div>
+        <legend>
+          New Rate Request
+          &nbsp; &nbsp; <i ng-show="userUpdateLoader" class="icon-spinner icon-spin icon-large">                                            </i>
+        </legend>
+      </div>
+    </div>
+    <div ng-repeat="row in defaultFields" ng-switch="row.n" class="form-group">
+      <label class="control-label">{{row.n | toHumanReadable}}</label>
+      <div class="col-sm-9">                               
+        <dynamic-Element ng-model="selection[row.n]" ph="{{row.n}}" value="{{selection[row.n]}}" required="required"></dynamic-Element>
+        <label ng-show="form.{{row.n}}.$error.required" class="help-inline required">*</label>
+        <!--label.help-inline.required(ng-show="form.{{row.n}}.$valid", class="validTick") &#10004;-->
+        <label class="help-inline"><a ng-click="removeFromList($index)" class="close">&times;   </a></label>
+      </div>
+    </div>
+    <div class="form-group">                       
+      <label class="control-label">Charge Type                                </label>
+      <div class="col-sm-9"> 
+        <input ui-select2="chargeTypeBar" name="chargeType" placeholder="Please Select" ng-model="selectedChargeType" style="width:200px" required="required"/>
+        <label ng-show="form.chargeType.$error.required" class="help-inline required">* </label>
+        <!--label.help-inline.required(ng-show="form.chargeType.$valid", class="validTick") &#10004;                               -->
+      </div>
+    </div>
+    <div class="form-group">                       
+      <label class="control-label">Rate Qualifier</label>
+      <div class="col-sm-9">
+        <select ui-select2="{allowClear: true}" name="rateQualifier" ng-model="selectedRateQualifier" data-placeholder="Please select..." style="width:200px" required="required">
+          <option value=""></option>
+          <option ng-repeat="row in rateQualifier" value="{{row.id}}">{{row.val}}</option>
+        </select>
+        <label ng-show="form.rateQualifier.$error.required" class="help-inline required">*  </label>
+        <label ng-show="form.rateQualifier.$valid" class="help-inline required validTick">&#10004;              </label>
+      </div>
+    </div>
+    <div class="form-group">                       
+      <label class="control-label">Weight Brackets</label>
+      <div class="offset2">   
+        <div ng-repeat="row in weightBracketFields" class="row">
+          <ng-form name="weightBracketForm">                                           
+            <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;s&quot;,$index)'}" name="s" ng-model="weightBracketFields[$index]['s']" placeholder="{{row.sph}}" required="required" class="col-md-1"/>
+            <input type="text" ui-event="{ blur : 'weightBracketCallback(&quot;e&quot;,$index)'}" name="e" ng-model="weightBracketFields[$index]['e']" placeholder="{{row.eph}}" required="required" class="col-md-1"/>
+            <input type="text" name="v" ng-model="weightBracketFields[$index]['v']" placeholder="Value" required="required" class="col-md-1"/>
+            <label ng-show="weightBracketForm.v.$error.required" class="help-inline required">*</label>
+            <label ng-show="weightBracketForm.v.$valid" class="help-inline required validTick">&#10004;</label>
+            <label class="help-inline"><a ng-hide="$index == 0 || $index + 1 &lt;  weightBracketFields.length " ng-click="removeFromWeightBracketFields($index)" class="close">&times;</a></label>
+          </ng-form>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Comments</label>
+      <div class="col-sm-9">
+        <textarea rows="3" name="rateComments" ng-model="comment" placeholder="Comments" required="required"></textarea>
+        <label ng-show="form.rateComments.$error.required" class="help-inline required">*</label>
+        <label ng-show="form.rateComments.$valid" class="help-inline required validTick">&#10004;   </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label">More Fields</label>
+      <div class="col-sm-9">
+        <select ui-select2="{'closeOnSelect':false}" multiple="true" ng-change="appendToList(currentSelectedField)" name="workflowMode" ng-model="currentSelectedField" data-placeholder="Please select..." style="width:200px">
+          <option ng-repeat="field in otherFieldsList" value="{{field}}">{{field.n}}                                 </option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>

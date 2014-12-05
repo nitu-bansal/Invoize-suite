@@ -1,0 +1,88 @@
+.col-md-4(id="FixedRate")
+        row
+                h4.header.smaller.lighter.gray Rates   
+                        i.icon-spinner.icon-spin.icon(ng-show="rateRequestListLoader")   
+        div(collapse='isFilterCollapsed')
+                    .alert.alert-warning
+                                .fieldset
+                                        .row
+                                                button.close.pull-right(type='button', ng-click='isFilterCollapsed = !isFilterCollapsed') ×
+                                form.form-horizontal
+                                        .form-group
+                                                label.control-label Effective on
+                                                .controls
+                                                        input.input-small(type="text", name="filterEffectiveDate", ng-model="searchFilter.effectiveDate",data-placement="right",placeholder="YYYY-MM-DD",bs-tooltip="tooltip.dateExample")
+                                        .form-group
+                                                label.control-label Expiring on
+                                                .controls
+                                                        input.input-small(type="text", name="filterExpiryDate", ng-model="searchFilter.expiryDate", value='searchFilter.expiryDate',data-placement="right",placeholder="YYYY-MM-DD",bs-tooltip="tooltip.dateExample")
+                                        .form-group
+                                                label.control-label Status
+                                                .controls
+                                                        select(ui-select2, name="filterActive", ng-model="searchFilter.isActive", data-placeholder="select", style="width:100px")
+                                                                option(value='',selected="selected") Both
+                                                                option(value=1) Active
+                                                                option(value=0) Inactive
+        div(permission="readRate.*.*",ng-show="searchFilter.expiryDate || searchFilter.EffectiveDate || searchFilter.isActive")
+                strong.text-black.linkGreen(ng-click='isFilterCollapsed = !isFilterCollapsed',style="cursor: pointer;")  Showing filterd results..
+                br
+                small.muted(ng-show="searchFilter.isActive==1") Status: Active
+                small.muted(ng-show="searchFilter.isActive==0") Status: Inactive
+                small.muted(ng-show="searchFilter.effectiveDate") ,Effective: {{searchFilter.effectiveDate | date:'mediumDate'}}
+                small.muted(ng-show="searchFilter.expiryDate") ,Expiry: {{searchFilter.expiryDate | date:'mediumDate'}}
+        div(ng-hide="oldRequest.length || rateRequestListLoader")
+                h4
+                        | No rate requests available.
+                        i.icon-frown
+
+        .widget-box.transparent(ng-show="oldRequest.length")              
+                .widget-body
+                        .widget-main.no-padding
+                                table.table.table-bordered.table-striped.table-hover(ng-hide="!oldRequest.length || rateRequestListLoader")
+                                        thead
+                                                    tr
+                                                        th
+                                                                i.icon-flag.black &nbsp Account
+                                                        th 
+                                                                i.icon-time.black &nbsp Effective
+                                                        th 
+                                                                i.icon-time.black &nbsp Expiry                                                  
+                                                        th.hidden-767 
+                                                                i.icon-group.black &nbsp Holders  
+
+                                        tbody(ng-repeat="r in oldRequest  | filter:searchFilter")
+                                                        tr(data-placement="bottom", permission="readTariff.*.*", style="cursor: pointer;", bs-tooltip="tooltip.detail", ng-class="{'alert alert-info': $state.includes('request.rateList.detail') && $stateParams.requestId == r.requestId}", href="#/request/rate/{{$stateParams.requestType}}/{{r.requestId}}", ng-click="selectRateRequest(r.requestId)")
+                                                                td
+                                                                        {{r.accountName}}
+                                                                td
+                                                                        {{r.effectiveDate  | date:'mediumDate'}}
+                                                                td
+                                                                        {{r.expiryDate  | date:'mediumDate'}}                                        
+                                                                td.hidden-767
+                                                                        .center
+                                                                                .col-md-(popover-placement="right",popover="{{CurrentStackHolder[$index]}}",popover-trigger="mouseenter")   {{r.pendingFor.length}}
+                            
+//- .col-md-3(id="FixedRate",style="position:fixed;")
+//-         i.icon-spinner.icon-spin.icon-2x(ng-show="rateRequestListLoader")
+//-         table.table.table-hover(ng-hide="rateRequestListLoader")
+//-                 tbody(ng-repeat="row in oldRequest  | filter:search")
+//-                         tr
+//-                                 td
+//-                                         ul.nav.nav-list(bs-tooltip="tooltip.expand",ng-class="{'alert alert-info': ($state.includes('request.rateList.detail') ) && $stateParams.requestId == row.requestId}")
+//-                                                 label(style="cursor: pointer;",ng-click='isCurrentRateStackHolderCollapsed = !isCurrentRateStackHolderCollapsed')
+//-                                                         strong.text-info  Current Stakeholders : {{row.pendingFor.length}}
+//-                                                 div(collapse='isCurrentRateStackHolderCollapsed')
+//-                                                         .alert-blank(ng-repeat="u in row.pendingFor")
+//-                                                                 i.icon-user
+//-                                                                 small &nbsp; {{u.UserName}}
+//-                                         ul.nav.nav-list(ng-class="{'alert alert-info': $state.includes('request.rateList.detail') && $stateParams.requestId == row.requestId}", href="#/request/rate/{{$stateParams.requestType}}/{{row.requestId}}", ng-click="selectRateRequest(row.requestId)")
+//-                                                 label
+//-                                                         strong.text-info {{row.accountName}}
+//-                                                 li(style="cursor: pointer;")
+//-                                                         i.icon-large.icon-calendar &nbsp Effective - {{row.effectiveDate}}
+//-                                                 li(style="cursor: pointer;")
+//-                                                         i.icon-large.icon-calendar &nbsp Expiry - {{row.expiryDate}}
+//-                                                 li(style="cursor: pointer;", ng-repeat="val in row.fields") {{val.n | toHumanReadable}} : {{val.v}}
+
+.col-md-8
+    div(ui-view="detail")

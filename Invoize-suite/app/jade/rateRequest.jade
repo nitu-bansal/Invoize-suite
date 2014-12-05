@@ -1,0 +1,120 @@
+include common_top_row
+.main-container(id="main-container")    
+        a(id="menu-toggler",href="#").menu-toggler
+                span.menu-text                
+        .sidebar.fixed(id="sidebar")  
+                .sidebar-shortcuts(id="sidebar-shortcuts")
+                        div(id="sidebar-shortcuts-large")                                
+                                h4 Quotes                       
+                        div(id="sidebar-shortcuts-mini")  
+                                i.icon-list.gray.icon-lg                               
+                div(id="sidebar-collapse").sidebar-collapse
+                        i(data-icon2="icon-double-angle-right", data-icon1="icon-double-angle-left").icon-double-angle-left
+                        //.nav-list
+                ul.nav.nav-list(permission="readQuote.*.*")
+                        li(permission="readQuote.*.*",ng-class="{ active: $state.includes('request.quoteList') && $stateParams.requestType == 'pending'}")
+                                a(data-toggle="tab", href="#/request/quote/pending", ng-click="getQuoteRequestList('pending')")
+                                        i.icon-blank.red {{pendingQuoteRequestCount}}
+                                        span.menu-text Pending
+                        li(permission="readQuote.*.*",ng-class="{ active: $state.includes('request.quoteList') && $stateParams.requestType == 'inprocess'}")
+                                a(data-toggle="tab", href="#/request/quote/inprocess", ng-click="getQuoteRequestList('inprocess')")
+                                        i.icon-blank.green {{inProcessQuoteRequestCount}}
+                                        span.menu-text Inprocess
+
+                div(id="sidebar-shortcuts")
+                        div(id="sidebar-shortcuts-large")
+                                h4 Rates
+                        div(id="sidebar-shortcuts-mini")  
+                                i.icon-list.gray.icon-lg
+                ul.nav.nav-list(permission="readRate.*.*")
+                        li(ng-class="{ active: $state.includes('request.rateList') && $stateParams.requestType == 'pending'}")
+                                a(data-toggle="tab", href="#/request/rate/pending", ng-click="getRateRequestList('pending')")
+                                        i.icon-blank.red {{pendingRateRequestCount}}
+                                        span.menu-text  Pending
+                        li(ng-class="{ active: $state.includes('request.rateList') && $stateParams.requestType == 'inprocess'}")
+                                a(data-toggle="tab", href="#/request/rate/inprocess", ng-click="getRateRequestList('inprocess')")
+                                        i.icon-blank.green {{inProcessRateRequestCount}}
+                                        span.menu-text Inprocess
+
+                div(id="sidebar-shortcuts")
+                        div(id="sidebar-shortcuts-large")
+                                h4 Tariffs
+                        div(id="sidebar-shortcuts-mini")  
+                                i.icon-list.gray.icon-lg
+                ul.nav.nav-list(permission="readTariff.*.*")
+                        li(permission="readTariff.*.*",ng-class="{ active: $state.includes('request.tmsList') && $stateParams.requestType == 'pending'}")
+                                a(data-toggle="tab", href="#/request/tms/pending", ng-click="getTmsRequestList('pending')")
+                                        i.icon-blank.red {{pendingTmsRequestCount}}
+                                        span.menu-text Pending
+                        li(permission="readTariff.*.*",ng-class="{ active: $state.includes('request.tmsList') && $stateParams.requestType == 'inprocess'}")
+                                a(data-toggle="tab", href="#/request/tms/inprocess", ng-click="getTmsRequestList('inprocess')")
+                                        i.icon-blank.green {{inProcessTmsRequestCount}}
+                                        span.menu-text Inprocess
+                
+        div(id="main-content").main-content
+                div(id="breadcrumbs").breadcrumbs.fixed
+                        ul.breadcrumb
+                                li
+                                        i.icon-home.home-icon
+                                        a(href="#") Home                                       
+                                li.active Request
+                        //breadcrumb
+                       
+                div(id="page-content").page-content
+                        .page-header
+                        .col-sm-12
+                                div(ng-hide="$routeParams.requestType")
+                                        .row                                
+                                                .col-xs-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Quote Approval Status
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-xs-6 
+                                                                                             div(quote-Approval-Status='chartData') 
+
+                                                .col-xs-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Request Comparison
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-xs-6                                                                                 
+                                                                                              div(quote-Success-Compare='chartData')
+                                            .row                                
+                                                .col-xs-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Accounts With Maximum Requests
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-xs-6 
+                                                                                             div(accounts-With-Maximum-Requests='chartData')
+                                                .col-xs-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Requests Received
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row       
+                                                                                        .col-xs-6 
+                                                                                             div(requests-Received='chartData')
+                                                                                             
+                             
+                                .col-sm-12(ui-view="list")
+                                //PAGE CONTENT ENDS HERE
+                //        row
+                //#page-content
+                div(id="ace-settings-container").ace-settings-container

@@ -1,0 +1,31 @@
+div
+    label.label-span Start date
+    label.label-label.input-medium.margin-4px  {{data.scheduling.schedulingStartDate}}
+    label.label-label.input-medium.margin-4px {{data.scheduling.schedulingStartTime}}
+    div(style="clear:both")
+
+div
+    label.label-span End On
+    label.label-label.input-medium.margin-4px {{data.scheduling.schedulingEndOn}}
+
+    span(ng-show="data.scheduling.schedulingEndOn=='ondate'")
+        label.label-label.input-medium {{data.scheduling.schedulingEndOnDate}}
+    div(style="clear:both")
+
+div
+    label.label-label.input-small {{data.scheduling.schedulingOn}}
+    label.label-span.margin-4px at
+    label.label-label.input-small.margin-4px {{data.scheduling.schedulingOption}}
+
+
+    span(ng-show="data.scheduling.schedulingOption=='interval'")
+        label.label-label.input-small {{data.scheduling.schedulingIntervalTime}}
+        label.label-span.margin-4px hrs
+    div(style="clear:both")
+
+div(ng-show="data.scheduling.schedulingOn=='weekly'")
+    label.label-label.input-medium {{data.scheduling.schedulingDayList}}
+    div(style="clear:both")
+div(ng-show="data.scheduling.schedulingOn=='monthly'")
+    label.label-label.input-medium {{data.scheduling.schedulingMonthList}}
+    div(style="clear:both")

@@ -1,0 +1,42 @@
+
+<!-- Created by kamalsingh.saini on 19-Sep-14.-->
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Tariff Lanes</div>
+    </div>
+    <div class="pull-right"><i ng-show="Loader" class="icon-spinner icon-spin blue icon-large"></i>
+      <dynamic-Select name="accountGrouplist" ng-model="global.accountGroup" ph="accountGroup" change="setAccounts(global.accountGroup,true)" customobj="{&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.tariffRepository&quot;,&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;}" toolTip="Account Group" placeholder="Search by Account Group"></dynamic-Select>
+      <dynamic-Select name="accountNumberlist" ng-model="global.account1" ng-disabled="isGroupSelected" ph="account" change="setAccounts(global.account1,false)" customobj="{&quot;currentContext&quot;:&quot;{{$state.$current.context.product}}.tariffRepository&quot;,&quot;systemId&quot;:&quot;{{loggedInUser.userSystem[0].id}}&quot;}" toolTip="Account Number" placeholder="Search by Account"></dynamic-Select>
+      <button ng-click="quickSearch(currentPage,true,'tariffLane')" ng-hide="global.account1.length==0 &amp;&amp; global.accountGroup.length==0" class="input-search-new1"><i class="fa fa-search"></i></button>
+      <button permission="tariffRepository.addTariff" ng-click="redirectToAddNewTariff()" ng-show="tariffList.length" class="btn-sm btn-custom">Add New</button>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:2px;">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="overflow-auto">
+      <table ng-show="tariffList.length" class="inz-table inz-table1 border1px">
+        <thead>
+          <tr>
+            <th><span>
+                <input tooltip="Select All" type="checkbox" ng-click=""/></span></th>
+            <th ng-repeat="charge in tariffList[0]" ng-show="$index &gt; '2'"><span tooltip="{{charge |toHumanReadable}}" class="trim-info-large">{{charge | toHumanReadable}}</span></th>
+            <th><span tooltip="Edit" class="trim-info-large">Edit Tariff</span></th>
+          </tr>
+        </thead>
+        <tbody ng-repeat="data in tariffList" ng-show="$index &gt; 0">
+          <tr style="cursor: pointer;">
+            <td ng-repeat="d in data track by $index" ng-show="$index==0">
+              <input id="chk" type="checkbox" ng-click=""/>
+            </td>
+            <td ng-repeat="d in data track by $index" ng-show="$index&gt;'2'" ng-switch="$index"><span tooltip="{{d}}" ng-switch-when="7" class="trim-info-large">{{d | date:fullDate}}</span><span tooltip="{{d}}" ng-switch-when="8" class="trim-info-large">{{d | date:fullDate}}</span><span tooltip="{{d}}" ng-switch-default="ng-switch-default" class="trim-info-large">{{d}}</span></td>
+            <td ng-repeat="d in data track by $index" ng-show="$index==0"><a ng-click="openTariffEditDialog(data[1],data[2],data[3])" href="javascript:void(0)" permission="tariffRepository.editTariff"><span class="in-add-txt">Edit</span></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <pagination ng-hide="tariffList.length==0" total-items="totalItems" items-per-page="pageLimit" page="currentPage" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+  </div>
+  <div ui-view="childContents"></div>
+</div>

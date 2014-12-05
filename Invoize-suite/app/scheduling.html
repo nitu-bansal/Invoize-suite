@@ -1,0 +1,53 @@
+
+<div class="col-xs-12 col-md-8 col-sm-7">
+  <div style="margin-top:28px">
+    <label>Start date &nbsp;</label>
+    <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" name="SchedulingStartDate" type="text" ng-model="data.scheduling.schedulingStartDate" close-text="Close" placeholder="Start On Date" ng-required="false"/>
+  </div>
+</div>
+<div class="col-xs-12 col-md-4 col-sm-5">
+  <div ng-model="data.scheduling.schedulingStartTime" style="display:inline-block;" ng-required="false" class="inz-time-picker">
+    <timepicker hour-step="hstep" minute-step="mstep" show-meridian="ismeridianStart"></timepicker>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="col-xs-12 col-md-6 col-sm-7">
+  <label>End On &nbsp;</label>
+  <select ui-select2="ui-select2" data-placeholder="Select" ng-model="data.scheduling.schedulingEndOn" ng-required="false" class="w150">
+    <option value="{{key}}" ng-repeat="(key,val) in endOnOption">{{val}}</option>
+  </select>
+</div>
+<div class="col-xs-12 col-md-6 col-sm-5">
+  <label ng-show="data.scheduling.schedulingEndOn=='ondate'">
+    <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" type="text" ng-model="data.scheduling.schedulingEndOnDate" ng-required="false" close-text="Close" placeholder="End On Date" class="input-medium"/>
+  </label>
+</div>
+<div class="clearfix"></div>
+<div class="col-xs-12 col-md-8 col-sm-7">
+  <div style="margin-top:28px">
+    <select ui-select2="ui-select2" data-placeholder="Select" ng-model="data.scheduling.schedulingOn" ng-required="false">
+      <option value="{{key}}" ng-repeat="(key,val) in schedulingOnOption">{{val}}</option>
+    </select>
+    <label>&nbsp; at &nbsp;</label>
+    <select ui-select2="ui-select2" ng-model="data.scheduling.schedulingOption" ng-required="false">
+      <option value="{{key}}" ng-repeat="(key,val) in schedulingOption">{{val}}</option>
+    </select>
+  </div>
+</div>
+<div class="col-xs-12 col-md-4 col-sm-5">
+  <div ng-show="data.scheduling.schedulingOption=='interval'">
+    <div ng-model="data.scheduling.schedulingIntervalTime" style="display:inline-block;" ng-required="false" class="inz-time-picker">
+      <timepicker hour-step="hstep" minute-step="mstep" show-meridian="ismeridianInterval"></timepicker>
+    </div><span style="vertical-align:middle;" class="hrs">hrs
+      <!-- input.inz-txt.w60(type="text", placeholder="Hours")--></span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <label ng-show="data.scheduling.schedulingOn=='weekly'">
+    <dynamic-Select multiselect="multiselect" name="name" ng-model="data.scheduling.schedulingDayList" ph="metadata_weekDay" placeholder="Select" ng-required="false"></dynamic-Select>
+  </label>
+  <label ng-show="data.scheduling.schedulingOn=='monthly'">
+    <dynamic-Select multiselect="multiselect" name="name" ng-model="data.scheduling.schedulingMonthList" ph="metadata_monthDays" placeholder="Select" ng-required="false"></dynamic-Select>
+  </label>
+</div>

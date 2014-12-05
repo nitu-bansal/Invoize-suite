@@ -1,0 +1,66 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.in-add
+        .pull-left.in-wiz-info Edit / View Tariff
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="Loader")
+
+        input.in-query(placeholder="Search Invoices",ng-change="searchCompany(q)",ng-model="q")
+        button.in-query
+            i.fa.fa-search
+
+        .btn-group.filter-dd(style="margin-left: -10px; vertical-align: text-bottom;")
+            button.command.dropdown-toggle
+                i.fa.fa-caret-down
+            ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                li
+                    .opt-title Invoice Numnber
+                    select.filter-input(ui-select2='ui-select2',multiple="multiple", ng-model='select2', data-placeholder='Invoice Numnber')
+                        option(value='')
+                        option(value='one') First
+                        option(value='two') Second
+                        option(value='three') Third
+                li
+                    .opt-title From
+                    select.filter-input(ui-select2='ui-select2', ng-model='select2', data-placeholder='From')
+                        option(value='')
+                        option(value='one') First
+                        option(value='two') Second
+                        option(value='three') Third
+                li
+                    .opt-title Subject
+                    select.filter-input(ui-select2='ui-select2',multiple="multiple", ng-model='select2', data-placeholder='Subject')
+                        option(value='')
+                        option(value='one') First
+                        option(value='two') Second
+                        option(value='three') Third
+                li
+                    .opt-title Tags
+                    select.filter-input(ui-select2='ui-select2',multiple="multiple", ng-model='select2', data-placeholder='Tags')
+                        option(value='')
+                        option(value='one') First
+                        option(value='two') Second
+                        option(value='three') Third
+                li
+                    .opt-cmd
+                        button.inz-btn.btn-xs.btn-default() reset
+                        button.inz-btn.btn-xs.btn-success() Apply
+
+        .btn-group(style="vertical-align: inherit;")
+            button.inz-btn.btn-sm.btn-default.dropdown-toggle(data-toggle='dropdown', type='button')
+                i.fa.fa-play-circle-o
+                |    Actions &nbsp;
+                i.fa.fa-angle-down
+            ul.dropdown-menu(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                li(ng-click="$parent.currentTab='accountInvoice'; EditRules('Invoice')")
+                    a(style="cursor:pointer") Share
+                li(ng-click="$parent.currentTab='accountShipment'; EditRules('Shipment')")
+                    a(style="cursor:pointer") Export to
+
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="") Save
+.row
+    .col-xs-12(style="padding-top: 70px;")
+.row
+    .col-xs-12
+        |  HandsOn goes here
+
+
+

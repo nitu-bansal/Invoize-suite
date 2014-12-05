@@ -1,0 +1,117 @@
+//
+   Created by pallavi.dandane on 10/28/2014.
+
+//
+   Created by pallavi.dandane on 10/2/2014.
+.modal-dialog.container
+    .modal-content
+        form(novalidate, name="formlaneHistory")
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Lane History &nbsp;
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+                .modal-body
+                    div.overflow-auto
+                        table.inz-table.inz-table1.border1px
+                            thead
+                                tr
+                                    th
+                                        span(tooltip="Expand/Collapse")
+                                            i.fa.fa-align-justify
+                                    th(ng-repeat="title in laneHistoryData[0]",ng-show="$index > 0 && $index <6 ")
+                                        span.trim-info-large(tooltip="{{title |toHumanReadable}}") {{title | toHumanReadable}}
+
+                            tbody(ng-repeat="data in laneHistoryData",ng-show="$index > 0")
+                                tr(style="cursor: pointer;")
+                                    td(ng-repeat="d in data track by $index",ng-show="$index==0",ng-click="getlaneHistoryInfo($parent.$index,data[6])")
+                                        div(ng-hide="data.dataPresent")
+                                            i.icon-reorder.blue(ng-show="data.doc")
+                                            i.icon-reorder.orange(ng-hide="data.doc")
+                                        i.icon-spinner.icon-spin.blue.icon.small(ng-show="data.dataPresent")
+                                    td(ng-repeat="d in data track by $index",ng-show="$index>0 && $index <6",ng-switch="$index")
+                                        span.trim-info-large(tooltip="{{d}}",ng-switch-when="2") {{d | date:fullDate}}
+                                        //span.trim-info-large(tooltip="{{d}}",ng-switch-when="8") {{d | date:fullDate}}
+                                        ////span.trim-info-large(tooltip="{{d}}",ng-switch-when="9", ng-hide="true") {{d }}
+                                        ////span.trim-info-large(tooltip="{{d}}",ng-switch-when="10", ng-hide="true") {{d }}
+                                        //span.trim-info-large(tooltip="{{d[0].n}}",ng-switch-when="5") {{d[0].n}}
+                                        //span.trim-info-large(tooltip="{{d[0].n}}",ng-switch-when="6") {{d[0].n}}
+                                        span.trim-info-large(tooltip="{{d}}",ng-switch-default) {{d}}
+                                            //- span.small.label.label-orange(ng-show="$index==3 && d=='0'") Inactive
+                                            //- span.small.label.label-success(ng-show="$index==3 && d=='1'") Active
+
+                                        tr(ng-show="!isRowCollapsed[$index] "  )
+                                            td.inset(colspan="{{data.length+1}}")
+                                                div(style="clear:both;height:3px")
+
+                                                .col-md-12.col-sm-12.col-xs-12
+                                                    .row
+                                                        .col-xs-12.col-md-6.col-sm-12
+                                                            label.input-medium.bolder.blue(ng-show="data.laneData.new") New &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                                        .col-xs-12.col-md-6.col-sm-12
+                                                            label.input-medium.bolder.blue(ng-show="data.laneData.old") Previous
+                                                    .cpanel
+                                                        .cpanel-heading.cpanel-heading1
+                                                            span.label.white( toolTip="Parameters") Parameters
+                                                        .cpanel-body
+                                                            .row
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    .row(ng-repeat="row1 in data.laneData.new.parameters | orderBy:'displayName'", ng-if=" row1.displayName!== 'effectiveDate'&& row1.displayName!== 'expiryDate' && row1.displayName!== 'Effective Date'&& row1.displayName!== 'Expiry Date'")
+                                                                        label.input-large.ellipsis-large(style="display:inline-table;",ng-class="{'red':row1.notFound == true}") {{row1.displayName.replace("|", ".")}}
+                                                                        label.input-medium(style="display:inline-table;",ng-class="{'red':row1.notFound == true}", toolTip="{{row1.toolTip}}") {{row1.value}}
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    .row(ng-repeat="row2 in data.laneData.old.parameters | orderBy:'displayName'", ng-if=" row2.displayName!== 'effectiveDate'&& row2.displayName!== 'expiryDate' && row2.displayName!== 'Effective Date'&& row2.displayName!== 'Expiry Date'")
+                                                                        label.input-large.ellipsis-large(style="display:inline-table;") {{row2.displayName.replace("|", ".")}}
+                                                                        label.input-medium(style="display:inline-table;", toolTip="{{row2.toolTip}}",ng-class="{'red':row2.diff !== true}"  ) {{row2.value}}
+
+
+
+                                                    .cpanel
+                                                        .cpanel-heading.cpanel-heading1
+                                                            span.label.white( toolTip="Charge") Charges
+                                                        .cpanel-body
+                                                            .row
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    .row(ng-repeat="row1 in data.laneData.new.charges | orderBy:'displayOrder'")
+                                                                        label.input-large.ellipsis-large(style="display:inline-table;") {{row1.displayName.replace("|", ".")}}
+                                                                        label.input-medium(style="display:inline-table;", toolTip="{{row1.toolTip}}") {{row1.value}}
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    .row(ng-repeat="row2 in data.laneData.old.charges | orderBy:'displayOrder'")
+                                                                        label.input-large.ellipsis-large(style="display:inline-table;") {{row2.displayName.replace("|", ".")}}
+                                                                        label.input-medium(style="display:inline-table;", toolTip="{{row2.toolTip}}",ng-class="{'red':row2.diff !== true}") {{row2.value}}
+
+                                                    .cpanel
+                                                        .cpanel-heading.cpanel-heading1
+                                                            span.label.white( toolTip="Charge") Other Information
+                                                        .cpanel-body
+                                                            .row
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    label.input-medium(style="display:inline-table;") Effective Date
+                                                                    label.input-medium(style="display:inline-table;") {{data.laneData.new.parameters[effIndex1].value}}
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    label.input-medium(style="display:inline-table;", ng-show="data.laneData.old") Effective Date
+                                                                    label.input-medium(style="display:inline-table;",ng-class="{'red':data.laneData.old.parameters.effdiff == true}") {{data.laneData.old.parameters[effIndex2].value}}
+
+                                                            .row
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    label.input-medium(style="display:inline-table;") Expiry Date
+                                                                    label.input-medium(style="display:inline-table;") {{data.laneData.new.parameters[expIndex1].value}}
+                                                                .col-xs-12.col-md-6.col-sm-12
+                                                                    label.input-medium(style="display:inline-table;", ng-show="data.laneData.old") Expiry Date
+                                                                    label.input-medium(style="display:inline-table;",ng-class="{'red':data.laneData.old.parameters.expdiff == true}") {{data.laneData.old.parameters[expIndex2].value}}
+                                                    .cpanel
+                                                        .cpanel-heading.cpanel-heading1
+                                                            span.label.white( toolTip="History") History
+                                                        .cpanel-body
+                                                            .row
+                                                                table.inz-table.inz-table1.border1px
+                                                                    thead
+                                                                        tr
+                                                                            th(ng-repeat="title1 in data.laneData.history[0]")
+                                                                                span.trim-info-large(tooltip="{{title1 |toHumanReadable}}") {{title1 | toHumanReadable}}
+
+                                                                    tbody(ng-repeat="data1 in data.laneData.history",ng-show="$index > 0")
+                                                                        tr(style="cursor: pointer;")
+                                                                            td(ng-repeat="d1 in data1 track by $index",ng-switch="$index")
+                                                                                span.trim-info-large(tooltip="{{d1}}",ng-switch-default) {{d1}}
+                    pagination(id="",ng-hide="laneHistoryData.length==0",total-items="totalItemslaneHistory",items-per-page="pageLimitlaneHistory", page="currentPagelaneHistory", class="pagination-small",on-select-page="setPagelaneHistory($parent.currentPage)", boundary-links="true")
+

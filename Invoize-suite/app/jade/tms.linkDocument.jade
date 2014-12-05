@@ -1,0 +1,88 @@
+//
+   Created by shridhar.punalkar on 2/27/14.
+
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.in-add
+        .pull-left.in-wiz-info Link Document
+.row
+    .col-xs-12(style="padding-top: 70px;")
+.row
+    .col-xs-12.doc-block
+        .title(style="margin-top:0")
+            i.fa.fa-file-text-o
+            |  Existing Document
+    .col-xs-12
+        select.mw230(ui-select2='ui-select2', ng-model='select2', data-placeholder='Select document')
+            option(value='')
+            option(value='one') document 1
+            option(value='two') document 2
+            option(value='three') document 3
+        button.inz-btn.btn-sm.btn-success(type="submit") Link
+
+.divider(style="margin:20px 0 0 0; border-top:1px solid #e5e5e5;")
+
+.row
+    .col-xs-12.doc-block
+        .title
+            i.fa.fa-file-o
+            |  New Document
+    .col-xs-12
+        .in-wiz-row
+            label Select Document
+            input(type="file")
+.row
+    .col-md-6
+        .in-wiz-row
+            label Document name
+            input.inz-txt(type="text", placeholder="Document name")
+    .col-md-6
+        .in-wiz-row
+            label Account code
+            input.inz-txt(type="text", placeholder="Account code")
+.row
+    .col-md-6
+        .in-wiz-row
+            label Transport Mode
+
+            input.inz-txt(type="text", placeholder="Transport Mode")
+    .col-md-6
+        .in-wiz-row
+            label Product
+            input.inz-txt(type="text", placeholder="Product")
+.row
+    .col-md-6
+        .in-wiz-row
+            label Shipment Type
+            input.inz-txt(type="text", placeholder="Shipment Type")
+    .col-md-6
+        .in-wiz-row
+            label Document Type
+            input.inz-txt(type="text", placeholder="Document Type")
+.row
+    .col-md-6
+        .in-wiz-row
+            label Expiry Date
+            input.inz-txt(type="text", placeholder="Expiry Date")
+    .col-md-6
+        .in-wiz-row
+            label Account code
+            input.inz-txt(type="text", placeholder="Account code")
+.row
+    .col-md-6
+        .in-wiz-row
+            label Version
+            input.inz-txt(type="text", placeholder="Version")
+    .col-md-6
+        .in-wiz-row
+            label Status
+            input.inz-txt(type="text", placeholder="Status")
+.row
+    .col-xs-12
+        .in-wiz-row
+            button.inz-btn.btn-sm.btn-default() Reset
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="create(systemData)") Save Document
+
+
+
+
+

@@ -1,0 +1,46 @@
+
+.row.in-wiz-ttl(ng-show="$state.current.name.split('.')[0]=='wizard'")
+    .col-md-9.col-sm-8
+        .in-wiz-info Welcome to company configuration. You can add / configure / edit your companies here. You can also arrange the companies as per the company hierarchy in your organization.
+    .col-md-3.col-sm-4.in-add
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyCreateLoader")
+        a(permission="editTemplateCompany",ng-click="openDialog(companyData)", href="javascript:void(0)")
+            span.in-add-sign +
+            span.in-add-txt Add / modify fields
+
+.row.in-wiz-ttl.in-fix-scroll(ng-hide="$state.current.name.split('.')[0]=='wizard'",set-width)
+    .col-xs-12.col-sm-12.col-md-12
+        .pull-left
+            .in-wiz-info New Company
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyCreateLoader")
+            a(permission="editTemplateCompany",ng-click="openDialog(companyData)", href="javascript:void(0);", style="margin-right:15px")
+                span.in-add-sign +
+                span.in-add-txt Add / Modify Fields
+            a.inz-btn.btn-sm.btn-default(permission="listCompany",ng-click="redirectTo('/company/view')") Cancel
+            //- button.inz-btn.btn-sm.btn-default() Cancel
+            button.inz-btn.btn-sm.btn-success(permission="createCompany",type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="create(companyData)") Save Changes
+div(style="clear:both;")
+div(ng-init="initialize()")
+    form(name="mainForm2",ng-submit="submitAll()",novalidate)
+        .col-md-6.col-sm-12.col-xs-12(ng-repeat="item in companyData.fields | orderBy:'displayOrder'",ng-form="subForm",ng-show="{{item.isActive}}",ng-switch="{{item.isActive}}")
+            label.input-medium {{item.label}}
+            label(ng-switch-when="true",ng-switch='item.type')
+                input.input-large(ng-switch-when='text',unique="{{item.key}},{{item.isUniqueField}},company",type="text",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                input.input-large(ng-switch-when='date',datepicker-popup="{{format}}", min="'2013-12-16'", max="'2013-12-26'",datepicker-options="dateOptions",,name="name",type="text",ng-model="item.value",is-open="opened",ng-required="item.isMandatory",close-text="Close",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                input.input-large(ng-switch-when='numeric',unique="{{item.key}},{{item.isUniqueField}},company",type="number",ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                dynamic-Select.input-large(ng-switch-when='multiselect',multiselect,ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                dynamic-Select.input-large(ng-switch-when='dropdown',customobj='{"childCompany":""}',ng-required="item.isMandatory",name="name",ng-model="item.value",ph="{{item.suggestionsSource}}",toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}",placeholder="{{item.toolTip}}")
+                textarea.input-large(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{item.regex}}",ng-required="item.isMandatory",ng-maxlength="{{item.length}}",name="name",ng-model="item.value",ng-trim,toolTip="{{item.toolTip}}",ng-readonly="{{item.isReadonly}}")
+                span.red(ng-show="subForm.name.$error.required") *
+                span.red(ng-show="subForm.name.$error.unique") already Exists
+                span.red(ng-show="subForm.name.$error.number") only numbers
+                span.red(ng-show="subForm.name.$error.date") only date
+                span.red(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}
+                span.red(ng-show="subForm.name.$error.pattern") Can contain only text
+                span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+        .in-wiz-footer
+            a.inz-btn.btn-sm.btn-default(permission="listCompany",ng-click="redirectTo('/company/view')") Cancel
+            button.inz-btn.btn-sm.btn-success(permission="createCompany",type="submit",ng-class="{'disabled': mainForm2.$invalid}",ng-disabled="mainForm2.$invalid",ng-click="create(companyData)") Save Changes
+
+

@@ -1,0 +1,27 @@
+<!--
+<Created>by nishith.modi on 16/10/14.</Created>-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Shipment Re-Allocation<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div style="max-height:400px;overflow:auto;" class="modal-body">
+        <div style="clear:both;height:10px;"></div>
+        <div class="col-sm-12">
+          <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <dynamic-single-select name="allocatedUsers" required="required" ng-model="data.user" ph="reportingUsers" toolTip="Choose Team Member" placeholder="Choose Team Member"></dynamic-single-select><span ng-show="form.allocatedUsers.$error.required" class="red">*</span><span ng-show="form.allocatedUsers.$valid" class="green validTick">&#10004;</span>
+          </div>
+        </div>
+      </div>
+      <div style="clear:both;height:5px;"></div>
+      <div class="modal-footer">
+        <div class="col-sm-12">
+          <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+          <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" type="submit" ng-click="shipmentReAllocation()" class="inz-btn btn-sm btn-success">Re-Allocate</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

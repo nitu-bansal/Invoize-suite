@@ -1,0 +1,10 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+link(rel="stylesheet", type="text/css", href="/styles/org_setup.css")
+include common_top_row
+
+.main-content
+    .page-content(ui-view="contents", style="padding-top:50px;")
+        .col-xs-12.col-md-12.col-sm-12
+            .in-gs-block
+                h1 Welcome to Invoize Suite
+                //.gs-sub-title Here You can configure Billright and Organization setup..

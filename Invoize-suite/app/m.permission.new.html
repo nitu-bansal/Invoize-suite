@@ -1,0 +1,42 @@
+
+<div class="modal hide fade">    </div>
+<div class="modal-header">
+  <h3>New Permission           </h3>
+</div>
+<div class="modal-body">
+  <form novalidate="novalidate" name="form1" class="form-horizontal">      
+    <fieldset>                                                         
+      <div class="control-group">
+        <label class="control-label">Action</label>
+        <div class="controls">
+          <label><b>{{item.action}}</b></label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Action Code</label>
+        <div class="controls">
+          <input type="text" name="permissionActionCode" ng-model="item.actionCode" placeholder="Action Code" required="required"/>
+          <label ng-show="form.permissionActionCode.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Related To</label>
+        <div class="controls">
+          <label ng-repeat="row in item.relatedToList" class="checkbox"> 
+            <input name="form-field-checkbox" type="checkbox" ng-model="item.relatedTo[row]"/>{{row}}
+          </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Description</label>
+        <div class="controls">
+          <textarea rows="3" name="permissionDescription" ng-model="item.description" placeholder="Description" required="required"></textarea>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="modal-footer">
+  <button ng-disabled="form.$invalid" data-dismiss="modal" ng-click="save()" class="btn btn-primary btn-small">Save</button>
+  <button ng-click="close()" class="btn btn-inverse btn-small">Cancel</button>
+</div>

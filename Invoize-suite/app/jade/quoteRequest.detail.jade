@@ -1,0 +1,207 @@
+.col-md-9
+        .widget-box.transparent.invoice-box
+                .widget-header.widget-header-large
+                        h4.grey.lighter.pull-left.position-relative
+                                i.icon-leaf.green
+                                | Quote  
+                                i.icon-spinner.icon-spin.icon.icon-large(ng-show="requestUpdateLoader")
+                        .widget-toolbar.no-border.invoice-info(ng-hide="requestUpdateLoader")
+                                span.invoice-info-label Quote #:
+                                span.red {{quote.quoteNo}}
+                                br
+                                span.invoice-info-label Date:
+                                span.blue {{quote.quoteDate}}
+                        .widget-toolbar.hidden-480(ng-hide="requestUpdateLoader")
+                                a(click="window.print()")
+                                        i.icon-print
+                .widget-body(ng-hide="requestUpdateLoader")
+                        .widget-main.padding-24
+                                form.form-horizontal(novalidate, name="form1")
+                                        .fieldset
+                                                .row
+                                                        .pull-right.btn-group
+                                                                a.btn.btn-primary.btn-margin.btn-sm(ng-hide="requestUpdateLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                                        i.icon-mail-reply.icon-large
+                                                                button.btn.btn-success.btn-sm(permission="approveQuote.*.*", ng-hide="requestUpdateLoader || isInProcess", ng-disabled="form.$invalid", type="submit", ng-click="approveQuoteRequest(quote)", style="cursor: pointer;", bs-tooltip="tooltip.approve")
+                                                                        i.icon-ok.icon-large
+                                                                button.btn.btn-danger.btn-sm(permission="rejectQuote.*.*", ng-hide="requestUpdateLoader || isInProcess", type="submit", ng-disabled="form.$invalid",ng-click="rejectQuoteRequest(quote)", style="cursor: pointer;", bs-tooltip="tooltip.reject")
+                                                                        i.icon-remove.icon-large
+                                                                i.icon-spinner.icon-spin.icon-2x(ng-show="requestUpdateLoader")
+                                                        tabset
+                                                                tab(heading="Profile")
+                                                                        //- {{quote}}
+                                                                        //- {{allBasisList}}
+                                                                        .form-group(ng-repeat="row in quote.selectionCriteria" )
+                                                                                ng-form(name="selectionForm")
+                                                                                        label.control-label {{row.n | toHumanReadable}}
+                                                                                        .controls
+                                                                                                
+                                                                                                input(type="text", name="{{row.n}}", ng-model="quote.selection[row.n]", placeholder="{{row.n | toHumanReadable}}", required")
+                                                                                                //- dynamic-Element(name="{{row.n}}",ng-model="selection[row.n]",ph="{{row.n}}",value='{{selection[row.n]}}',required)
+                                                                                                label.help-inline.required(ng-show="selectionForm.{{row.n}}.$error.required") *
+                                                                                                label.help-inline(ng-show="row.m")
+                                                                                                        a.close(ng-click="removeFromList($index)") &times;   
+                                                                        
+                                                                        .form-group
+                                                                                label.control-label Comments
+                                                                                .controls
+                                                                                        textarea(rows=3, name="quoteComments", ng-model="quote.comment", placeholder="Comments",required)
+                                                                                        label.help-inline.required(ng-show="form.quoteComments.$error.required") *   
+                                                                        .form-group
+                                                                                label.control-label More Fields
+                                                                                .controls
+                                                                                        select(ui-select2="{'closeOnSelect':false}",multiple="true", ng-change="appendToList(currentSelectedField)", name="workflowMode", ng-model="currentSelectedField", data-placeholder="Please select...", style="width:200px")
+                                                                                                option(ng-repeat="field in otherFieldsList", value="{{field}}") {{field.n}}                                                                 
+                                                                        div(ng-repeat="rows in  quote.weightBracketFields")
+                                                                                ng-form(name="chargeTypeForm")
+                                                                                        .widget-box(style='opacity: 20;')
+                                                                                                .widget-header.widget-header-sm.header-color-green
+                                                                                                        h5
+                                                                                                                strong {{quote["selectedChargeTypeList"][$index]["n"]}}
+                                                                                                        .widget-toolbar
+                                                                                                            small.green2
+                                                                                                                    |Amount  
+                                                                                                            span.standOut.yellow
+                                                                                                                    b {{quote.charges[$index]}}                                                                                                               
+                                                                                                        //- span.label.label-info Amount : 
+                                                                                                        //- span.label.label-important{{quote.charges[$index]}}
+
+                                                                                                        //- h4.pull-right
+                                                                                                        //-         | Amount :
+                                                                                                        //-         span.red                                                                                                        
+                                                                                                        .widget-toolbar                                                                                                  
+                                                                                                                //- a(data-action='collapse', ,style="cursor: pointer;")
+                                                                                                                //-         i.icon-chevron-up
+                                                                                                                
+                                                                                                                a(data-action='close',ng-click="removeFromSelectedChargeTypeList($index)", style="cursor: pointer;")
+                                                                                                                        i.icon-remove                                                                                               
+                                                                                                .widget-body
+                                                                                                        .widget-body-inner(style='display: block;')
+                                                                                                                .widget-main
+                                                                                                                        .alert-blank2     
+                                                                                                                                br                                                                          
+                                                                                                                                .form-inline
+                                                                                                                                        label Calculation Type
+                                                                                                                                                select(ui-select2, name="rateQualifier", ng-change="getBasisList(quote.currentRateQualifier[$index])", ng-model="quote.currentRateQualifier[$index]", data-placeholder="Please select...", style="width:200px", required)
+                                                                                                                                                        option(value="")
+                                                                                                                                                        option(ng-repeat="row in rateQualifier", value="{{row.id}}") {{row.val}}
+                                                                                                                                                label.help-inline.required(ng-show="form.rateQualifier.$error.required") *
+                                                                                                                                        label On                                                                                                                                                 
+                                                                                                                                                //- select(ui-select2="{ allowClear: true}", name="basis", ng-options="row.n for row in allBasisList", ng-change="checkAvailableThenAppend(quote.basis[$index],{{$index}})", ng-model="quote.basis[$index]", data-placeholder="Please select...", style="width:200px", required)
+                                                                                                                                                //-         option(value="")
+                                                                                                                                                        //- option(ng-repeat="row in allBasisList", value="{{row}}") {{row.n}}
+                                                                                                                                                input(ui-select2="onBar", name="onBars",placeholder="Please Select", ng-model="quote.basis[$index]", ng-change="checkAvailableThenAppend(quote.basis[$index],{{$index}})",style="width:200px", required)
+                                                                                                                                                label.help-inline.required(ng-show="form.basis.$error.required") *
+                                                                                                                                        &nbsp;
+                                                                                                                                        span(id="basis{{$index}}")
+                                                                                                                                                input.input-sm.higlightedTextbox(type='text', placeholder='value', required='required', ng-model='quote.selection[quote.basis[$index]["n"]]')
+                                                                                                                                                
+                                                                                                                                br
+                                                                                                                                .form-group
+                                                                                                                                        label.control-label Weight Brackets
+                                                                                                                                        .controls
+                                                                                                                                                .row(ng-repeat="row in rows")
+                                                                                                                                                        ng-form(name="weightBracketForm")
+                                                                                                                                                                input.col-md-1(type="text", ui-event="{ blur : 'weightBracketCallback(\"s\",$parent.$index,$index)'}", name="s", ng-model="quote.weightBracketFields[$parent.$index][$index]['s']", placeholder="{{row.sph}}", required)
+                                                                                                                                                                | &nbsp-&nbsp
+                                                                                                                                                                input.col-md-1(type="text", ui-event="{ blur : 'weightBracketCallback(\"e\",$parent.$index,$index)'}", name="e", ng-model="quote.weightBracketFields[$parent.$index][$index]['e']", placeholder="{{row.eph}}", required)
+                                                                                                                                                                | &nbsp&nbsp&nbsp&nbsp                                                                                                                                                        
+                                                                                                                                                                input.col-md-2.offset1(type="text",placeholder="value", name="v", ng-model="quote.weightBracketFields[$parent.$index][$index]['v']", required)
+                                                                                                                                                                label.help-inline.required(ng-show="weightBracketForm.v.$error.required") *
+                                                                                                                                                                label.help-inline
+                                                                                                                                                                        a.close(ng-hide="$index == 0", ng-click="removeFromWeightBracketFields($parent.$index,$index)") &times;
+
+                                                                                        
+                                                                        .widget-box
+                                                                                .widget-header.widget-hea1der-sm.header-color-dark
+                                                                                        h5
+                                                                                                span
+                                                                                                        |Add Charge :
+                                                                                                        select(ui-select2, multiple="false", ng-change="currentSelectedCharge=appendToSelectedChargeTypeList(currentSelectedCharge)", name="chargeType", ng-model="currentSelectedCharge", data-placeholder="select charge ...", style="width:220px")
+                                                                                                                option(ng-repeat="row in allChargeTypeList", value="{{row}}") {{row.n}}
+                                                                tab(heading="Workflow",style="overflow:hidden")
+                                                                        .widget-box
+                                                                                .widget-header
+                                                                                        h4 {{quote.workflow.name}}
+                                                                                .widget-body
+                                                                                        .widget-main
+                                                                                                .alert-blank
+                                                                                                        .form-group
+                                                                                                        h5 Definition
+                                                                                                        .form-group.well.well-sm(ng-repeat="row in quote.workflow.definition")
+                                                                                                                label.control-label
+                                                                                                                        span.label.label-large.label-info.arrowed-in Level {{$index + 1}}
+                                                                                                                        br
+                                                                                                                        .label.label-success.help-inline(ng-switch="quote.workflow.definitionCount[$index]")
+                                                                                                                                div(ng-switch-when="*") All
+                                                                                                                                div(ng-switch-default) Any {{quote.workflow.definitionCount[$index]}}
+                                                                                                                .controls
+                                                                                                                        label {{quote.workflow.definition[$index] | workflowArray2text}}
+                                                                tab(heading="Email",style="overflow:hidden")
+                                                                        .form-group
+                                                                                label.control-label To
+                                                                                .controls
+                                                                                        label {{quote.email.to | workflowArray2text}}
+                                                                        .form-group
+                                                                                label.control-label Cc
+                                                                                .controls
+                                                                                        label {{quote.email.cc | workflowArray2text}}
+                                                                        .form-group
+                                                                                label.control-label Subject
+                                                                                .controls
+                                                                                        label {{quote.email.subject}}
+                                                                        .form-group
+                                                                                label.control-label Signature
+                                                                                .controls
+                                                                                        label {{quote.email.signature}}
+                                                                        .form-group
+                                                                                label.control-label Message
+                                                                                .controls
+                                                                                       div(id="quoteEmail")
+
+                                                                tab(id="asdsad",heading="Template",select="GetQuoteTemplate(quote.selection,quote.weightBracketFields,quote.currentRateQualifier,$stateParams.accountId,$stateParams.quoteTemplateId,quote.comment)")
+                                                                        .form-group
+                                                                                 .col-md-12                                                                                                                                                                
+                                                                                        iframe.col-md-12(id="ifrmFilled",style="height:500px;",style="height:530px; border:none")
+                .row
+                        .pull-right
+                                h4.pull-right
+                                        | Total amount :
+                                        span.red {{quote.totalAmount}}
+                        .col-md-7.pull-left Extra Information
+        fieldset(permission="historyQuote.*.*",ng-hide="requestUpdateLoader")
+                h5(ng-show="quoteRequestHistoryLoader") Loading History
+                        i.icon-spinner.icon-spin.icon.icon-large(ng-show="quoteRequestHistoryLoader")          
+                .div(ng-hide="quoteRequestHistoryLoader")
+                        br
+                        .widget-box.transparent
+                                .widget-header
+                                        h5.lighter.smaller
+                                                i.icon-comment.blue
+                                                | History
+                                .widget-body
+                                        .widget-main.no-padding
+                                                .dialogs 
+                                                        .itemdiv.dialogdiv(ng-repeat="row in quoteRequestHistory")
+                                                                .user
+                                                                        img(alt="Avatar",src="avatars/user.jpg")
+
+                                                                .body(ng-click="getQuoteRequestHistoryDetail($index,row);isCollapsed = !isCollapsed",bs-tooltip="tooltip.detail")
+                                                                        .time
+                                                                                span.small.label.label-success.pull-right(ng-show="row.action=='Approved'") Approved
+                                                                                span.small.label.label-important.pull-right(ng-show="row.action=='Rejected'") Rejected
+                                                                                span.small.label.label-info.pull-right(ng-show="row.action=='Created'") Created
+                                                                        .name
+                                                                                a{{row.email}}
+
+                                                                        .text
+                                                                                {{row.oldSnapshot.comment}}
+
+                                                                        .row
+                                                                                div(collapse='isCollapsed')
+                                                                                        strong.text-black Details
+
+                                                                                        .row(id="{{$index}}")
+                .div(ng-hide="quoteRequestHistoryAvailable || quoteRequestHistoryLoader" )
+                        h5 History not available for this quote
+

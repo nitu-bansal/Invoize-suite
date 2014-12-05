@@ -1,0 +1,45 @@
+
+<div class="modal-dialog small">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate" autocomplete="off">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Configure Email<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div ng-init="setData()" class="row">
+          <div class="col-sm-12 col-md-4 col-xs-12">
+            <div class="his-title"><i class="fa fa-file-text-o"></i>  Account
+              <button toolTip="New Account" ng-click="clear()" class="pull-right command light"><i class="fa fa-plus"></i></button>
+            </div>
+            <ul style="max-height:153px;" class="his-list less">
+              <li ng-repeat="field in fields"><a title="{{field.emailID}}" ng-click="getData(field.id)">{{field.emailID}}<i class="fa fa-chevron-right"></i></a></li>
+            </ul>
+          </div>
+          <div class="col-sm-12 col-md-8 col-xs-12">
+            <div class="in-wiz-row">
+              <label class="control-label">Email</label>
+              <input ng-model="configureEmail.emailID" id="txtEmail" type="text"/>
+            </div>
+            <div class="in-wiz-row">
+              <label class="control-label">Password</label>
+              <input ng-model="configureEmail.password" id="txtPassword" type="password"/>
+            </div>
+            <div class="in-wiz-row">
+              <label class="control-label">Host</label>
+              <input ng-model="configureEmail.host" id="txtHost" type="text"/>
+            </div>
+            <div class="in-wiz-row">
+              <label class="control-label">Port</label>
+              <input ng-model="configureEmail.port" id="txtPort" type="text"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" permission="*.*.*" type="submit" ng-click="saveEmailBoxData()" class="inz-btn btn-sm btn-success">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+.col-md-8
+        form.form-horizontal(novalidate, name="form")
+                .fieldset
+                        .fluid-row
+                                .btn-group.pull-right
+                                        a.btn.btn-small.btn-primary(ng-hide="profileUpdateLoader", ng-click="backToDetails()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply
+                                        button.btn.btn-small.btn-primary(permission="updateProfile.*.*", ng-hide="profileUpdateLoader", ng-disabled="form.$invalid", ng-click="update()", style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                i.icon-ok
+                                        a.btn.btn-small.btn-primary(permission="deleteProfile.*.*", ng-hide="profileUpdateLoader", style="cursor: pointer;", bs-tooltip="tooltip.delete", ng-click="confirmDeleteProfile()")
+                                                i.icon-trash
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="profileUpdateLoader")
+                        tabset
+                                tab(heading="Profile",style="overflow:hidden")
+                                        ng-form(name="form2")
+                                                .control-group
+                                                        label.control-label Company Name
+                                                        .controls
+                                                                input(type="text", name="companyName", ng-model="profile.companyName", placeholder="Company Name",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.companyName.$error.required") *
+                                                .control-group
+                                                        label.control-label Company Headquarters City
+                                                        .controls
+                                                                input(type="text", name="companyHeadquartersCity", ng-model="profile.companyHeadquartersCity", placeholder="Company Headquarters City",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.companyHeadquartersCity.$error.required") *
+                                                .control-group
+                                                        label.control-label Name
+                                                        .controls
+                                                                input(type="text", name="name", ng-model="profile.name", placeholder="Name",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.name.$error.required") *
+                                                .control-group
+                                                        label.control-label Vender #
+                                                        .controls
+                                                                input(type="text", name="venderNo", ng-model="profile.venderNo", placeholder="Vender Number",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.venderNo.$error.required") *
+                                                .control-group
+                                                        label.control-label Pay to
+                                                        .controls
+                                                                input(type="text", name="payTo", ng-model="profile.payTo", placeholder="Pay to",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.payTo.$error.required") *
+                                                .control-group
+                                                        label.control-label Payment Mode
+                                                        .controls
+                                                                input(type="text", name="paymentMode", ng-model="profile.paymentMode", placeholder="Payment Mode",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.paymentMode.$error.required") *
+                                                .control-group
+                                                        label.control-label Department
+                                                        .controls
+                                                                input(type="text", name="department", ng-model="profile.department", placeholder="Department",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form2.department.$error.required") *
+                                tab(heading="Contact Info",style="overflow:hidden")
+                                        ng-form(name="form3")
+                                                .control-group
+                                                        label.control-label Phone
+                                                        .controls
+                                                                input(type="text", name="phone", ng-model="profile.phone", placeholder="Phone",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.phone.$error.required") *
+                                                .control-group
+                                                        label.control-label Mobile
+                                                        .controls
+                                                                input(type="text", name="mobile", ng-model="profile.mobile", placeholder="Mobile",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.mobile.$error.required") *
+                                                .control-group
+                                                        label.control-label Fax
+                                                        .controls
+                                                                input(type="text", name="fax", ng-model="profile.fax", placeholder="Fax",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.fax.$error.required") *
+                                                .control-group
+                                                        label.control-label Email
+                                                        .controls
+                                                                input(type="text", name="email", ng-model="profile.email", placeholder="Email",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.email.$error.required") *
+                                                .control-group
+                                                        label.control-label Address 1
+                                                        .controls
+                                                                input(type="text", name="address1", ng-model="profile.address1", placeholder="Address 1",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.address1.$error.required") *
+                                                .control-group
+                                                        label.control-label Address 2
+                                                        .controls
+                                                                input(type="text", name="address2", ng-model="profile.address2", placeholder="Address 2",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.address2.$error.required") *
+                                                .control-group
+                                                        label.control-label Location
+                                                        .controls
+                                                                input(type="text", name="location", ng-model="profile.location", placeholder="Location",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.location.$error.required") *
+                                                .control-group
+                                                        label.control-label State
+                                                        .controls
+                                                                input(type="text", name="state", ng-model="profile.state", placeholder="State",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.state.$error.required") *
+                                                .control-group
+                                                        label.control-label Zipcode 
+                                                        .controls
+                                                                input(type="text", name="zipcode", ng-model="profile.zipcode", placeholder="Zipcode",style="width:200px", required)
+                                                                label.help-inline.required(ng-show="form3.zipcode.$error.required") *

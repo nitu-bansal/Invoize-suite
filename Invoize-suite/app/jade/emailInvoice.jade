@@ -1,0 +1,51 @@
+.modal-dialog.container
+    .modal-content
+        form(name="form",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Deliver
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body
+                .col-sm-12
+                    .in-wiz-row
+                        label From
+                        .controls
+                            dynamic-Select(name="from",ng-model="email.template.from",ph="metadata_emailAccounts",placeholder="From",required)
+                            span(ng-show="form.from.$error.required") *
+                            span.green.validTick(ng-show="form.from.$valid") &#10004;
+                    .in-wiz-row
+                        label To
+                        .controls
+                            input(name="to",placeholder="Recipients Email Address", ng-model="email.template.to", type='text',required)
+                            span(ng-show="form.to.$error.required") *
+                            span.green.validTick(ng-show="form.to.$valid") &#10004;
+                    .in-wiz-row
+                        label CC
+                        .controls
+                            input(name="cc",ng-model="email.template.cc",type='text', placeholder="Cc Recipients Email Address",ng-required="false")
+                    .in-wiz-row
+                        label Subject
+                        .controls
+                            input(name="subject",ng-model="email.template.subject",type='text', placeholder="Subject",required)
+                            span(ng-show="form.subject.$error.required") *
+                            span.green.validTick(ng-show="form.subject.$valid") &#10004;
+                    .in-wiz-row
+                        label Reply to
+                        .controls
+                            input(name="replyto",ng-model="email.template.replyto",type='text', placeholder="Enter your or Group Email address",required)
+                            span(ng-show="form.replyto.$error.required") *
+                            span.green.validTick(ng-show="form.replyto.$valid") &#10004;
+                    .in-wiz-row
+                        label &nbsp;
+                        .controls
+                            div(style="clear:both;height:10px;")
+                            rich-text(ng-model="email.template.body",name="body",id="txtBody",ng-required="false")
+                            div(style='display:none')
+                                b#startIndex
+                                | to
+                                b#endIndex
+            div(style="clear:both;")
+            .modal-footer
+                .col-sm-12
+                    button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                    button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", type="submit", ng-click="saveMetadata()",) Send

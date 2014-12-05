@@ -1,0 +1,157 @@
+
+<div class="col-md-8">
+  <form novalidate="novalidate" name="form" class="form-horizontal">                       
+    <fieldset>       
+      <div class="row">
+        <h4 class="header smaller lighter gray">Tariff Detail
+          <div class="btn-group pull-right"><a ng-hide="tariffCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary btn-margin"><i class="icon-mail-reply icon-large"></i></a>
+            <button permission="tariffApprove.*.*" ng-hide="tariffCreateLoader || isInProcess" ng-disabled="form.$invalid" type="submit" ng-click="approveTariff(tariff)" style="cursor: pointer;" bs-tooltip="tooltip.approve" class="btn btn-sm btn-success"><i class="icon-ok icon-large"></i></button>
+            <button permission="tariffReject.*.*" ng-hide="tariffCreateLoader || isInProcess" ng-disabled="form.$invalid" type="submit" ng-click="rejectTariff()" style="cursor: pointer;" bs-tooltip="tooltip.reject" class="btn btn-sm btn-danger"><i class="icon-remove icon-large"></i></button><i ng-show="tariffCreateLoader" class="icon-spinner icon-spin icon-2x">                              </i>
+          </div>
+        </h4>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Effective Date</label>
+        <div class="controls">
+          <input type="text" name="effectiveDate" ng-model="tariff.effectiveDate" value="{{tariff.effectiveDate | date:'mediumDate'}}" data-date-format="M d, yyyy" placeholder="Effective Date" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker" required="required"/>
+          <label ng-show="form.effectiveDate.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Expiry Date</label>
+        <div class="controls">
+          <input type="text" name="expiryDate" ng-model="tariff.expiryDate" value="{{tariff.expiryDate | date:'mediumDate'}}" data-date-format="M d, yyyy" placeholder="Expiry Date" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker" required="required"/>
+          <label ng-show="form.expiryDate.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Received Date</label>
+        <div class="controls">
+          <input type="text" name="receivedDate" ng-model="tariff.receivedDate" value="{{tariff.receivedDate | date:'mediumDate'}}" data-date-format="M d, yyyy" placeholder="Received Date" b-datepicker="{{dateOptions}}" bs-datepicker="bs-datepicker" required="required"/>
+          <label ng-show="form.receivedDate.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Received From</label>
+        <div class="controls">
+          <input type="text" name="receivedFrom" ng-model="tariff.receivedFrom" placeholder="Received From" required="required"/>
+          <label ng-show="form.receivedFrom.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Comments</label>
+        <div class="controls">
+          <textarea rows="3" name="tariffComments" ng-model="tariff.comment" placeholder="Comments" required="required"></textarea>
+          <label ng-show="form.tariffComments.$error.required" class="help-inline required">*</label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <div class="widget-box transparent">
+        <div class="widget-header">                                    
+          <h5 class="lighter smaller"><i ng-hide="isWidgetCollapsed" class="icon-large icon-paper-clip">&nbsp Attached Documents</i><i ng-show="isWidgetCollapsed" class="icon-large icon-paper-clip">&nbsp Total Attached Documents : {{tariff.docId.length}}</i></h5>
+          <div class="widget-toolbar"><a ng-click="isWidgetCollapsed=!isWidgetCollapsed" style="cursor: pointer;"><i ng-hide="isWidgetCollapsed" bs-tooltip="tooltip.expand" class="icon-chevron-up"></i><i ng-show="isWidgetCollapsed" bs-tooltip="tooltip.detail" class="icon-chevron-down"></i></a></div>
+        </div>
+        <div ng-hide="isWidgetCollapsed" class="widget-body">
+          <div class="widget-main no-padding"><br/>
+            <div data-ng-repeat="f in tariff.docId" class="dialogss">
+              <ng-form class="row">    
+                <div class="alert-blank2">
+                  <div id="reviseFiles{{$index}}" ng-controller="FileUploadController" ng-class="queue[0].$viewStyle()" class="btn-toolbar reviseFiles">
+                    <div class="row">
+                      <div class="btn-group">
+                        <div ng-init="updateCurrentFile=true;">
+                          <form data-upload-template-id="template-upload-2" method="POST" enctype="multipart/form-data" data-ng-app="angularApp" class="fileupload">
+                            <div bs-tooltip="tooltip.upload" class="a btn btn-sm btn-info fileinput-button"><i class="icon-upload-alt"></i>
+                              <input type="file" id="files-upload" name="files[]" ng-click="fileToReplace(f)"/>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="btn-group">
+                        <div permission="deleteTariffDocument.*.*" data-dismiss="alert" ng-click="removeExistingAttachment(f.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="btn btn-sm btn-danger"><i class="icon-remove"></i></div>
+                        <div class="btn btn-sm btn-info"><i ng-hide="queue.length" class="icon-large icon-paper-clip"></i><i ng-class="queue[0].$iconStyle()" class="icon-large"></i><a ng-hide="queue.length" style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="/api/tms/download/file?id={{f.id}}" download="{{f.name}}" class="whitelink"><strong>{{f.v}}</strong></a><a ng-show="queue.length" style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="/api/tms/download/file?id={{queue[0].id}}" download="{{queue[0].name}}" class="whitelink"><strong>{{queue[0].name}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{f.v}}</strong><strong ng-hide="checkType(downloadTariff)">{{queue[0].name}}</strong>
+                        </div>
+                        <div ng-show="queue.length" ng-click="UndoFileRevision(f.id,$index)" bs-tooltip="tooltip.undo" style="cursor: pointer;" class="btn btn-sm btn-warning"><i class="icon-undo"></i></div>
+                      </div>
+                      <div bs-tooltip="tooltip.type" permission="reviseTariffDocument.*.*" class="btn-group pull-right col-md-3">
+                        <select name="fileTypeSelect" ng-model="f.t" ng-change="setFileType(f.id,f.t)" ng-options="value.id as value.name for (key, value) in fileTypeSelects" data-style="btn btn-primary btn-sm show-tick" bs-select="bs-select" required="required" class="col-md-12"></select>
+                        <label ng-show="form.fileTypeSelect.$error.required" class="help-inline required">*</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset ng-hide="isInProcess">
+      <div class="widget-box transparent">
+        <div class="widget-header">
+          <h5 class="lighter smaller"><i class="icon-large icon-paper-clip"></i>Upload New Documents</h5>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding"><br/>
+            <dialogss>
+              <div class="form-group">
+                <div id="newFiles" ng-controller="FileUploadController" url="/api/tms/upload/file">
+                  <form data-upload-template-id="template-upload-1" method="POST" action="/api/tms/upload/file" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+                    <div bs-tooltip="tooltip.drop" id="drop-area">
+                      <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+                        <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+                      </div>
+                      <div class="drop-instructions">
+                        <mute> Browse and upload multiple files or drag and drop files here</mute>
+                      </div>
+                      <div class="drop-over">Drop files here!</div>
+                    </div>
+                    <div ng-hide="proceedClicked" class="row uploaded">
+                      <div data-ng-repeat="file in queue" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/tms/download/file?id={{file.id}}" download="{{file.name}}">{{file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+                      <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </dialogss>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <h5 ng-show="tariffHistoryLoader">Loading History<i ng-show="tariffHistoryLoader" class="icon-spinner icon-spin icon icon-large">                       </i></h5>
+    </fieldset>
+    <div ng-show="tariffHistoryAvailable"><br/>
+      <div class="widget-box transparent">
+        <div class="widget-header">
+          <h5 class="lighter smaller"><i class="icon-comment blue"></i>History</h5>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div class="dialogs">                                           
+              <div ng-repeat="row in documentRequestHistory" class="itemdiv dialogdiv">
+                <div class="user"><img alt="Avatar" src="avatars/user12.png"/></div>
+                <div ng-click="isCollapsed = !isCollapsed" style="cursor: pointer;" class="body">
+                  <div class="time"><span ng-show="row.action=='Approved'" class="small label label-success pull-right">Approved</span><span ng-show="row.action=='Rejected'" class="small label label-important pull-right">Rejected</span><span ng-show="row.action=='Created'" class="small label label-info pull-right">Created </span></div>
+                  <div class="name"><a>{{row.un}}  </a></div>
+                  <div class="text">{{row.oldSnapshot.comment}}
+                    <div collapse="isCollapsed">
+                      <div class="row">                                                                       <small class="muted"> <i class="icon-caret-right green"> Effective : {{row.oldSnapshot.effectiveDate | date:'mediumDate'}} </i></small><br/><small class="muted">   <i class="icon-caret-right green"> Expiry : {{row.oldSnapshot.expiryDate | date:'mediumDate'}} </i></small><br/><small class="muted">    <i class="icon-caret-right green"> Received : {{row.oldSnapshot.receivedDate | date:'mediumDate'}}</i></small><br/></div><strong class="text-black">Attached Documents</strong>
+                      <div data-ng-repeat="file in row.oldSnapshot.docId">
+                        <div>
+                          <div class="pull-right">&nbsp<span class="pull-right small label label-info">{{file.t}}</span></div><i class="icon-large icon-paper-clip">&nbsp</i><a href="/api/tms/download/file?id={{file.id}}" download="{{file.name}}" style="cursor: pointer;" bs-tooltip="tooltip.download" data-placement="right" class="link"><strong>{{file.v}}</strong></a><strong ng-hide="checkType(downloadTariff)">{{file.v}}<br/><small class="muted"> You do not have download permissions</small></strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tools"><a class="btn btn-minier btn-info"><i class="icon-only icon-share-alt">    </i></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

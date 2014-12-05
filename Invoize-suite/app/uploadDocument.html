@@ -1,0 +1,93 @@
+
+<!--Created by kamalsingh.saini on 20/5/14.-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+      <h4 class="modal-title">Document Upload / Linking &nbsp;<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+    </div>
+    <div class="modal-body">
+      <tabset>
+        <tab heading="Upload Documents" ng-click="currentTab='uploadDocuments'" ng-if="obj.isUpload" class="tab">
+          <div class="row">
+            <div ng-repeat="item in obj.fields" class="col-md-4">
+              <label class="blue">{{item.label}}</label>
+              <label>: {{item.value}}</label>
+            </div>
+            <div class="col-md-4">
+              <input type="checkbox" id="rDoc" ng-model="obj.replaceDoc"/>
+              <label for="rDoc">Repalce existing document</label>
+            </div>
+          </div>
+          <div style="clear:both;height:5px;"></div>
+          <div class="row">
+            <div id="newFiles" ng-controller="FileUploadController">
+              <form data-upload-template-id="template-upload-1" method="POST" action="api/uploadFiles/{{obj.fields.accountNumber.value}}/{{obj.fields.fileName.value}}?replace={{obj.replaceDoc}}" enctype="multipart/form-data" data-ng-app="angularApp" data-file-upload="options" class="fileupload fileUps">
+                <div bs-tooltip="tooltip.drop" id="drop-area">
+                  <div bs-tooltip="tooltip.attach" class="fileinput-button btn-file">
+                    <input type="file" id="files-upload" name="file" multiple="multiple"/><i class="icon-cloud-upload"></i>
+                  </div>
+                  <div class="drop-instructions">
+                    <mute> Browse and upload multiple files or drag and drop files here</mute>
+                  </div>
+                  <div class="drop-over">Drop files here!</div>
+                </div>
+                <div ng-hide="proceedClicked" class="row uploaded">
+                  <div data-ng-repeat="file in queue track by $index" class="file"><span ng-class="file.class" class="file-name"><a style="cursor: pointer;" bs-tooltip="tooltip.download" target="_blank" href="{{$location.host()}}/api/downloadFile?fileName={{file.id}}&amp;accountNumber={{obj.fields.accountNumber.value}}" download="{{file.name}}">{{file.id || file.name}} &nbsp</a><i data-dismiss="alert" ng-click="callRemoveNewDocumentId(file.id)" bs-tooltip="tooltip.delete" style="cursor: pointer;" class="fa fa-times-circle ico-dismis"></i></span></div>
+                  <button type="submit" ng-click="proceed()" ng-show="docExist" class="inz-btn btn-sm btn-success pull-right">Proceed &nbsp;<i class="fa fa-long-arrow-right"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Link Documents" ng-click="currentTab='linkDocuments'" ng-if="obj.isLinking" class="tab">
+          <div class="row">
+            <form name="form" novalidate="novalidate">
+              <div ng-repeat="item in obj.fields" class="col-md-4">
+                <label class="control-label">{{item.label}}</label>
+                <div ng-switch="item.type" class="controls pull-right">
+                  <input ng-switch-when="text" readonly="{{item.readOnly}}" unique="{{item.key}},{{item.isUniqueField}},company" type="text" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="item.value" is-open="opened" ng-required="item.isMandatory" close-text="Close" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <input ng-switch-when="numeric" unique="{{item.key}},{{item.isUniqueField}},company" type="number" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"/>
+                  <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+                  <dynamic-Select ng-switch-when="dropdown" customobj="{&quot;childCompany&quot;:&quot;&quot;}" ng-required="item.isMandatory" name="name" ng-model="item.value" ph="{{item.suggestionsSource}}" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}" placeholder="{{item.toolTip}}"></dynamic-Select>
+                  <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{item.regex}}" ng-required="item.isMandatory" ng-maxlength="{{item.length}}" name="name" ng-model="item.value" ng-trim="ng-trim" toolTip="{{item.toolTip}}" ng-readonly="{{item.isReadonly}}"></textarea>
+                  <!--span(ng-show="subForm.name.$error.required") *-->
+                  <!--span(ng-show="subForm.name.$error.unique") already Exists-->
+                  <!--span(ng-show="subForm.name.$error.number") only numbers-->
+                  <!--span(ng-show="subForm.name.$error.date") only date-->
+                  <!--span(ng-show="subForm.name.$error.maxlength") max length is {{item.length}}-->
+                  <!--span(ng-show="subForm.name.$error.pattern") Can contain only text-->
+                  <!--span.green.validTick(ng-show="subForm.name.$valid") &#10004;-->
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row">
+            <div style="max-height:350px;padding:5px 2px" class="overflow-auto">
+              <table class="inz-table1">
+                <thead>
+                  <th>FileName</th>
+                  <th>{{relate.label}}</th>
+                </thead>
+                <tboady>
+                  <tr ng-repeat="file in resultFiles track by $index">
+                    <td>{{file.fileName}}</td>
+                    <td>
+                      <dynamic-Select customobj="{{relate.srcData}}" ng-model="file['relateWith.invoiceNumber']" ph="{{relate.src}}" toolTip="{{relate.label}}" placeholder="{{relate.label}}"></dynamic-Select>
+                    </td>
+                  </tr>
+                </tboady>
+              </table>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+    <div class="modal-footer">
+      <button ng-click="close()" class="inz-btn btn-sm btn-default">Done</button>
+      <button ng-click="search()" ng-show="currentTab==='linkDocuments'" class="inz-btn btn-sm btn-success">Search</button>
+      <button ng-click="link()" ng-show="currentTab==='linkDocuments'" class="inz-btn btn-sm btn-success">Link</button>
+    </div>
+  </div>
+</div>

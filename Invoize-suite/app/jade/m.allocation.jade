@@ -1,0 +1,42 @@
+.modal-dialog.container(ng-init="getData(currentPage);")
+    .modal-content
+        form(name="form",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Shipment Allocation
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body(style="max-height:400px;overflow:auto;")
+                div(style="clear:both;height:10px;")
+                .col-sm-12
+                    .input-group
+                        span.input-group-addon
+                            i.fa.fa-user
+                        dynamic-single-select(name="allocatedUsers",required,ng-model="data.user",ph="reportingUsers",toolTip="Choose Team Member",placeholder="Choose Team Member")
+                        span.red(ng-show="form.allocatedUsers.$error.required") *
+                        span.green.validTick(ng-show="form.allocatedUsers.$valid") &#10004;
+                    span Account# : {{data.items['Account Number']}}, Account : {{data.items['Account Name']}}, Allocated To : {{data.items['User ID']}}
+                div(style="clear:both;height:10px;")
+                .col-sm-12(ng-hide="dataList.length")
+                    span.trim-info-large(ng-hide="dataList.length") No Data Found
+                .col-sm-12(ng-show="dataList.length")
+                    span You have selected {{data.globalSelect === "Consider all"?data.selectedDocs.length:data.items.Count}} record(s) out of {{data.items.Count}}
+                        a(ng-click="selectUnselectAll()",style="cursor: pointer;",ng-show="data.items.Count>pageLimit") &nbsp; {{data.globalSelect}}
+                    table.inz-table.inz-table1.table-bordered
+                        thead
+                            th
+                                span
+                                    input(tooltip="Select All"  ,type='checkbox',ng-model="data.selectAll",name="chkAll",ng-change="updateSelection()" )
+                            th(ng-repeat="val in dataList[0]",ng-hide="$first")
+                                span.trim-info-large(title="{{val}}") {{val}}
+                        tbody(ng-repeat="row in dataList track by $index",ng-hide="$first")
+                            tr
+                                td
+                                    input(type='checkbox',ng-checked="data.selectAll",ng-click="updateSelection($event.target,row[0])")
+                                td(ng-repeat="col in row track by $index",ng-hide="$first")
+                                    span.trim-info-large(title="{{col}}") {{col}}
+                    pagination(ng-show="dataList.length",total-items="data.items.Count",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+            div(style="clear:both;height:5px;")
+            .modal-footer
+                .col-sm-12
+                    button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                    button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", type="submit", ng-click="allocateData()",ng-show="dataList.length>1") Allocate

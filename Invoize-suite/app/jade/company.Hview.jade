@@ -1,0 +1,98 @@
+link(rel="stylesheet", type="text/css", href="/styles/inz-chart.css")
+.row.in-wiz-ttl.fix-scroll( ng-show="$state.current.name.split('.')[0]=='wizard'", hide-pop )
+        .col-md-7.col-sm-6
+                .in-wiz-info Company Hierarchy in your organization.
+        .col-md-5.col-sm-6.in-add
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyListLoader")
+                 
+                //- input.in-query(placeholder="Search Company",ng-change="searchCompany(q)",ng-model="q")
+                //- button.in-query
+                //-         i.fa.fa-search
+                a.inz-btn.btn-sm.btn-ico.btn-default(permission="listCompany",hide-pop, ng-click="redirectTo('/company/view')",style="cursor:pointer",tool-tip,data-placement="top", data-toggle="tooltip", title="Tile View")
+                    i.fa.fa-th
+                a(permission="createCompany",hide-pop, style="vertical-align: middle;",ng-click="redirectTo('/company/new')",style="cursor:pointer",ng-hide="loggedInUser.companyType!='Multiple'")
+                        span.in-add-sign +
+                        span.in-add-txt Add company
+
+
+.row.in-wiz-ttl.in-fix-scroll(ng-hide="$state.current.name.split('.')[0]=='wizard'",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Company Hierarchy in your organization.
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyListLoader")
+            a.inz-btn.btn-sm.btn-ico.btn-default(hide-pop, ng-click="redirectTo('/company/view')",style="cursor:pointer",tool-tip,data-placement="bottom", data-toggle="tooltip", title="Tile View")
+                        i.fa.fa-th
+        
+            //- input.in-query(placeholder="Search Company",ng-change="searchCompany(q)",ng-model="q")
+            //- button.in-query
+            //-     i.fa.fa-search
+            a(permission="createCompany",style="vertical-align: top;cursor:pointer;",ng-click="redirectTo('/company/new')",ng-hide="loggedInUser.companyType!='Multiple'")
+                span.in-add-sign +
+                span.in-add-txt Add Company
+div(style="clear:both;")
+.col-xs-12.col-md-12.col-sm-12
+    div(id="content" )       
+            .legends
+                //.title LEGENDS
+                .leg
+                    i.fa.fa-building-o
+                    |  : Company
+                .leg
+                    i.fa.fa-desktop
+                    |  : System
+                .leg
+                    i.fa.fa-map-marker
+                    |  : Location
+                .leg
+                    i.fa.fa-bar-chart-o
+                    |  : Operation
+                .leg
+                    i.fa.fa-tags
+                    |  : Account
+    div(style="clear:both;height:20px;")
+    div(id="main")
+
+div(id='left')
+    ul(id="organisation" )
+        li(tree-View='child in companyTree.children at ul')
+            //div ID : {{child.companyid}}
+
+            .line.com
+                i.fa.fa-building-o
+                | &nbsp; {{child.company}}
+
+                //- button.btn-pop(ng-if="child.system.length>0", data-content='<i class="fa fa-desktop"></i> System1 <br/><i class="fa fa-desktop"></i> System2 <br/><i class="fa fa-desktop"></i> System3 <br/> ', data-placement='right', data-toggle='popover', data-container='body', type='button', data-original-title='System', title='System')
+
+                button.btn-pop(ng-if="child.system.length>0", data-content="{{child.system | formatSystem}}", data-placement='right',data-toggle='popover', data-container='body', type='button', data-original-title='System', title='System & Profiles')
+                    i.fa.fa-caret-right
+
+            //- button(ng-click='addChild(child)') +
+            //- //.line(ng-if="child.system.length>0", ng-repeat="sys in child.system")
+            //-     i.fa.fa-desktop
+            //-     |   {{sys}}
+            //- //div(ng-repeat='sys in child.system')
+            //- //  | {{sys}}
+
+            //- .line(ng-repeat='sys in child.system')
+            //-     <i class="fa fa-desktop"></i> {{sys}}  <br/>
+
+            ul(ng-class='{p:child.children.length}')
+        .clearfix
+        
+
+.in-wiz-footer   
+        //-button.inz-btn.btn-sm.btn-primary(type="submit",ng-click="loadMore()")
+        
+        a.inz-btn.btn-sm.btn-success(href="#/wizard/system/view") Next Step      
+                i.fa.fa-long-arrow-right
+     
+
+.loader-backdrop
+    .center-con
+        span.in-load-bar.t
+        span.in-load-bar.r
+        span.in-load-bar.b
+        span.in-load-bar.g
+
+

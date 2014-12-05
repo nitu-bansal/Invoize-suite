@@ -1,0 +1,16 @@
+
+<div style="width:600px" class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;                            </button>
+      <h4 class="modal-title">Confirm</h4>
+    </div>
+    <div class="modal-body">
+      <div class="modal-msg">{{item.msg?item.msg:'Are you sure?'}}</div>
+    </div>
+    <div class="modal-footer">                      
+      <button permission="tariffRepository.editTariff" ng-click="redirectToEditTamplate()" class="inz-btn btn-sm btn-warning">Edit Configuration</button>
+      <button permission="tariffRepository.editTariffLanes" ng-click="redirectToEditTariff()" class="inz-btn btn-sm btn-success">Edit Tariff Lanes</button>
+    </div>
+  </div>
+</div>

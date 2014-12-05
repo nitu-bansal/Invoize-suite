@@ -1,0 +1,28 @@
+
+<!-- Created by kamalsingh.saini on 3/6/14.-->
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Chose your environment<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="noti-con">
+            <div class="noti-title">Select Company</div>
+            <dynamic-Select required="required" name="searchCompany" ng-model="search.company" ph="userCompany" placeholder="Select Company" change="clearSystem()" class="ftext"></dynamic-Select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="noti-con">
+            <div class="noti-title">Select System</div>
+            <dynamic-Select required="required" customobj="{&quot;companyId&quot;:&quot;{{search.company[0].id!=null ? search.company[0].id : userCompany[0].id}}&quot;}" disabled="search.company==null || search.company.length==0" name="searchSystem" ng-model="search.system" ph="userSystem" placeholder="Select System" class="ftext"></dynamic-Select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button ng-click="apply()" ng-class="{'disabled': search.company==null || search.system==null}" ng-disabled="search.company==null || search.system==null" class="inz-btn btn-sm btn-success">Apply</button>
+    </div>
+  </div>
+</div>

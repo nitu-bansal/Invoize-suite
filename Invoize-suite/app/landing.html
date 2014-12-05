@@ -1,0 +1,161 @@
+
+<div class="container">
+</div>
+<div class="row-fluid">
+  <link rel="stylesheet" type="text/css" href="/styles/home2.css"/>
+  <div role="navigation" class="nav navbar navbar-invoize navbar-fixed-top">
+    <div id="in-head" class="container">
+      <div class="navbar-header">
+        <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand"><span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span>invoize</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Home</a></li>
+          <!--li-->
+          <!--        a(href='#') Pricing-->
+          <li><a href="#">Demo</a></li>
+          <li><a href="#">About</a></li>
+          <!--li.active(ng-hide="$state.current.name.contains('landing')")  /*****hide by avinash*****/-->
+          <!--        a(href='#myModal', data-toggle='modal') Sign In-->
+          <li ng-hide="$state.current.name.indexOf('landing')!==-1" class="active"><a href="#myModal" data-toggle="modal">Sign In</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="in-log-block">
+    <div class="container">
+      <div class="col-xs-12 col-sm-12 col-md-6 in-lhs">
+        <h1>Sign In</h1>
+        <div class="in-log-des">
+          <blink>Recommended -</blink> Before you sign-in, please clear your browser's cache/cookies to experience some new features.
+        </div>
+        <div class="in-gs-btn"><a href="#" class="in-btn">Get Started</a></div>
+      </div>
+      <div ng-show="showlogin" class="col-xs-12 col-sm-12 col-md-6 in-reg">
+        <form novalidate="novalidate" name="form" ng-submit="login(userEmail,password)" class="text-center">
+          <div class="row">
+            <div class="col-xs-4 in-title">Email ID</div>
+            <div class="col-xs-8 in-txt-blk">
+              <div class="in-err"><i ng-show="form.userEmail.$error.required" class="icon-asterisk"></i>
+                <div ng-show="form.userEmail.$error.email">Invalid email address</div>
+              </div>
+              <input type="email" ng-model="userEmail" name="userEmail" ng-change="password='';" placeholder="Email ID" required="required" ng-trim="ng-trim" auto-fill-sync="auto-fill-sync" class="in-txt"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 in-title">Password</div>
+            <div class="col-xs-8 in-txt-blk">
+              <div class="in-err"><i ng-show="form.password.$error.required" class="icon-asterisk"></i></div>
+              <input type="password" ng-model="password" auto-fill-sync="auto-fill-sync" name="password" placeholder="Password" required="required" avoid-cutcopy="avoid-cutcopy" class="in-txt"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 in-title"></div>
+            <div class="col-xs-8 in-txt-blk">
+              <button type="submit" ng-hide="loginLoader" ng-disabled="form.$invalid" ng-class="{'disabled': form.$invalid}" class="in-btn">Sign In</button><i ng-show="loginLoader" class="icon-spinner icon-spin icon-2x white"></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 in-title"></div>
+            <div class="col-xs-8 in-txt-blk">
+              <div class="in-err">
+              </div>
+              <div style="text-align:right"><a ng-click="showlogin=!showlogin" ng-hide="isCevaSubdomain" class="forgot-password-link">Trouble Signing in ?</a><a href="https://helpdesk.invoize.com/recovery.php" ng-show="isCevaSubdomain" class="forgot-password-link">Trouble Signing in ?</a></div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div ng-hide="showlogin" class="col-xs-12 col-sm-6 col-md-6 in-reg">
+        <form novalidate="novalidate" name="form2" class="text-center">
+          <div class="row">
+            <div class="col-xs-4 in-title">Email ID</div>
+            <div class="col-xs-8 in-txt-blk">
+              <div class="in-err"><i ng-show="form2.userEmail.$error.required" class="icon-asterisk"></i>
+                <div ng-show="form2.userEmail.$error.email">Invalid email address</div>
+              </div>
+              <input type="email" ng-model="userEmail" name="userEmail" placeholder="Email ID" required="required" ng-trim="ng-trim" class="in-txt"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 in-title"></div>
+            <div class="col-xs-8 in-txt-blk">
+              <button type="button" ng-click="forgotPassword(userEmail)" ng-hide="forgotPassLoader" ng-disabled="form2.$invalid" ng-class="{'disabled': form2.$invalid}" class="in-btn">Send Password</button><i ng-show="forgotPassLoader" class="icon-spinner icon-spin icon-2x blue"></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 in-title"></div>
+            <div class="col-xs-8 in-txt-blk">
+              <div class="in-err">
+              </div>
+              <div style="text-align:right"><a ng-click="showlogin=!showlogin" class="forgot-password-link">Return to Sign In</a></div>
+              <label ng-show="forgotPasswordSuccess" class="label label-lg label-info arrowed arrowed-right"> Password sent to your email.</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <!--div-->
+  <!--        .container-->
+  <!--                .row(style="margin-top: 40px;")-->
+  <!--                        .col-md-4-->
+  <!--                                .in-info-->
+  <!--                                        .col-md-12.col-xs-4.block-infocon-->
+  <!--                                                i.icon-group.in-infocon-->
+  <!--                                                //- img(src="styles/images/people.png")-->
+  <!--                                        //.col-md-12.col-sm-8.col-xs-8-->
+  <!--                                        //        .in-rhs-tt Work with colleagues-->
+  <!--                                        //        .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.-->
+  <!--                                        .clearfix-->
+  <!---->
+  <!--                        .col-md-4-->
+  <!--                                .in-info-->
+  <!--                                        .col-md-12.col-xs-4.block-infocon-->
+  <!--                                                i.icon-search.in-infocon-->
+  <!--                                                //- img(src="styles/images/zoom.png")  crosshairs-->
+  <!--                                        //.col-md-12.col-sm-8.col-xs-8-->
+  <!--                                        //        .in-rhs-tt Inventory Tracking-->
+  <!--                                        //        .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.-->
+  <!--                                        .clearfix-->
+  <!---->
+  <!--                        .col-md-4-->
+  <!--                                .in-info-->
+  <!--                                        .col-md-12.col-xs-4.block-infocon-->
+  <!--                                                i.icon-map-marker.in-infocon-->
+  <!--                                                //- img(src="styles/images/connect.png")-->
+  <!--                                        //.col-md-12.col-sm-8.col-xs-8-->
+  <!--                                        //        .in-rhs-tt Anywhere, Anytime-->
+  <!--                                        //        .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.-->
+  <!--                                        .clearfix-->
+  <!--                .clearfix-->
+  <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" type="button" class="close">    &times;</button>
+          <h4 id="myModalLabel" class="modal-title">How to Sign In to invoize</h4>
+        </div>
+        <div class="modal-body">
+          <div style="font-weight:400; font-size: 13px; color: #666;">When you registered with invoize, we sent you an email with your Web Address. You can sign in from your Web Address, which looks like this:</div>
+          <div style="padding:10px 0; font-size:23px; color:#0073e5;">DOMAIN-NAME.invoize.com</div>
+          <div style=" font-size: 17px; color: #666;"><a href="#">Forgot your web address</a></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-sm btn-primary">OK, got it!
+            <!--.row-fluid-->
+            <!--.col-md-4-->
+            <!--img(src="img/ra.png")-->
+            <!--p.logoGrey.landingPara With configurable workflows RANALYZE gives the organization the freedom to define and associate workflows to their clients, accountypes and other configurable elements.!-->
+            <!--.col-md-4-->
+            <!--img(src="img/rr.png")-->
+            <!--p.logoGrey.landingPara RateRight is the heart of Invoice-Suite and has the ability to pick rates from tariffs and apply it on your invoices, automating the entire billing process..-->
+            <!--.col-md-4-->
+            <!--img(src="img/gv.png")-->
+            <!--p.logoGrey.landingPara Holds a complete repository of your invoices and the documents attached to it.Greenvoize helps you manage your invoices and can generate and transform them to any format u want..-->
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

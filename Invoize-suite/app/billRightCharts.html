@@ -1,0 +1,495 @@
+
+<!--Created by kamalsingh.saini on 04-Sep-14.-->
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Charts
+        <label class="lbl-dash"><span class="blue">Data Metrics Time Span : &nbsp;&nbsp;</span><span class="bolder orange"><i class="fa fa-calendar-o">&nbsp;</i>{{filterObj.timeRange.type}}</span></label>
+      </div>
+    </div>
+    <div class="pull-right">
+      <div class="btn-group filter-dd">
+        <button data-toggle="dropdown" type="button" style="cursor:pointer;" tooltip="Dashboard Criteria" tooltip-placement="left" class="btn-custom btn-sm dropdown-toggle">Filter &nbsp;<i class="icon-filter"></i></button>
+        <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm ulcustom dropdown-caret pull-right padding-custom">
+          <div style="height:350px;padding:2px 5px;" class="overflow-auto">
+            <li>
+              <div class="opt-title">By Time</div>
+              <div ng-init="displaydt=true;applyFilter()" class="opt-group">
+                <div class="opt">
+                  <input type="radio" id="dtday" value="Daily" ng-model="filterObj.timeRange.type" name="daterange" ng-click="opt='daily';displaydt=true"/>
+                  <label for="dtday">&nbsp; Daily &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                  <input type="radio" id="dtweek" value="Weekly" ng-model="filterObj.timeRange.type" name="daterange" ng-click="opt='week';displaydt=true"/>
+                  <label for="dtweek">&nbsp; Weekly</label>
+                  <div style="clear:both;height:3px;"></div>
+                  <input type="radio" id="dtmonth" value="Monthly" ng-model="filterObj.timeRange.type" name="daterange" ng-click="opt='';displaydt=true"/>
+                  <label for="dtmonth">&nbsp; Monthly &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                  <input type="radio" id="dtquart" value="Quarterly" ng-model="filterObj.timeRange.type" name="daterange" ng-click="opt='quart';displaydt=false"/>
+                  <label for="dtquart">&nbsp; Quarterly</label>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="opt-title">Age Group</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <select multiple="multiple" ui-select2="ui-select2" name="ages" ng-model="filterObj.timeRange.age" data-placeholder="Please select..." required="required" class="input-large">
+                    <option ng-repeat="a in age" value="{{a}}">{{a}}</option>
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="opt-title">For Products</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <select multiple="multiple" ui-select2="ui-select2" name="product" ng-model="filterObj.product" data-placeholder="Please select..." required="required" class="input-large">
+                    <option ng-repeat="p in products" value="{{p}}">{{p}}</option>
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="opt-title">For Scope</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <select ui-select2="ui-select2" name="scope" ng-model="filterObj.scope" data-placeholder="Please select..." required="required" class="input-large">
+                    <option ng-repeat="s in scope" value="{{s}}">{{s}}</option>
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li ng-if="displaydt">
+              <div class="opt-title">Based on Date Range</div>
+              <div class="opt-group overflow-hidden">
+                <div ng-show="displaydt" class="opt">
+                  <input name="dtrng1" id="dtrng1" datepicker-popup="{{dateFormat[0]}}" datepicker-options="dateOptions" type="text" value="this.value" ng-model="filterObj.timeRange.startdate" ng-required="true" close-text="Close" placeholder="Start Date" class="input-large"/>
+                  <div style="clear:both;height:3px;"></div>
+                  <input name="dtrng2" id="dtrng2" datepicker-popup="{{dateFormat[0]}}" datepicker-options="dateOptions" type="text" value="this.value" ng-model="filterObj.timeRange.enddate" ng-required="true" close-text="Close" placeholder="End Date" class="input-large"/>
+                </div>
+              </div>
+            </li>
+            <li ng-if="opt=='week'">
+              <div class="opt-title">For Day of week</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <select ui-select2="ui-select2" name="days" ng-model="filterObj.timeRange.weekday" data-placeholder="Please select..." required="required" class="input-large">
+                    <option value="">--- Choose Day---</option>
+                    <option ng-repeat="d in days" value="{{d.v}}">{{d.n}}</option>
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li ng-if="opt=='quart'">
+              <div class="opt-title">For Quarter</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <select multiple="multiple" ui-select2="ui-select2" name="quarter" ng-model="filterObj.timeRange.quarter" data-placeholder="Please select..." required="required" class="input-large">
+                    <option ng-repeat="q in quarters" value="{{q.v}}">{{q.n}}</option>
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li ng-if="opt=='quart'">
+              <div class="opt-title">In Year</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <input type="number" name="year" ng-model="filterObj.timeRange.year" min="2000" max="2025" class="input-large"/>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="opt-title">By Region</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <dynamic-Select name="dbregion" ng-model="filterObj.region" customObj="{&quot;column&quot;:&quot;unRegion&quot; }" ph="metadata_country" toolTip="Region" placeholder="Select Region" class="input-large"></dynamic-Select>
+                </div>
+              </div>
+              <div class="opt-title">By Sub-Region</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <dynamic-Select name="dbsubregion" customObj="{&quot;column&quot;:&quot;unSubRegion&quot;,&quot;region&quot;:&quot;{{filterObj.region[0].n}}&quot;}" ng-model="filterObj.subRegion" ph="metadata_country" toolTip="Sub-Region" placeholder="Select Sub-region" class="input-large"></dynamic-Select>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="opt-title">By Country</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <dynamic-Select name="dbcountry" ng-model="filterObj.country" customObj="{&quot;column&quot;:&quot;countryName&quot;,&quot;subRegion&quot;:&quot;{{filterObj.subRegion[0].n}}&quot;}" ph="metadata_country" toolTip="Country" placeholder="Select Country" class="input-large"></dynamic-Select>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="opt-title">By Account</div>
+              <div class="opt-group">
+                <div class="opt">
+                  <dynamic-Select multiselect="multiselect" name="dbaccountNumber" ng-model="filterObj.account" ph="account" toolTip="Account Number" placeholder="Select Account" class="input-large"></dynamic-Select>
+                </div>
+              </div>
+            </li>
+            <div style="clear:both;height:3px;"></div>
+          </div>
+          <div class="opt-cmd">
+            <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+            <button ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:50px;"></div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Input Volume</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#ivchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#ivdetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+      <!--.widget-toolbar.no-border-->
+      <!--    button.btn1.btn-primary.dropdown-toggle(data-toggle='dropdown')-->
+      <!--        | HCL Vs CEVA &nbsp;-->
+      <!--        i.icon-angle-down.icon-on-right.bigger-110-->
+      <!--    ul.dropdown-menu.pull-right.dropdown-125.dropdown-lighter.dropdown-caret-->
+      <!--        li.active-->
+      <!--            a.blue(href='#')-->
+      <!--                i.icon-caret-right.bigger-110-->
+      <!--                | &nbsp; HCL + CEVA-->
+      <!--        li-->
+      <!--            a(href='#')-->
+      <!--                i.icon-caret-right.bigger-110.invisible-->
+      <!--                | &nbsp; HCL Vs CEVA-->
+      <!--.widget-toolbar.no-border-->
+      <!--    button.btn1.btn-primary.dropdown-toggle(data-toggle='dropdown')-->
+      <!--        | Weekly &nbsp;-->
+      <!--        i.icon-angle-down.icon-on-right.bigger-110-->
+      <!--    ul.dropdown-menu.pull-right.dropdown-125.dropdown-lighter.dropdown-caret-->
+      <!--        li.active-->
+      <!--            a.blue(href='#')-->
+      <!--                i.icon-caret-right.bigger-110-->
+      <!--                | &nbsp; Daily-->
+      <!--        li-->
+      <!--            a(href='#')-->
+      <!--                i.icon-caret-right.bigger-110.invisible-->
+      <!--                | &nbsp; Weekly-->
+      <!--        li-->
+      <!--            a(href='#')-->
+      <!--                i.icon-caret-right.bigger-110.invisible-->
+      <!--                | &nbsp; Monthly-->
+      <!--        li-->
+      <!--            a(href='#')-->
+      <!--                i.icon-caret-right.bigger-110.invisible-->
+      <!--                | &nbsp; Quarterly-->
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="ivchart" class="tab-pane in active">
+            <div ng-if="inVolumeData.values.length&gt;1">
+              <div google-chart="google-chart" obj="inVolumeData"></div>
+            </div>
+            <div ng-hide="inVolumeData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="ivdetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.inVolume.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.inVolume.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.inVolume.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.inVolume.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>(WIP) Unbilled</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#ubchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#ubdetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="ubchart" class="tab-pane in active">
+            <div ng-if="unbilledData.values.length&gt;1">
+              <div google-chart="google-chart" obj="unbilledData"></div>
+            </div>
+            <div ng-hide="unbilledData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="ubdetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.unbilled.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.unbilled.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.unbilled.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.unbilled.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Output Volume (Processed Volume)</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#ovchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#ovdetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="ovchart" class="tab-pane in active">
+            <div ng-if="outVolumeData.values.length&gt;1">
+              <div google-chart="google-chart" obj="outVolumeData"></div>
+            </div>
+            <div ng-hide="outVolumeData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="ovdetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.outVolume.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.outVolume.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.outVolume.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.outVolume.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Non-complaint Unbilled</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#nonUnbchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#nonUnbdetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="nonUnbchart" class="tab-pane in active">
+            <div ng-if="nonUnbilledData.values.length&gt;1">
+              <div google-chart="google-chart" obj="nonUnbilledData"></div>
+            </div>
+            <div ng-hide="nonUnbilledData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="nonUnbdetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.nonUnbilled.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.nonUnbilled.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.nonUnbilled.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.nonUnbilled.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Non-complaint Output Volume</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#invdelchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#invdeldetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="invdelchart" class="tab-pane in active">
+            <div ng-if="nonInvTimelinessData.values.length&gt;1">
+              <div google-chart="google-chart" obj="nonInvTimelinessData"></div>
+            </div>
+            <div ng-hide="nonInvTimelinessData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="invdeldetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.nonInvTimeliness.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.nonInvTimeliness.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.nonInvTimeliness.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.nonInvTimeliness.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Invoicing Timeliness</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#avTimechart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#avTimedetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="avTimechart" class="tab-pane in active">
+            <div ng-if="invTimelinessData.values.length&gt;1">
+              <div google-chart="google-chart" obj="invTimelinessData"></div>
+            </div>
+            <div ng-hide="invTimelinessData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="avTimedetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.invTimeliness.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.invTimeliness.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.invTimeliness.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.invTimeliness.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Invoicing Accuracy</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#accchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#accdetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="accchart" class="tab-pane in active">
+            <div ng-if="accuracyData.values.length&gt;1">
+              <div google-chart="google-chart" obj="accuracyData"></div>
+            </div>
+            <div ng-hide="accuracyData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="accdetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.accuracy.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.accuracy.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.accuracy.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-hide="globalChartData.accuracy.detail.length">No Data Available / Apply Filter again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="widget-box">
+    <div class="widget-header">
+      <h5><i class="icon-signal"></i>Undelivered</h5>
+      <div class="widget-toolbar no-border">
+        <ul class="nav-tabs-1">
+          <li class="active"><a href="#undlvrchart" data-toggle="tab"><i class="fa fa-dollar"></i>&nbsp; Charts</a></li>
+          <li><a href="#undlvrdetail" data-toggle="tab"><i class="fa fa-list"></i>&nbsp; Details</a></li>
+        </ul>
+      </div>
+    </div>
+    <div nice-scroll="nice-scroll" class="widget-body">
+      <div class="widget-main">
+        <div class="tab-content">
+          <div id="undlvrchart" class="tab-pane in active">
+            <div ng-if="undeliveredData.values.length&gt;1">
+              <div google-chart="google-chart" obj="undeliveredData"></div>
+            </div>
+            <div ng-hide="undeliveredData.values.length&gt;1">No Data Available / Apply Filter again</div>
+          </div>
+          <div id="undlvrdetail" class="tab-pane height-250">
+            <table ng-show="globalChartData.undelivered.detail.length" class="inz-table inz-table1">
+              <thead>
+                <tr>
+                  <th ng-repeat="h in globalChartData.undelivered.detail[0]"><span tooltip="{{h |toHumanReadable}}" class="trim-info-large">{{h | toHumanReadable}}</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in globalChartData.undelivered.detail" ng-show="$index &gt; 0">
+                  <td ng-repeat="d in data track by $index">{{d}}</td>
+                </tr>
+              </tbody>No Data Available / Apply Filter again
+            </table>
+            <div ng-hide="globalChartData.undelivered.detail.length"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

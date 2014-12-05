@@ -1,0 +1,53 @@
+
+
+.row
+    .col-xs-12
+        .doc-block()
+            .title(style="margin: 5px 0 15px;") Create Invoice Delivery Profile :
+                span.txt-dim   {{selectedAccounts.accountNos.toString()}}
+                |  &nbsp; &nbsp;&nbsp;&nbsp; Mode :
+                div.inz-btn-switch
+                    .switch
+                        input(type='radio',ng-model="deliveryMode", value='EDI',name="rdoDeliveryMode", id="medi")
+                        label(for="medi") EDI
+                    .switch
+                        input(type='radio',ng-model="deliveryMode", value='Paper',name="rdoDeliveryMode", id="mpaper")
+                        label(for="mpaper") Paper
+                    .switch
+                        input(type='radio',ng-model="deliveryMode", value='Email',name="rdoDeliveryMode",ng-click="initializeEmail()", id="memail")
+                        label(for="memail") Email
+                    .switch
+                        input(type='radio',ng-model="deliveryMode", value='Web',name="rdoDeliveryMode", id="mweb")
+                        label(for="mweb") Web
+
+                .in-wiz-row.pull-right(ng-show="deliveryMode=='EDI'")
+                    label.control-label Attach Existing profile
+                    .controls
+                        select.filter-input(ui-select2='ui-select2', ng-model='select2', data-placeholder='Invoice Numnber')
+                            option(value='')
+                            option(value='one') First
+                            option(value='two') Second
+                            option(value='three') Third
+
+                    button.inz-btn.btn-sm.btn-ico.btn-default.go-back(ng-click="RulesState('invoiceDeliveryRuleNew')",tool-tip,data-placement="top", data-toggle="tooltip", title="Add Mode",ng-show="showBackBtn")
+                        i.fa.fa-plus
+
+    .col-xs-12(style="margin-bottom: 20px",ng-show="deliveryMode=='EDI'")
+        tabset
+            tab#shipmentRules.tab(heading="Mode1",ng-click="")
+            tab#location.tab(heading="Mode2", ng-click="" )
+            tab#account.tab(heading="Mode3",ng-click="")
+
+    .col-xs-12(style="margin:10px 0 20px 0",ng-show="deliveryMode=='Email'")
+        .row
+            .col-xs-12(style="padding-left:35px;")
+                label.mw70 Delivery Party
+                dynamic-Select(name="name",ng-model="data.deliveryParty",ph="listing_deliveryParty",placeholder="Delivery Party")
+        .row
+            .col-xs-12(style="padding-left:35px;")
+                label.mw70 Delivery Party Name
+                input(placeholder="Delivery Party Name", ng-model="data.deliveryPartyName",type='text')
+        
+        .row
+            .col-xs-12
+                include emailTemplate

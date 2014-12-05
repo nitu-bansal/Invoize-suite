@@ -1,0 +1,63 @@
+.row(set-width, ng-init="getList('')")
+    //-     .col-xs-12
+    //-         a(style="vertical-align: middle;",ng-click="redirectTo('/system/profile/'+$routeParams.systemName+'/'+$routeParams.systemId + '/account/InvoiceDeliveryEmailrules/new')",style="cursor:pointer")
+    //-             span.in-add-sign +
+    //-             span.in-add-txt Add Invoice Delivery Email
+    //- .row
+    //- .col-sm-6.col-md-6.col-lg-4.inz-blk(ng-repeat="ListItem in invoiceDeliveryTypes | orderBy:title",ng-form="subForm", style="margin-bottom:30px;")    
+    .col-sm-12.col-md-12.inz-blk(ng-repeat="ListItem in invoiceDeliveryTypes | orderBy:accountName", style="margin-bottom:5px;border-bottom:1px solid #DDDDDD;")
+        .col-md-12.col-xs-12
+            h5 Account Number :
+                span.h6.orange3 &nbsp; {{ListItem.accountName}}
+        .col-sm-6.col-md-4.col-xs-12(ng-repeat="ListItem2 in ListItem.data ",ng-form="subForm", style="margin-bottom:5px;")
+            .in-view-block
+                .title
+                    i.fa.fa-tags.small &nbsp;
+                    | Name : {{ListItem2.name| selectFormat}}
+                .line
+                    .caption Party Name
+                    .data {{ListItem2.deliveryPartyName| selectFormat}}
+            .in-btn-blk
+                .in-btn-grp
+                    .in-btn-row
+                        //- button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" )
+                        //-     i.fa.fa-trash-o
+                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="editTemplate(ListItem2.id)")
+                            i.fa.fa-pencil
+                        button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="View" , ng-click="viewTemplate(ListItem2.id)")
+                            i.fa.fa-eye
+
+//- .row.in-wiz-ttl.in-fix-scroll(set-width, ng-init="getNotificationList('')",style="background:#eee;")
+//-     .col-xs-12.in-add
+//-         .pull-left.in-wiz-info Notification
+//-         i.icon-spinner.icon-spin.blue.icon-large(ng-show="templateLoader")
+//-         //- input.in-query(placeholder="Search Notification",ng-change="getTemplates(q)",ng-model="q")
+//-         //- button.in-query
+//-         //-     i.fa.fa-search
+//-         a(style="vertical-align: middle;",ng-click="redirectTo('/notification/new')",style="cursor:pointer")
+//-             span.in-add-sign +
+//-             span.in-add-txt Add Notification
+//- .row
+//-     .col-sm-6.col-md-6.col-lg-4.inz-blk(ng-repeat="ListItem in notificationTypes | orderBy:title",ng-form="subForm", style="margin-bottom:30px;")
+//-         .in-view-block
+//-             .title
+//-                 i.fa.fa-tags.small &nbsp;
+//-                 | Event : {{ListItem.eventName| selectFormat}}
+//-             .line
+//-                 .caption Module
+//-                 .data {{ListItem.module| selectFormat}}
+//-         .in-btn-blk
+//-             .in-btn-grp
+//-                 .in-btn-row
+//-                     button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" )
+//-                         i.fa.fa-trash-o
+//-                     button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="editTemplate(ListItem.id)")
+//-                         i.fa.fa-pencil
+//-                     button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="View" , ng-click="viewTemplate(ListItem.id)")
+//-                         i.fa.fa-eye
+//- .in-wiz-footer
+//-     button.inz-btn.btn-sm.btn-danger(ng-click="prevStep()")
+//-         i.fa.fa-long-arrow-left
+//-         | Previous Step
+//-     button.inz-btn.btn-sm.btn-success(ng-click="nextStep()") Next Step
+//-         i.fa.fa-long-arrow-right

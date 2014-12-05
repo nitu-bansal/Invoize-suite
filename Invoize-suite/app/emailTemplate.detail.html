@@ -1,0 +1,118 @@
+
+<div class="in-wiz-row"></div>
+<label class="control-label">From </label>
+<select ng-model="data.from" ng-options="f.n for f in fromIDs"></select>
+<button ng-click="toggleConfigureEmailBox()">Configure Emailbox</button><span ng-hide="showConfigureEmailBox">
+  <div class="in-wiz-row"></div>
+  <label class="control-label">Email</label>
+  <input ng-model="configureEmail.email" id="txtEmail" type="text"/>
+  <div class="in-wiz-row"></div>
+  <label class="control-label">Password</label>
+  <input ng-model="configureEmail.password" id="txtPassword" type="text"/>
+  <div class="in-wiz-row"></div>
+  <label class="control-label">Host</label>
+  <input ng-model="configureEmail.host" id="txtHost" type="text"/>
+  <div class="in-wiz-row"></div>
+  <label class="control-label">Port</label>
+  <input ng-model="configureEmail.port" id="txtPort" type="text"/>
+  <div class="in-wiz-row"></div>
+  <button ng-click="toggleConfigureEmailBox()">Cancel</button>
+  <button permission="*.*.*" ng-disabled="form.$invalid" type="submit" ng-click="saveEmailBoxData()" class="inz-btn btn-sm btn-success">Save</button></span>
+<div class="in-wiz-row"></div>
+<label class="control-label">To</label>
+<input ng-model="data.to" id="txtTo" type="text"/>
+<div class="in-wiz-row"></div>
+<label class="control-label">CC</label>
+<input ng-model="data.cc" id="txtCC" type="text"/>
+<div class="in-wiz-row"></div>
+<label class="control-label">Subject</label>
+<input ng-model="data.subject" id="txtSubject" type="text"/>
+<div class="in-wiz-row"> </div>
+<label class="control-label">Attachement</label>
+<select ng-model="data.attachement" ng-options="a for a in attachements"></select>
+<div class="in-wiz-row"> </div>
+<label class="control-label">Reply To</label>
+<input ng-model="data.replyto" id="txtReplyTo" type="text"/>
+<div class="in-wiz-row"></div>
+<label class="control-label">Body</label>
+<div class="row">
+  <div class="col-xs-6">
+    <rich-text ng-model="data.body" name="name" id="txtBody"> </rich-text>
+    <div style="display:none"><b id="startIndex"></b>to<b id="endIndex"> </b></div>
+  </div>
+  <div class="col-xs-6">
+    <ul>Fields
+      <li ui-draggable="true" drag="fields" ng-repeat="fields in fields track by $index">{{fields}}</li>
+    </ul>
+  </div>
+</div>
+<div class="in-wiz-row"></div>
+<label class="control-label">Signature</label>
+<textarea ng-model="data.signature" id="txtSignature" type="text"></textarea>
+<div class="in-wiz-row"></div>
+<button ng-click="toggleScheduling()">Scheduling</button><span ng-hide="showScheduling">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="doc-block">
+        <div style="margin: 5px 0 15px;" class="title">Scheduling :
+          <div class="in-wiz-row"></div>
+          <label class="control-label">Start Date</label>
+          <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" type="text" ng-model="data.startDate" ng-required="true" close-text="Close" placeholder="Start On Date"/>
+          <div class="in-wiz-row"></div>
+          <label class="control-label">Scheduling Time</label>
+          <div ng-model="data.schedulingTime" style="display:inline-block;">
+            <timepicker hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+          </div>
+          <div class="in-wiz-row"></div>
+          <label class="control-label">End On</label>
+          <select ng-model="data.endOnOption" ng-options="e for e in endOnOption"></select>
+          <div style="margin-bottom: 20px" ng-show="data.endOnOption=='On Date'" class="col-xs-12">
+            <input datepicker-popup="dd-MMMM-yyyy" datepicker-options="dateOptions" type="text" ng-model="data.endOn" ng-required="true" close-text="Close" placeholder="End On Date"/>
+          </div>
+          <div class="in-wiz-row"></div>
+          <select ng-model="data.schedulingOn" ng-options="s for s in schedulingOn"></select>&nbsp; &nbsp; at  
+          <div style="margin-bottom: 20px" ng-show="data.schedulingOn=='Daily'" class="col-xs-12">
+          </div>
+          <div style="margin-bottom: 20px" ng-show="data.schedulingOn=='Weekly'" class="col-xs-12">
+            <ul class="inline">
+              <li>
+                <div data-ng-class="{open: open}" class="btn-group">
+                  <button class="btn">Select Day(s)</button>
+                  <button data-ng-click="open=!open" class="btn dropdown-toggle"><span class="caret"></span></button>
+                  <ul aria-labelledby="dropdownMenu" class="dropdown-menu">
+                    <li><a data-ng-click="checkAll()"><i class="icon-ok-sign"></i>Check All</a></li>
+                    <li><a data-ng-click="unCheckAll()"><i class="icon-remove-sign"></i>Uncheck All</a></li>
+                    <li class="divider"></li>
+                    <li data-ng-repeat="day in daysList"><a data-ng-click="setSelectedDay()">{{day.name}}<span data-ng-class="isChecked(day.id)"></span></a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div style="margin-bottom: 20px" ng-show="data.schedulingOn=='Monthly'" class="col-xs-12">
+            <ul class="inline">
+              <li>
+                <div data-ng-class="{open: open}" class="btn-group">
+                  <button class="btn">Select Day(s)</button>
+                  <button data-ng-click="open=!open" class="btn dropdown-toggle"><span class="caret"></span></button>
+                  <ul aria-labelledby="dropdownMenu" class="dropdown-menu">
+                    <li><a data-ng-click="checkAllNumber()"><i class="icon-ok-sign"></i>Check All</a></li>
+                    <li><a data-ng-click="unCheckAllNumber()"><i class="icon-remove-sign"></i>Uncheck All</a></li>
+                    <li class="divider"></li>
+                    <li data-ng-repeat="day in numberOfDays"><a data-ng-click="setSelectedDayNumber()">{{day.name}}<span data-ng-class="isCheckedNumber(day.id)"></span></a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <select ng-model="data.dailyOption" ng-options="d for d in dailyOption"></select>
+          <div style="margin-bottom: 20px" ng-show="data.dailyOption=='Interval'" class="col-xs-12">
+            <input ng-model="data.dailyInterval" id="txtDailyInterval" type="text"/>of
+            <div ng-model="data.dailyTime" style="display:inline-block;">
+              <timepicker hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></span>

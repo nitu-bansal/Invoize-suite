@@ -1,0 +1,60 @@
+
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Deliver<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-sm-12">
+          <div class="in-wiz-row">
+            <label>From</label>
+            <div class="controls">
+              <dynamic-Select name="from" ng-model="email.template.from" ph="metadata_emailAccounts" placeholder="From" required="required"></dynamic-Select><span ng-show="form.from.$error.required">*</span><span ng-show="form.from.$valid" class="green validTick">&#10004;</span>
+            </div>
+          </div>
+          <div class="in-wiz-row">
+            <label>To</label>
+            <div class="controls">
+              <input name="to" placeholder="Recipients Email Address" ng-model="email.template.to" type="text" required="required"/><span ng-show="form.to.$error.required">*</span><span ng-show="form.to.$valid" class="green validTick">&#10004;</span>
+            </div>
+          </div>
+          <div class="in-wiz-row">
+            <label>CC</label>
+            <div class="controls">
+              <input name="cc" ng-model="email.template.cc" type="text" placeholder="Cc Recipients Email Address" ng-required="false"/>
+            </div>
+          </div>
+          <div class="in-wiz-row">
+            <label>Subject</label>
+            <div class="controls">
+              <input name="subject" ng-model="email.template.subject" type="text" placeholder="Subject" required="required"/><span ng-show="form.subject.$error.required">*</span><span ng-show="form.subject.$valid" class="green validTick">&#10004;</span>
+            </div>
+          </div>
+          <div class="in-wiz-row">
+            <label>Reply to</label>
+            <div class="controls">
+              <input name="replyto" ng-model="email.template.replyto" type="text" placeholder="Enter your or Group Email address" required="required"/><span ng-show="form.replyto.$error.required">*</span><span ng-show="form.replyto.$valid" class="green validTick">&#10004;</span>
+            </div>
+          </div>
+          <div class="in-wiz-row">
+            <label>&nbsp;</label>
+            <div class="controls">
+              <div style="clear:both;height:10px;"></div>
+              <rich-text ng-model="email.template.body" name="body" id="txtBody" ng-required="false"></rich-text>
+              <div style="display:none"><b id="startIndex"></b>to<b id="endIndex"></b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+      <div class="modal-footer">
+        <div class="col-sm-12">
+          <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+          <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" type="submit" ng-click="saveMetadata()" class="inz-btn btn-sm btn-success">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

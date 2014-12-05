@@ -1,0 +1,12 @@
+.modal-dialog.container
+        .modal-content
+                form(name="form",novalidate)
+                        .modal-header
+                                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                                h4.modal-title Add/Edit Documents &nbsp;
+                                        i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+                        .modal-body
+                                include tmsEdit
+                        .modal-footer
+                                button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                                button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-click="SaveAccountDocsEdit()",ng-disabled="form.$invalid") Save

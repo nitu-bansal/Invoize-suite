@@ -1,0 +1,28 @@
+//Created by pallavi.dandane on 7/29/2014.
+.modal-dialog.modal
+    .modal-content(style="margin: 0 auto;width: 80%;")
+        .modal-header
+            button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+            h4.modal-title Upload Tariff &nbsp;
+        .modal-body
+            div(id= "newFiles")
+                    div(bs-tooltip="tooltip.drop",ng-disable="proceedClicked")#drop-area
+                        .fileinput-button.btn-file(bs-tooltip="tooltip.attach")
+                            input(type='file',id="files-upload", name='file', onchange='angular.element(this).scope().setFiles(this)')
+                            i.icon-cloud-upload
+                        .drop-instructions
+                            mute  Browse and upload multiple files or drag and drop files here
+                        .drop-over Drop files here!
+                    .row.uploaded(ng-hide="proceedClicked")
+                        .file(data-ng-repeat='file in files')
+                            span.file-name
+                                //- a(style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', ng-href='http://api/tms/download/file?id={{file.id}}', download='{{file.name}}' ) {{file.name}} &nbsp
+                                a(style="cursor: pointer;", bs-tooltip="tooltip.download",target='_blank', href='{{$location.host()}}/api/tms/download/file?id={{file.id}}', download='{{file.name}}' ) {{file.name}} &nbsp
+                                i.fa.fa-times-circle.ico-dismis(data-dismiss='alert',ng-click="files.splice($index,1);", bs-tooltip="tooltip.delete",style="cursor: pointer;")
+
+        .modal-footer
+            button.inz-btn.btn-sm.btn-success(ng-click="uploadFile()" ) Done
+            button.inz-btn.btn-sm.btn-default(ng-click="close();") Cancel
+
+
+

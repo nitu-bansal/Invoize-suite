@@ -1,0 +1,6 @@
+
+<div style="clear:both; height:10px;"></div>
+<div class="col-xs-12">
+  <div ui-handsontable="{ currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" ng-show="!templateLoader" height="hh" width="hw" datarows="location in locations" manualColumnResize="true" columns="columns" minsparerows="1" onBeforeChange="celChange" afterRender="afterRender()" ng-init="getTemplate()"></div>
+  <pagination total-items="totalItems" items-per-page="pageLimit" max-size="paginationSize" rotate="true" ng-init="paginationSize=20" page="currentPage" ng-show="!templateLoader" on-select-page="setPage($parent.currentPage)" boundary-links="true" class="pagination-small"></pagination>
+</div>

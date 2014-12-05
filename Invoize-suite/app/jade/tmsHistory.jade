@@ -1,0 +1,16 @@
+div
+    .row.in-wiz-ttl.history(permission="historyViewTms")
+        .col-xs-12.in-add
+            .pull-left.in-wiz-info History
+                i.icon-spinner.icon-spin.blue.icon-small(ng-show="historyLoader")
+
+    .row.history-block(permission="historyViewTms")
+        .col-xs-12
+            div(ng-show="historyTemp.count<=0") No history available
+            div(ng-repeat="obj in historyTemp.history",data-accordion="",data-close-others="false",ng-show="historyTemp.count>0")
+                //- div(data-accordion-group="",data-heading="{{obj.emailID}}",data-date="{{obj.timestamp}}",ng-click="getHistory(obj.id)")
+                div(data-accordion-group="",data-heading="{{obj.emailID}}",data-date="{{obj.timestamp}}",ng-click="getHistory($index,obj)")
+                    div.line(ng-repeat="row1 in obj.historyData.fields")
+                        .caption {{row1.label}}                 
+                        .data {{row1.value | selectFormat}}
+            button.pull-right.inz-btn.btn-sm.btn-success(type="submit",ng-click="loadMoreHistory()",ng-show="historyTemp.count>0 && showLoadmore",ng-class="{'disabled': disableLoadmore}",ng-disabled="disableLoadmore") Load More

@@ -1,0 +1,76 @@
+.col-sm-12
+        h5(ng-show="ratesAvailable")
+                | Couldn't find rates for this search 
+                i.icon-frown    
+        div(id="FixedRate", when-scrolled="loadMore($stateParams.accountId,$stateParams.templateId)")
+                .widget-box(style="opacity: 1;")
+                        .widget-header.header-color-green
+                                h5.bigger.lighter
+                                        i.icon-table
+                                        | Available Rates                             
+
+                        .widget-body
+                                .widget-main.no-padding                
+                                    table.table.table-striped.table-bordered(ng-show="list.length")
+                                                thead
+                                                        tr
+                                                                th
+                                                                th(ng-repeat="charge in list[0]",ng-show="!$first")  
+                                                                        span.trim-info-large(tooltip="{{charge |toHumanReadable}}") {{charge | toHumanReadable}}
+
+                                                tbody(ng-repeat="data in list",ng-show="!$first")
+
+                                                        tr(ng-click="isRowCollapsed=!isRowCollapsed",style="cursor: pointer;")
+                                                                td
+                                                                        i.icon-chevron-down.green(ng-show="isRowCollapsed")                                           
+                                                                        i.icon-chevron-up.green(ng-hide="isRowCollapsed")    
+
+                                                                td(ng-repeat="d in data" ,ng-show="!$first")
+                                                                    span.trim-info-large(tooltip="{{d |toHumanReadable}}") {{d |toHumanReadable}}
+                                                        tr(ng-hide="isRowCollapsed")
+                                                                td.alert-block.alert-success(colspan="{{data.length}}")                                                                                                       
+                                                                            //- div(ng-repeat="row in data",ng-show="$index==1")
+                                                                            //-         {{row}}
+                                                                            //-         center
+                                                                            //-                 .col-md-2(ng-repeat="chargeDetail in row")                                                      
+                                                                            //-                         b {{chargeDetail[0]}} ({{chargeDetail[1]}})                                                                                 
+                                                                            //-                         br                                                                                
+                                                                            //-                         //- {{chargeDetail}}
+                                                                            //-                         table.pure-table
+                                                                            //-                                         thead
+                                                                            //-                                                 tr
+                                                                            //-                                                         th From
+                                                                            //-                                                         th To
+                                                                            //-                                                         th                                                                                                                                                                                                                                                                                          
+                                                                            //-                                         tbody(ng-repeat="weightBrackets in chargeDetail[2]")    
+                                                                            //-                                                 tr
+                                                                            //-                                                         td.center
+                                                                            //-                                                                 {{weightBrackets[0]}}
+                                                                            //-                                                         td.center
+                                                                            //-                                                                 {{weightBrackets[1]}}
+                                                                            //-                                                         td.center
+                                                                            //-                                                                 {{weightBrackets[2]}} {{weightBrackets[3]}}        
+
+
+                                    //- .row-fluid.alert-blank(ng-repeat="charge in list")
+                                    //-         .navbar.navbar-inverse
+                                    //-                 .navbar-inner                                       
+                                    //-                         span(ng-hide="field.id == '_id'", ng-repeat="field in charge")
+                                    //-                                 span(ng-show="field.id=='value' || field.id=='basis'")                                                      
+                                    //-                                                 .brand.linkGreen {{field.v}}  
+                                        
+                                    //-         .row-fluid.well.well-small  
+                                    //-                 span(ng-hide="field.id == '_id'", ng-repeat="f in charge")                                                                      
+                                    //-                         span(ng-show="f.id=='OriginAirportCode' || f.id=='DestinationAirportCode' || f.id=='ServiceLevel' || f.id=='chargeType'", style="cursor: pointer;", ng-click="searchFor(f.id,f.v,$stateParams.accountId,$stateParams.templateId)")
+                                    //-                                 label.col-md-3.checkbox(style="cursor: pointer;")                             
+                                    //-                                         span.link(bs-tooltip="tooltip.clickToFilter")
+                                    //-                                                 a {{f.id|inflector:humanize}}: 
+                                    //-                                         | {{f.v}}
+
+
+
+        .row
+                 .offset5
+                         i.icon-spinner.icon-spin.icon-2x(ng-show="loadingRates")
+      
+            

@@ -1,0 +1,21 @@
+
+<div class="in-wiz-row">
+  <label class="control-label">Email</label>
+  <input ng-model="configureEmail.email" id="txtEmail" type="text"/>
+</div>
+<div class="in-wiz-row">
+  <label class="control-label">Password</label>
+  <input ng-model="configureEmail.password" id="txtPassword" type="text"/>
+</div>
+<div class="in-wiz-row">
+  <label class="control-label">Host</label>
+  <input ng-model="configureEmail.host" id="txtHost" type="text"/>
+</div>
+<div class="in-wiz-row">
+  <label class="control-label">Port</label>
+  <input ng-model="configureEmail.port" id="txtPort" type="text"/>
+</div>
+<div class="in-wiz-row">
+  <button ng-click="toggleConfigureEmailBox()">Cancel</button>
+  <button permission="*.*.*" ng-disabled="form.$invalid" type="submit" ng-click="saveEmailBoxData()" class="inz-btn btn-sm btn-success">Save</button>
+</div>

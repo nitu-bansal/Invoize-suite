@@ -1,0 +1,70 @@
+.col-md-4(id="FixedRate")      
+        row
+                h4.header.smaller.lighter.gray Quotes   
+                        i.icon-spinner.icon-spin.icon(ng-show="quoteRequestListLoader") 
+        div(ng-hide="oldRequest.length || quoteRequestListLoader")
+                h4
+                        | No quote requests available.
+                        i.icon-frown
+        .widget-box.transparent(ng-show="oldRequest.length")              
+                .widget-body
+                        .widget-main.no-padding
+                                table.table.table-bordered.table-hover(ng-hide="!oldRequest.length || quoteRequestListLoader")
+                                        thead
+                                                tr
+                                                        th
+                                                                i.icon-stop &nbsp Quote #
+                                                        th.hidden-767 
+                                                                i.icon-time &nbsp Quote Date
+                                                        th.hidden-767 
+                                                                i.icon-reorder &nbsp Account Name
+                                                        th.hidden-767 
+                                                                i.icon-group &nbsp Holders
+                                                        th
+                                                                i.icon-flag &nbsp Status
+
+                                        tbody(ng-repeat="r in oldRequest  | filter:searchFilter")
+                                                tr(data-placement="bottom", permission="readQuote.*.*", style="cursor: pointer;", bs-tooltip="tooltip.detail", ng-class="{'alert alert-info': $state.includes('request.quoteList.detail') && $stateParams.requestId == r.quoteRequestId}", href="#/request/quote/{{$stateParams.requestType}}/detail/{{r.requestId}}", ng-click="selectQuoteRequest(r.quoteRequestId)")
+                                                        td
+                                                                .col-md-.trim-info-sm(tooltip="{{r.quoteNo}}"){{r.quoteNo}}
+                                                        td.hidden-767
+                                                               .col-md-.trim-info-sm(tooltip="{{r.quoteDate}}") {{r.quoteDate}}
+                                                        td.hidden-767
+                                                                {{r.accountName}}
+                                                        td.hidden-767
+                                                                .col-md-(popover-placement="right",popover="{{r.pendingFor[$index].UserName}}",popover-trigger="mouseenter")   {{r.pendingFor.length}}
+                                                        td
+                                                            .center
+                                                                span.small.label.label-success(ng-show="r.isActive==1") Active
+                                                                span.small.label.label-warning(ng-show="r.isActive==0") Inactive
+                        
+.col-md-8
+        .row(ui-view="detail") 
+
+//- .row
+//-         .col-md-3(id="FixedRate",style="position:fixed;")
+//-                 i.icon-spinner.icon-spin.icon-2x(ng-show="quoteRequestListLoader")
+//-                 table.table.table-hover(ng-hide="quoteRequestListLoader")
+//-                         tbody(ng-repeat="row in oldRequest  | filter:search")
+//-                                 tr
+//-                                         td
+//-                                                 ul.nav.nav-list(bs-tooltip="tooltip.expand",ng-class="{'alert alert-info': ($state.includes('request.quoteList.detail') ) && $stateParams.requestId == row.requestId}")
+//-                                                         label(style="cursor: pointer;",ng-click='isCurrentQuoteStackHolderCollapsed = !isCurrentQuoteStackHolderCollapsed')
+//-                                                                 strong.text-info  Current Stakeholders : {{row.pendingFor.length}}
+//-                                                         div(collapse='isCurrentQuoteStackHolderCollapsed')
+//-                                                                 .alert-blank(ng-repeat="u in row.pendingFor")
+//-                                                                         i.icon-user
+//-                                                                         small &nbsp; {{u.UserName}}
+//-                                                 ul.nav.nav-list(ng-class="{'alert alert-info': $state.includes('request.quoteList.detail') && $stateParams.requestId == row.requestId}", href="#/request/quote/{{$stateParams.requestType}}/{{row.requestId}}", ng-click="selectQuoteRequest(row.quoteRequestId)")
+//-                                                         label
+//-                                                                 strong.text-info {{row.accountName}}
+//-                                                         li(style="cursor: pointer;")
+//-                                                                 i.icon-large.icon-calendar &nbsp Generated using by - {{row.name}}
+//-                                                         li(style="cursor: pointer;")
+//-                                                                 i.icon-large.icon-calendar &nbsp Creted by - {{row.createdBy}}
+//-                                                         li(style="cursor: pointer;")
+//-                                                                 i.icon-large.icon-calendar &nbsp Creted on - {{row.dateCreated}}
+//-                                                         //- li(style="cursor: pointer;", ng-repeat="val in row.fields") {{val.n | toHumanReadable}} : {{val.v}}
+
+//-         .col-md-8.offset4
+//-                 div(ui-view="detail")

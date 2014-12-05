@@ -1,0 +1,225 @@
+
+@import "compass_twitter_bootstrap";
+
+//@import "font_awesome/stylesheets/font-awesome";
+
+//@import "docs";
+
+
+[ng\:cloak], [ng-cloak], .ng-cloak { display: none; }
+
+$bckground-color: white; //#F7F7F7;
+
+$first-color: #666666;
+$second-color: #0066CC;
+$content-color: white;
+
+//$baseFontFamily: 'Cantata One', serif;
+
+@mixin letter($color){
+        color: $color;
+}
+
+@mixin top-padding ($padding) {
+        padding-top: $padding;
+}
+
+@mixin left-padding ($padding) {
+        padding-left: $padding;
+}
+
+@mixin right-padding ($padding) {
+        padding-right: $padding;}
+
+.required {
+    color: red;
+}
+
+.mycontent-left { border-right: 1px dashed #333;
+}
+
+
+.inline {
+    display: inline;
+}
+
+
+.login-first-row{
+        @include top-padding(25%);
+}
+
+
+.space{
+        padding-top:20px;
+}
+
+.content-block{
+        background-color: $content-color;
+        height: 100%;
+}
+
+.top-row {@include top-padding(10px); //@include left-padding(32px); @include right-padding(32px);
+}
+
+.content-row {@include top-padding(100px); //@include left-padding(50px);
+}
+
+.top-outline {
+        background-color: $second-color;
+        height: 5px;}
+
+.well {
+        padding-right: 0px;
+        padding-left: 0px;
+}
+
+html, body {
+    height: 95%;
+}
+
+body {
+        background-color: $bckground-color;
+}
+
+/* .sidebar {
+ background-color: white;
+ width: 100%;
+ height: 100%;
+} */
+
+/* make the container stick to the columns */
+.container-fluid{
+        //padding-left: 0px;
+        //height: 100%;
+        //padding-right: 0px;
+        //width: 100%
+}
+
+/* .row-fluid{
+        height: 100%;
+} */
+
+
+/* .full-width {
+        width: 100%;
+}
+ */
+
+$logo-font: 'Cantata One', serif;
+$text-font: 'Muli', sans-serif;;
+
+
+.logo {
+        font-family: $logo-font;
+        font-size: 36px;
+}
+
+.logo-large {
+        font-family: $logo-font;
+        font-size: 72px;
+}
+
+.links {
+        font-family: $logo-font;
+        display: inline;
+        padding-right: 10px;
+}
+
+.text {
+        font-family: $text-font;
+}
+
+
+.char1{
+        @include letter($first-color);
+}
+
+.char2{
+        @include letter($second-color);
+}
+
+.char3{
+        @include letter($first-color);
+}
+
+.char4{
+        @include letter($second-color);
+}
+
+.char5{
+        @include letter($first-color);
+}
+
+.char6{
+        @include letter($second-color);
+}
+
+.char7{
+        @include letter($first-color);
+}
+
+.char8{
+        @include letter($second-color);
+}
+
+.bar{
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 2px;
+        background-color: $second-color;
+}
+
+//taking the fields from control-label except text-align right
+.value-label{
+        float: left;
+        width: 140px;
+        padding-top: 5px;
+        text-align: left;
+}
+
+/* input[type=custom]{
+    border:none;
+    border-bottom:thin dashed black;
+    padding-bottom:0;
+    outline:none;
+} */
+
+//classess for flushing the footer to the bottom
+/* #wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+}
+#push,
+#footer {
+    height: 60px;
+} */
+
+
+//horizontal links
+.hr-nav{
+    list-style:none;
+    margin:0;
+    padding:0;
+    text-align:left;
+}
+.hr-nav li{
+    display:inline;
+}
+.hr-nav a{
+    display:inline-block;
+    padding-left: 0px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: $logo-font;
+}
+
+.controls label{
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+}

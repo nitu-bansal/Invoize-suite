@@ -1,0 +1,295 @@
+
+<div set-width="set-width" style="background:#eee;" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 in-add">
+    <div class="pull-left in-wiz-info">Add new Tariff</div><i ng-show="Loader" class="icon-spinner icon-spin blue icon-large"></i>
+  </div>
+</div>
+<div class="row">
+  <div style="padding-top: 70px;" class="col-xs-12"></div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a class="accordion-toggle"><span class="ico-container"><i class="fa fa-crosshairs"></i></span>&nbsp;<span toolTip="Information" class="label">Basic Information</span></a></div>
+      <div class="cpanel-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Tariff Name</label>
+              <input type="text" placeholder="Name" ng-model="basicInfo.tariffName"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Tariff Type</label>
+              <select ui-select2="ui-select2" name="TariffType" required="required" ng-model="basicInfo.tariffType" data-placeholder="Please select..." style="width:200px" class="inz-txt mw230">
+                <option value="Main"> Main</option>
+                <option value="Accessorial"> Accessorial</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <table class="inz-table">
+                <thead>
+                  <th> Field Name</th>
+                  <th> Field value</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="type in basicInfo.template">
+                    <td>{{type.label}}</td>
+                    <td>
+                      <dynamic-Select name="TypeValue_{{$index}}" ng-model="type.value" ph="{{type.suggestionsSource}}" placeholder="Please Select"></dynamic-Select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row">
+                <button ng-click="reset()" class="inz-btn btn-xs btn-default">Reset</button>
+                <button ng-click="getFields()" class="inz-btn btn-xs btn-success">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a ng-click="isOpenIdentifiers = !isOpenIdentifiers" ng-class="{ open: isOpenIdentifiers}" class="accordion-toggle"><span class="ico-container"><i class="fa fa-crosshairs"></i></span>&nbsp;<span toolTip="Identifiers" class="label">Identifiers</span></a></div>
+      <div ng-show="isOpenIdentifiers" class="cpanel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <table style="margin-top:10px;" class="inz-table">
+              <colgroup>
+                <col style="width:300px;"/>
+                <col style="width:auto;"/>
+                <col style="width:50px;"/>
+              </colgroup>
+              <thead>
+                <th> Identifier Name</th>
+                <th> Identifier value</th>
+                <th>
+                  <button ng-click="identifiers.fields.push({fieldKey:null,fieldVal:null});" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Permission" class="command light"><i class="fa fa-plus"></i></button>
+                </th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="field in identifiers.fields">
+                  <td><span class="input-large1">
+                      <dynamic-Select required="required" name="fieldKey_{{$index}}" customobj="{&quot;selected&quot;:&quot;{{fieldKeys.join()}}&quot;,&quot;type&quot;:&quot;identifier&quot;,&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="field.fieldKey" ph="tarrifShipmentFields" data-placeholder="Identifier" change="fieldKeyChanged($index,field)" class="input-large1"></dynamic-Select><span ng-show="field.fieldKey==null" class="red">*</span></span></td>
+                  <td><span class="input-large1">
+                      <div ng-show="field.textMode" ng-click="field.textMode=null">{{field.fieldVal | selectFormat}}</div><span ng-hide="field.textMode">
+                        <dynamic-Select required="required" multiselect="multiselect" name="fieldVal_{{$index}}" customobj="{&quot;type&quot;:&quot;identifier&quot;,&quot;identifierName&quot;:&quot;{{field.fieldKey[0].n}}&quot;,&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="field.fieldVal" ph="tarrifShipmentFields" data-placeholder="Identifier Value" class="input-large1"></dynamic-Select><span ng-show="field.fieldVal==null" class="red">*</span></span></span></td>
+                  <td>
+                    <button ng-click="identifiers.fields.splice($index,1);fieldKeyChanged();" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Remove Permission" class="command"><i class="fa fa-minus"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a ng-click="isOpenTariffInfo = !isOpenTariffInfo" ng-class="{ open: isOpenTariffInfo}" class="accordion-toggle"><span class="ico-container"><i class="fa fa-check-square-o"></i></span>&nbsp;<span toolTip="Tariff Info" class="label">Additional teriff info :</span></a></div>
+      <div ng-show="isOpenTariffInfo" class="cpanel-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Effective date</label>
+              <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="date" ng-model="additionalTariffInfo.effectiveDate"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Expiry Date</label>
+              <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="date" ng-model="additionalTariffInfo.expiryDate"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="in-wiz-row">
+              <label>Tariff Applied On</label>
+              <dynamic-Select required="required" name="tariffapplieOn" customobj="{&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="additionalTariffInfo.tariffAppliedOn" ph="tarrifAppliedOnDates" data-placeholder="Date" class="input-large1"></dynamic-Select>
+            </div>
+          </div>
+        </div>
+        <fieldset class="row inz-fs">
+          <legend>Currency conversion</legend>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="in-wiz-row">
+                <label>Source</label>
+                <dynamic-Select ng-model="additionalTariffInfo.currencySource" ph="metadata_currencySource" placeholder="Please Select"></dynamic-Select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="in-wiz-row">
+                <label>Frequency</label>
+                <dynamic-Select ng-model="additionalTariffInfo.currencyFrequency" ph="metadata_currencyFrequency" placeholder="Please Select"></dynamic-Select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="in-wiz-row">
+                <label>Exchange Rate Applied on Date</label>
+                <dynamic-Select required="required" name="ex" customobj="{&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="additionalTariffInfo.tariffAppliedOnDate" ph="tarrifAppliedOnDates" data-placeholder="Date" class="input-large1"></dynamic-Select>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a ng-click="isOpenParam = !isOpenParam" ng-class="{ open: isOpenParam}" class="accordion-toggle"><span class="ico-container"><i class="fa fa-plus-square-o"></i></span>&nbsp;<span toolTip="Identifiers" class="label">Parameters</span></a></div>
+      <div ng-show="isOpenParam" class="cpanel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <table style="margin-top:10px;" class="inz-table">
+              <colgroup>
+                <col style="width:300px;"/>
+                <col style="width:auto;"/>
+                <col style="width:50px;"/>
+              </colgroup>
+              <thead>
+                <th> Parameters Name</th>
+                <th> Parameters value</th>
+                <th> Display Order</th>
+                <th> Calc Param</th>
+                <th>
+                  <button ng-click="parameters.fields.push({fieldKey:null,fieldVal:null,displayOrder: null,uniqueCalculationParam: false});" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Add Permission" class="command light"><i class="fa fa-plus"></i></button>
+                </th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="field in parameters.fields">
+                  <td><span class="input-large1">
+                      <dynamic-Select required="required" name="fieldKey_{{$index}}" customobj="{&quot;selected&quot;:&quot;{{fieldKeys.join()}}&quot;,&quot;type&quot;:&quot;parameter&quot;,&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="field.fieldKey" ph="tarrifShipmentFields" data-placeholder="Parameter" change="fieldKeyChangedParameters($index,field)" class="input-large1"></dynamic-Select><span ng-show="field.fieldKey==null" class="red">*</span></span></td>
+                  <td><span class="input-large100">
+                      <input type="text" placeholder="Parameter Value" ng-model="field.fieldVal"/><span ng-show="field.fieldVal==null" class="red">*</span></span></td>
+                  <td><span class="input-large100">
+                      <input type="text" placeholder="Display Order" ng-model="field.displayOrder"/><span ng-show="field.displayOrder==null" class="red">*</span></span></td>
+                  <td><span class="input-large100">
+                      <!--dynamic-Select.input-large1(required,multiselect,name='fieldVal_{{$index}}',customobj='{"accountCode":"531087c41c80a83f56b37154","type":"parameter","identifierName":"field.fieldKey[0].v"}',ng-model="field.fieldVal",ph="tarrifShipmentFields",data-placeholder="Parameter Value")-->
+                      <input id="chk" type="checkbox" ng-click="setUniqueParamTrue($index,$event)"/></span></td>
+                  <td>
+                    <button ng-click="parameters.fields.splice($index,1);fieldKeyChangedParameters();" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Remove Permission" class="command"><i class="fa fa-minus"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div class="cpanel">
+      <div class="cpanel-heading"><a ng-click="isOpenCharges = !isOpenCharges" ng-class="{ open: isOpenCharges}" class="accordion-toggle"><span class="ico-container"><i class="fa fa-money"></i></span>&nbsp;<span toolTip="Charge" class="label">Charges</span></a></div>
+      <div ng-show="isOpenCharges" class="cpanel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="in-wiz-row">
+              <label>Charges</label><span class="input-large1">
+                <!--dynamic-Select(required,multiselect,name='charge',customobj='{"systemId":"{{permission.system[0].id}}","fieldKey":"{{field.fieldKey[0].id}}","docType":"{{field.fieldKey[0].v}}"}',ng-model="charge.val",ph="chargeCoderule",data-placeholder="Field Value")-->
+                <select ui-select2="ui-select2" multiple="true" id="charge" name="charge" ng-model="charge.val" required="required" data-placeholder="Please select..." ng-options="row.n for row in chargeData" class="input-xxlarge">
+                  <option value=""></option>
+                </select></span>
+              <!--button.inz-btn.btn-sm.btn-success(ng-click="addChargesInArray()") Apply-->
+              <form novalidate="novalidate" name="tmsForm" class="form-horizontal">
+                <div ng-repeat="r in chargesDataArray track by $index" id="File{{$index+1}}" style="margin-top:10px;">
+                  <div class="cpanel">
+                    <div class="cpanel-heading"><a class="accordion-toggle open"><i class="fa fa-circle"></i>   {{charge.val[$index].n}}</a>
+                      <button ng-click="removeCharge($index)" toolTip="Close" type="button" style="margin-top: -20px;" class="command pull-right"><i class="icon-remove"></i></button>
+                    </div>
+                    <div class="cpanel-body">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <div class="col-md-6 in-wiz-row">
+                            <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                              <label class="control-label">{{r.limit.label}}</label>
+                              <div class="controls">
+                                <dynamic-Select multiselect="multiselect" ng-required="r.limit.isMandatory" name="name" ng-model="r.limit.value" ph="{{r.limit.suggestionsSource}}" toolTip="{{r.limit.toolTip}}" ng-readonly="{{r.limit.isReadonly}}" placeholder="{{r.limit.toolTip}}"></dynamic-Select><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                              </div><a ng-click="openDialogChargeBreakage($index)" href="javascript:void(0);" style="margin-right:15px"><span class="in-add-txt">Add Breakage</span></a>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <fieldset class="row inz-fs">
+                        <legend>Charge Rounding</legend>
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <div ng-repeat="row1 in r.chargeRounding | orderBy:'displayOrder'" ng-form="subForm5" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 in-wiz-row">
+                              <form novalidate="novalidate" name="subForm5" class="form-horizontal">
+                                <label class="control-label">{{row1.label}}</label>
+                                <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                                  <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                                  <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                                  <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                                  <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="tariffappliedOn" ng-required="row1.isMandatory" name="name" customobj="{&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset class="row inz-fs">
+                        <legend>Calculation Methodology</legend>
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <div ng-repeat="row1 in r.calculation | orderBy:'displayOrder'" ng-form="subForm3" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 in-wiz-row">
+                              <form novalidate="novalidate" name="subForm3" class="form-horizontal">
+                                <label class="control-label">{{row1.label}}</label>
+                                <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                                  <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="tariffappliedOn" ng-required="row1.isMandatory" name="name" customobj="{&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset class="row inz-fs">
+                        <legend>Currency conversion</legend>
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <div ng-repeat="row1 in r.currency | orderBy:'displayOrder'" ng-form="subForm2" ng-switch="{{row1.isActive}}" alt-render="alt-render" hasParent="row" hasCount="2" class="col-md-6 in-wiz-row">
+                              <form novalidate="novalidate" name="subForm2" class="form-horizontal">
+                                <label class="control-label">{{row1.label}}</label>
+                                <div ng-switch-when="true" ng-switch="row1.type" class="controls">
+                                  <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                                  <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                                  <input ng-switch-when="numeric" type="number" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"/>
+                                  <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="dropdown" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="tariffappliedOn" ng-required="row1.isMandatory" name="name" customobj="{&quot;profileId&quot;:&quot;{{profileID}}&quot;}" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}"></dynamic-Select>
+                                  <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}"></textarea><span ng-show="subForm.name.$error.required">*</span><span ng-show="subForm.name.$error.unique">already Exists</span><span ng-show="subForm.name.$error.number">only numbers</span><span ng-show="subForm.name.$error.date">only date</span><span ng-show="subForm.name.$error.maxlength">max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern">Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&#10004;</span>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button ng-click="CreateandSendTemplate()" class="inz-btn btn-xs btn-success">Save</button>
+</div>

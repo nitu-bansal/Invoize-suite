@@ -1,0 +1,57 @@
+.row(ng-show="deliveryData.length<=1")
+    .in-gs-block
+        .gs-sub-title(ng-hide="showGoBtn") Choose Account & Hit Search&nbsp;
+            i.fa.fa-search
+        .gs-sub-title(ng-show="showGoBtn") No Data available &nbsp;
+            span.help-inline.required(ng-show="form.companyType.$error.required") &nbsp;&nbsp;*
+.row
+    .col-xs-12
+        .pull-right(ng-show="showGrid")
+            a.btn-sm.btn-split.btn.loadUI(ng-click='RenderHTW(false)',data-placement="bottom", data-toggle="tooltip", title="Extend", tooltip-placement="left", tooltip="Extend" ,type="button" )
+                i.fa.fa-columns
+div(style="clear:both;height:5px;")
+.row(ng-show="deliveryData.length>1")
+    .col-xs-12
+        .div-layout-ew()
+            //- ng-init="getDeliveryData()"
+            .layout-mock(ui-layout='')
+                ui-layout(options='{ flow : "column" }')
+                    sidebar.west-back.div-west(style="margin-right:10px;")
+                        div.overflow-auto(style="margin:10px 5px 20px;min-height:300px;")
+                            table.inz-table.inz-table1.inz-table3
+                                thead
+                                    tr
+                                        //- th
+                                        //-     span(tooltip="Expand/Collapse", tooltip-placement="right")
+                                        //-         i.fa.fa-align-justify
+                                        th
+                                            span
+                                                input(tooltip="Select All",type='checkbox',ng-click="checkAll($event)", tooltip-placement="right")
+                                        th(ng-repeat="val in deliveryData[0]",ng-show="$index >1")
+                                            span.trim-info-large(tooltip="{{val |toHumanReadable}}", tooltip-placement="right") {{val | toHumanReadable}}
+                                        th
+                                            span Document
+                                tbody(ng-repeat="row in deliveryData",ng-show="$index > 0")
+                                    tr(style="cursor: pointer;")
+                                        //- td(ng-repeat="col in row track by $index",ng-show="$index==0",ng-click="getWebInvoiceHistory($parent.$index,row[3])")
+                                        //-     div(ng-hide="row.dataPresent")
+                                        //-         i.icon-reorder.blue(ng-show="row.doc")
+                                        //-         i.icon-reorder.orange(ng-hide="row.doc")
+                                        //-     i.icon-spinner.icon-spin.blue.icon.small(ng-show="row.dataPresent")
+                                        td(ng-repeat="col in row track by $index",ng-show="$index==0")
+                                            input(name="chk_{{$parent.$index}}",type='checkbox',ng-click="updateSelection($event,row[1],row[2],$parent.$index)")
+                                        td(ng-repeat="col in row track by $index",ng-show="$index>1")
+                                            span.trim-info-large(tooltip="{{col}}") {{col}}
+                                        td
+                                            a.btn-sm.btn-custom(type='button',ng-click="getDocument($index)")
+                                                i.fa.fa-columns
+                                            //tr(ng-show="!isRowCollapsed")
+                                            //    td.inset(colspan="{{row.length+1}}")
+                                            //        include invoiceHistory
+                    sidebar.east-back.div-east(style="padding:5px 10px 0;margin-left:20px;")
+                        div
+                            select.input-large(placeholder='Select Document',ui-select2='ui-select2',ng-model="fileName",ng-change="loadFile(fileName)")
+                                option(value='')
+                                option(ng-repeat="item in files", value="{{item}}") {{item}}
+                        div(style="clear:both !important;height:5px !important;")
+                        iframe(id="docFrame",style="border:1px solid #F6F6F6 !important;" , frameborder="0", nice-scroll)

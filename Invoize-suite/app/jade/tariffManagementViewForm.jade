@@ -1,0 +1,75 @@
+//
+   Created by pallavi.dandane on 11/26/2014.
+
+.col-md-12.col-sm-12.col-xs-12
+    form.form-horizontal(novalidate, name="subForm")
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                span.label.white( toolTip="Parameters") Parameters
+            .cpanel-body
+                .row
+                    .col-xs-12.col-md-6.col-sm-12(ng-repeat="row1 in selectedLane.fields | orderBy:'displayOrder'", ng-if="(row1.uniqueCalculationParam==true || row1.uniqueCalculationParam==false ) && row1.label!== 'effectiveDate' && row1.label!== 'expiryDate' && row1.label!== 'History'&& row1.label!== 'history'")
+                        label.input-medium(style="display:inline-table;") {{row1.label.replace("|", ".")}}
+                        div(ng-switch='row1.type',style="display:inline-table;")
+                            input.input-medium(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="{{row1.isMandatory}}",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            input.input-medium(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            input.input-medium(ng-switch-when='numeric',type="text",ng-pattern="{{row1.regex}}",ng-required="{{row1.isMandatory}}",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            dynamic-Select.input-medium(ng-switch-when='multiselect',multiselect,customobj='{"column":"{{row1.suggestionField}}"}',ng-required="{{row1.isMandatory}}",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                            dynamic-Select.input-medium(ng-switch-when='dropdown',customobj='{"column":"{{row1.suggestionField}}"}',ng-required="{{row1.isMandatory}}",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                            textarea.input-medium(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="{{row1.isMandatory}}",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            span.red(ng-show="subForm.name.$error.required") &nbsp; *
+                            span.red(ng-show="subForm.name.$error.unique") &nbsp; already Exists
+                            span.red(ng-show="subForm.name.$error.number") &nbsp; only numbers
+                            span.red(ng-show="subForm.name.$error.date") &nbsp; only date
+                            span.red(ng-show="subForm.name.$error.maxlength") &nbsp; max length is {{row1.length}}
+                            span.red(ng-show="subForm.name.$error.pattern") &nbsp; Can contain only text
+                            span.green.validTick(ng-show="subForm.name.$valid") &nbsp; &#10004;
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                span.label.white( toolTip="Charge") Charges
+            .cpanel-body
+                .row
+                    .col-xs-12.col-md-6.col-sm-12(ng-repeat="row1 in selectedLane.fields | orderBy:'displayOrder'", ng-if="row1.uniqueCalculationParam == undefined && row1.label!== 'effectiveDate' && row1.label!== 'expiryDate'")
+                        label.input-medium(style="display:inline-table;") {{row1.label.replace("|", ".")}}
+                        div(ng-switch='row1.type',style="display:inline-table;")
+                            input.input-medium(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            input.input-medium(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            input.input-medium(ng-switch-when='numeric',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            dynamic-Select.input-medium(ng-switch-when='multiselect',multiselect,customobj='{"column":"{{row1.suggestionField}}"}',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                            dynamic-Select.input-medium(ng-switch-when='dropdown',customobj='{"column":"{{row1.suggestionField}}"}',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                            textarea.input-medium(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                            span.red(ng-show="subForm.name.$error.required") &nbsp; *
+                            span.red(ng-show="subForm.name.$error.unique") &nbsp; already Exists
+                            span.red(ng-show="subForm.name.$error.number") &nbsp; only numbers
+                            span.red(ng-show="subForm.name.$error.date") &nbsp; only date
+                            span.red(ng-show="subForm.name.$error.maxlength") &nbsp; max length is {{row1.length}}
+                            span.red(ng-show="subForm.name.$error.pattern") &nbsp; Can contain only text
+                            span.green.validTick(ng-show="subForm.name.$valid") &nbsp; &#10004;
+        .cpanel
+            .cpanel-heading.cpanel-heading1
+                span.label.white( toolTip="Charge") Other Information
+            .cpanel-body
+                .row
+                    .col-xs-12.col-md-6.col-sm-12
+                        label.input-medium(style="display:inline-table;") {{selectedLane.fields[effectiveDateIndexLane].label}}
+                        input.input-medium(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="selectedLane.fields[effectiveDateIndexLane].value",is-open="opened",ng-required="selectedLane.fields[effectiveDateIndexLane].isMandatory",close-text="Close",toolTip="{{selectedLane.fields[effectiveDateIndexLane].toolTip}}",ng-readonly="{{selectedLane.fields[effectiveDateIndexLane].isReadonly}}")
+                        span.red(ng-show="subForm.name.$error.required") &nbsp; *
+                        span.red(ng-show="subForm.name.$error.unique") &nbsp; already Exists
+                        span.red(ng-show="subForm.name.$error.number") &nbsp; only numbers
+                        span.red(ng-show="subForm.name.$error.date") &nbsp; only date
+                        span.red(ng-show="subForm.name.$error.maxlength") &nbsp; max length is {{row1.length}}
+                        span.red(ng-show="subForm.name.$error.pattern") &nbsp; Can contain only text
+                        span.green.validTick(ng-show="subForm.name.$valid") &nbsp; &#10004;
+                    .col-xs-12.col-md-6.col-sm-12
+                        label.input-medium(style="display:inline-table;") {{selectedLane.fields[expiryDateIndexLane].label}}
+                        input.input-medium(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="selectedLane.fields[expiryDateIndexLane].value",is-open="opened",ng-required="selectedLane.fields[expiryDateIndexLane].isMandatory",close-text="Close",toolTip="{{selectedLane.fields[expiryDateIndexLane].toolTip}}",ng-readonly="{{selectedLane.fields[expiryDateIndexLane].isReadonly}}")
+                        span.red(ng-show="subForm.name.$error.required") &nbsp; *
+                        span.red(ng-show="subForm.name.$error.unique") &nbsp; already Exists
+                        span.red(ng-show="subForm.name.$error.number") &nbsp; only numbers
+                        span.red(ng-show="subForm.name.$error.date") &nbsp; only date
+                        span.red(ng-show="subForm.name.$error.maxlength") &nbsp; max length is {{row1.length}}
+                        span.red(ng-show="subForm.name.$error.pattern") &nbsp; Can contain only text
+                        span.green.validTick(ng-show="subForm.name.$valid") &nbsp; &#10004;
+        .row
+            .pull-right
+                button.inz-btn.btn-sm.btn-split(ng-class="{'disabled': subForm.$invalid}",ng-disabled="subForm.$invalid",ng-click="updateLanebyFormView('close')") Done

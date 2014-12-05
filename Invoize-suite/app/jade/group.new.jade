@@ -1,0 +1,111 @@
+.row.in-wiz-ttl(ng-show="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12
+        .pull-left
+            .in-wiz-info Welcome to Group creation. You can add groups here.
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="groupCreateLoader")
+.row.in-wiz-ttl.in-fix-scroll(ng-hide="$state.current.name.split('.')[0]=='wizard'",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info New Group
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="groupCreateLoader")
+            a.inz-btn.btn-sm.btn-default(ng-href="/#/organizationSetup/group/view") Cancel
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="createGroup(group)") Save Changes
+div(style=" clear:both;")
+form(name="form",novalidate)
+    .col-xs-12.col-md-12.col-sm-12.col-lg-12
+        .ds-tree
+            .row
+                .col-md-4.col-sm-6.col-xs-12.col-lg-3
+                    label Name
+                    span.red(ng-show="form.groupName.$error.required") &nbsp; *
+                    span.red(ng-show="form.groupName.$error.duplicate") &nbsp; Group exists.
+                    span.green.validTick(ng-show="form.groupName.$valid") &nbsp; &#10004;
+                    br
+                    input.input-large(type="text", name="groupName", duplicate="group", ng-model="group.name", placeholder="Group Name", required)
+
+                .col-md-4.col-sm-6.col-xs-12.col-lg-3
+                    label Company
+                    span.red(ng-show="form.company.$error.required") &nbsp; *
+                    span.green.validTick(ng-show="form.company.$valid") &nbsp; &#10004;
+                    br
+                    input.input-large(ui-select2="getCompany", name="company",ng-change='getFields()', ng-model="group.company", required)
+
+                .col-md-4.col-sm-6.col-xs-12.col-lg-3
+                    label System
+                    span.red(ng-show="form.Company.$error.required") &nbsp; *
+                    span.green.validTick(ng-show="form.system.$valid") &nbsp; &#10004;
+                    br
+                    input.input-large(ui-select2="getSystem", ng-change="getFields()" ,ng-disabled="group.company==null", name="system", ng-model="group.system", required)
+
+
+                .col-md-4.col-sm-6.col-xs-12.col-lg-3
+                    label Type
+                    span.red(ng-show="form.groupType.$error.required") &nbsp; *
+                    span.green.validTick(ng-show="form.groupType.$valid") &nbsp; &#10004;
+                    br
+                    select.input-large(ui-select2, name="groupType",ng-disabled="group.system==null", ng-change="getFields()", ng-model="group.type", data-placeholder="Please select...", required)
+                        option(value="")
+                        option(ng-repeat="groupType in groupTypeList", value="{{groupType.v}}") {{groupType.n}}
+
+                .col-md-12.col-sm-12.col-xs-12.col-lg-12
+                    label Description
+                    br
+                    textarea.input-large(rows=3, name="groupDescription", ng-model="group.description", placeholder="Group Description")
+        div(style="clear:both")
+        .ds-tree
+            .row
+                .col-xs-12
+                    div(ng-switch="group.type")
+                        div(ng-switch-when="permission")
+                            ul.nav.nav-tabs
+                                li.tab(ng-repeat="(key,product) in group.definition.products",ng-class="{'active':currentTab===$index}",ng-click="setCurrentTab($index)")
+                                    a {{key}}
+                            div(style="height:5px;clear:both;")
+                            div(ng-repeat="(key,product) in group.definition.products",ng-show="currentTab===$index")
+                                .row.border-row1(ng-repeat="module in product.modules track by $index",ng-form="subForm",style="margin:8px 0;")
+                                    div(class="{{$first?'col-sm-12':'col-sm-3'}}")
+                                        label.blue Module
+                                        span.red(ng-show="subForm.name.$error.required") *
+                                        br
+                                        dynamic-Select(ng-required="{{$index!=0}}",name='name',ng-model="module.module",customObj='{"key":"parentCode","parentModule":"{{key}}","selected":"{{getSelected(product.modules)}}"}',ph="permissionModules",data-placeholder="Select Module",change="editModules(product.modules,$index)")
+
+                                    .col-sm-1(ng-if="$index!=0")
+                                        label.blue Default
+                                        br
+                                        input.center(id="isDefault_{{$index}}",ng-model="product.isDefault",value="{{module.module[0].id}}",type="radio",name="isDefault")
+                                    .col-sm-4(ng-if="$index!=0")
+                                        label.blue(tooltip="Leave blank to select all") Actions
+                                        br
+                                        dynamic-Select(name='code',multiselect,ng-model='module.actionCodes',customobj='{"key":"actionCode","parentCode":"{{module.module[0].id}}","product":"{{key}}"}',ph='permissionModules',data-placeholder='Actions')
+                                    .col-sm-4(ng-if="$index!=0")
+                                        div.dd
+                                            label.blue Permissions &nbsp;
+                                            br
+                                            ul.dd-list
+                                                li(ng-repeat="key in module.keys",style="margin-left:{{20*$index}}px;")
+                                                    span.dd-item-1.dd-handle-1
+                                                        .pull-left
+                                                            | {{key.n}}
+                                                        .pull-right
+                                                            i.fa.fa-times.redminus(ng-click="module.keys.splice($index,1)",tooltip="Delete")
+
+                        div(ng-switch-default)
+                            label Definition
+                            span.red(ng-show="form.groupBar.$error.required") &nbsp; * &nbsp;
+                            span.green.validTick(ng-show="form.groupBar.$valid") &nbsp; &#10004; &nbsp;
+                            input(id="bulkInput",type="checkbox",ng-model="bulkInput",ng-change="changeData(bulkInput)")
+                            label(for="bulkInput") &nbsp; Bulk Input
+                            span.orange(ng-show="bulkInput") &nbsp;  Use " , " or new line sepration only.
+                            br
+                            input.input-large(ui-select2="getGroups",ng-if="!bulkInput",ng-disabled="group.system==null", name="groupBar", ng-model="group.definition", required)
+                            textarea(ng-disabled="group.system==null",placeholder="Paste multiple values here",ng-if="bulkInput",ng-disabled="group.system==null", name="groupBar", ng-model="group.definition",style="width:100%", required)
+
+        br
+            .in-wiz-footer
+                    a.inz-btn.btn-sm.btn-default(ng-href="/#/wizard/group/view") Cancel
+                    button.inz-btn.btn-sm.btn-success(type="submit",ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid",ng-click="createGroup(group)") Save Changes
+
+
+

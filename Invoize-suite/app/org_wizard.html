@@ -1,0 +1,80 @@
+
+<div id="navbar" class="navbar navbar-default navbar-fixed-top">
+  <div id="navbar-container" class="navbar-container">
+    <div class="navbar-header pull-left">
+      <div class="navbar-brand"><a class="brand"><span class="in-logo-bar r"></span><span class="in-logo-bar b"></span><span class="in-logo-bar g"></span></a></div>
+    </div>
+    <div class="navbar-header pull-left">             
+      <ul class="nav ace-nav">
+        <li permission="administrationNav.*.*" ng-hide="$route.current.name == 'main.invited' || loggedInUser.companyType!=''" class="active"><a href="#/main/getstarted"><i class="icon-cogs"></i><span> Organization Setup</span></a></li>
+        <li permission="administrationNav.*.*" ng-hide="$route.current.name == 'main.invited' || loggedInUser.companyType==''" class="active"><a href="#/wizard/company/view"><i class="icon-cogs"></i><span> Organization Setup</span></a></li>
+      </ul>
+    </div>
+    <div class="navbar-header pull-right">  
+      <ul class="nav ace-nav">
+        <li><a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle"><img src="avatars/avatar12.jpg" class="nav-user-photo"/>
+            <div id="user_info" class="user-info">
+                                                       
+              {{loggedInUser.userName}}
+            </div><i class="icon-angle-down"></i></a>
+          <ul class="user-menu pull-right dropdown-menu dropdown-caret dropdown-close in-dd-pro">
+            <li style="text-align: center;"><img src="avatars/avatar12.jpg" class="in-pro-img"/></li>
+            <li>
+              <div class="in-name">{{loggedInUser.firstName}} {{loggedInUser.lastName}}</div>
+              <div class="in-desig">{{loggedInUser.designation}}</div>
+            </li>
+            <li class="li-bt"><a href="#/main/users/{{userId}}" class="tab"><i class="icon-user"></i>Profile</a></li>
+            <li ng-class="{ active: $state.includes('changePassword')}" class="li-bt"><a href="#/changePassword"> <i class="icon-edit"></i>Change Password                                                                                </a></li>
+            <li class="li-bt"><a ng-click="logout()" class="tab"> <i class="icon-signout"></i>Sign Out</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" type="text/css" href="/styles/org_setup.css"/>
+<div class="container">
+  <div style="margin-bottom:10px;" class="row">
+    <div class="col-sm-12">
+      <ul class="in-wiz-nav center">
+        <li ng-class="{ active: $state.current.name.split('.')[1]=='company'}"><a>1. Company <i class="fa fa-long-arrow-right"></i></a></li>
+        <li ng-class="{ active: $state.current.name.split('.')[1]=='system'}"><a>2. System<i class="fa fa-long-arrow-right"></i></a></li>
+        <!--li(ng-class="{ active: $state.current.name.split('.')[1]=='location'}")-->
+        <!--    a 3. Location-->
+        <!--        i.fa.fa-long-arrow-right-->
+        <!--         (href="#/wizard/location/view")-->
+        <!--li(ng-class="{ active: $state.current.name.split('.')[1]=='operation'}")-->
+        <!--    a 4. Operation-->
+        <!--        i.fa.fa-long-arrow-right-->
+        <!--         (href="#/wizard/operation/view")-->
+        <!--li(ng-class="{ active: $state.current.name.split('.')[1]=='accounts'}")-->
+        <!--    a 5. Accounts-->
+        <!--        i.fa.fa-long-arrow-right-->
+        <!--         (href="#/wizard/accounts/view")-->
+        <li ng-class="{ active: $state.current.name.split('.')[1]=='users'}"><a>3. Users</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-bottom:60px;" class="row">
+    <div class="col-md-12">           
+      <div ui-view="contents" class="page-content"></div>
+    </div>
+    <!--        div(ng-switch-when="location")-->
+    <!--                ng-form.form-horizontal(novalidate, name="form2")-->
+    <!--                        legend {{selection}}-->
+    <!--                        .control-group-->
+    <!--                                .controls-->
+    <!--                                        .radio-->
+    <!--                                                label(ng-repeat="role in roleList")-->
+    <!--                                                        input(type="radio",ng-model="wizard.defaultRole",value="{{role}}")-->
+    <!--                                                        | {{role}}-->
+    <!--                                div(ui-handsontable='{rowHeaders: false}', datarows='item in items', columns='columns',minsparerows='1',contextMenu='true',onBeforeChange='celChange',onchange='', height='320', width='640')-->
+    <!---->
+    <!--                        .form-actions-->
+    <!--                                button.btn.btn-primary(ng-click="decrementStep()")-->
+    <!--                                        i.fa.fa-arrow-left.fa.fa-white-->
+    <!--                                        | &nbsp;&nbsp; Prev Step-->
+    <!--                                button.btn.btn-primary(ng-disabled="form2.$invalid", ng-click="incrementStep()") Next Step-->
+    <!--                                        i.fa.fa-arrow-right.fa.fa-white -->
+  </div>
+</div>

@@ -1,0 +1,71 @@
+
+<div role="navigation" class="nav navbar navbar-invoize navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">invoi<span style="color:#5cf979">z</span>e</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Demo</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<form novalidate="novalidate" name="form">     
+  <div id="carousel-example-generic" class="carousel slide">
+    <div class="in-gs">
+      <input type="text" placeholder="First Name" ng-model="organization.firstName" name="firstName" required="required" class="in-txt"/>
+      <label ng-show="form.firstName.$error.required" class="help-inline required">*</label>
+      <input type="text" placeholder="Last Name" ng-model="organization.lastName" name="lastName" required="required" class="in-txt"/>
+      <label ng-show="form.lastName.$error.required" class="help-inline required">*</label>
+      <input name="password" type="password" required="required" ng-model="organization.password" ng-minlength="6" placeholder="Password" class="in-txt"/>
+      <label ng-show="form.password.$error.required" class="help-inline required">*</label>
+      <label ng-show="form.password.$error.minlength" class="help-inline required">The minimum length is 6.</label>
+      <label ng-show="form.password.$valid" class="help-inline required validTick">&#10004;</label>
+      <input type="url" placeholder="Company Website" ng-model="organization.website" name="website" class="in-txt"/>
+      <label ng-show="form.website.$error.url" class="help-inline required">Invalid website...!</label>
+      <select ui-select2="ui-select2" name="countryCode" ng-model="organization.countryCode" style="width:90px;" data-placeholder="Please select..." required="required" class="col-md-1">                                                                               
+        <option value=""></option>
+        <option value="+11"> +11</option>
+        <option value="+91"> +91   </option>
+        <option value="+61"> +61                                                                           </option>
+      </select>
+      <input type="number" placeholder="Phone" ng-model="organization.phoneNumber" name="phoneNumber" style="width:100px" class="in-txt"/>
+      <label ng-show="form.phoneNumber.$error.number" class="help-inline required">Invalid Phone Number...!
+        <select ui-select2="ui-select2" name="noOfEmployee" ng-model="organization.noOfEmployee" data-placeholder="Please select..." style="width:200px">
+          <option value=""></option>
+          <option value="1"> 0-100</option>
+          <option value="2"> 100-200 </option>
+          <option value="3"> 200-300</option>
+          <option value="4"> above 300</option>
+        </select>
+      </label>
+      <select ui-select2="ui-select2" name="role" ng-model="organization.role" data-placeholder="Please select..." style="width:200px">
+        <option value=""></option>
+        <option value="admin"> Admin</option>
+        <option value="manager"> Manager </option>
+      </select>
+      <select ui-select2="ui-select2" multiple="true" name="products" ng-model="organization.products" data-placeholder="Please select..." style="width:200px" required="required">                                                                                       
+        <option value="p1"> p1</option>
+        <option value="p2"> p2 </option>
+      </select>
+      <label ng-show="form.products.$error.required" class="help-inline required">*</label>
+      <button ng-hide="registrationLoader" ng-click="reset()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="in-btn">Reset</button>
+      <button ng-hide="registrationLoader" ng-disabled="form.$invalid " type="submit" ng-click="register(organization)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="in-btn">Register</button>
+    </div>
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="item"><img src="styles/images/bg.png" alt="bg1" style="width:100%;height:100%;"/></div>
+      <div class="item"><img src="styles/images/bg2.jpg" alt="bg2" style="width:100%;height:100%;"/></div>
+      <div class="item"><img src="styles/images/bg3.jpg" alt="bg2" style="width:100%;height:100%;"/></div>
+    </div>
+    <!-- Controls--><a href="#carousel-example-generic" data-slide="prev" class="left carousel-control"><span class="icon-prev"></span></a><a href="#carousel-example-generic" data-slide="next" class="right carousel-control"><span class="icon-next">                                                                               </span></a>
+  </div>
+</form>

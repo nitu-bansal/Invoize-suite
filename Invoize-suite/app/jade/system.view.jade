@@ -1,0 +1,49 @@
+.row.in-wiz-ttl.fix-scroll( ng-show="$state.current.name.split('.')[0]=='wizard'",ng-init="getSystemList();")
+        .col-md-7.col-sm-6
+                .in-wiz-info Welcome to system configuration. You can add / configure / edit your systems here and link your systems with the company that operates on it. 
+        .col-md-5.col-sm-6.in-add
+                i.icon-spinner.icon-spin.blue.icon-large(ng-show="systemListLoader")
+                input.input-search-new(placeholder="Search System",ng-change="searchSystem(q)",ng-model="q")
+                button.input-search-new
+                    i.fa.fa-search
+                a(permission="createSystem",style="vertical-align: middle;cursor:pointer;",ng-click="redirectTo('/system/new')")
+                        span.in-add-sign +
+                        span.in-add-txt Add System
+.row.in-wiz-ttl.in-fix-scroll(set-width,ng-hide="$state.current.name.split('.')[0]=='wizard'")
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info System
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="systemListLoader")
+            input.input-search-new(placeholder="Search System",ng-change="searchSystem(q)",ng-model="q")
+            button.input-search-new
+                i.fa.fa-search
+            a(permission="createSystem",style="cursor:pointer;",ng-click="redirectTo('/system/new')")
+                span.in-add-sign +
+                span.in-add-txt Add System
+
+div(style="clear:both")
+.col-xs-12.col-md-12.col-sm-12
+    .col-xs-12.col-sm-6.col-md-4.inz-blk(ng-repeat="ListItem in systemList | orderBy:title",ng-form="subForm", style="margin-bottom:10px;")
+        .in-view-block
+            .title
+                i.fa.fa-tags.small &nbsp;
+                | {{ListItem.title}}
+            .line
+                .caption {{ListItem.fields.label}}
+                .data {{ListItem.fields.value| selectFormat}}
+        .in-btn-blk
+            .in-btn-grp
+                .in-btn-row
+                    button.inz-btn.btn-sm.btn-danger(permission="deleteSystem",tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" , ng-click="confirmDeleteProfile(ListItem.id)")
+                        i.fa.fa-trash-o
+                    button.inz-btn.btn-sm.btn-danger(permission="editSystem",tool-tip,data-placement="top", data-toggle="tooltip", title="Edit",ng-click="redirectTo('/system/edit/' + ListItem.id);")
+                        i.fa.fa-pencil
+                    button.inz-btn.btn-sm.btn-danger(permission="viewRuleProfileSystem",tool-tip,data-placement="top", data-toggle="tooltip", title="Rule Profile" , ng-click="Profiling(ListItem)")
+                        i.fa.fa-cogs
+.in-wiz-footer
+        a.inz-btn.btn-sm.btn-danger(permission="listCompany",href="#/wizard/company/view")
+                i.fa.fa-long-arrow-left   
+                |  Previous Step      
+        a.inz-btn.btn-sm.btn-success(href="#/wizard/users/detail",ng-class="{'disabled': checkSystemListLength()}",ng-disabled="checkSystemListLength()") Next Step
+                i.fa.fa-long-arrow-right

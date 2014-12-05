@@ -1,0 +1,105 @@
+.col-md-3.col-sm-12.col-xs-12
+    .ds-tree
+        .row
+            .col-md-12.col-sm-12.col-xs-12
+                .pull-left
+                    | Rules For
+                .pull-right
+                     a.anchor(type='button',id='newRule',name='ruleGroup',ng-click='fillDetails()',tool-tip,data-placement="top", data-toggle="tooltip", toolTip="Create new",tooltip-placement="bottom" )
+                        i.fa.fa-plus
+                        input#createRul(type='radio',name='ruleGroup',class='hide')
+                div(style="clear:both;height:10px;")
+                select.input-xxlarge.text-left(ui-select2='ui-select2', ng-model='selectedDoc',ng-change='setReportIndex()', data-placeholder='Select Source')
+                    option(ng-repeat="report in reports", value="{{report.details.docType}}") {{report.details.displayName}}
+                div(style="clear:both;height:10px;")
+                .div-rules
+                    .ul-rules.overflow-auto(style="height:284px;")
+                        li(ng-repeat="rul in rules" ,ng-click='fillDetails($index)',ng-class="{'active':rule.indx==$index}")
+                            //label.fa.fa-hand-o-right(tooltip="Rule Name")
+                            .in-side-ttl
+                                span {{rul.ruleName}}
+                            br
+                            label.fa.fa-calendar(tooltip="Expiry Date")
+                            span {{rul.expiryDate | date:'mediumDate'}}
+                            br
+                            //label.fa.fa-flag-o(tooltip="Status")
+                            span.span-red(ng-if="!rul.isActive") Inactive
+                            span.span-green(ng-if="rul.isActive") Active
+                    .ul-rules(ng-show='rules.length==0 && $parent.loader==false')
+                        h5.orange No Rule Found :(
+.col-md-9.col-sm-12.col-xs-12
+    form(name="rulForm",novalidate)
+        div(ng-form="rulesForm")
+            .ds-tree
+                .row
+                    .col-md-4.col-sm-6.col-xs-12
+                        label.control-label Name
+                        span.red(ng-show="rulesForm.ruleName.$error.required") &nbsp; *
+                        br
+                        input.input-large(type="text", name="ruleName", ng-model="rule.ruleName", placeholder="Rule Name", required,ng-required="true")
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Effective Date
+                        span.red(ng-show="rulesForm.EffectiveDate.$error.required") &nbsp; *
+                        br
+                        input.input-medium(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="EffectiveDate",type="text",ng-model="rule.effectiveDate",ng-required="true",close-text="Close",placeholder="Effective Date",ng-change="setMinData(rule.effectiveDate)")
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Expiry Date
+                        span.red(ng-show="rulesForm.ExpiryDate.$error.required") &nbsp; *
+                        br
+                        input.input-medium(datepicker-popup="{{format}}",datepicker-options="dateOptions",name="ExpiryDate",min="minDate",type="text",ng-model="rule.expiryDate",ng-required="true",close-text="Close",placeholder="Expiry Date")
+
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Create Using
+                        span.red(ng-show="rulesForm.CollectionType.$error.required") &nbsp; *
+                        br
+                        select.input-large.text-left(ui-select2='ui-select2', ng-model='rule.fieldType',ng-change='clearFilterAll()', data-placeholder='Select Source',ng-required="true",name="CollectionType",toolTip="Collection Type",placeholder="Collection Type")
+                            option(value="")
+                            option(ng-repeat="report in nonOpReports", value="{{report.details.docType}}") {{report.details.displayName}}
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Conditions On
+                        span.red(ng-show="rulesForm.ruleCollection.$error.required") &nbsp; *
+                        br
+                        select.input-large(ui-select2='ui-select2', name="ruleCollection", ng-model="rule.ruleCollection",ng-change="getSourceFields()" ,  select-validate, required)
+                            option(value="")
+                            option(ng-if="selectedDoc.length>0",value="{{selectedDoc}}") {{selectedDoc}}
+                            option(ng-if="rule.fieldType!=null", value="{{rule.fieldType}}") {{rule.fieldType}}
+
+                    .col-md-4.col-sm-6.col-xs-12
+                        label Status
+                        br
+                        label
+                            input.ace.ace-switch-8(type='checkbox',name='ruleGroup',ng-model="rule.isActive")
+                            span.lbl
+            div(style="clear:both;height:10px;border-bottom:1px solid #dddddd;")
+            .ds-tree
+                a.margin10(name='btnAddTag',ng-click='addTag()',tool-tip,data-placement="top", data-toggle="tooltip", style="cursor:pointer" )
+                    span.in-add-sign +
+                    span.in-add-txt Add
+                .row(ng-repeat="row in rule.ruleTagNameVal")
+                    div(style="clear:both;height:10px;")
+                    .col-md-5.col-sm-12.col-xs-12
+                        div.input-group
+                            span.input-group-addon Field Name
+                            input.ruleTagName(type="text", ng-model="row.tagName",ng-disabled="rule.fieldType==null || selectedDoc==null", name="ruleTagName_{{$index}}",typeahead="suggestion.id for suggestion in fieldBar($viewValue)", typeahead-editable="true",toolTip="Tag Name",placeholder="Tag Name",ng-change="clearFilter($index)")
+                    .col-md-7.col-sm-12.col-xs-12
+                        label.iz-switch
+                            input.ace.ace-switch(name='isField',ng-model='row.isField',ng-change='row.tagVal=null', type='checkbox')
+                            span.lbl
+                        .controls(ng-if="row.isField==null || row.isField==false")
+                            input.ruleTagName(type="text", ng-model="row.tagVal",ng-disabled="rule.fieldType==null || selectedDoc==null", name="ruleTagVal_{{$index}}",typeahead="suggestion for suggestion in valueBar($viewValue,$index)", typeahead-editable="true",toolTip="Tag Value",placeholder="Tag Value")
+
+                        .controls(ng-if=" row.isField==true")
+                            input.ruleTagName(type="text", ng-model="row.tagVal",ng-disabled="rule.fieldType==null || selectedDoc==null", name="ruleTagVal_{{$index}}",typeahead="suggestion.id for suggestion in fieldBarVal($viewValue,$index)", typeahead-editable="true",toolTip="Tag Value",placeholder="Tag Value")
+
+                        a.grey(data-action='close',ng-click="removeTag($index)", style="cursor: pointer; margin-left:5px;",ng-show="$index>0",tooltip="Delete")
+                            i.icon-trash
+
+            div(style="clear:both;height:10px; border-bottom:1px solid #dddddd;")
+            .row#rules(ng-show="rule.ruleCollection.length>0")
+                .ds-tree(rules)
+            div(style="clear:both;height:280px;")
+

@@ -1,0 +1,31 @@
+.modal-dialog.small
+    .modal-content
+        form(name="form",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                h4.modal-title Configure Email
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+            .modal-body
+                .row
+                    .col-sm-4 ------------------------------------------------------
+
+                    .col-sm-8
+                        div.in-wiz-row()
+                            label.control-label Email
+                            input(ng-model="configureEmail.email", id='txtEmail',type='text')
+                        div.in-wiz-row()
+                            label.control-label Password
+                            input(ng-model="configureEmail.password", id='txtPassword',type='text')
+                        div.in-wiz-row()
+                            label.control-label Host
+                            input(ng-model="configureEmail.host", id='txtHost',type='text')
+                        div.in-wiz-row()
+                            label.control-label Port
+                            input(ng-model="configureEmail.port", id='txtPort',type='text')
+            .modal-footer
+                button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-disabled="form.$invalid", permission="*.*.*", type="submit", ng-click="saveEmailBoxData()",) Save
+
+
+
+

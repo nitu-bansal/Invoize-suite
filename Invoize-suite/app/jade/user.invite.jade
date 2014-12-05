@@ -1,0 +1,88 @@
+.row.in-wiz-ttl.fix-scroll(ng-show="$state.current.name.split('.')[0]=='wizard'")
+    .col-md-9.col-sm-8
+        .in-wiz-info Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            //-i.icon-spinner.icon-spin.blue.icon-large(ng-show="inviteLoader")
+    .col-md-3.col-sm-4.in-add
+        i.icon-spinner.icon-spin.blue.icon-large(ng-show="inviteLoader")
+        a(ng-click="editTemplate(true)", href="javascript:void(0)",ng-show="AddModify")
+            span.in-add-sign +
+            span.in-add-txt Add / modify fields
+
+.row.in-wiz-ttl.in-fix-scroll(ng-hide="$state.current.name.split('.')[0]=='wizard'",set-width)
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Invite Users
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="companyCreateLoader")
+            a(ng-click="editTemplate(true)", href="javascript:void(0)",ng-show="AddModify")
+                span.in-add-sign +
+                span.in-add-txt Add / Modify Fields
+            a.inz-btn.btn-sm.btn-default(ng-click="redirectTo('/users/detail')") Cancel
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-click="SendInvite(usersSI)",ng-show="invite") Invite
+            button.inz-btn.btn-sm.btn-success(type="submit",ng-click="updateUsers(true)",ng-show="register") Register
+
+.row(ng-init="getTemplateSendInvitation();getTemplate(true)")
+    .col-xs-12.col-sm-12.col-md-12
+        tabset
+            tab.tab(heading="Invite Users",ng-click="AddModify=false;register=false;invite=true")
+                div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',height="hh",width='hw',afterRender='afterRender()',datarows='userSI in usersSI',manualColumnResize='true', columns='columnsSI',minsparerows='1',onBeforeChange='celChange')
+            tab.tab(heading="Register Users",ng-click="AddModify=true;register=true;invite=false")
+                div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',height="hh",width='hw',afterRender='afterRender()',datarows='user in users',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChange')
+    .in-wiz-footer
+        a.inz-btn.btn-sm.btn-default(href="#/wizard/users/detail") Cancel
+        //- button.inz-btn.btn-sm.btn-default() Cancel
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-click="SendInvite(usersSI)",ng-show="invite") Invite
+        button.inz-btn.btn-sm.btn-success(type="submit",ng-click="updateUsers(true)",ng-show="register") Register
+
+
+
+
+//- //.row.in-wiz-ttl
+//- //	.col-md-9.col-sm-8
+//- //		.in-wiz-info Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+//- //			//-i.icon-spinner.icon-spin.blue.icon-large(ng-show="inviteLoader")
+//- //	.col-md-3.col-sm-4.in-add
+//- //		i.icon-spinner.icon-spin.blue.icon-large(ng-show="inviteLoader")
+//- //		a(ng-click="editTemplate(true)", href="javascript:void(0)",ng-show="AddModify")
+//- //			span.in-add-sign +
+//- //			span.in-add-txt Add / modify fields
+//- //
+//- //.row(ng-init="getTemplateSendInvitation();getTemplate(true)")
+//- //	.col-xs-12
+//- //		ul#invite.nav.nav-tabs
+//- //			li.active
+//- //				a(data-toggle='tab', href='#send',ng-click="AddModify=false;register=false;invite=true") Send Invitation
+//- //			//-(ng-click="getTemplateSendInvitation()")
+//- //			li
+//- //				a(data-toggle='tab', href='#bulk',ng-click="AddModify=true;register=true;invite=false") Bulk Register
+//- //
+//- //		#myTabContent.tab-content
+//- //			//- #registred.tab-pane.fade.in.active
+//- //			//- 	p
+//- //			//- 		| Registred Users, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+//- //			#send.tab-pane.fade.in.active
+//- //				p
+//- //				div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',datarows='userSI in usersSI',manualColumnResize='true', columns='columnsSI',minsparerows='1',onBeforeChange='celChange')
+//- //			#bulk.tab-pane.fade
+//- //				p
+//- //				div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',datarows='user in users',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChange')
+//- //
+//- //
+//- //	.in-wiz-footer
+//- //			a.inz-btn.btn-sm.btn-default(href="#/wizard/users/view") Cancel
+//- //			//- button.inz-btn.btn-sm.btn-default() Cancel
+//- //			button.inz-btn.btn-sm.btn-success(type="submit",ng-click="SendInvite(usersSI)",ng-show="invite") Invite
+//- //			button.inz-btn.btn-sm.btn-success(type="submit",ng-click="updateUsers(true)",ng-show="register") Register
+//- //
+//- ////- script(type='text/javascript')
+//- ////- 	$('#invite a').click(function (e) {
+//- ////- 		e.preventDefault();
+//- ////- 		$(this).tab('show');
+//- ////- 		angular.element('.handsontable').eq(0)handsontable('render');
+//- ////- 		angular.element('.handsontable').eq(2).handsontable('render');
+//- //
+//- ////- 	});
+//- //
+//- //	//$('#invite a:first').tab('show') // Select first tab
+//- //	//$('#invite a:last').tab('show') // Select last tab
+//- //

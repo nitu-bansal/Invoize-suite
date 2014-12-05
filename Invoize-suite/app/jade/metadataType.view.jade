@@ -1,0 +1,35 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width,ng-init="getMetadataList('')")
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Metadata
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="metadataLoader")
+            input.input-search-new(placeholder="Search Metadata",ng-model="q")
+            button.input-search-new
+                i.fa.fa-search
+            a(style="vertical-align: middle;",ng-href="/#/organizationSetup/metadata/new",style="cursor:pointer")
+                span.in-add-sign +
+                span.in-add-txt Add Metadata
+div(style="clear:both")
+.col-xs-12.col-md-12.col-sm-12
+    .col-md-4.col-sm-6.col-xs-12.inz-blk(ng-repeat="ListItem in metadataTypes | filter:{type:q} | orderBy:title",ng-form="subForm", style="margin-bottom:10px;")
+        .in-view-block
+            .title
+                i.fa.fa-tags.small &nbsp;
+                | {{ListItem.type}}
+            .line
+                .caption Count
+                .data {{ListItem.count}}
+            .line
+                .caption Create Date
+                .data {{ListItem.createdDate | date:'medium'}}
+        .in-btn-blk
+            .in-btn-grp
+                .in-btn-row
+                    button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Delete" , ng-click="confirmDeleteProfile(ListItem.id)")
+                        i.fa.fa-trash-o
+                    button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Edit" , ng-click="editMetadataType(ListItem.id)")
+                        i.fa.fa-pencil
+                    button.inz-btn.btn-sm.btn-danger(tool-tip,data-placement="top", data-toggle="tooltip", title="Detail" , ng-click="detailMetadataType(ListItem.id)")
+                        i.fa.fa-eye
+div(style="clear:both;")

@@ -1,0 +1,264 @@
+
+<form novalidate="novalidate" name="frm1" class="form-horizontal">
+  <div ng-show="expiryDialog" class="row">
+    <div class="col-sm-12">
+      <!--Created by pallavi.dandane on 7/29/2014.-->
+      <div class="modal-dialog modal">
+        <div style="margin: 0 auto;width: 30%;" class="modal-content">
+          <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+            <h4 class="modal-title">Expire Tariff Details &nbsp;</h4>
+          </div>
+          <div class="modal-body">
+            <div id="expireTariffDetails">
+              <div class="opt-title">Select to Expire
+                <div class="opt-group">
+                  <div class="opt">
+                    <input type="radio" id="expireAll" name="expireLane" value="all" ng-model="objExpireTariff.expireLanes"/>
+                    <label for="expireAll">&nbsp; All Lanes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="radio" id="expireSelected" name="expireLane" value="select" ng-model="objExpireTariff.expireLanes"/>
+                    <label for="expireSelected">&nbsp; Selected Lanes</label>
+                  </div>
+                </div>
+              </div><br/>
+              <label>Expiry Date &nbsp; &nbsp;</label>
+              <input type="text" required="required" name="expDate" data-date-format="yyyy-mm-dd" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" ng-model="objExpireTariff.tariffExpiryDt" placeholder="Expiry Date" class="input-large"/><span ng-show="frm1.expDate.$error.required" class="red">&nbsp; *</span><span ng-show="frm1.expDate.$valid" class="green validTick">&nbsp; &#10004;</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button ng-disabled="frm1.$invalid" ng-class="{'disabled': frm1.$invalid}" ng-click="expireTariff()" class="inz-btn btn-sm btn-success">Done</button>
+            <button ng-click="close();" class="inz-btn btn-sm btn-default">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div style="clear:both;"></div>
+<div set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="pull-left">
+      <div ng-hide="addMode" class="in-wiz-info">Edit / View Tariff : {{editedLane[5]}} - {{editedLane[6]}} - {{editedLane[7]}}</div>
+      <div ng-show="addMode" class="in-wiz-info">Add Tariff</div>
+    </div>
+    <div class="pull-right">
+      <!--dynamic-Select(multiselect,name="account",ng-model="global.account",ph="account",change="setAccounts(global.account,isGroupSelected)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffRepository","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account",ng-readonly="true")--><a ng-click="openDialogDocuments();" href="javascript:void(0)"><span class="in-add-sign">+</span><span class="in-add-txt">View / Edit Documents &nbsp;</span></a><i ng-show="Loader" class="icon-spinner icon-spin blue icon-large"></i><span>{{global.account | selectFormat}} &nbsp;</span>
+      <label style="margin-bottom:0;" permission="tariffLane.editTariffLanes">
+        <input type="checkbox" name="switch-field-1" ng-click="switchTariffMode($event)" ng-required="false" text-on="Add" class="ace ace-switch ace-switch-addUpdate"/><span class="lbl"></span>
+      </label>
+      <!--.btn-group.filter-dd.rule-filter-->
+      <!--    button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-right(ng-hide="addMode",data-toggle='dropdown', type='button',data-placement="top", data-toggle="tooltip",  style="margin: 0 0 0 0 !important;" ,tooltip-placement="top", tooltip="Show / Hide columns")-->
+      <!--        i.fa.fa-eye-->
+      <!--    ul.dropdown-menu.filter-ddm.arrow-left.dropdown-caret( aria-labelledby='btnGroupVerticalDropShowHide', role='menu',style="max-height:350px;width:230px;")-->
+      <!--        li-->
+      <!--            .opt-title-->
+      <!--                ul( aria-labelledby='btnGroupVerticalDropShowHide', role='menu',style="max-height:335px;margin-left:0px;",nice-scroll)-->
+      <!--                    li.pb0(ng-repeat="item in columns",ng-click="setWidth($index)",style="cursor:pointer;",ng-hide="item.title.indexOf('chkAll') != -1 || item.key == 'history'")-->
+      <!--                        input(type="checkbox", id="id-{{item.key}}", ng-model="item.visible")-->
+      <!--                        label(for="id-{{item.key}}")  {{item.title}}-->
+      <!--.btn-group.filter-dd.rule-filter(ng-show="lanes.length")-->
+      <!--    button.btn-sm.btn-ico.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')-->
+      <!--        |  Filter-->
+      <!--        i.fa.fa-angle-down-->
+      <!--    div.dropdown-menu.filter-ddm.arrow-right.dropdown-caret( aria-labelledby='btnGroupVerticalDrop1', role='menu')-->
+      <!--        div.showme.overflow-auto-->
+      <!--            div(ng-repeat="(k,obj) in laneProfileData.fields",ng-switch="obj.type")-->
+      <!--                .opt-title {{obj.label}}-->
+      <!--                input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="obj.val",close-text="Close",placeholder="{{obj.label}}")-->
+      <!--                dynamic-Select(ng-switch-default,multiselect,placeholder="{{obj.label}}",ng-model="obj.val",ph="{{obj.key}}", url="api/tariffLaneFilter/suggestion?account={{global.account[0].n}}&systemId={{loggedInUser.userSystem[0].id}}&templateId={{$routeParams.templateId}}")-->
+      <!--        div(style="clear:both;padding:5px 0;")-->
+      <!--        .opt-cmd-->
+      <!--            button.inz-btn.btn-xs.btn-default(ng-click="resetFilter()") Reset-->
+      <!--            button.inz-btn.btn-xs.btn-success(ng-click="applyFilter()") Apply-->
+      <!--.btn-group(style="vertical-align: inherit;")-->
+      <!--    button.inz-btn.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')-->
+      <!--        |  Actions-->
+      <!--        i.fa.fa-angle-down-->
+      <!---->
+      <!--    ul.dropdown-menu-c.dropdown-menu-c2.dropdown-caret-c(aria-labelledby='btnGroupVerticalDrop1', role='menu')-->
+      <!--        //li(ng-click="$parent.currentTab='accountInvoice'")-->
+      <!--        //    a(style="cursor:pointer") Share-->
+      <!---->
+      <!--        //li(ng-click="$parent.currentTab='accountShipment'",permission="tariffLane.editTariffLanes")-->
+      <!--        //    a(style="cursor:pointer",ng-click="openDialog()") Upload Tariff Lanes-->
+      <!--        li(ng-click="$parent.currentTab='accountShipment'",permission="tariffLane.editTariffLanes")-->
+      <!--            a(style="cursor:pointer",ng-click="openExpireTariffDialog()") Expire Tariff-->
+      <!--        li(ng-click="$parent.currentTab='accountShipment'",permission="tariffLane.exportTariff")-->
+      <!--            a(style="cursor:pointer",ng-click="exportLanes()") Export Tariff-->
+      <!---->
+      <!---->
+      <!--        li(ng-click="$parent.currentTab='accountShipment'")-->
+      <!--            a-->
+      <!--                i.icon-caret-left-->
+      <!--                | Upload Tariff-->
+      <!--            ul-->
+      <!--                li-->
+      <!--                    a(style="cursor:pointer",ng-click="exportTemplate()",permission="tariffLane.editTariffLanes") Export Tariff Template-->
+      <!--                li-->
+      <!--                    a(style="cursor:pointer",ng-click="openDialog()",permission="tariffLane.editTariffLanes") Upload Tariff Lanes-->
+      <!--            //    i.icon-caret-left-->
+      <!--            //    | Export-->
+      <!--            //ul-->
+      <!--            //    li-->
+      <!--            //        a(style="cursor:pointer",ng-click="exportLanes()",permission="tariffLane.tariffLaneView") Tariff Lanes-->
+      <!--            //    li-->
+      <!--            //        a(style="cursor:pointer",ng-click="exportTemplate()",permission="tariffRepository.sideTariffRepository") Tariff Template-->
+      <!---->
+      <!--button.inz-btn.btn-sm.btn-split.loadUI(ng-click='showHideTariffFormView(currentRowIndex,true);',data-placement="bottom", data-toggle="tooltip", title="Form View", tooltip-placement="left", tooltip="Form View Toggle" ,type="button")-->
+      <!--    i.fa.fa-columns-->
+      <button permission="tariffLane.editTariffLanes" type="submit" ng-class="{'disabled': mainForm2.$invalid}" ng-disabled="mainForm2.$invalid" ng-click="updateLanes()" class="inz-btn btn-sm btn-success">Save</button>
+      <button ng-click="redirectTo('/tariffLane');tariffList.length=0" tool-tip="tool-tip" data-placement="top" data-toggle="tooltip" title="Back to Account List" class="inz-btn btn btn-ico btn-default go-back"><i class="fa fa-reply"></i></button>
+      <!--a.btn-sm.btn-split.btn.loadUI(ng-click='showHideTariffFormView()',data-placement="bottom", data-toggle="tooltip", title="Form View", tooltip-placement="left", tooltip="Form View Toggle" ,type="button")-->
+      <!--    i.fa.fa-columns-->
+    </div>
+  </div>
+</div>
+<div style="clear:both;height:47px;"></div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <div class="pull-right">
+    <button ng-hide="addMode" data-toggle="tooltip" type="button" data-placement="top" style="margin: 0 0 0 0 !important;" tooltip-placement="top" tooltip="Show / Hide columns" class="btn-sm btn-ico btn-custom dropdown-toggle arrow-right"><i class="fa fa-eye"></i></button>
+    <ul aria-labelledby="btnGroupVerticalDropShowHide" role="menu" style="max-height:350px;width:230px;" class="dropdown-menu filter-ddm arrow-left dropdown-caret">
+      <li>
+        <div class="opt-title">
+          <ul aria-labelledby="btnGroupVerticalDropShowHide" role="menu" style="max-height:335px;margin-left:0px;" nice-scroll="nice-scroll">
+            <li ng-repeat="item in columns" ng-click="setWidth($index)" style="cursor:pointer;" ng-hide="item.title.indexOf('chkAll') != -1 || item.key == 'history'" class="pb0">
+              <input type="checkbox" id="id-{{item.key}}" ng-model="item.visible"/>
+              <label for="id-{{item.key}}"> {{item.title}}</label>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    <div ng-show="lanes.length" class="btn-group filter-dd rule-filter">
+      <button data-toggle="dropdown" type="button" class="btn-sm btn-ico btn-custom dropdown-toggle"> Filter &nbsp;<i class="fa fa-angle-down"></i></button>
+      <div aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+        <div class="showme overflow-auto">
+          <div ng-repeat="(k,obj) in laneProfileData.fields" ng-switch="obj.type">
+            <div class="opt-title">{{obj.label}}</div>
+            <input ng-switch-when="date" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions" type="text" ng-model="obj.val" close-text="Close" placeholder="{{obj.label}}" class="input-large"/>
+            <dynamic-Select ng-switch-default="ng-switch-default" multiselect="multiselect" placeholder="{{obj.label}}" ng-model="obj.val" ph="{{obj.key}}" url="api/tariffLaneFilter/suggestion?account={{global.account[0].n}}&amp;systemId={{loggedInUser.userSystem[0].id}}&amp;templateId={{$routeParams.templateId}}"></dynamic-Select>
+          </div>
+        </div>
+        <div style="clear:both;padding:5px 0;"></div>
+        <div class="opt-cmd">
+          <button ng-click="resetFilter()" class="inz-btn btn-xs btn-default">Reset</button>
+          <button ng-click="applyFilter()" class="inz-btn btn-xs btn-success">Apply</button>
+        </div>
+      </div>
+    </div>
+    <div style="vertical-align: inherit;" class="btn-group">
+      <button data-toggle="dropdown" type="button" class="btn-sm btn-custom dropdown-toggle"> Actions &nbsp;<i class="fa fa-angle-down"></i></button>
+      <ul aria-labelledby="btnGroupVerticalDrop1" role="menu" class="dropdown-menu-c dropdown-menu-c2 dropdown-caret-c">
+        <!--li(ng-click="$parent.currentTab='accountInvoice'")-->
+        <!--    a(style="cursor:pointer") Share-->
+        <!--li(ng-click="$parent.currentTab='accountShipment'",permission="tariffLane.editTariffLanes")-->
+        <!--    a(style="cursor:pointer",ng-click="openDialog()") Upload Tariff Lanes-->
+        <li ng-click="$parent.currentTab='accountShipment'" permission="tariffLane.editTariffLanes"><a style="cursor:pointer" ng-click="openExpireTariffDialog()">Expire Tariff</a></li>
+        <li ng-click="$parent.currentTab='accountShipment'" permission="tariffLane.exportTariff"><a style="cursor:pointer" ng-click="exportLanes()">Export Tariff</a></li>
+        <li ng-click="$parent.currentTab='accountShipment'"><a><i class="icon-caret-left"></i>Upload Tariff</a>
+          <ul>
+            <li><a style="cursor:pointer" ng-click="exportTemplate()" permission="tariffLane.editTariffLanes">Export Tariff Template</a></li>
+            <li><a style="cursor:pointer" ng-click="openDialog()" permission="tariffLane.editTariffLanes">Upload Tariff Lanes</a></li>
+          </ul>
+          <!--    i.icon-caret-left-->
+          <!--    | Export-->
+          <!--ul-->
+          <!--    li-->
+          <!--        a(style="cursor:pointer",ng-click="exportLanes()",permission="tariffLane.tariffLaneView") Tariff Lanes-->
+          <!--    li-->
+          <!--        a(style="cursor:pointer",ng-click="exportTemplate()",permission="tariffRepository.sideTariffRepository") Tariff Template-->
+        </li>
+      </ul>
+    </div>
+    <button ng-click="showHideTariffFormView(currentRowIndex,true);" data-placement="bottom" data-toggle="tooltip" title="Form View" tooltip-placement="left" tooltip="Form View Toggle" type="button" class="btn-sm btn-split loadUI"><i class="fa fa-columns"></i></button>
+  </div>
+</div>
+<div class="col-xs-12 col-md-12 col-sm-12">
+  <div class="div-layout-ew">
+    <div ui-layout="" class="layout-mock">
+      <ui-layout options="{ flow : &quot;column&quot; }">
+        <sidebar style="margin-right:10px;" class="west-back div-west">
+          <div ui-handsontable="{currentRowClassName: &quot;currentRow&quot;,currentColClassName: &quot;currentCol&quot;}" afterCreateRow="onRowCreate" rowHeaders="rowNos" height="hh" width="hw" beforeSet="multiselect" datarows="lane in lanes" manualColumnResize="true" stretchH="All" columns="columns" minsparerows="sparerow" onBeforeChange="celChange" ng-init="getTemplate()" afterRender="afterRender()" afterOnCellMouseDown="afterOnCellMouseDown"></div>
+          <pagination id="lane" total-items="totalItems" items-per-page="pageLimit" page="currentPage" max-size="paginationSize" rotate="true" ng-init="paginationSize=20" on-select-page="setPage()" boundary-links="true" class="pagination-small"></pagination>
+        </sidebar>
+        <sidebar style="padding:5px 10px 0;margin-left:20px;" class="east-back div-east overflow-auto">
+          <div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <!--form.form-horizontal(novalidate, name="subForm")-->
+              <div class="pull-left">
+                <label><span>Lane ID :</span><span class="red">&nbsp; {{currentRowIndex + ((currentPage -1 ) * pageLimit) + 1}}</span></label>
+              </div>
+              <div class="pull-right">
+                <button ng-click="updateLanebyFormView('prev')" class="btn-left-right"><i class="fa fa-arrow-left"></i></button>
+                <button ng-click="updateLanebyFormView('next')" class="btn-left-right"><i class="fa fa-arrow-right"></i></button>
+              </div>
+            </div>
+            <div style="clear:both;height:3px"></div><!--
+            <Created>by pallavi.dandane on 11/26/2014.</Created>-->
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <form novalidate="novalidate" name="subForm" class="form-horizontal">
+                <div class="cpanel">
+                  <div class="cpanel-heading cpanel-heading1"><span toolTip="Parameters" class="label white">Parameters</span></div>
+                  <div class="cpanel-body">
+                    <div class="row">
+                      <div ng-repeat="row1 in selectedLane.fields | orderBy:'displayOrder'" ng-if="(row1.uniqueCalculationParam==true || row1.uniqueCalculationParam==false ) &amp;&amp; row1.label!== 'effectiveDate' &amp;&amp; row1.label!== 'expiryDate' &amp;&amp; row1.label!== 'History'&amp;&amp; row1.label!== 'history'" class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{row1.label.replace("|", ".")}}</label>
+                        <div ng-switch="row1.type" style="display:inline-table;">
+                          <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="{{row1.isMandatory}}" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="numeric" type="text" ng-pattern="{{row1.regex}}" ng-required="{{row1.isMandatory}}" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="{{row1.isMandatory}}" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <dynamic-Select ng-switch-when="dropdown" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="{{row1.isMandatory}}" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="{{row1.isMandatory}}" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"></textarea><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cpanel">
+                  <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Charges</span></div>
+                  <div class="cpanel-body">
+                    <div class="row">
+                      <div ng-repeat="row1 in selectedLane.fields | orderBy:'displayOrder'" ng-if="row1.uniqueCalculationParam == undefined &amp;&amp; row1.label!== 'effectiveDate' &amp;&amp; row1.label!== 'expiryDate'" class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{row1.label.replace("|", ".")}}</label>
+                        <div ng-switch="row1.type" style="display:inline-table;">
+                          <input ng-switch-when="text" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="date" datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="row1.value" is-open="opened" ng-required="row1.isMandatory" close-text="Close" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <input ng-switch-when="numeric" type="text" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"/>
+                          <dynamic-Select ng-switch-when="multiselect" multiselect="multiselect" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <dynamic-Select ng-switch-when="dropdown" customobj="{&quot;column&quot;:&quot;{{row1.suggestionField}}&quot;}" ng-required="row1.isMandatory" name="name" ng-model="row1.value" ph="{{row1.suggestionsSource}}" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" placeholder="{{row1.toolTip}}" class="input-medium"></dynamic-Select>
+                          <textarea ng-switch-when="multiline" columns="5" rows="3" ng-pattern="{{row1.regex}}" ng-required="row1.isMandatory" ng-maxlength="{{row1.length}}" name="name" ng-model="row1.value" ng-trim="ng-trim" toolTip="{{row1.toolTip}}" ng-readonly="{{row1.isReadonly}}" class="input-medium"></textarea><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="cpanel">
+                  <div class="cpanel-heading cpanel-heading1"><span toolTip="Charge" class="label white">Other Information</span></div>
+                  <div class="cpanel-body">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{selectedLane.fields[effectiveDateIndexLane].label}}</label>
+                        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="selectedLane.fields[effectiveDateIndexLane].value" is-open="opened" ng-required="selectedLane.fields[effectiveDateIndexLane].isMandatory" close-text="Close" toolTip="{{selectedLane.fields[effectiveDateIndexLane].toolTip}}" ng-readonly="{{selectedLane.fields[effectiveDateIndexLane].isReadonly}}" class="input-medium"/><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                      </div>
+                      <div class="col-xs-12 col-md-6 col-sm-12">
+                        <label style="display:inline-table;" class="input-medium">{{selectedLane.fields[expiryDateIndexLane].label}}</label>
+                        <input datepicker-popup="{{format}}" datepicker-options="dateOptions" name="name" type="text" ng-model="selectedLane.fields[expiryDateIndexLane].value" is-open="opened" ng-required="selectedLane.fields[expiryDateIndexLane].isMandatory" close-text="Close" toolTip="{{selectedLane.fields[expiryDateIndexLane].toolTip}}" ng-readonly="{{selectedLane.fields[expiryDateIndexLane].isReadonly}}" class="input-medium"/><span ng-show="subForm.name.$error.required" class="red">&nbsp; *</span><span ng-show="subForm.name.$error.unique" class="red">&nbsp; already Exists</span><span ng-show="subForm.name.$error.number" class="red">&nbsp; only numbers</span><span ng-show="subForm.name.$error.date" class="red">&nbsp; only date</span><span ng-show="subForm.name.$error.maxlength" class="red">&nbsp; max length is {{row1.length}}</span><span ng-show="subForm.name.$error.pattern" class="red">&nbsp; Can contain only text</span><span ng-show="subForm.name.$valid" class="green validTick">&nbsp; &#10004;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="pull-right">
+                    <button ng-class="{'disabled': subForm.$invalid}" ng-disabled="subForm.$invalid" ng-click="updateLanebyFormView('close')" class="inz-btn btn-sm btn-split">Done</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div style="clear:both !important;height:5px !important;"></div>
+        </sidebar>
+      </ui-layout>
+    </div>
+  </div>
+</div>

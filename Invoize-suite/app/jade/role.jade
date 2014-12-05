@@ -1,0 +1,37 @@
+//Using fluid as the other has fixed pixels and doesnt extend the whole screen.
+.main-content(id="main-content")
+                a.menu-toggler(id="menu-toggler",href="#")
+                        span.menu-text
+                div.sidebar(id="sidebar")
+                        div.sidebar-shortcuts(id="sidebar-shortcuts")
+                                div.sidebar-shortcuts-large(id="sidebar-shortcuts-large")
+                                        a.btn.btn-mini.btn-success(data-placement="right",permission="createRole.*.*",ng-disabled="$state.includes('organizationSetup.role.new')",href="#/organizationSetup/role/new",bs-tooltip="tooltip.new" , ng-click="initializeRole()")
+                                                i.icon-plus
+                                        btn.pull-left
+                                                h5 &nbsp; Roles
+                                div.sidebar-shortcuts-mini(id="sidebar-shortcuts-mini")
+                                        span.btn.btn-success
+                                        span.btn.btn-info
+                                        span.btn.btn-warning
+                                        span.btn.btn-danger
+                        div.sidebar-collapse(id="sidebar-collapse")
+                                i.icon-double-angle-left
+
+                        div.nav-search(id="sidebar-shortcuts-large")
+
+                                form.form-search
+                                        span.input-icon
+                                                input.nav-search-input(id="nav-search-input",type="text",ng-change="searchRole()", placeholder="Search ...",ng-model="search", autocomplete="off")
+                                                i.icon-spinner.icon-spin.blue.icon-large(ng-show="roleListLoader")
+                                                i.icon-search.nav-search-icon(ng-hide="roleListLoader")
+                        div(id="sidebar-shortcuts-mini")
+                                i.icon-search.blue.icon-large
+                        ul.nav.nav-list(id='fixed-rate',when-scrolled="loadMore()")
+                                li(ng-class="{ active: $stateParams.roleId == l.id}", ng-repeat="l in roleList")
+                                        a(data-toggle="tab",ng-click="selectRole(l.id)", href="#/organizationSetup/role/{{l.id}}")
+                                                i.icon-blank {{l.v|firstLetter}}
+                                                span.trim-info-large {{l.v|toHumanReadable}}
+
+                        .page-content(ui-view="list")
+
+

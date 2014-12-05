@@ -1,0 +1,55 @@
+//- include common_top_row
+include top_row_gettingstarted
+link(rel="stylesheet", type="text/css", href="/styles/org_setup.css")
+.container()
+    .row(style="margin-bottom:10px;")
+        .col-sm-12
+            ul.in-wiz-nav.center
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='company'}")
+                    a 1. Company 
+                        i.fa.fa-long-arrow-right
+                        //- href="#/wizard/company/view" 
+
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='system'}")
+                    a 2. System
+                        i.fa.fa-long-arrow-right
+                        //-(href="#/wizard/system/view")
+                            
+                //li(ng-class="{ active: $state.current.name.split('.')[1]=='location'}")
+                //    a 3. Location
+                //        i.fa.fa-long-arrow-right
+                //         (href="#/wizard/location/view")
+                //li(ng-class="{ active: $state.current.name.split('.')[1]=='operation'}")
+                //    a 4. Operation
+                //        i.fa.fa-long-arrow-right
+                //         (href="#/wizard/operation/view")
+                //li(ng-class="{ active: $state.current.name.split('.')[1]=='accounts'}")
+                //    a 5. Accounts
+                //        i.fa.fa-long-arrow-right
+                //         (href="#/wizard/accounts/view")
+                            
+                li(ng-class="{ active: $state.current.name.split('.')[1]=='users'}")
+                    a 3. Users
+                        //- (href="#/wizard/users/view")
+
+    .row(style="margin-bottom:60px;")
+        .col-md-12            
+            //- .main-content(id="main-content")
+            .page-content(ui-view="contents")
+        //        div(ng-switch-when="location")
+        //                ng-form.form-horizontal(novalidate, name="form2")
+        //                        legend {{selection}}
+        //                        .control-group
+        //                                .controls
+        //                                        .radio
+        //                                                label(ng-repeat="role in roleList")
+        //                                                        input(type="radio",ng-model="wizard.defaultRole",value="{{role}}")
+        //                                                        | {{role}}
+        //                                div(ui-handsontable='{rowHeaders: false}', datarows='item in items', columns='columns',minsparerows='1',contextMenu='true',onBeforeChange='celChange',onchange='', height='320', width='640')
+        //
+        //                        .form-actions
+        //                                button.btn.btn-primary(ng-click="decrementStep()")
+        //                                        i.fa.fa-arrow-left.fa.fa-white
+        //                                        | &nbsp;&nbsp; Prev Step
+        //                                button.btn.btn-primary(ng-disabled="form2.$invalid", ng-click="incrementStep()") Next Step
+        //                                        i.fa.fa-arrow-right.fa.fa-white 

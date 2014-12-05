@@ -1,0 +1,8 @@
+.row
+	.col-md-6(style="margin-bottom:20px;")
+		button.inz-btn.btn-xs.btn-default(ng-click="") Auto Invoicing
+		button.inz-btn.btn-xs.btn-default(ng-click="") Raise Issue
+		button.inz-btn.btn-xs.btn-default(ng-click="") Delete Shipment Entry
+		.row(style="padding-right: 12px;", max-height)
+			div(id="dataGrid", ng-show="showGrid && !templateLoader",ui-handsontable='{ currentRowClassName: "currentRow",currentColClassName: "currentCol"}',afterCreateRow="onRowCreate",rowHeaders="rowNos",height='hh',width='hw',datarows='shipment in datas',manualColumnResize='true', columns='columns',minsparerows='1',onBeforeChange='celChange')
+			pagination(ng-show="showGrid && !templateLoader",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")

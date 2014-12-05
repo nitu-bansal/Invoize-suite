@@ -1,0 +1,16 @@
+//
+   Created by pallavi.dandane on 11/26/2014.
+
+.modal-dialog.container
+    .modal-content
+        form(novalidate, name="formreinitiate")
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")   &times;
+                h4.modal-title Reinitiate Request &nbsp;
+                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+                .modal-body
+                    div.overflow-auto
+                        include   tariffManagementViewForm
+
+                //.modal-footer
+                //    span Close

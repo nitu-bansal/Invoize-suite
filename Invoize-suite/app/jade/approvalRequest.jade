@@ -1,0 +1,155 @@
+//   Created by pallavi.dandane on 10/13/2014.
+.page-content(id="page-content",ui-view="Contents",ng-init="getRequests('tariff')")
+.row.in-wiz-ttl.in-fix-scroll(set-width)
+    .col-xs-12.col-sm-12.col-md-12
+        .pull-left
+            .in-wiz-info Approval Request
+        .pull-right
+            input.input-large(ng-trim ,type="text", name="commentGlobal",placeholder="Comment", ng-model="commentGlobal",required,auto-fill-sync,ng-show="requestBucket == 'pending'")
+                span.red(ng-show="commentGlobal.$error.required") &nbsp; *
+                span.green.validTick(ng-show="commentGlobal.$valid") &nbsp; &#10004;
+            .btn-group(style="vertical-align: inherit;",ng-show="requestBucket == 'pending'")
+                button.btn-sm.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+                    |    Actions &nbsp;
+                    i.fa.fa-angle-down
+                .dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="left: auto; right: 0;")
+                    li(ng-click="processRequest('Approve',0,true)",ng-class="{'disabled':  selectedApprovalDocs.length == 0}",ng-disabled=" selectedApprovalDocs.length == 0")
+                        a(style="cursor:pointer") Approve
+                    li(ng-click="processRequest('Reject',0,true)",ng-class="{'disabled': commentGlobal == null || commentGlobal == undefined || commentGlobal.length == 0 || selectedApprovalDocs.length == 0}",ng-disabled=" commentGlobal == null || commentGlobal == undefined || commentGlobal.length == 0 || selectedApprovalDocs.length == 0")
+                        a(style="cursor:pointer") Reject
+
+
+div(style="clear:both;height:47px;")
+
+.col-xs-12.col-sm-12.col-md-12
+    ul.nav.nav-tabs
+        li.tab(class="{{selectedTab=='tariff'?'active':''}}",ng-click="getRequests('tariff')")
+            a
+                | &nbsp; Tariff
+    .col-xs-12.col-sm-12.col-md-12
+    div.overflow-auto(style="margin:10px 5px 20px;min-height:300px;")
+        table.inz-table.inz-table1.border1px
+            thead
+                tr
+                    th
+                        span(tooltip="Expand/Collapse")
+                            i.fa.fa-align-justify
+                    th
+                        span
+                            input(tooltip="Select All",type='checkbox',ng-click="checkAll($event)", tooltip-placement="right")
+                    th(ng-repeat="req in tariffRequestData[0]" ,ng-show = "$index > 0 && $index !== idIndex && $index !== templateIdIndex && $index !== docIdIndex")
+                        span.trim-info-large(tooltip="{{req |toHumanReadable}}") {{req | toHumanReadable}}
+
+            tbody(ng-repeat="data in tariffRequestData",ng-show = "$index > 0")
+                tr(style="cursor: pointer;")
+                    td(ng-repeat="d in data track by $index",ng-show="$index==0",ng-click="getRequestInfo($parent.$index,data[1])")
+                        div(ng-hide="data.dataPresent")
+                            i.icon-reorder.blue(ng-show="data.doc")
+                            i.icon-reorder.orange(ng-hide="data.doc")
+                        i.icon-spinner.icon-spin.blue.icon.small(ng-show="data.dataPresent")
+                    td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                        input(name="chk_{{$parent.$index}}",type='checkbox',ng-click="updateSelection($event,$parent.$index)")
+                    td(ng-repeat="d in data track by $index",ng-switch="$index" ,ng-show = "$index > 0 && $index !== idIndex && $index !== templateIdIndex && $index !== docIdIndex")
+                        //span.trim-info-large(tooltip="{{d}}",ng-switch-when="10", ng-hide="true") {{d }}
+                        //span.trim-info-large(tooltip="{{d}}",ng-switch-when="11", ng-hide="true") {{d }}
+                        span.trim-info-large(tooltip="{{d}}",ng-switch-default) {{d}}
+                            tr(ng-show="!isRowCollapsed[$index] "  )
+                                td.inset(colspan="{{data.length+1}}")
+                                    div(style="clear:both;height:3px")
+                                    .col-md-12.col-sm-12.col-xs-12
+                                         .timeline
+                                             li.border-10(popover="{{data.approvalData[0].all[0].u}}   on   {{data.approvalData[0].all[0].time}}" ,popover-title="Initiated by",popover-trigger="mouseenter click" ,popover-placement="bottom",data-html="true")
+                                                 span Request
+                                             //li.red-line(ng-repeat="approvalItem in data.approvalData track by $index",ng-show = "$index > 0" ,popover="{{data.approvalData[$index].all[0].u}}  {{data.approvalData[$index].all[0].action}}  on  {{data.approvalData[$index].all[0].time}}  with comment :  {{data.approvalData[$index].all[0].comment}} || {{data.approvalData[$index].any[0].u}}  {{data.approvalData[$index].any[0].action}}  on  {{data.approvalData[$index].any[0].time}}  with comment :  {{data.approvalData[$index].any[0].comment}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )
+                                             li(ng-class="{'orange-line':data.currentLevel == $index, 'yellow-line':data.currentLevel < $index, 'green-line':data.currentLevel > $index}" , ng-repeat="approvalItem in data.approvalData track by $index",ng-show = "$index > 0" ,popover="{{approvalItem}}",popover-trigger="mouseenter click",popover-placement="bottom" , ng-show = "approvalItem.length", data-html="true")
+                                                 span Level {{$index}}
+                                    //             //script(type="text/ng-template" id="client.html")
+                                    //             div(id="pop_{{$index}}" ,name="pop_{{$index}}" ,  ng-repeat="cItem in data.approvalData[$index].all track by $index" , ng-if= "cItem !== 'undefined'") {{cItem.u}} {{cItem.time}} {{cItem.action}} {{cItem.comment}}
+                                    //             div(id="pop_{{$index}}",,name="pop_{{$index}}"  , ng-repeat="cItem in data.approvalData[$index].any track by $index" , ng-if= "cItem !== 'undefined'") {{cItem}}{{cItem.time}} {{cItem.action}} {{cItem.comment}}
+
+                                    //         //li.red-line(ng-repeat="approvalItem in data.approvalData track by $index",ng-show = "$index > 0" ,popover="ng-repeat = "childItem in approvalItem.all track by $index {{childItem[$index].u}}  {{childItem[$index].action}}  on  {{childItem[$index].time}}  with comment :  {{dchildItem[$index].comment}} "" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )
+                                    //         //    span Level {{$index}}
+
+                                    //         //li.orange-line(popover="{{dynamicPopover}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )
+                                    //         //    span Level 1
+                                    //         //li.yellow-line(popover="{{dynamicPopover}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click" ,popover-placement="bottom")
+                                    //         //    span Level 2
+                                    //         //li.black-line(popover="{{dynamicPopover}}" ,popover-title="{{dynamicPopoverTitle}}",popover-trigger="mouseenter click",popover-placement="bottom" )
+                                    //         //    span Level 1
+                                    .col-md-9.col-sm-12.col-xs-12
+                                        .row
+                                            .col-xs-12.col-md-6.col-sm-12
+                                                label.input-medium.bolder.blue(ng-show="data.laneData.length == 2") Current Lane
+                                                label.input-medium.bolder.blue(ng-show="data.laneData.length == 1") Change Requested
+                                            .col-xs-12.col-md-6.col-sm-12
+                                                label.input-medium.bolder.blue(ng-show="data.laneData.length == 2") Change Requested
+                                        .cpanel
+                                            .cpanel-heading.cpanel-heading1
+                                                span.label.white( toolTip="Parameters") Parameters
+                                            .cpanel-body
+                                                .row
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        .row(ng-repeat="row1 in data.laneData[0].parameters | orderBy:'displayName'", ng-if=" row1.displayName!== 'effectiveDate'&& row1.displayName!== 'expiryDate' && row1.displayName!== 'Effective Date'&& row1.displayName!== 'Expiry Date'")
+                                                            label.input-large.ellipsis-large(style="display:inline-table;") {{row1.displayName.replace("|", ".")}}
+                                                            label.input-medium(style="display:inline-table;", toolTip="{{row1.toolTip}}") {{row1.value}}
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        .row(ng-repeat="row2 in data.laneData[1].parameters | orderBy:'displayName'", ng-if=" row2.displayName!== 'effectiveDate'&& row2.displayName!== 'expiryDate' && row2.displayName!== 'Effective Date'&& row2.displayName!== 'Expiry Date'")
+                                                            label.input-large.ellipsis-large(style="display:inline-table;") {{row2.displayName.replace("|", ".")}}
+                                                            label.input-medium(style="display:inline-table;", toolTip="{{row2.toolTip}}",ng-class="{'red':row2.diff !== true}"  ) {{row2.value}}
+
+
+
+                                        .cpanel
+                                            .cpanel-heading.cpanel-heading1
+                                                span.label.white( toolTip="Charge") Charges
+                                            .cpanel-body
+                                                .row
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        .row(ng-repeat="row1 in data.laneData[0].charges | orderBy:'displayOrder'")
+                                                            label.input-large.ellipsis-large(style="display:inline-table;") {{row1.displayName.replace("|", ".")}}
+                                                            label.input-medium(style="display:inline-table;", toolTip="{{row1.toolTip}}") {{row1.value}}
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        .row(ng-repeat="row2 in data.laneData[1].charges | orderBy:'displayOrder'")
+                                                            label.input-large.ellipsis-large(style="display:inline-table;") {{row2.displayName.replace("|", ".")}}
+                                                            label.input-medium(style="display:inline-table;", toolTip="{{row2.toolTip}}",ng-class="{'red':row2.diff !== true}") {{row2.value}}
+
+                                        .cpanel
+                                            .cpanel-heading.cpanel-heading1
+                                                span.label.white( toolTip="Charge") Other Information
+                                            .cpanel-body
+                                                .row
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        label.input-medium(style="display:inline-table;") Effective Date
+                                                        label.input-medium(style="display:inline-table;") {{data.laneData[0].parameters[effIndex1].value}}
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        label.input-medium(style="display:inline-table;", ng-show="data.laneData[1]") Effective Date
+                                                        label.input-medium(style="display:inline-table;",ng-class="{'red':data.laneData[1].parameters.effdiff == true}") {{data.laneData[1].parameters[effIndex2].value}}
+
+                                                .row
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        label.input-medium(style="display:inline-table;") Expiry Date
+                                                        label.input-medium(style="display:inline-table;") {{data.laneData[0].parameters[expIndex1].value}}
+                                                    .col-xs-12.col-md-6.col-sm-12
+                                                        label.input-medium(style="display:inline-table;", ng-show="data.laneData[1]") Expiry Date
+                                                        label.input-medium(style="display:inline-table;",ng-class="{'red':data.laneData[1].parameters.expdiff == true}") {{data.laneData[1].parameters[expIndex2].value}}
+
+
+                                        //label {{tariffRequestData[$index].diffinLaneData}}
+                                        div(style="clear:both;height:3px;")
+                                        .row(ng-show="requestBucket == 'pending'")
+                                            input.input-large(ng-trim ,type="text", name="comment",placeholder="Comment", ng-model="data.comment",required,auto-fill-sync)
+                                            span.red(ng-show="comment.$error.required") &nbsp; *
+                                            span.green.validTick(ng-show="comment.$valid") &nbsp; &#10004;
+                                            button.inz-btn.btn-sm.btn-success(ng-click="processRequest('Approve',$index,false)") Approve
+                                            button.inz-btn.btn-sm.btn-danger(ng-click="processRequest('Reject',$index,false)", ng-disabled="data.comment == undefined || data.comment.length == 0") Reject
+                                            button.inz-btn.btn-sm.btn-grey(ng-click="isRowCollapsed[$index] = !isRowCollapsed[$index]") Cancel
+                                        .row(ng-show="requestBucket == 'myrejected'")
+                                            button.inz-btn.btn-sm.btn-danger(ng-click="reInitiateRequest($index)") ReInitiate
+
+                                        div(style="clear:both;height:3px;")
+
+
+
+        div(style="clear:both;height:5px;")
+        pagination(style="position:relative;",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+

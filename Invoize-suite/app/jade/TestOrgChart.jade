@@ -1,0 +1,47 @@
+link(rel="stylesheet", type="text/css", href="/styles/inz-chart.css")
+
+.loader-backdrop
+    .center-con
+        span.in-load-bar.t
+        span.in-load-bar.r
+        span.in-load-bar.b
+        span.in-load-bar.g
+
+div(id="content" )
+    h1
+        i.fa.fa-sitemap
+        |  Organisation Chart
+        .legends
+            //.title LEGENDS
+            .leg
+                i.fa.fa-building-o
+                |  : Company
+            .leg
+                i.fa.fa-desktop
+                |  : System
+
+    div(id="main")
+
+div(id='left' )
+    ul(id="organisation" )
+        li(tree-View='child in data.children at ul')
+            //div ID : {{child.companyid}}
+            .line.com
+                i.fa.fa-building-o
+                |   {{child.company}}
+                //- button.btn-pop(ng-if="child.system.length>0", data-content='<i class="fa fa-desktop"></i> System1 <br/><i class="fa fa-desktop"></i> System2 <br/><i class="fa fa-desktop"></i> System3 <br/> ', data-placement='right', data-toggle='popover', data-container='body', type='button', data-original-title='System', title='System')
+                button.btn-pop(ng-if="child.system.length>0", data-content="{{CurrentStackHolder[$index]}}", data-placement='right', data-toggle='popover', data-container='body', type='button', data-original-title='System', title='System')
+                    i.fa.fa-caret-right
+
+            //- button(ng-click='addChild(child)') +
+            //- //.line(ng-if="child.system.length>0", ng-repeat="sys in child.system")
+            //-     i.fa.fa-desktop
+            //-     |   {{sys}}
+            //- //div(ng-repeat='sys in child.system')
+            //- //  | {{sys}}
+
+            //- .line(ng-repeat='sys in child.system')
+            //-     <i class="fa fa-desktop"></i> {{sys}}  <br/>
+
+            ul(ng-class='{p:child.children.length}')
+        .clearfix

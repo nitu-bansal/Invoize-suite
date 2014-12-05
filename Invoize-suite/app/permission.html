@@ -1,0 +1,117 @@
+
+<div class="modal-dialog container">
+  <div class="modal-content">
+    <form name="permissionForm" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Assign / Remove Permissions</h4>
+      </div>
+      <div style="font-weight:normal" class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 col-md-12 col-sm-12">
+            <tabset>
+              <div class="pull-right">
+                <!--label(style="margin: 4px 0 0;")-->
+                <!--    input.ace.ace-switch.ace-switch-admin(type="checkbox")-->
+                <!--    span.lbl   &nbsp;-->
+                <div class="btn-group">
+                  <button toolTip="Selected Users" style="cursor:pointer;" class="command dropdown-toggle"><i class="fa fa-group big-u"></i></button>
+                  <ul ng-click="toggle=!toggle" data-placement="bottom" data-toggle="tooltip" class="dropdown-menu filter-ddm arrow-right dropdown-caret">
+                    <li ng-repeat="su in users" class="li-1">{{su.name}}
+                      <!--span(ng-hide="toggle")-->
+                      <!--span(ng-show="toggle")-->
+                      <!--input(type="checkbox", id='{{su.id}}',ng-model='su.update') for="{{su.id}}"-->
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <tab heading="Assign Permissions" ng-click="mainTab='save'" class="tab">
+                <div class="ds-tree">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                      <label>Company</label><span ng-show="permissionForm.PermissionCompany.$error.required " class="red">&nbsp; *</span><br/>
+                      <select ng-required="true" ui-select2="ui-select2" ng-model="permission.company" ng-change="clearSystem()" name="PermissionCompany" data-placeholder="Select Company" class="input-large">
+                        <option ng-repeat="c in companies" value="{{c.id}}">{{c.n}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                      <label>System</label><span ng-show="permissionForm.PermissionSystem.$error.required " class="red">&nbsp; *</span><br/>
+                      <select ng-required="true" ui-select2="ui-select2" ng-model="permission.system" ng-change="getPermissions();getRoles()" name="PermissionSystem" data-placeholder="Select System" class="input-large">
+                        <option ng-repeat="s in systems" value="{{s.id}}">{{s.n}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                      <label>Role</label><span ng-show="permissionForm.PermissionRole.$error.required" class="red">&nbsp; *</span><br/>
+                      <select ng-required="true" ui-select2="ui-select2" readonly="{{loader}}" ng-model="permission.role" ng-change="getPermissions()" name="PermissionRole" data-placeholder="Select Role" class="input-large">
+                        <option value=""></option>
+                        <option ng-repeat="r in roles" value="{{r.id}}">{{r.n}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div style="clear:both;height:5px;"></div>
+                <div ng-show="permission.company &amp;&amp; permission.system &amp;&amp; permission.role" class="row">
+                  <ul class="nav nav-tabs">
+                    <li ng-repeat="product in permission.products" ng-class="{'active':currentTab===$index}" ng-click="setCurrentTab($index)" class="tab"><a>{{product.key}}</a></li>
+                  </ul>
+                  <div style="height:10px;"></div>
+                  <div ng-repeat="product in permission.products" ng-show="currentTab==$index" class="row">
+                    <div style="padding-left:0;" class="col-md-2 col-sm-12 col-xs-12">
+                      <ul class="his-list">
+                        <li ng-repeat="(key,module) in product.value" ng-class="{'active':$index===selectedModule}" ng-click="setSelectedModule($index)"><i class="fa fa-chevron-right"></i><span class="his-email">{{key}}</span></li>
+                      </ul>
+                    </div>
+                    <div style="padding-left:0;" class="col-md-10 col-sm-12 col-xs-12"><span>Leave Non Mandatory Field Blank To Give "ALL" Permission</span>
+                      <div ng-repeat="(mkey,module) in product.value" ng-show="$index===selectedModule" ng-init="$first?setSelectedModule($index):null" class="row">
+                        <div style="padding:15px;border:1px solid #C6CFD5;border-radius:4px !important;background:#F7F7F7;" class="overflow-auto">
+                          <table class="inz-table inz-table1">
+                            <thead>
+                              <tr>
+                                <th ng-repeat="col in module[0] | limitTo : module[0].length">{{col.label}}</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="cols in module" ng-form="subForm">
+                                <td ng-repeat="item in cols | limitTo : cols.length-2" ng-form="subForm1" ng-switch="{{item.ismultiselect}}">
+                                  <dynamic-Select ng-switch-when="true" name="pid" multiselect="multiselect" ng-required="{{item.ismandatory}}" ng-model="item.value" dependent="item" data="cols" customobj="{&quot;systemId&quot;:&quot;{{permission.system}}&quot;,&quot;companyId&quot;:&quot;{{permission.company}}&quot;,&quot;product&quot;:&quot;{{product.key}}&quot;,&quot;module&quot;:&quot;{{mkey}}&quot;,&quot;key&quot;:&quot;{{item.key}}&quot;}" ph="permissionFieldValue" data-placeholder="Select..."></dynamic-Select>
+                                  <dynamic-Select ng-switch-when="false" name="pid" ng-required="{{item.ismandatory}}" ng-model="item.value" dependent="item" data="cols" customobj="{&quot;systemId&quot;:&quot;{{permission.system}}&quot;,&quot;companyId&quot;:&quot;{{permission.company}}&quot;,&quot;product&quot;:&quot;{{product.key}}&quot;,&quot;module&quot;:&quot;{{mkey}}&quot;,&quot;key&quot;:&quot;{{item.key}}&quot;}" ph="permissionFieldValue" data-placeholder="Select..."></dynamic-Select><span ng-show="subForm1.pid.$error.required" class="red">*</span>
+                                </td>
+                                <td ng-if="cols[cols.length-2].key">
+                                  <dynamic-Select name="last" required="required" multiselect="multiselect" ng-model="cols[cols.length-2].value" customobj="{&quot;systemId&quot;:&quot;{{permission.system}}&quot;,&quot;companyId&quot;:&quot;{{permission.company}}&quot;,&quot;product&quot;:&quot;{{product.key}}&quot;,&quot;module&quot;:&quot;{{mkey}}&quot;,&quot;key&quot;:&quot;{{cols[cols.length-2].key}}&quot;}" ph="permissionFieldValue" data-placeholder="--ALL--"></dynamic-Select><span ng-show="subForm.last.$error.required" class="red">*</span>
+                                </td>
+                                <td>
+                                  <dynamic-Select name="code" multiselect="multiselect" ng-model="cols[cols.length-1].value" customobj="{&quot;key&quot;:&quot;actionCode&quot;,&quot;parentCode&quot;:&quot;{{mkey}}&quot;,&quot;product&quot;:&quot;{{product.key}}&quot;,&quot;suggetionFrom&quot;:&quot;{{permission.role}}&quot;}" ph="permissionModules" data-placeholder="--ALL--"></dynamic-Select>
+                                </td>
+                                <td ng-show="cols.length&gt;1"><i ng-if="$index" ng-click="module.splice($index)" class="icon-minus red"></i><i ng-if="$first" ng-click="addRow(module,cols)" class="icon-plus green"></i></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tab>
+              <tab heading="Clone Permissions" ng-click="mainTab='clone'" class="tab">
+                <div class="ds-tree">
+                  <div class="row">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
+                      <label>From User</label><span ng-show="userclone.value==null || userclone.value.length&lt;1" class="red">&nbsp; *</span><br/>
+                      <dynamic-Select dropdown="dropdown" name="clone" ng-model="userclone.value" ph="reportingUsers" data-placeholder="Type Name .."></dynamic-Select>
+                    </div>
+                  </div>
+                </div>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-show="mainTab=='save'" ng-click="updatePermissions()" ng-disabled="permissionForm.$invalid || permission.products.length==0" ng-class="{'disabled': permissionForm.$invalid || permission.products.length == 0}" class="inz-btn btn-sm btn-success">Save Changes</button>
+        <button ng-show="mainTab=='clone'" ng-click="clonePermissions()" ng-disabled="userclone.value == null || userclone.value.length&lt;1" ng-class="{'disabled': userclone.value ==null || userclone.value.length&lt;1}" class="inz-btn btn-sm btn-success">Clone User</button>
+      </div>
+    </form>
+  </div>
+</div>

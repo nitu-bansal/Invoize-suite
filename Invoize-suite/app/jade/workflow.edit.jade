@@ -1,0 +1,35 @@
+.page-header    
+.row
+        .col-xs-12
+                form.form-horizontal(novalidate, name="form")
+                        .fieldset
+                                legend Workflow
+                                        .btn-group.pull-right
+                                                a.btn.btn-primary.btn-margin.btn-small(ng-hide="workflowUpdateLoader", ng-click="backToDetails()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                        i.icon-mail-reply.icon-large
+                                                button.btn.btn-primary.btn-small(permission="updateWorkflow.*.*", ng-hide="workflowUpdateLoader", ng-disabled="form.$invalid", type="submit", ng-click="updateWorkflow()",style="cursor: pointer;", bs-tooltip="tooltip.save")
+                                                        i.icon-ok.icon-large
+                                                a.btn.btn-primary.btn-margin.btn-small(permission="deleteWorkflow.*.*", ng-hide="workflowUpdateLoader", ng-click="confirmDeleteWorkflow()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                        i.icon-trash.icon-large
+                                                i.icon-spinner.icon-spin.icon-2x(ng-show="workflowUpdateLoader")
+                                .widget-box
+                                        .widget-header                                       
+                                                .form-group                                    
+                                                        input(type="text", name="workflowName", ng-model="workflow.name", placeholder="Workflow Name", required)
+                                                        label.help-inline.required(ng-show="form.workflowName.$error.required") *
+                                        .widget-body
+                                                .widget-main                                                           
+                                                        h5 Definition
+                                                        ng-form(name="WorkflowDefinitionsForm", ng-repeat="row in workflowDefinitions")
+                                                                .form-group
+                                                                        label.col-sm-3.control-label.no-padding-right
+                                                                                span.label.label-large.label-info.arrowed-in Level {{$index + 1}}  
+                                                                                br
+                                                                                span(ng-show="workflow.definition[$index].length > 1",id="workflowLevel{{$index}}")
+                                                                                    .label.label-success.help-inline(style='cursor: pointer;', onclick='toggle(this,{{$index}})',count="*") All
+                                                                                    .label.label-success.help-inline(ng-repeat="r in workflow.definition[$index] | limitTo:workflow.definition[$index].length-1" , style='cursor: pointer;display: none;', onclick='toggle(this,{{$parent.$index}})',count="{{$index+1}}") Any {{$index + 1}}
+                                                                        
+                                                                        input.input-xxlarge(ui-select2="userGroupBar", name="workflowDefinition", ng-click="workflowDefinitionsCallback($index)",id="workflowId{{$index+1}}", ng-model="workflow.definition[$index]" ,  select-validate, required)                                        
+                                                                        span.help-inline
+                                                                                a.close(ng-hide="workflowDefinitions.length == 1", ng-click="removeFromWorkflowDefinitions($index)") &times;
+                                                                        label.help-inline.required(ng-show="WorkflowDefinitionsForm.workflowDefinition.$error.selectvalidate || WorkflowDefinitionsForm.workflowDefinition.$error.required") *

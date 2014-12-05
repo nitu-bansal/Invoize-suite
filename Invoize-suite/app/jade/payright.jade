@@ -1,0 +1,142 @@
+include common_top_row
+.page-header
+.main-container(id="main-container")
+    .main-container-inner
+        a(id="menu-toggler", href="#")                
+        .sidebar(id="sidebar")  
+                .sidebar-collapse(id="sidebar-collapse")
+                        i.icon-chevron-left
+
+                ul.nav.nav-list
+                        li.active(permission="payright.*.*")
+                                a.dropdown-toggle(href="#",ng-click="getCategories('invoicestatus');isInvoiceCollapsed=!isInvoiceCollapsed")
+                                        i.icon-bar-chart
+                                        span.menu-text.trim-info-large Invoices 
+                                                i.icon-spinner.icon-spin.green.icon-large(ng-show="InvoiceCategoryLoader")
+                                        i.arrow.icon-angle-down                                   
+                                ul.submenu(ng-show="isInvoiceCollapsed",id='sidebar-scroll')
+                                        li(ng-repeat="l in invoiceStatusList",ng-class="{active: $routeParams.statusId == l.id}")
+                                                a.dropdown-toggle(href='',ng-click="invoiceList(l.id)") 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-large {{l.v | toHumanReadable}}                         
+                        
+                        li(permission="payright.*.*")
+                                a.dropdown-toggle(href="#",ng-click="getCategories('paymentstatus');isPaymentCollapsed=!isPaymentCollapsed")
+                                        i.icon-credit-card
+                                        span.menu-text.trim-info-large Payments 
+                                                i.icon-spinner.icon-spin.green.icon-large(ng-show="paymentCategoryLoader")
+                                        i.arrow.icon-angle-down                                   
+                                ul.submenu(ng-show="isPaymentCollapsed")
+                                        li.open(ng-repeat="l in paymentStatusList",ng-class="{active: $routeParams.statusId == l.id}")
+                                                a.dropdown-toggle(href='',ng-click="paymentList(l.id)") 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-large {{l.v | toHumanReadable}}  
+                        li(permission="payright.*.*")
+                                a.dropdown-toggle(href="#",ng-click="getCategories('shipmentstatus');isShipmentCollapsed=!isShipmentCollapsed")
+                                        i.icon-truck 
+                                        span.menu-text.trim-info-large Shipments 
+                                                i.icon-spinner.icon-spin.green.icon-large(ng-show="shipmentCategoryLoader")
+                                        i.arrow.icon-angle-down                                   
+                                ul.submenu(ng-show="isShipmentCollapsed")
+                                        li.open(ng-repeat="l in shipmentStatusList",ng-class="{active: $routeParams.statusId == l.id}")
+                                                a.dropdown-toggle(href='',ng-click="shipmentList(l.id)") 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-large {{l.v | toHumanReadable}}                          
+                        li(permission="payright.*.*")
+                                a.dropdown-toggle(href="#",ng-click="list();isVendorCollapsed=!isVendorCollapsed")
+                                        i.icon-briefcase
+                                        span.menu-text.trim-info-large Vendors 
+                                                i.icon-spinner.icon-spin.green.icon-large(ng-show="vendorCategoryLoader")                                        
+                                        i.arrow.icon-angle-down 
+                                ul.submenu(ng-show="isVendorCollapsed",id='sidebar-scroll',when-scrolled="loadMore()")
+                                        li
+                                                a.dropdown-toggle(data-placement="right",permission="createProfile.*.*",ng-disabled="$state.includes('payright.vendor.new')",ng-click="newVendor();") 
+                                                        span 
+                                                                .btn.btn-xs.btn-success(bs-tooltip="tooltip.new",data-placement="right")  
+                                                                        i.icon-plus                                                
+                                        li(ng-class="{ active: $stateParams.profileId == l.id}", ng-repeat="l in profileList")
+                                                a.dropdown-toggle(href="#",ng-click="read(l.id)")                                                 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-large {{l.v|toHumanReadable}}  
+                        li(permission="payright.*.*")
+                                a.dropdown-toggle(href="#",ng-click="listJc('');isJobCardCollapsed=!isJobCardCollapsed")
+                                        i.icon-list-alt 
+                                        span.menu-text.trim-info-large Job Cards 
+                                                 i.icon-spinner.icon-spin.green.icon-large(ng-show="jobcardCategoryLoader")                                        
+                                        i.arrow.icon-angle-down 
+                                ul.submenu(ng-show="isJobCardCollapsed",id='fixed-rate',when-scrolled="loadMore()")
+                                        li
+                                                a.dropdown-toggle(data-placement="right",permission="createProfile.*.*",ng-disabled="$state.includes('payright.jobCard.new')",ng-click="readJc(0);") 
+                                                        span 
+                                                                .btn.btn-xs.btn-success(bs-tooltip="tooltip.new",data-placement="right")  
+                                                                        i.icon-plus                                                
+                                        li(ng-class="{ active: $stateParams.jobCardId == l.id}", ng-repeat="l in jobCardList")
+                                                a.dropdown-toggle(href="#",ng-click="readJc(l.id)")                                                 
+                                                        i.icon-double-angle-right
+                                                        span.trim-info-large {{l.v|toHumanReadable}}
+                <!--/.nav-list-->
+        .main-content(id="main-content")                       
+                .well.well-small
+                        .offset2
+                                .control-group
+                                        input.input-xxlarge.search-query(ui-select2="searchBar", ng-model="searchBarValue", ui-keypress="{enter: 'searchCharge(searchBarValue)'}")
+                                        button.btn.btn-primary.btn-sm(ng-click="searchCharge(searchBarValue,$stateParams.accountId,$stateParams.templateId)",type="submit")&nbsp&nbsp&nbsp&nbsp
+                                                i.icon-search.icon-white &nbsp&nbsp&nbsp&nbsp                                      
+                                        
+                
+                .clearfix(id="page-content-PullUp") 
+                        <!--/.page-header-->
+                        .col-sm-10<!--PAGE CONTENT BEGINS HERE-->                         
+                                div(ng-show="$state.current.name=='payright'")
+                                        .row                                                                         
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Comparison of Invoices Amount, Invoice Count, Invoices Paid 
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row-fluid       
+                                                                                        .col-md-6 
+                                                                                              div(comparison-Of-Invoices-Amount-Invoice-Count-Invoices-Paid='chartData') 
+
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Comparison of Invoices Amount, Invoice Count, Invoices Paid
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row-fluid       
+                                                                                        .col-md-6                                                                                 
+                                                                                              div(comparison-Of-Invoice-Count-Invoices-Amount='chartData')
+                                                                                              
+                                        .row 
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Duplicate Invoices Amount Over A Year
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row-fluid       
+                                                                                        .col-md-6                                                                                 
+                                                                                              div(analysis-Of-Invoices='chartData')
+
+                                                .col-md-6
+                                                       .widget-box
+                                                                .widget-header.widget-header-flat.widget-header-small
+                                                                        h5
+                                                                                i.icon-bar-chart &nbsp Duplicate Invoice Count Over A Year
+                                                                        .widget-toolbar.no-border                                                                 
+                                                                .widget-body
+                                                                        .widget-main                                                                
+                                                                                .row-fluid       
+                                                                                        .col-md-6                                                                                 
+                                                                                              div(duplicate-Invoice-Count='chartData')
+                                                                              
+                        
+                        div(ui-view="list")    

@@ -1,0 +1,38 @@
+
+<div class="modal-dialog small">
+  <div class="modal-content">
+    <form name="form" novalidate="novalidate">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" type="button" ng-click="close()" class="close">    &times;</button>
+        <h4 class="modal-title">Configure Email<i ng-show="loader" class="icon-spinner icon-spin white icon-large"></i></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-4">------------------------------------------------------</div>
+          <div class="col-sm-8">
+            <div class="in-wiz-row">
+              <label class="control-label">Email</label>
+              <input ng-model="configureEmail.email" id="txtEmail" type="text"/>
+            </div>
+            <div class="in-wiz-row">
+              <label class="control-label">Password</label>
+              <input ng-model="configureEmail.password" id="txtPassword" type="text"/>
+            </div>
+            <div class="in-wiz-row">
+              <label class="control-label">Host</label>
+              <input ng-model="configureEmail.host" id="txtHost" type="text"/>
+            </div>
+            <div class="in-wiz-row">
+              <label class="control-label">Port</label>
+              <input ng-model="configureEmail.port" id="txtPort" type="text"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close()" class="inz-btn btn-sm btn-default">Cancel</button>
+        <button ng-class="{'disabled': form.$invalid}" ng-disabled="form.$invalid" permission="*.*.*" type="submit" ng-click="saveEmailBoxData()" class="inz-btn btn-sm btn-success">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

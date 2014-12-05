@@ -1,0 +1,100 @@
+.modal-dialog.container
+    .modal-content
+        form(name="permissionForm",novalidate)
+            .modal-header
+                button.close(aria-hidden='true', data-dismiss='modal', type='button',ng-click="close()")     &times;
+                h4.modal-title Assign / Remove Permissions
+            .modal-body(style="font-weight:normal")
+                .row
+                    .col-xs-12.col-md-12.col-sm-12
+                        tabset
+                            .pull-right
+                                //label(style="margin: 4px 0 0;")
+                                //    input.ace.ace-switch.ace-switch-admin(type="checkbox")
+                                //    span.lbl   &nbsp;
+                                .btn-group
+                                    button.command.dropdown-toggle(toolTip="Selected Users",style="cursor:pointer;")
+                                        i.fa.fa-group.big-u
+                                    ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(ng-click="toggle=!toggle",data-placement="bottom",data-toggle="tooltip")
+                                        li.li-1(ng-repeat='su in users') {{su.name}}
+                                            //span(ng-hide="toggle")
+                                            //span(ng-show="toggle")
+                                            //input(type="checkbox", id='{{su.id}}',ng-model='su.update') for="{{su.id}}"
+
+
+                            tab.tab(heading="Assign Permissions",ng-click="mainTab='save'")
+                                .ds-tree
+                                    .row
+                                        .col-md-4.col-sm-6.col-xs-12
+                                            label Company
+                                            span.red(ng-show="permissionForm.PermissionCompany.$error.required ") &nbsp; *
+                                            br
+                                            select.input-large(ng-required="true",ui-select2='ui-select2', ng-model='permission.company',ng-change='clearSystem()',name="PermissionCompany", data-placeholder='Select Company')
+                                                option(ng-repeat="c in companies", value="{{c.id}}") {{c.n}}
+
+                                        .col-md-4.col-sm-6.col-xs-12
+                                            label System
+                                            span.red(ng-show="permissionForm.PermissionSystem.$error.required ") &nbsp; *
+                                            br
+                                            select.input-large(ng-required="true",ui-select2='ui-select2', ng-model='permission.system',ng-change='getPermissions();getRoles()',name="PermissionSystem", data-placeholder='Select System')
+                                                option(ng-repeat="s in systems", value="{{s.id}}") {{s.n}}
+
+                                        .col-md-4.col-sm-6.col-xs-12
+                                            label Role
+                                            span.red(ng-show="permissionForm.PermissionRole.$error.required") &nbsp; *
+                                            br
+                                            select.input-large(ng-required="true",ui-select2='ui-select2',readonly="{{loader}}", ng-model='permission.role',ng-change='getPermissions()',name="PermissionRole", data-placeholder='Select Role')
+                                                option(value="")
+                                                option(ng-repeat="r in roles", value="{{r.id}}") {{r.n}}
+
+                                div(style="clear:both;height:5px;")
+                                .row(ng-show="permission.company && permission.system && permission.role")
+
+                                    ul.nav.nav-tabs
+                                        li.tab(ng-repeat="product in permission.products",ng-class="{'active':currentTab===$index}",ng-click="setCurrentTab($index)")
+                                            a {{product.key}}
+                                    div(style="height:10px;")
+                                    .row(ng-repeat="product in permission.products",ng-show="currentTab==$index")
+                                        .col-md-2.col-sm-12.col-xs-12(style="padding-left:0;")
+                                            ul.his-list
+                                                li(ng-repeat="(key,module) in product.value",ng-class="{'active':$index===selectedModule}",ng-click="setSelectedModule($index)")
+                                                    i.fa.fa-chevron-right
+                                                    span.his-email {{key}}
+                                        .col-md-10.col-sm-12.col-xs-12(style="padding-left:0;")
+                                            span
+                                                | Leave Non Mandatory Field Blank To Give "ALL" Permission
+                                            .row(ng-repeat="(mkey,module) in product.value",ng-show="$index===selectedModule",ng-init="$first?setSelectedModule($index):null")
+                                                div.overflow-auto(style="padding:15px;border:1px solid #C6CFD5;border-radius:4px !important;background:#F7F7F7;")
+                                                    table.inz-table.inz-table1
+                                                        thead
+                                                            tr
+                                                                th(ng-repeat="col in module[0] | limitTo : module[0].length") {{col.label}}
+                                                                th
+                                                        tbody
+                                                            tr(ng-repeat="cols in module",ng-form="subForm")
+                                                                td(ng-repeat="item in cols | limitTo : cols.length-2",ng-form="subForm1",ng-switch="{{item.ismultiselect}}")
+                                                                    dynamic-Select(ng-switch-when="true",name='pid',multiselect,ng-required="{{item.ismandatory}}",ng-model="item.value",dependent="item",data="cols",customobj='{"systemId":"{{permission.system}}","companyId":"{{permission.company}}","product":"{{product.key}}","module":"{{mkey}}","key":"{{item.key}}"}',ph="permissionFieldValue",data-placeholder="Select...")
+                                                                    dynamic-Select(ng-switch-when="false",name='pid',ng-required='{{item.ismandatory}}',ng-model="item.value",dependent="item",data="cols",customobj='{"systemId":"{{permission.system}}","companyId":"{{permission.company}}","product":"{{product.key}}","module":"{{mkey}}","key":"{{item.key}}"}',ph="permissionFieldValue",data-placeholder="Select...")
+                                                                    span.red(ng-show="subForm1.pid.$error.required") *
+                                                                td(ng-if="cols[cols.length-2].key")
+                                                                    dynamic-Select(name='last',required,multiselect,ng-model="cols[cols.length-2].value",customobj='{"systemId":"{{permission.system}}","companyId":"{{permission.company}}","product":"{{product.key}}","module":"{{mkey}}","key":"{{cols[cols.length-2].key}}"}',ph="permissionFieldValue",data-placeholder="--ALL--")
+                                                                    span.red(ng-show="subForm.last.$error.required") *
+                                                                td
+                                                                    dynamic-Select(name='code',multiselect,ng-model="cols[cols.length-1].value",customobj='{"key":"actionCode","parentCode":"{{mkey}}","product":"{{product.key}}","suggetionFrom":"{{permission.role}}"}',ph='permissionModules',data-placeholder="--ALL--")
+                                                                td(ng-show="cols.length>1")
+                                                                    i.icon-minus.red(ng-if="$index", ng-click="module.splice($index)")
+                                                                    i.icon-plus.green(ng-if="$first", ng-click="addRow(module,cols)")
+
+                            tab.tab(heading="Clone Permissions",ng-click="mainTab='clone'")
+                                .ds-tree
+                                    .row
+                                        .col-xs-12.col-md-12.col-sm-12
+                                            label From User
+                                            span.red(ng-show="userclone.value==null || userclone.value.length<1") &nbsp; *
+                                            br
+                                            dynamic-Select(dropdown,name='clone',ng-model="userclone.value",ph="reportingUsers",data-placeholder="Type Name ..")
+
+            .modal-footer
+                button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+                button.inz-btn.btn-sm.btn-success(ng-show="mainTab=='save'",ng-click="updatePermissions()",ng-disabled="permissionForm.$invalid || permission.products.length==0",ng-class="{'disabled': permissionForm.$invalid || permission.products.length == 0}") Save Changes
+                button.inz-btn.btn-sm.btn-success(ng-show="mainTab=='clone'",ng-click="clonePermissions()",ng-disabled="userclone.value == null || userclone.value.length<1",ng-class="{'disabled': userclone.value ==null || userclone.value.length<1}") Clone User

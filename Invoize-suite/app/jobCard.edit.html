@@ -1,0 +1,111 @@
+
+<div class="col-md-10">
+  <form novalidate="novalidate" name="form">	
+    <div id="profile-container" class="profile-container">	
+      <div class="widget-box transparent">
+        <div class="widget-header">
+          <div class="input-group">
+            <div class="input-group"><span class="input-group-addon">Job Card Title 							</span>
+              <input type="text" name="jobCardName" duplicate="jobCardName" ng-model="jobCard.jobCardName" placeholder="Enter text" required="required" class="col-md-2"/>
+            </div>
+            <div class="input-group"><span class="input-group-addon">Vendor								</span>
+              <input ui-select2="vendorBar" name="vendorBar" ng-model="jobCard.vendor" style="width: 205px;"/>
+            </div>
+            <div class="input-group"><span class="input-group-addon">Report(s)</span>
+              <dynamic-Element name="report" ng-model="jobCard.report" ph="payRightReports"></dynamic-Element>
+            </div>
+          </div>
+          <div class="widget-toolbar no-border">							
+            <div class="btn-group"><a ng-hide="jobCardCreateLoader" onClick="window.history.back()" style="cursor: pointer;" bs-tooltip="tooltip.back" class="btn btn-sm btn-primary"><i class="icon-mail-reply"></i></a>
+              <button ng-hide="$state.includes('payright.jobCard.new')" ng-disabled="form.$invalid" type="submit" ng-click="updateJobcard(jobCard)" style="cursor: pointer;" bs-tooltip="tooltip.save" class="btn btn-sm btn-primary"><i class="icon-ok"></i></button>
+              <button ng-hide="jobCardCreateLoader" ng-disabled="form.$invalid" type="submit" ng-click="createJobcard(jobCard)" style="cursor: pointer;" bs-tooltip="tooltip.saveNew" class="btn btn-sm btn-success"><i class="icon-save"> Save as New Copy</i></button><a permission="deleteJobCard.*.*" ng-hide="$state.includes('payright.jobCard.new')" style="cursor: pointer;" bs-tooltip="tooltip.delete" ng-click="confirmDeleteJobCard()" class="btn btn-sm btn-primary"><i class="icon-trash"></i></a><i ng-show="jobCardCreateLoader" class="icon-spinner icon-spin icon-2x"></i>
+            </div>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div id="search-container" class="container clearfix">
+              <h4 class="header smaller lighter">Search Criteria <i ng-show="searchPanelCardLoader" class="icon-spinner icon-spin"></i></h4>
+              <div class="row-fluid">				
+                <div ng-repeat="row in jobCard.searchPanelCard.searchBy" ng-hide="searchPanelCardLoader" class="col-md-3">
+                  <form novalidate="novalidate" name="form">  
+                    <div class="widget-box">
+                      <div class="widget-header smaller">
+                        <h5>{{row.groupCaption}}</h5>
+                        <div class="widget-toolbar">
+                          <div class="btn-group"><a ng-hide="groupFieldsLoader[row.groupCaption]" ng-click="getGroupFields(row.groupCaption)" bs-tooltip="tooltip.addCol" class="btn btn-xs btn-success dropdown-toggle"><i class="icon-plus"></i></a><i ng-show="groupFieldsLoader[row.groupCaption]" class="icon-spinner icon-spin"> </i>
+                            <ul class="dropdown-menu">
+                              <li ng-repeat="choice in groupFields[row.groupCaption]"><a ng-click="addGroupField(choice,$parent.$index,$index)">{{choice.Caption}}															</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="widget-body">
+                        <div class="widget-main no-padding">
+                          <div class="dialogsJobCard">																
+                            <div ng-repeat="row1 in row.fields" class="control-group">
+                              <ng-form name="selectionForm">
+                                <label class="control-label">{{row1.Caption | toHumanReadable}}</label>
+                                <div ng-switch="row1.ControlType" class="controls">																			
+                                  <input ng-switch-when="inputBox" type="text" name="{{row1.FieldName}}" ng-model="jobCard.searchPanel[row.groupCaption][row1.FieldName]" placeholder="{{row1.Caption | toHumanReadable}}" class="input"/>
+                                  <input ng-switch-when="Date" type="text" data-date-format="dd-mm-yyyy" bs-datepicker="bs-datepicker" name="{{row1.FieldName}}" b-datepicker="{{dateOptions}}" ng-model="jobCard.searchPanel[row.groupCaption][row1.FieldName]" placeholder="{{row1.Caption | toHumanReadable}}"/>
+                                  <dynamic-Element ng-switch-when="Multiselect" name="{{row1.Captionsnacks}}" ng-model="jobCard.searchPanel[row.groupCaption][row1.FieldName]" ph="{{row1.FieldName}}"></dynamic-Element><a data-action="close" ng-click="removeGroupField($parent.$index,$index)" style="cursor: pointer;" class="grey pull-right"><i class="icon-remove"></i></a>
+                                </div>
+                              </ng-form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div id="rule-container" class="container clearfix">
+              <h4 class="header smaller lighter">Identification Rules<i ng-show="searchPanelCardLoader" class="icon-spinner icon-spin">												</i></h4>
+              <div class="row-fluid">
+                <div ng-hide="searchPanelCardLoader">				
+                  <table style="width:auto;" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th><span class="trim-info-large blue">Seq #</span></th>
+                        <th ng-repeat="titles in jobCard.RulesPanelCard.data.Titles">
+                          <li style="list-style: none;" class="dropdown"><a tooltip="Click to change : {{titles.title |toHumanReadable}}" class="trim-info-large dropdown-toggle">{{titles.title | toHumanReadable}}&nbsp;&nbsp;</a>
+                            <ul class="dropdown-menu">
+                              <li ng-repeat="choice in ruleItems" type="none" class="clearfix"><a ng-click="addRuleItem(choice,$parent.$index,$index)">{{choice}}</a></li>
+                            </ul><a ng-hide="titles.deleted==1" data-action="close" ng-click="removeRuleColumn($index)" style="cursor: pointer;" class="grey pull-right"><i class="icon-remove"></i></a><a ng-show="titles.deleted==1" data-action="close" ng-click="undoRemoveRuleColumn($index)" style="cursor: pointer;" class="grey pull-right"><i class="icon-undo">																</i></a>
+                          </li>
+                        </th>
+                        <th><span class="trim-info-large blue">Match status</span></th>
+                        <th>
+                          <li style="list-style: none;" class="dropdown"><a bs-tooltip="tooltip.addCol" class="btn btn-sm btn-success dropdown-toggle"><i class="icon-plus"></i></a>
+                            <ul class="dropdown-menu">
+                              <li ng-repeat="choice in ruleItems"><a ng-click="addRuleColumn(choice,$index)">{{choice}}</a></li>
+                            </ul>
+                          </li>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody ui-sortables="ui-sortables" ng-model="jobCard.RulesPanelCard.data.Rules">						
+                      <tr ng-repeat="rule in jobCard.RulesPanelCard.data.Rules">
+                        <td class="center"><span class="trim-info-large grey">{{$index+1}}</span><a ng-hide="rule.deleted==1" data-action="close" ng-click="removeRule($index)" style="cursor: pointer;" class="grey pull-right"><i class="icon-remove"></i></a><a ng-show="rule.deleted==1" data-action="close" ng-click="undoRemoveRule($index)" style="cursor: pointer;" class="grey pull-right"><i class="icon-undo"></i></a></td>
+                        <td style="cursor: pointer" ng-class="{Deleted:data.deleted==1}" ng-Click="changeStatus($parent.$index,$index)" ng-repeat="data in rule.ruleData" class="center {{statusArr[data.value]}}">
+                          <div style="position: relative;">
+                            <div style="position: absolute;right: 7px;">															<a ng-show="data.value==1 &amp;&amp; data.deleted!=1" ng-click="openDialog($parent.$index,$index); $event.stopPropagation()" class="btn-margin pull-right"><i class="icon-external-link white icon-small">								</i></a></div><i ng-show="data.value==1" class="icon-ok-sign icon-2x white"></i><i ng-show="data.value==0" class="icon-remove-sign icon-2x white"></i><i ng-show="data.value==2" class="icon-minus-sign icon-2x grey"></i>
+                          </div>
+                        </td>
+                        <td class="center">
+                          <dynamic-Element name="matchStatus" ng-model="jobCard.RulesPanelCard.data.Rules[$index].matchStatus" ph="payrightstatus#">														</dynamic-Element>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table><a ng-click="addNewRule()" class="btn btn-sm btn-success"><i bs-tooltip="tooltip.addRow" class="icon-plus"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

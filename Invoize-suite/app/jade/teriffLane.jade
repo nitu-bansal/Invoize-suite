@@ -1,0 +1,75 @@
+// Created by kamalsingh.saini on 19-Sep-14.
+
+.row.in-wiz-ttl.in-fix-scroll(set-width, ng-init="initMetaInfo('tariffLane')")
+    .col-xs-12.col-md-12.col-sm-12
+        .pull-left
+            .in-wiz-info Tariff Lanes
+        .pull-right
+            i.icon-spinner.icon-spin.blue.icon-large(ng-show="Loader")
+            //dynamic-Select(name="accountGrouplist",ng-model="global.accountGroup",ph="accountGroup",change="setAccounts(global.accountGroup,true)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffLane","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Group",placeholder="Search by Account Group")
+            //dynamic-Select(name="accountNumberlist",ng-model="global.account1",ng-disabled="isGroupSelected" ,ph="account",change="setAccounts(global.account1,false)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffLane","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")
+            dynamic-Select(name="accountNumberlist",ng-model="global.account",ng-disabled="isGroupSelected" ,ph="account",change="setAccounts(global.account,false)",customobj='{"currentContext":"{{$state.$current.context.product}}.tariffLane","systemId":"{{loggedInUser.userSystem[0].id}}"}',toolTip="Account Number",placeholder="Search by Account")
+            button.input-search-new1(ng-click="quickSearch(currentPage,true,'tariffLane')" ,ng-show="global.account.length || global.accountGroup.length")
+                i.fa.fa-search
+            //.btn-group.filter-dd.rule-filter(ng-show="tariffList.length>0")
+            //    button.btn-sm.btn-ico.btn-custom.dropdown-toggle(data-toggle='dropdown', type='button')
+            //        i.fa.fa-filter
+            //        |  Filter &nbsp;
+            //        i.fa.fa-angle-down
+            //    div.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu',style="white-space: nowrap;")
+            //        div.showme.custom-filter-display.overflow-auto
+            //            li(ng-repeat="f in sortedFields" ,ng-switch="fields[f].type")
+            //                .opt-title {{fields[f].label}}
+            //                input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="fields[f].val",close-text="Close",placeholder="{{fields[f].label}}", )
+            //                dynamic-Select(ng-switch-default,name="{{fields[f]}}",ng-model="fields[f].val",customobj="{{custObj[fields[f].label]}}",ph="{{fields[f].autoSuggestSource}}",placeholder="{{fields[f].label}}")
+            //            //- li(ng-repeat="(k,lb) in fields",ng-switch="lb.type" )
+            //            //-   .opt-title {{lb.label}}
+            //            //-   input.input-large(ng-switch-when="date", datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="lb.val",close-text="Close",placeholder="{{lb.label}}", )
+            //            //-   dynamic-Select(ng-switch-default,multiselect,name="{{k}}",ng-model="lb.val",ph="{{autosuggestSource=='location'?'Location':autosuggestSource}}",customobj="{{custObj[lb.label]}}",placeholder="{{lb.label}}")
+            //        div
+            //            .opt-cmd
+            //                button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetDataForTMS('tariffLane')") Reset
+            //                button.inz-btn.btn-xs.btn-success(ng-click="applyDataForTMS('tariffLane')") Apply
+
+            button.btn-sm.btn-custom(permission="tariffLane.editTariffLanes",ng-click="redirectToAddNewTariff()",ng-show="tariffList.length") Add New
+div(style="clear:both;")
+.col-xs-12.col-sm-12.col-md-12
+    div(ng-show="tariffList.length && $state.current.name=='billright.tariffLane'",style="margin-top:47px;")
+        div.col-xs-12.filter-formview
+            .col-xs-12.col-sm-6.col-md-3(ng-repeat="f in sortedFields", ng-switch="fields[f].type")
+                div
+                    label.opt-title {{fields[f].label}}
+                div(ng-switch-when="date")
+                    input.input-large(datepicker-popup="yyyy-MM-dd",datepicker-options="dateOptions",type="text",ng-model="fields[f].val",close-text="Close",placeholder="{{fields[f].label}}")
+                div(ng-switch-default)
+                    dynamic-Select(name="{{fields[f]}}",ng-model="fields[f].val",customobj="{{custObj[fields[f].label]}}",ph="{{fields[f].autoSuggestSource}}",placeholder="{{fields[f].label}}")
+            .col-xs-12
+                .pull-right
+                    button.inz-btn.btn-xs.btn-default(type="reset",ng-click="resetDataForTMS('tariffLane')") Reset
+                    button.inz-btn.btn-xs.btn-success(ng-click="applyDataForTMS('tariffLane')") Apply
+        div.col-xs-12.overflow-auto
+            table.inz-table.inz-table1.border1px
+                thead
+                    tr
+                        th
+                            span
+                                input(tooltip="Select All",type='checkbox')
+                        th(ng-repeat="charge in tariffList[0]",ng-show='$index > 2 && $index !== 4')
+                            span.trim-info-large(tooltip="{{charge |toHumanReadable}}") {{charge | toHumanReadable}}
+                        th
+                            span.trim-info-large(tooltip="Edit") Edit Tariff
+                tbody(ng-repeat="data in tariffList",ng-show="$index > 0")
+                    tr(style="cursor: pointer;")
+                        td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                            input(id="chk",type='checkbox',ng-click="")
+                            //-i.fa-check-square-o
+                        td(ng-repeat="d in data track by $index",ng-show="$index>2 && $index !== 4",ng-switch="$index")
+                            span.trim-info-large(tooltip="{{d}}",ng-switch-when="8") {{d | date:fullDate}}
+                            span.trim-info-large(tooltip="{{d}}",ng-switch-when="9") {{d | date:fullDate}}
+                            span.trim-info-large(tooltip="{{d}}",ng-switch-default) {{d}}
+                        td(ng-repeat="d in data track by $index",ng-show="$index==0")
+                            a(href="#/billright/tariffLane/editTariff/{{data[1]}}",ng-click="editLane(data)")
+                                span.in-add-txt Edit/View
+        pagination(ng-hide="tariffList.length==0",total-items="totalItems",items-per-page="pageLimit", page="currentPage", class="pagination-small",on-select-page="setPage($parent.currentPage)", boundary-links="true")
+
+    div(ui-view="childContents")

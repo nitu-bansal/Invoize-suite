@@ -1,0 +1,27 @@
+
+<div ng-init="companyView($routeParams.companyId)" ng-show="$state.current.name.split('.')[0]=='wizard'" class="row in-wiz-ttl fix-scroll">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Welcome to company configuration. You can add / configure / edit your companies here. You can also arrange the companies as per the company hierarchy in your organization.</div>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add"><i ng-show="companyDetailLoader" class="icon-spinner icon-spin blue icon-large"></i><a permission="editTemplateCompany" ng-click="openDialogUpdateTemplate(company,true)" href="javascript:void(0);" style="margin-right:15px"><span class="in-add-sign">+</span><span class="in-add-txt">Add / modify fields</span></a></div>
+</div>
+<div ng-init="companyView($routeParams.companyId)" ng-hide="$state.current.name.split('.')[0]=='wizard'" set-width="set-width" class="row in-wiz-ttl in-fix-scroll">
+  <div class="col-xs-12 col-md-12 col-sm-12">
+    <div class="pull-left">
+      <div class="in-wiz-info">Company Details</div>
+    </div>
+    <div class="pull-right"><i ng-show="companyCreateLoader" class="icon-spinner icon-spin blue icon-large"></i><a ng-click="openDialogUpdateTemplate(company,true)" href="javascript:void(0);" style="margin-right:10px"><span class="in-add-sign">+</span><span class="in-add-txt">Add / Modify Fields</span></a><a ng-click="redirectTo('/company/view')" class="inz-btn btn-sm btn-default">Back</a></div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+  <div class="in-center-block">
+    <div ng-repeat="row1 in company.fields" class="line">
+      <div class="caption">{{row1.label}}</div>
+      <div class="data">{{row1.value | selectFormat}}</div>
+    </div>
+  </div>
+  <div class="in-wiz-footer">
+    <button ng-click="backToView()" class="inz-btn btn-sm btn-success"><i class="fa fa-long-arrow-left"></i> Back</button>
+  </div>
+</div>

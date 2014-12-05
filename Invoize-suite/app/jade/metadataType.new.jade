@@ -1,0 +1,21 @@
+.row.in-wiz-ttl.in-fix-scroll(set-width,ng-init="initialMetadataType()")
+    .col-xs-12.col-md-12.col-sm-12
+        form(name="form",novalidate)
+            .pull-left
+                .in-wiz-info New Metadata Type :
+                    input(type="text",duplicate="metadataType,{{$routeParams.metadataTypeId}}", name="metadataTypeName", ng-model="metadataType.Name", placeholder="Enter Type", required,ng-pattern=/^[a-zA-Z0-9]+$/,ng-trim,ng-maxlength="256")
+                    span.help-inline.required(ng-show="form.metadataTypeName.$error.required") &nbsp *
+                    span.green(ng-show="form.metadataTypeName.$valid") &nbsp &#10004;
+                    span.red(ng-show="form.metadataTypeName.$error.duplicate") &nbsp; metadata exists.
+                    span.red(ng-show="form.metadataTypeName.$error.maxlength") &nbsp;  Maximum length 256.
+                    span.red(ng-show="form.metadataTypeName.$error.pattern") &nbsp; only Alphanumeric characters.
+            .pull-right
+                i.icon-spinner.icon-spin.icon-2x(ng-show="metadataLoader")
+                a.inz-btn.btn-sm.btn-default(ng-hide="metadataLoader", ng-href="/#/organizationSetup/metadata/view") Back
+                button.inz-btn.btn-sm.btn-default(ng-click="addKeys($event.currentTarget)") Add Keys
+                button.inz-btn.btn-sm.btn-success(ng-hide="metadataLoader", ng-disabled="form.$invalid",ng-class="{'disabled': form.$invalid}", type="submit", ng-click="validateFields()",) Save Changes
+
+div(style="clear:both;")
+.col-xs-12.col-sm-12.col-md-12
+    div#keyHT(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-show='isKeys',onBeforeChange="beforeKeyChange",datarows='key in keys', columns='keyColumns',minsparerows='1',contextMenu='false',width='hw',afterRender='afterRender()')
+    div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',ng-hide='isKeys',height='hh',datarows='field in metadataType.fields', columns='templateColumns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='celChangeMetadataType',width='hw',afterRender='afterRender()')

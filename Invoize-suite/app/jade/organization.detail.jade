@@ -1,0 +1,38 @@
+.offset1.col-md-8
+        form.form-horizontal
+                fieldset                        
+                        .fluid-row
+                                .pull-right
+                                        a.btn.btn-primary.btn-margin(ng-hide="organizationDetailLoader", onClick="window.history.back()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large
+                                        a.btn.btn-primary.btn-margin(ng-hide="organizationDetailLoader", bs-tooltip="tooltip.edit", href="#/organization/edit/{{$stateParams.organizationId}}", ng-click="editOrganization()")
+                                                i.icon-pencil.icon-large
+                                        a.btn.btn-primary.btn-margin(ng-hide="organizationDetailLoader", style="cursor: pointer;", bs-tooltip="tooltip.delete", ng-click="confirmDeleteOrganization()")
+                                                i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="organizationDetailLoader" )
+                                legend Organization Details :
+                        .control-group
+                                label.control-label Organization
+                                .controls
+                                        label {{org.organization}}
+                        .control-group
+                                label.control-label Account Owner
+                                .controls
+                                        label {{org.accountOwner}}
+                        .control-group
+                                label.control-label Billing Owner
+                                .controls
+                                        label {{org.billingOwner}}
+                        .control-group
+                                label.control-label Registered On
+                                .controls
+                                        label {{org.registeredOn}}
+                        .control-group
+                                label.control-label Is Active
+                                .controls
+                                        label {{org.is_active}}
+                        //- .form-actions
+                        //-         a.btn.btn-primary(href="#/organization/edit/{{$stateParams.organizationId}}", ng-click="editOrganization()")
+                        //-                 i.icon-pencil.icon-white  
+                        //-                 |   Edit
+                        //-         button.btn.btn-inverse(type="submit") Cancel

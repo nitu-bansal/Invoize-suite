@@ -1,0 +1,26 @@
+
+<div class="row in-wiz-ttl">
+  <div class="col-md-9 col-sm-8">
+    <div class="in-wiz-info">Lorem Ipsum is simply dummy text of the printing and typesetting industry. {{profile}}</div>
+  </div>
+  <div class="col-md-3 col-sm-4 in-add"></div>
+</div>
+<div>
+  <form name="form" ng-submit="submitAll()" novalidate="novalidate">       
+    <div class="in-wiz-row">
+      <label class="control-label">Profile Name                   </label>
+      <div class="controls">
+        <input type="text" ng-disabled="true" name="profileName" duplicate="locationProfile" ng-model="profile.profileName" placeholder="Profile Name" required="required" ng-pattern="/^[a-zA-Z0-9]+$/" ng-trim="ng-trim" ng-maxlength="256"/><span ng-show="form.profileName.$error.required" class="help-inline required">*</span><span ng-show="form.profileName.$valid" class="validTick">&#10004;</span><span ng-show="form.profileName.$error.duplicate">Profile exists.</span><span ng-show="form.profileName.$error.maxlength">Maximum length 256 </span><span ng-show="form.profileName.$error.pattern">only Alphanumeric characters  </span>
+      </div>
+    </div>
+    <div class="in-wiz-row">
+      <label class="control-label">Attach System</label>
+      <div class="controls">
+        <dynamic-Select required="required" multiselect="multiselect" name="profileSystem" ng-model="profile.systemList" ph="unlinkedSystem" data-placeholder="System">                                        </dynamic-Select><span ng-show="form.profileSystem.$error.required">*</span><span ng-show="form.profileSystem.$valid" class="validTick">&#10004;</span>
+      </div>
+    </div>
+    <div class="in-wiz-footer">
+      <button type="submit" ng-disabled="form.$invalid" ng-class="{'disabled': form.$invalid}" ng-click="createProfile(profile)" class="inz-btn btn-sm btn-success">Save Changes</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,157 @@
+//- dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number")
+//- div(ng-init="getTemplateTms()")
+//-     a(ng-click="addFileInTariffMain()", href="javascript:void(0)")
+//-             span.in-add-sign +
+//-             span.in-add-txt Add File
+//-     div(ng-repeat="r in tariffMain track by $index",id="File{{$index+1}}")
+//-         .row                        
+//-                          h4.header.smaller.lighter New Tariff
+//-                                 .pull-right.btn-group
+//-                                         a.btn.btn-sm.btn-primary(ng-click="closeObj($index)", style="cursor: pointer;", bs-tooltip="tooltip.close")
+//-                                                 i.icon-remove
+//-                                         //- button.btn.btn-sm.btn-primary(ng-class="{'disabled': form3.$invalid}",ng-disabled="form3.$invalid", type="submit", ng-click="create(tariff)", style="cursor: pointer;", bs-tooltip="tooltip.save")
+//-                                         //-         i.icon-ok
+//-         div(ng-repeat="row1 in r.fields",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}")
+//-             form.form-horizontal(novalidate, name="subForm")                                      
+//-                 label.control-label {{row1.label}}          
+//-                 .controls(ng-switch-when="true",ng-switch='row1.type')
+//-                     input(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+//-                     input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+//-                     input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+//-                     textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+//-                     span(ng-show="subForm.name.$error.required") *
+//-                     span(ng-show="subForm.name.$error.unique") already Exists
+//-                     span(ng-show="subForm.name.$error.number") only numbers
+//-                     span(ng-show="subForm.name.$error.date") only date
+//-                     span(ng-show="subForm.name.$error.maxlength") max length is {{row1.length}}
+//-                     span(ng-show="subForm.name.$error.pattern") Can contain only text
+//-                     span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+//-         fieldset(ng-hide="isInProcess",permission="uploadTariffDocument.*.*")                                                   
+//-                     .widget-box.transparent
+//-                             .widget-header
+//-                                     h5.lighter.smaller
+//-                                             i.icon-large.icon-paper-clip 
+//-                                             | Upload New Documents
+//-                             .widget-body
+//-                                     .widget-main.no-padding
+//-                                             br
+//-                                             dialogss
+//-                                                     .form-group
+//-                                                             include upload
+
+
+
+
+            //-------------------
+        .in-wiz-row( ng-show="$state.current.name.split('.')[0]=='wizard'")
+            div.input-group
+                span.input-group-addon Selected Accounts
+                dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number")
+        .in-wiz-row( ng-hide="$state.current.name.split('.')[0]=='wizard'")
+            div.input-group
+                span.input-group-addon Selected Accounts
+                dynamic-Select(multiselect,name="accountNumber",ng-model="accountNumber",ph="accountNumber",customobj='{"templateId":"{{templateData.templateId}}"}',toolTip="Account Number",placeholder="Account Number",change="accountChange()",ng-init="initAccount()")
+
+div(ng-init="init()")
+.row(ng-show="accountNum.length>0",style="margin-top:-10px;")
+    .col-xs-12
+        fieldset(ng-hide="isInProcess")
+            .widget-box.transparent
+                .doc-block
+                    .title Upload new document
+                .widget-body
+                    .widget-main.no-padding
+                        dialogss
+                            .form-group
+                                include upload
+    
+    //button.inz-btn.btn-sm.btn-success(type="submit",ng-click="proceed()",ng-show="docExist") Proceed
+
+.row(ng-show="accountNum.length>0")
+    .col-xs-12
+        .doc-block()
+            .title New documents 
+
+        form.form-horizontal(novalidate, name="tmsForm")
+            div(ng-repeat="r in tariffMain track by $index",id="File{{$index+1}}")
+                .cpanel
+                    .cpanel-heading()
+                        a.accordion-toggle.open
+                            i.fa.fa-circle
+                            |    {{obj.docType}}
+                        span.hdate   {{obj.timestamp}}
+
+                        button.command.pull-right(ng-click="closeObj($index)", toolTip="Close",type='button')
+                            i.icon-remove
+
+                    //-.row
+                                     h4.header.smaller.lighter New Tariff
+                                            .pull-right.btn-group
+                                                    a.btn.btn-sm.btn-primary(ng-click="closeObj($index)", style="cursor: pointer;", bs-tooltip="tooltip.close")
+                                                            i.icon-remove
+
+                    //-.row
+                        .col-xs-12.doc-block
+                            //- .title Attached Documents ({{tariff.docId.length}})
+                            ul
+                                li
+                                    .doc-title
+                                        i.fa.fa-paperclip
+                                        |   {{r.presentDocId.v}}
+                                    .command-grp
+                                        button.command
+                                            i.fa.fa-pencil
+                                        button.command
+                                            i.fa.fa-reply
+                                        button.command
+                                            i.fa.fa-times
+
+                    .cpanel-body()
+                        .row
+                            .col-xs-12.doc-block
+                                //- .title Attached Documents ({{tariff.docId.length}})
+                                ul
+                                    li
+                                        a.doc-title(href='{{$location.host()}}/api/tms/download/file?id={{r.presentDocId.id}}')
+                                            i.fa.fa-paperclip
+                                            |   {{r.presentDocId.v}}
+                                        //- .command-grp
+                                        //-     button.command(toolTip="Edit")
+                                        //-         i.fa.fa-pencil
+                                        //-     button.command(toolTip="Revision")
+                                        //-         i.fa.fa-reply
+                                        //-     button.command(toolTip="Delete")
+                                        //-         i.fa.fa-times
+
+
+
+
+
+                            .col-xs-12.doc-block(style="margin-bottom:10px;")
+                                .title Document Details
+
+                            .col-xs-12
+                                .col-md-6.in-wiz-row(ng-repeat="row1 in r.fields | orderBy:'displayOrder'",ng-form="subForm",ng-show="{{row1.isActive}}",ng-switch="{{row1.isActive}}", alt-render,hasParent='row',hasCount='2')
+                                    form.form-horizontal(novalidate, name="subForm")
+
+                                        label.control-label {{row1.label}}
+                                        .controls(ng-switch-when="true",ng-switch='row1.type')
+                                            input(ng-switch-when='text',type="text",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                            input(ng-switch-when='date',datepicker-popup="{{format}}",datepicker-options="dateOptions",name="name",type="text",ng-model="row1.value",is-open="opened",ng-required="row1.isMandatory",close-text="Close",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                            input(ng-switch-when='numeric',type="number",ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                            dynamic-Select(ng-switch-when='multiselect',multiselect,ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                            dynamic-Select(ng-switch-when='dropdown',ng-required="row1.isMandatory",name="name",ng-model="row1.value",ph="{{row1.suggestionsSource}}",toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}",placeholder="{{row1.toolTip}}")
+                                            textarea(ng-switch-when='multiline',columns=5,rows=3,ng-pattern="{{row1.regex}}",ng-required="row1.isMandatory",ng-maxlength="{{row1.length}}",name="name",ng-model="row1.value",ng-trim,toolTip="{{row1.toolTip}}",ng-readonly="{{row1.isReadonly}}")
+                                            span(ng-show="subForm.name.$error.required") *
+                                            span(ng-show="subForm.name.$error.unique") already Exists
+                                            span(ng-show="subForm.name.$error.number") only numbers
+                                            span(ng-show="subForm.name.$error.date") only date
+                                            span(ng-show="subForm.name.$error.maxlength") max length is {{row1.length}}
+                                            span(ng-show="subForm.name.$error.pattern") Can contain only text
+                                            span.green.validTick(ng-show="subForm.name.$valid") &#10004;
+
+
+
+
+
+

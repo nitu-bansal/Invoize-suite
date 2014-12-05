@@ -1,0 +1,60 @@
+.container        
+        section
+        section
+        section
+                .row
+                        .col-xs-6
+                                .row
+                                        .col-xs-12
+                                                img(src="img/invoize-logo-green.png")
+                                                //- .logo-large(ui-jq="lettering")
+                                                //-         include config/brand
+                        .col-xs-6
+                                .row
+                                        .col-xs-12
+                                                form.form-horizontal(novalidate, name="form", ng-submit="signup(register)")
+                                                        fieldset
+                                                                .control-group
+                                                                        input(type="text", placeholder="Full Name", ng-model="register.fullName", name="fullName", required)
+                                                                        label.help-inline.required(ng-show="form.fullName.$error.required") *
+                                                                .control-group
+                                                                        input(placeholder="Email", ng-model="register.email", name="userEmail", required, duplicate="email", type="email")
+                                                                        label.help-inline.required(ng-show="form.userEmail.$error.required") *
+                                                                        label.required(ng-show="form.userEmail.$error.email") Invalid email.
+                                                                        label.required(ng-show="form.userEmail.$error.duplicate") Email exists.
+                                                                //- .control-group
+                                                                        //-   input(type="text", placeholder="First Name", ng-model="register.firstName", name="firstName", required)
+                                                                        //-   label.help-inline.required(ng-show="form.firstName.$error.required") *
+                                                                //- .control-group
+                                                                        //-   input(type="text", placeholder="Last Name", ng-model="register.lastName", name="lastName", required)
+                                                                        //-   label.help-inline.required(ng-show="form.lastName.$error.required") *
+                                                                .control-group
+                                                                        input(type="text", placeholder="Company or Organization", ng-model="register.organization", name="organization", ng-change="change()", required, duplicate="organization")
+                                                                        label.help-inline.required(ng-show="form.organization.$error.required") *
+                                                                        label.required(ng-show="form.organization.$error.duplicate") Organization exists.
+                                                                        //- label.help-inline.required(ng-show="form.organization.$error.duplicate") Duplicate Organization
+                                                                //- .control-group
+                                                                        //-   input(type="password", placeholder="Password", ng-model="register.password", ng-minlength="6", name="password", required)
+                                                                        //-   label.help-inline.required(ng-show="form.password.$error.required") *
+                                                                .control-group
+                                                                        .input-append
+                                                                                input.col-xs-6(type="text", placeholder="Domain", ng-model="register.subDomain", name="subDomain", required, duplicate="subDomain")                      
+                                                                                span.add-on .invoize.com
+                                                                                label.help-inline.required(ng-show="form.subDomain.$error.required") *
+                                                                                label.required(ng-show="form.subDomain.$error.duplicate") Domain exists.
+                                                                .control-group
+                                                                        input.btn.btn-success(ng-hide="registerLoader", ng-disabled="form.$invalid",type="submit", value="Sign up")
+                                                                        i.icon-spinner.icon-spin.icon-large(ng-show="registerLoader")
+                .row
+                        .col-xs-4
+                                
+                                img(src="img/ra.png")                                
+                                p.logoGrey(style="margin: -70px 40px 0;") With configurable workflows RANALYZE gives the organization the freedom to define and associate workflows to their clients, accountypes and other configurable elements.!
+                        .col-xs-4
+                                
+                                img(src="img/rr.png")
+                                p.logoGrey(style="margin: -70px 40px 0;") RateRight is the heart of Invoice-Suite and has the ability to pick rates from tariffs and apply it on your invoices, automating the entire billing process..
+                        .col-xs-4
+                               
+                                img(src="img/gv.png")
+                                p.logoGrey(style="margin: -70px 40px 0;") Holds a complete repository of your invoices and the documents attached to it.Greenvoize helps you manage your invoices and can generate and transform them to any format u want..

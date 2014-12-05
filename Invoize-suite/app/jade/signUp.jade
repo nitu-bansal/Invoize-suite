@@ -1,0 +1,250 @@
+link(rel="stylesheet", type="text/css", href="/styles/home2.css")
+.nav.navbar.navbar-invoize.navbar-fixed-top(role="navigation")
+        .container#in-head
+                .navbar-header
+                        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                                span.sr-only Toggle navigation
+                                span.icon-bar
+                                span.icon-bar
+                                span.icon-bar
+                        a.navbar-brand(href='#') 
+                                span.in-logo-bar.r
+                                span.in-logo-bar.b
+                                span.in-logo-bar.g
+                                | invoize
+                .collapse.navbar-collapse
+                        ul.nav.navbar-nav.navbar-right
+                                li.active
+                                        a(href='#') Home
+                                li
+                                        a(href='#') Pricing
+                                li
+                                        a(href='#') Demo
+                                li
+                                        a(href='#') About
+                                li
+                                        a(href='javascript:void(0)', class="signin-modal") Sign In
+
+.container.in-login(style="padding-top:80px; min-height: 500px;")
+        .row
+                .col-lg-6.col-md-4
+                .col-lg-6.col-md-8.in-reg(ng-show="showlogin")
+                        form.text-center(novalidate, name="form", ng-submit="signUp(organization)")    
+                                .row
+                                        .col-xs-4.in-title Email ID
+                                        .col-xs-8.in-txt-blk
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.email.$error.required")
+                                                        div(ng-show="form.email.$error.pattern") Invalid email address                                                                
+                                                        div(ng-show="form.email.$error.duplicate") Email registered with other organization                                                                
+                                                        i.icon-asterisk(ng-show="form.email.$error.required")        
+                                                input.in-txt(type='text', placeholder='Your Email ID',ng-pattern= /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, ng-model="organization.email", name="email",duplicate="email",required,ng-trim)
+                                
+                                .row
+                                        .col-xs-4.in-title Company Name
+                                        .col-xs-8.in-txt-blk                                
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.organization.$error.required")                                                        
+                                                        div(ng-show="form.organization.$error.minlength") minimum length 2 
+                                                        div(ng-show="form.organization.$error.maxlength") maximum length 63
+                                                input.in-txt(type='text', placeholder='Company Name', ng-model="organization.organization", name="organization", required ,ng-trim,ng-minlength="2",ng-maxlength="63")
+                                .row
+                                        .col-xs-4.in-title
+                                        .col-xs-8.in-txt-blk                                
+                                                button.in-btn(type='submit', ng-hide="signUpLoader", ng-disabled="form.$invalid", ng-class="{'disabled': form.$invalid}") Sign Up
+                                                i.icon-spinner.icon-spin.icon-2x.blue(ng-show="signUpLoader")
+                                                
+                                                label(ng-show="signUpSuccess").label.label-lg.label-info.arrowed.arrowed-right  Almost there, check your email for next steps.
+
+#carousel-example-generic.carousel.slide        
+        ol.carousel-indicators
+                li.active(data-target='#carousel-example-generic', data-slide-to='0')
+                li(data-target='#carousel-example-generic', data-slide-to='1')
+                li(data-target='#carousel-example-generic', data-slide-to='2')
+
+        .carousel-inner
+                .item.active.img1(bg-col="#DD5F60")
+                        .container 
+                                .row
+                                        .col-lg-6.col-md-8.in-logo-txt ranaly
+                                                span(style="color:#5cf979") z
+                                                |e
+                                .row
+                                        .col-lg-6.col-md-12.in-des-txt With configurable workflows RANALYZE gives the organization the freedom to define and associate workflows to their clients, account types and other configurable elements.!
+                        //- img(src='styles/images/bg.png', alt='bg1')  
+                .item.img2(bg-col="#3193C6")
+                        .container 
+                                .row
+                                        .col-lg-6.col-md-8.in-logo-txt rate
+                                                span(style="color:#5cf979") Right
+                                .row
+                                        .col-lg-6.col-md-12.in-des-txt RateRight is the heart of Invoice-Suite and has the ability to pick rates from tariffs and apply it on your invoices, automating the entire billing process..
+                        //- img(src='styles/images/bg.png', alt='bg2')
+                .item.img3(bg-col="#88C53A")
+                        .container 
+                                .row
+                                        .col-lg-6.col-md-8.in-logo-txt greenvoi
+                                                span(style="color:#5cf979") z
+                                                |e
+                                .row
+                                        .col-lg-6.col-md-12.in-des-txt Holds a complete repository of your invoices and the documents attached to it.Greenvoize helps you manage your invoices and can generate and transform them to any format u want..
+                        //- img(src='styles/images/bg.png', alt='bg2')
+ 
+        // Controls
+        a.left.carousel-control(href='#carousel-example-generic', data-slide='prev')
+                i.icon-chevron-left
+        a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
+                i.icon-chevron-right
+
+
+.container
+                .row(style="margin-top: 40px;")
+                        .col-md-4
+                                .in-info
+                                        .col-md-12.col-xs-4.block-infocon
+                                                i.icon-group.in-infocon
+                                                //- img(src="styles/images/people.png") 
+                                        .col-md-12.col-sm-8.col-xs-8 
+                                                .in-rhs-tt Work with colleagues
+                                                .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                        .clearfix
+
+                        .col-md-4
+                                .in-info
+                                        .col-md-12.col-xs-4.block-infocon
+                                                i.icon-search.in-infocon
+                                                //- img(src="styles/images/zoom.png")  crosshairs
+                                        .col-md-12.col-sm-8.col-xs-8 
+                                                .in-rhs-tt Inventory Tracking
+                                                .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                        .clearfix
+
+                        .col-md-4
+                                .in-info
+                                        .col-md-12.col-xs-4.block-infocon
+                                                i.icon-map-marker.in-infocon
+                                                //- img(src="styles/images/connect.png") 
+                                        .col-md-12.col-sm-8.col-xs-8 
+                                                .in-rhs-tt Anywhere, Anytime
+                                                .in-rhs-des Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                        .clearfix
+                .clearfix
+
+.pricing
+        .container
+                .row.phead
+                        h1(style="color: #269822;")
+                                i.fa.fa-money
+                                |   Pricing
+                        h3 Stay as long as you like. No commitment. Cancel anytime.
+                .row
+                        .col-md-3
+                                .pblock
+                                        .ptitle  Silver
+                                            .subtitle FREE
+                                        .ptext
+                                                .line
+                                                        b 2
+                                                        |  products
+                                                .line
+                                                        b 1
+                                                        |  image per product
+                                                .line
+                                                        b Basic
+                                                        |  stats
+                                                .line
+                                                        b 10
+                                                        |  iPhone app orders
+                                                .line.muted No inventory tracking
+                                                .line.muted No discount codes
+                                        .pbutton
+                                                button.btn.inz-btn.btn-success(type='button') Join now
+                                                    i.fa.fa-chevron-circle-right
+                        .col-md-3
+                                .pblock
+                                        .ptitle(style="color:#e4dc04")  Gold
+                                                .subtitle $10 monthly
+                                        .ptext
+                                                .line
+                                                        b 25
+                                                        |  products
+                                                .line
+                                                        b 3
+                                                        |  image per product
+                                                .line
+                                                        b Better
+                                                        |  stats
+                                                .line
+                                                        b 50
+                                                        |  iPhone app orders
+                                                .line Inventory tracking
+                                                .line.muted No discount codes
+                                        .pbutton
+                                                button.btn.inz-btn.btn-success(type='button') Join now
+                                                        i.fa.fa-chevron-circle-right
+
+                        .col-md-3
+                                .pblock
+                                        .ptitle(style="color:#04e4b2")  Platinum
+                                                .subtitle $20 monthly
+                                        .ptext
+                                                .line
+                                                        b 5
+                                                        |  products
+                                                .line
+                                                        b 10
+                                                        |  image per product
+                                                .line
+                                                        b Best
+                                                        |  stats
+                                                .line
+                                                        b Unlimited
+                                                        |  iPhone app orders
+                                                .line Inventory tracking
+                                                .line Discount codes
+                                        .pbutton
+                                                button.btn.inz-btn.btn-success(type='button') Join now
+                                                        i.fa.fa-chevron-circle-right
+
+                        .col-md-3
+                                .pblock
+                                        .ptitle(style="color:#e48804")  Gold
+                                                .subtitle $29 monthly
+                                        .ptext
+                                                .line
+                                                        b 10
+                                                        |  products
+                                                .line
+                                                        b 20
+                                                        |  image per product
+                                                .line
+                                                        b Best
+                                                        |  stats
+                                                .line
+                                                        b Unlimited
+                                                        |  iPhone app orders
+                                                .line Inventory tracking
+                                                .line Discount codes
+                                        .pbutton
+                                                button.btn.inz-btn.btn-success(type='button') Join now
+                                                        i.fa.fa-chevron-circle-right
+        .clearfix
+
+
+
+
+#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+                .modal-content
+                        .modal-header
+                                button.close(aria-hidden='true', data-dismiss='modal', type='button')     &times;                            
+                                h4#myModalLabel.modal-title How to Sign In to invoize
+                        .modal-body
+                                div(style="font-weight:400; font-size: 13px; color: #666;") When you registered with invoize, we sent you an email with your Web Address. You can sign in from your Web Address, which looks like this:
+                                 
+                                div(style="padding:10px 0; font-size:23px; color:#0073e5;") DOMAIN-NAME.invoize.com
+
+                                div(style=" font-size: 17px; color: #666;") 
+                                        a(href="#") Forgot your web address                                
+                        .modal-footer                        
+                                button.inz-btn.btn-sm.btn-success(type='button', data-dismiss="modal") OK, got it!

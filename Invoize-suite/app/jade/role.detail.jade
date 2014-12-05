@@ -1,0 +1,43 @@
+.page-header        
+.row        
+        .col-xs-12
+                form.form-horizontal
+                        legend Role
+                                .btn-group.pull-right
+                                        a.btn.btn-default.btn-sm.btn-primary(ng-hide="roleDetailLoader", ng-click="backToList()", style="cursor: pointer;", bs-tooltip="tooltip.back")
+                                                i.icon-mail-reply.icon-large                                              
+                                        a.btn.btn-default.btn-sm.btn-primary.btn-margin(permission="updateRole.*.*", ng-hide="roleDetailLoader", bs-tooltip="tooltip.edit", href="#/organizationSetup/role/edit/{{$stateParams.roleId}}", ng-click="editRole()")
+                                                i.icon-pencil.icon-large                                               
+                                        a.btn.btn-default.btn-sm.btn-primary.btn-margin(permission="deleteRole.*.*", ng-hide="roleDetailLoader", ng-click="confirmDeleteRole()", style="cursor: pointer;", bs-tooltip="tooltip.delete")
+                                                i.icon-trash.icon-large
+                                        i.icon-spinner.icon-spin.icon-2x(ng-show="roleDetailLoader")
+                        .form-group
+                                label.col-sm-3.control-label.no-padding-right Role Name  
+                                .col-sm-9                         
+                                        label : {{role.name}}
+                        .form-group
+                                label.col-sm-3.control-label.no-padding-right Description
+                                .col-sm-9  
+                                        label : {{role.description}}
+                        .form-group
+                                label.col-sm-3.control-label.no-padding-right Permission
+                                .col-sm-9  
+                                        label : {{role.definition | array2text}}
+                        .form-group
+                                label.col-sm-3.control-label.no-padding-right Created By
+                                .col-sm-9  
+                                        label : {{role.createdBy}}
+                        .form-group(ng-hide="!role.createdBy")
+                                label.col-sm-3.control-label.no-padding-right Created On
+                                .col-sm-9  
+                                        label(ng-show="!role.createdBy") : {{role.createdOn}}
+                                        label(ng-hide="!role.createdBy") : 2013-06-25
+
+                        .form-group(ng-show="role.updatedBy")
+                                label.col-sm-3.control-label.no-padding-right Modified By
+                                .col-sm-9  
+                                        label : {{role.updatedBy}}
+                        .form-group(ng-show="role.updatedOn")
+                                label.col-sm-3.control-label.no-padding-right Modified On
+                                .col-sm-9  
+                                        label : {{role.updatedOn}}                        

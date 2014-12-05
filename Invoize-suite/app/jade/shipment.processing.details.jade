@@ -1,0 +1,32 @@
+.col-xs-12
+    .modal-dialog.small
+        .modal-content
+            form(name="form",novalidate)
+                .modal-header
+                    button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+                    h4.modal-title Shipment Details
+                        i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+                .modal-body
+                        div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',height='auto',datarows='data in datas', columns='dlgColumns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='celChange',ng-init="getTemplate()")
+
+                        div(style="clear:both;height:20px;")
+                        button.inz-btn3.btn-sm.btn-default(ng-click="close()") Cancel
+                        button.inz-btn3.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-click="saveData()",ng-disabled="form.$invalid") Save
+                        button.inz-btn3.btn-sm.btn-success(ng-class="{'disabled': datas.length<=1}",ng-disabled="datas.length<=1",ng-click="deleteAllData()") Delete All
+                       
+
+//=======
+//.modal-dialog.small
+//    .modal-content
+//        form(name="form",novalidate)
+//            .modal-header
+//
+//                button.close(aria-hidden='true', data-dismiss='modal', type='button', ng-click="close()")     &times;
+//                h4.modal-title Shipment details {{$tmpDatas}}
+//                    i.icon-spinner.icon-spin.white.icon-large(ng-show="loader")
+//            .modal-body
+//                div(ui-handsontable='{rowHeaders: true, currentRowClassName: "currentRow",currentColClassName: "currentCol"}',height='auto',datarows='data in datas',style="width:690px;", columns='dlgColumns',manualColumnResize='true',minsparerows='1',contextMenu='false',onBeforeChange='celChange',ng-init="getTemplate()")
+//            .modal-footer
+//                button.inz-btn.btn-sm.btn-default(ng-click="close()") Cancel
+//                button.inz-btn.btn-sm.btn-success(ng-class="{'disabled': form.$invalid}",ng-click="saveData()",ng-disabled="form.$invalid") Save
+//

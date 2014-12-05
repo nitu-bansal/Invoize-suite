@@ -1,0 +1,40 @@
+form(name="form",novalidate)
+.row(ng-init="setPreData();editInvoiceDeliveryWeb();")
+    .col-xs-12
+        .doc-block
+            .title.strip Delivery Details
+    .col-xs-12
+        .row
+            .col-sm-3
+                div.input-group.non-valid.form-section
+                    span.input-group-addon Name
+                    input(placeholder="Name", ng-model="data.invoicedelivery.name",type='text',ng-required="true")
+                    //span(ng-show="form.invoicedeliveryName.$error.required") *
+                    //span.green.validTick(ng-show="form.invoicedeliveryName.$valid") &#10004;
+            .col-sm-3
+                .div.input-group
+                    span.input-group-addon Party
+                    select.md185(ui-select2='ui-select2', data-placeholder='Select',ng-model='data.invoicedelivery.deliveryParty',ng-required="false")
+                        option(value="{{key}}",ng-repeat="(key,val) in deliveryParty") {{val}}
+                       
+            .col-sm-3
+
+                .div.input-group.non-valid.form-section
+                    span.input-group-addon Party Name
+                    input(placeholder="Delivery Party Name", ng-model="data.invoicedelivery.deliveryPartyName",type='text')
+                    //span(ng-show="form.invoicedeliveryName.$error.required") *
+                    //span.green.validTick(ng-show="form.invoicedeliveryName.$valid") &#10004;
+            .col-sm-1
+                .pull-right.in-add
+                    .btn-group.pull-right
+                        button.btn-sm.btn-ico.btn-custom.dropdown-toggle.arrow-left(data-toggle='dropdown', type='button' ,tooltip="Configuration Mode",tooltip-placement="top")
+                            i.fa.fa-angle-down
+                            |&nbsp; Mode
+                        ul.dropdown-menu.filter-ddm.arrow-right.dropdown-caret(aria-labelledby='btnGroupVerticalDrop1', role='menu')
+                            li
+                                table
+                                    tbody
+                                        tr(ng-repeat="type in data.profileBase")
+                                            td(style="padding:0px 10px;") {{type.label}}
+                                            td
+                                                dynamic-Select(name="TypeValue_{{$index}}",ng-model="type.value",ph="{{type.suggestionsSource}}",placeholder="Please Select")

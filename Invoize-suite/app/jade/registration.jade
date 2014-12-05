@@ -1,0 +1,166 @@
+link(rel="stylesheet", type="text/css", href="/styles/home2.css")
+style 
+        body{background: url('styles/images/b3.jpg') no-repeat #fff;}
+.nav.navbar.navbar-invoize.navbar-fixed-top(role="navigation")
+        .container#in-head
+                .navbar-header
+                        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                                span.sr-only Toggle navigation
+                                span.icon-bar
+                                span.icon-bar
+                                span.icon-bar
+                        a.navbar-brand(href='#') 
+                                span.in-logo-bar.r
+                                span.in-logo-bar.b
+                                span.in-logo-bar.g
+                                | invoize
+                .collapse.navbar-collapse
+                        ul.nav.navbar-nav.navbar-right
+                                li
+                                        a(href='#') Home
+                                li
+                                        a(href='#') Pricing
+                                li
+                                        a(href='#') Demo
+                                li
+                                        a(href='#') About
+                                li
+                                        a(href='#myModal', data-toggle='modal') Sign In
+
+.container(ng-init="message='Please wait we are confirming your registration.'; confirm()",style="padding-top:80px;  ")
+        .row
+                .col-lg-6.col-md-4
+                .col-lg-6.col-md-8.in-reg(ng-show="showlogin")
+                        form.text-center(novalidate, name="form")    
+                                .row
+                                        .col-xs-4.in-title Sub Domain
+                                        .col-xs-8.in-txt-blk
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.subDomain.$error.required")
+                                                        div(ng-show="form.subDomain.$error.duplicate") Sub Domain not availaible
+                                                        div(ng-show="form.subDomain.$error.pattern") only Alphanumeric characters  
+                                                        div(ng-show="form.subDomain.$error.minlength") Minimum length 2 
+                                                        div(ng-show="form.subDomain.$error.maxlength") Maximum length 10              
+                                                input.in-txt(type='text', placeholder='Sub Domain', ng-model="organization.subDomain", name="subDomain",duplicate="subDomain", required ,ng-pattern=/^[a-zA-Z0-9]+$/,ng-trim,ng-minlength="2",ng-maxlength="10")  
+                                
+                                .row
+                                        .col-xs-4.in-title First Name
+                                        .col-xs-8.in-txt-blk                                
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.firstName.$error.required")                                                        
+                                                        div(ng-show="form.firstName.$error.maxlength") Maximum length 15
+                                                        div(ng-show="form.firstName.$error.pattern") Only Alphabets
+                                                input.in-txt(type='text', placeholder='First Name', ng-model="organization.firstName", name="firstName", required,ng-pattern=/^[a-zA-Z ]+$/,ng-maxlength="15",ng-trim)  
+                                
+                                .row
+                                        .col-xs-4.in-title Last Name
+                                        .col-xs-8.in-txt-blk
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.lastName.$error.required")                                                        
+                                                        div(ng-show="form.lastName.$error.maxlength") Maximum length 30
+                                                        div(ng-show="form.lastName.$error.pattern") Only Alphabets
+                                                input.in-txt(type='text', placeholder='Last Name', ng-model="organization.lastName", name="lastName", required,ng-pattern=/^[a-zA-Z ]+$/,ng-maxlength="30",ng-trim)
+                                
+                                .row
+                                        .col-xs-4.in-title Password
+                                        .col-xs-8.in-txt-blk
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.password.$error.required")  
+                                                        div(ng-show="form.password.$error.minlength") Password must be greater than 6 characters without spaces
+                                                                
+                                                input.in-txt(type="password",  placeholder="Password",id="password", ng-model="organization.password", ng-minlength="7", name="password", required)  
+                                
+                                .row
+                                        .col-xs-4.in-title Confirm Password
+                                        .col-xs-8.in-txt-blk
+                                                .in-err                                                      
+                                                        div(ng-show="form.confirmPassword.$error.pwmatch") Password do not match or Contains Spaces                                                                
+                                                input.in-txt(type='password', placeholder='Confirm Password', ng-model="confirmPassword", name="confirmPassword",pw-check="password", required)
+                                
+                                .row
+                                        .col-xs-4.in-title Company Website
+                                        .col-xs-8.in-txt-blk                
+                                                .in-err
+                                                        div(ng-show="form.website.$error.pattern") Invalid Website address
+                                                .col-xs-2(style="padding:0")
+                                                                input.in-txt(type='text',value="http://",ng-disabled="true")  
+                                                .col-xs-10(style="padding-right:0")
+                                                        input.in-txt(type='text', placeholder='Company Website',  ng-model="organization.website", name="website",ng-pattern=/^(www\.)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,4}$/,ng-trim)  
+                                
+                                .row
+                                        .col-xs-4.in-title Phone
+                                        .col-xs-8.in-txt-blk
+                                                .in-err 
+                                                        i.icon-asterisk(ng-show="form.phoneNumber.$error.required")  
+                                                        div(ng-show="form.phoneNumber.$error.pattern") Invalid Phone number
+                                                        div(ng-show="form.phoneNumber.$error.minlength") Minimum length 10
+                                                        div(ng-show="form.phoneNumber.$error.maxlength") Maximum length 10                                                       
+                                                .col-xs-4(style="padding:0")
+                                                        select.in-txt.in-s2(ui-select2="{placeholder:'Country'}",name="countryCode", ng-model="organization.countryCode",style="width:80px;",data-placeholder="Country")                                                                                                                                         
+                                                                option(value="(+01) USA" ,selected)  (+01) USA 
+                                                                option(value="(+91) India") (+91) India   
+                                                                option(value="(+61) Canada") (+61) Canada 
+                                                .col-xs-8(style="padding-right:0")                                                       
+                                                        input.in-txt(type='text', placeholder='Phone Number',required, ng-model="organization.phoneNumber", name="phoneNumber" ,ng-pattern=/^[0-9]+$/,ng-trim,ng-minlength="10",ng-maxlength="10")
+                                
+                                .row
+                                        .col-xs-4.in-title No. of Employees
+                                        .col-xs-8.in-txt-blk
+                                                .in-err
+                                                        //- i.icon-asterisk(ng-show="form.noOfEmployee.$error.required")
+                                                select.in-txt.in-s2(ui-select2="{placeholder:'No. of Employee'}", name="noOfEmployee", ng-model="organization.noOfEmployee", data-placeholder="No. of Employees", select-validate)
+                                                        option(value="")
+                                                        option(value="1")  0-50
+                                                        option(value="2")  50-100
+                                                        option(value="3")  100-200 
+                                                        option(value="4")  200-300
+                                                        option(value="5")  above 300 
+                                                                
+                                .row
+                                        .col-xs-4.in-title Designation
+                                        .col-xs-8.in-txt-blk
+                                                .in-err                                                        
+                                                        div(ng-show="form.designation.$error.pattern") Can contain Alphabets 
+                                                        div(ng-show="form.designation.$error.minlength") minimum length 2 
+                                                        div(ng-show="form.designation.$error.maxlength") maximum length 10
+                                                input.in-txt(type='text', placeholder='Designation', ng-model="organization.designation", name="designation" ,ng-pattern=/^[a-zA-Z]+$/,ng-trim,ng-minlength="2",ng-maxlength="10")
+                                
+
+                                .row
+                                        .col-xs-4.in-title Products
+                                        .col-xs-8.in-txt-blk
+                                                .in-err
+                                                        i.icon-asterisk(ng-show="form.products.$error.selectvalidate || form.products.$error.required")                                     
+                                                input.in-txt.in-s2(ui-select2="moduleBar",multiple="true", name="products", ng-model="organization.products", placeholder="Choose products", required, select-validate)
+                                
+                                .row
+                                        .col-xs-4.in-title 
+                                        .col-xs-8.in-txt-blk
+                                                button.in-btn(type='submit', ng-hide="registrationLoader", ng-disabled="form.$invalid", ng-class="{'disabled': form.$invalid}",ng-click="register(organization)") Register 
+                                                i.icon-spinner.icon-spin.icon-2x.blue(ng-show="registrationLoader")
+                                                //- .label.label-success.arrowed.arrowed-right(ng-show="visibleRegisterSuccessMsg") Registration done successfully.
+                                .row
+                                        .col-xs-4.in-title 
+                                        .col-xs-8.in-txt-blk
+                                                .in-err                                                        
+                                                        //- div(ng-show="form.subDomain.$error.maxlength") maximum length 10 
+                                                div(style="text-align:right")             
+                                                        a.forgot-password-link(ng-click="reset()") 
+                                                                i.icon-refresh 
+                                                                | Reset
+
+#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog
+                .modal-content
+                        .modal-header
+                                button.close(aria-hidden='true', data-dismiss='modal', type='button')     &times;                            
+                                h4#myModalLabel.modal-title How to Sign In to invoize
+                        .modal-body
+                                div(style="font-weight:400; font-size: 13px; color: #666;") When you registered with invoize, we sent you an email with your Web Address. You can sign in from your Web Address, which looks like this:
+                                 
+                                div(style="padding:10px 0; font-size:23px; color:#0073e5;") DOMAIN-NAME.invoize.com
+
+                                div(style=" font-size: 17px; color: #666;") 
+                                        a(href="#") Forgot your web address                                
+                        .modal-footer                        
+                                button.btn.btn-sm.btn-primary(type='button', data-dismiss="modal") OK, got it!
